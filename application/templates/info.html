@@ -1,0 +1,40 @@
+{% extends "layouts/layout.html" %}
+{% block page_title %}Team performance | Maturity Model | Digital Land{% endblock %}
+{%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+
+{% block dl_breadcrumbs %}
+{% from "govuk-jinja-components/components/back-link/macro.jinja" import govukBackLink -%}
+  {{ govukBackLink({
+      "text": "Back to page",
+      "href": page_url
+  }) }}
+{% endblock %}
+
+{% block content %}
+<main id="content" role="main">
+  <span class="govuk-caption-xl">Purpose and information</span>
+  <h1 class="govuk-heading-xl">{{ page_title }}</h1>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <h2 class="govuk-heading-m">What is this page for?</h2>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body-l">{{ data.why }}</p>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <h2 class="govuk-heading-m">What questions does this page help to answer?</h2>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+      <ul class="govuk-list">
+        {% for q in data.questions  %}
+          <li>{{ q }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</main>
+{% endblock %}

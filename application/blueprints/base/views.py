@@ -4,6 +4,7 @@ from flask import (
   render_template,
   Blueprint,
   current_app)
+from flask.helpers import url_for
 
 
 base = Blueprint('base', __name__)
@@ -29,7 +30,12 @@ def index():
 
 @base.route('/performance')
 def performance():
-  return render_template('performance.html')
+  return render_template('performance.html', info_page=True)
+
+@base.route('/performance/info')
+def performance_info():
+  data = read_json_file("application/data/info/performance.json")
+  return render_template('info.html', page_title="Digital land team performance", page_url=url_for('base.performance'), data=data)
 
 
 @base.route('/dataset/<dataset_name>/performance')

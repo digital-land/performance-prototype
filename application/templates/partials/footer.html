@@ -9,7 +9,7 @@
                 
                 {% if info_page %}
                 <li class="govuk-footer__inline-list-item">
-                  <a class="govuk-footer__link" href="info">
+                  <a class="govuk-footer__link" href="{{ url_for(request.endpoint) }}/info">
                     Info
                   </a>
                 </li>
