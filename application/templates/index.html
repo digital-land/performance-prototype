@@ -7,11 +7,22 @@
   <h1 class="govuk-heading-xl">Digital Land maturity model</h1>
   <p class="govuk-body">A place to create in-browser prototypes and design experiments for digital land</p>
   <h2 class="govuk-heading-l">Pages</h2>
-  <ul class="govuk-list govuk-list--bullet">
+  <ul class="govuk-list">
     <li>
-      <a class="govuk-link" href="#">
-        Dashboard
-      </a>
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="{{ url_for('base.performance') }}" class="govuk-link">Dashboard</a></h3>
+      <p class="govuk-body">A dashboard to show the progress the digital land team is making. It shows how much data the team has collected and highlights the gaps at a project level.</p>
+    </li>
+    <li>
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="{{ url_for('base.dataset_performance', dataset_name='brownfield-land') }}" class="govuk-link">Dataset example</a></h3>
+      <p class="govuk-body"></p>
+    </li>
+    <li>
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="{{ url_for('base.organisation_performance', organisation='ESK') }}" class="govuk-link">Organisation example</a></h3>
+      <p class="govuk-body"></p>
+    </li>
+    <li>
+      <h3 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="{{ url_for('base.resource_performance', resource='000b261f1757b69b9435ec20bae8f2b141677d17c054f01b187c8952e117db33') }}" class="govuk-link">Resource example</a></h3>
+      <p class="govuk-body"></p>
     </li>
   </ul>
 </main>

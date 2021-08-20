@@ -25,3 +25,23 @@ def read_json_file(data_file_path):
 @base.route('/index')
 def index():
   return render_template('index.html')
+
+
+@base.route('/performance')
+def performance():
+  return render_template('performance.html')
+
+
+@base.route('/dataset/<dataset_name>/performance')
+def dataset_performance(dataset_name):
+  return render_template('dataset/performance.html', name=dataset_name)
+
+
+@base.route('/organisation/<organisation>/performance')
+def organisation_performance(organisation):
+  return render_template('organisation/performance.html', organisation=organisation)
+
+
+@base.route('/resource/<resource>/performance')
+def resource_performance(resource):
+  return render_template('resource/performance.html', resource=resource)
