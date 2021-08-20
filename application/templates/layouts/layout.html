@@ -1,4 +1,5 @@
 {% extends "govuk-jinja-components/template.html" %}
+{% from "govuk-jinja-components/components/header/macro.jinja" import govukHeader -%}
 
 {% block head %}
 
@@ -16,17 +17,39 @@
 
 {% endblock %}
 
-<!-- example of how you add propositional heading -->
-{% block header_class %}with-proposition{% endblock %}
-{% block proposition_header %}
-<div class='header-proposition'>
-  <div class='content'>
-    <nav id='proposition-menu'>
-      <a href='/' id='proposition-name'>Digital Land</a>
-    </nav>
-  </div>
-</div>
+{% block beforeContent %}
+	{% include 'digital-land-frontend/partials/dl-prototype-banner.html' %}
+	{% block dl_breadcrumbs %}
+  {% from "govuk-jinja-components/components/back-link/macro.jinja" import govukBackLink -%}
+    {{ govukBackLink({
+        "text": "Back to index",
+        "href": "/"
+    }) }}
+  {% endblock %}
 {% endblock %}
+
+{% block header %}
+<header role="banner" id="global-header" class="govuk-header  with-proposition dl-header" data-module="govuk-header">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="header-proposition">
+      <div class="govuk-header__content">
+        <a href="https://digital-land.github.io/" class="govuk-header__link govuk-header__link--service-name">
+        Digital Land
+        </a>
+        <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+        <span class="dl-header__service-name">Maturity model</span>
+      </div>
+    </div>
+  </div>
+</header>
+{% endblock %}
+
+
+{% block footer %}
+	{% block feedbackPrompt %}{% endblock feedbackPrompt %}
+	{% include 'partials/footer.html' %}
+{% endblock %}
+
 
 {% block body_end %}
   {# js scripts here #}
