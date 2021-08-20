@@ -1,0 +1,17 @@
+appdirs
+Flask==1.1.1
+Flask-Assets
+Flask-BasicAuth
+Flask-Script
+-e git+https://github.com/digital-land/digital-land-python.git#egg=digital-land
+gunicorn
+itsdangerous
+Jinja2==2.11.3
+libsass
+MarkupSafe
+packaging
+pyparsing
+python-dotenv
+six
+webassets
+Werkzeug

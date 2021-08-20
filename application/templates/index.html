@@ -1,0 +1,23 @@
+{% extends "layouts/layout.html" %}
+{% block page_title %}Flask prototyping index{% endblock %}
+{%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+{% block content %}
+
+<main id="content" role="main">
+  <h1 class="govuk-heading-xl">Digital Land maturity model</h1>
+  <p class="govuk-body">A place to create in-browser prototypes and design experiments for digital land</p>
+  <h2 class="govuk-heading-l">Pages</h2>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>
+      <a class="govuk-link" href="#">
+        Dashboard
+      </a>
+    </li>
+  </ul>
+</main>
+{% endblock %}
+
+{% block bodyEnd %}
+{{ super() }}
+<script src="/static/js/test.js"></script>
+{% endblock bodyEnd %}

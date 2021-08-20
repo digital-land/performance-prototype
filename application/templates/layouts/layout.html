@@ -1,0 +1,33 @@
+{% extends "govuk-jinja-components/template.html" %}
+
+{% block head %}
+
+  {# for bundle definitions, see assets.py #}
+
+  {% block dl_css %} {# use this block to overwrite to use a local version of the dl css #}
+  <link href="https://digital-land.github.io/stylesheets/dl-frontend.css" rel="stylesheet" />
+  {% endblock dl_css %}
+
+  {% assets "css_govuk" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+  {% endassets %}
+
+  {% block headEnd %}{% endblock headEnd %}
+
+{% endblock %}
+
+<!-- example of how you add propositional heading -->
+{% block header_class %}with-proposition{% endblock %}
+{% block proposition_header %}
+<div class='header-proposition'>
+  <div class='content'>
+    <nav id='proposition-menu'>
+      <a href='/' id='proposition-name'>Digital Land</a>
+    </nav>
+  </div>
+</div>
+{% endblock %}
+
+{% block body_end %}
+  {# js scripts here #}
+{% endblock %}
