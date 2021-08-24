@@ -3,6 +3,8 @@ import json
 from flask import render_template, Blueprint, current_app
 from flask.helpers import url_for
 
+from application.googlesheetscollector import get_datasets
+
 
 base = Blueprint("base", __name__)
 
@@ -29,7 +31,10 @@ def index():
 
 @base.route("/performance")
 def performance():
-    return render_template("performance.html", info_page=True)
+    datasets = get_datasets()
+    print("DATASETS")
+    print(len(datasets))
+    return render_template("performance.html", info_page=True, datasets=datasets)
 
 
 @base.route("/performance/info")

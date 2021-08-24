@@ -5,5 +5,13 @@
 {% block content %}
 <main id="content" role="main">
   <h1 class="govuk-heading-xl">Digital land team performance</h1>
+
+  <h3 class="govuk-heading-m">Datasets</h3>
+
+  <ul class="govuk-list govuk-list--bullet">
+    {% for dataset in datasets %}
+    <li>{{ dataset.name }}</li>
+    {% endfor %}
+  </ul>
 </main>
 {% endblock %}
