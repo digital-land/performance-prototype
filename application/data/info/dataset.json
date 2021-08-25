@@ -1,0 +1,7 @@
+{
+  "why": "We need a way to measure the quality of a dataset. Measures include coverage, frequency it is updated and terms of use.",
+  "questions": [
+    "How complete is the dataset?",
+    "When was the dataset last updated?"
+  ]
+}

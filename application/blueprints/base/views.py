@@ -45,7 +45,7 @@ def performance():
     print("hello", high_level_numbers)
     return render_template(
         "performance.html",
-        info_page=True,
+        info_page=url_for("base.performance_info"),
         datasets=datasets,
         high_level_numbers=high_level_numbers,
     )
@@ -64,7 +64,22 @@ def performance_info():
 
 @base.route("/dataset/<dataset_name>")
 def dataset_performance(dataset_name):
-    return render_template("dataset/performance.html", name=dataset_name)
+    return render_template(
+        "dataset/performance.html",
+        name=dataset_name,
+        info_page=url_for("base.dataset_info", dataset_name=dataset_name),
+    )
+
+
+@base.route("/dataset/<dataset_name>/info")
+def dataset_info(dataset_name):
+    data = read_json_file("application/data/info/dataset.json")
+    return render_template(
+        "info.html",
+        page_title=dataset_name + " performance",
+        page_url=url_for("base.dataset_performance", dataset_name=dataset_name),
+        data=data,
+    )
 
 
 @base.route("/organisation/<organisation>/performance")

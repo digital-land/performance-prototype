@@ -51,6 +51,19 @@
 {% endblock %}
 
 
-{% block body_end %}
-  {# js scripts here #}
+{% block bodyEnd %}
+{{ super() }}
+{% if info_page %}
+  <script>
+    document.addEventListener('keyup', function(e) {
+      // are control and alt keys pressed
+      if (e.altKey && e.ctrlKey) {
+        // if i key is pressed
+        if (e.keyCode === 73) {
+          window.location.href = window.location.href + "/info"
+        }
+      }
+    })
+  </script>
+{% endif %}
 {% endblock %}
