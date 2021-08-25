@@ -6,11 +6,32 @@
 <main id="content" role="main">
   <h1 class="govuk-heading-xl">Digital land team performance</h1>
 
-  {#<ul class="govuk-list govuk-list--bullet">
-    {% for dataset in datasets %}
-    <li>{{ dataset.name }}</li>
-    {% endfor %}
-  </ul>#}
+  <div class="govuk-grid-row govuk-!-margin-bottom-9 govuk-!-margin-top-9">
+    <div class="govuk-grid-column-one-quarter">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-80">{{ high_level_numbers['datasets_with_data'] }}<span class="govuk-!-font-size-19">/{{ datasets|length }}</span></span>
+        <p class="govuk-body govuk-!-font-size-36">Datasets</p>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-80">{{ high_level_numbers['resources'] }}</span>
+        <p class="govuk-body govuk-!-font-size-36">Resources</p>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-80">?</span>
+        <p class="govuk-body govuk-!-font-size-36">Entities</p>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-80">?</span>
+        <p class="govuk-body govuk-!-font-size-36">Organisations</p>
+      </div>
+    </div>
+  </div>
 
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">Datasets</caption>

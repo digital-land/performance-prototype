@@ -29,12 +29,26 @@ def index():
     return render_template("index.html")
 
 
+def clean_int(s):
+    s = s.replace(",", "")
+    return int(s)
+
+
 @base.route("/performance")
 def performance():
     datasets = get_datasets()
     print("DATASETS")
-    print(len(datasets))
-    return render_template("performance.html", info_page=True, datasets=datasets)
+    high_level_numbers = {
+        "datasets_with_data": len([d for d in datasets if d["total-resources"] != "0"]),
+        "resources": sum([clean_int(d["total-resources"]) for d in datasets]),
+    }
+    print("hello", high_level_numbers)
+    return render_template(
+        "performance.html",
+        info_page=True,
+        datasets=datasets,
+        high_level_numbers=high_level_numbers,
+    )
 
 
 @base.route("/performance/info")
