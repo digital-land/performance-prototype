@@ -64,10 +64,16 @@ def performance_info():
 
 @base.route("/dataset/<dataset_name>")
 def dataset_performance(dataset_name):
+    datasets = get_datasets()
+    name = dataset_name.replace("_", " ").capitalize()
+    dataset = [
+        d for d in datasets if d["name"] == dataset_name.replace("_", " ").capitalize()
+    ]
     return render_template(
         "dataset/performance.html",
         name=dataset_name,
         info_page=url_for("base.dataset_info", dataset_name=dataset_name),
+        dataset=dataset,
     )
 
 
