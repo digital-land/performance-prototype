@@ -1,6 +1,10 @@
 // import all GOVUK Frontend scss
 @import "node_modules/govuk-frontend/govuk/all";
 
+.govuk-link--bold {
+    font-weight: bold !important;
+}
+
 .dl-cell-date {
     min-width: govuk-em(100, 19);
 }

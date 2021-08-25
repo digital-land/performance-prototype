@@ -49,11 +49,7 @@
       {% for dataset in datasets %}
       <tr class="govuk-table__row{{ ' dl-row--inactive' if not dataset.pipeline }}">
         <td scope="row" class="govuk-table__cell">
-          {{ dataset.name }}
-          {% if dataset.pipeline %}
-            <br />
-            <a href="https://github.com/digital-land/{{ dataset.pipeline }}" class="govuk-link dl-small-text">Collection repo</a>
-          {% endif %}
+          <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.name) }}" class="govuk-link govuk-link--bold">{{ dataset.name }}</a>
         </td>
         <td scope="col" class="govuk-table__cell">{% if dataset.pipeline %}
           {{ dataset['first-collected-resource'] }}

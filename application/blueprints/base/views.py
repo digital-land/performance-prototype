@@ -62,7 +62,7 @@ def performance_info():
     )
 
 
-@base.route("/dataset/<dataset_name>/performance")
+@base.route("/dataset/<dataset_name>")
 def dataset_performance(dataset_name):
     return render_template("dataset/performance.html", name=dataset_name)
 
