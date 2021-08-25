@@ -6,12 +6,46 @@
 <main id="content" role="main">
   <h1 class="govuk-heading-xl">Digital land team performance</h1>
 
-  <h3 class="govuk-heading-m">Datasets</h3>
-
-  <ul class="govuk-list govuk-list--bullet">
+  {#<ul class="govuk-list govuk-list--bullet">
     {% for dataset in datasets %}
     <li>{{ dataset.name }}</li>
     {% endfor %}
-  </ul>
+  </ul>#}
+
+  <table class="govuk-table">
+    <caption class="govuk-table__caption govuk-table__caption--m">Datasets</caption>
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter">Name</th>
+        <th scope="col" class="govuk-table__header dl-cell-date">Started</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Expected publishing orgs</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Publishing orgs</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Resources</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Days since new data</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      {% for dataset in datasets %}
+      <tr class="govuk-table__row{{ ' dl-row--inactive' if not dataset.pipeline }}">
+        <td scope="row" class="govuk-table__cell">
+          {{ dataset.name }}
+          {% if dataset.pipeline %}
+            <br />
+            <a href="https://github.com/digital-land/{{ dataset.pipeline }}" class="govuk-link dl-small-text">Collection repo</a>
+          {% endif %}
+        </td>
+        <td scope="col" class="govuk-table__cell">{% if dataset.pipeline %}
+          {{ dataset['first-collected-resource'] }}
+        {% else %}
+          <strong class="govuk-tag govuk-tag--grey">Backlog</strong>
+        {% endif %}</td>
+        <td scope="col" class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['organisations-expected-to-publish'] }}</td>
+        <td scope="col" class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['organisations-with-active-resources'] }}</td>
+        <td scope="col" class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['total-resources'] }}</td>
+        <td scope="col" class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['days-since-new-resource-added'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </main>
 {% endblock %}

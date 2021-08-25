@@ -1,2 +1,12 @@
 // import all GOVUK Frontend scss
 @import "node_modules/govuk-frontend/govuk/all";
+
+.dl-cell-date {
+    min-width: govuk-em(100, 19);
+}
+
+.dl-row--inactive {
+    td {
+        color: govuk-colour('mid-grey');
+    }
+}
