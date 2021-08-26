@@ -88,9 +88,24 @@ def dataset_info(dataset_name):
     )
 
 
-@base.route("/organisation/<organisation>/performance")
+@base.route("/organisation/<organisation>")
 def organisation_performance(organisation):
-    return render_template("organisation/performance.html", organisation=organisation)
+    return render_template(
+        "organisation/performance.html",
+        organisation=organisation,
+        info_page=url_for("base.organisation_info", organisation=organisation),
+    )
+
+
+@base.route("/organisation/<organisation>/info")
+def organisation_info(organisation):
+    data = read_json_file("application/data/info/organisation.json")
+    return render_template(
+        "info.html",
+        page_title="Organisation performance",
+        page_url=url_for("base.organisation_performance", organisation=organisation),
+        data=data,
+    )
 
 
 @base.route("/resource/<resource>/performance")
