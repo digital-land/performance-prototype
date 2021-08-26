@@ -108,6 +108,21 @@ def organisation_info(organisation):
     )
 
 
-@base.route("/resource/<resource>/performance")
+@base.route("/resource/<resource>")
 def resource_performance(resource):
-    return render_template("resource/performance.html", resource=resource)
+    return render_template(
+        "resource/performance.html",
+        resource=resource,
+        info_page=url_for("base.resource_info", resource=resource),
+    )
+
+
+@base.route("/resource/<resource>/info")
+def resource_info(resource):
+    data = read_json_file("application/data/info/resource.json")
+    return render_template(
+        "info.html",
+        page_title="Resource performance",
+        page_url=url_for("base.resource_performance", resource=resource),
+        data=data,
+    )
