@@ -6,6 +6,8 @@
     "What datasets do we have no data for?",
     "What datasets do we know about?",
     "How much data do we have for each dataset?",
-    "How trustworthy is the data? (How to measure?)"
+    "How trustworthy is the data? (How to measure?)",
+    "How quickly did we get data?",
+    "How good are we at getting data?"
   ]
 }
