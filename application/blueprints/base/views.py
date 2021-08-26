@@ -35,6 +35,7 @@ def clean_int(s):
 
 
 @base.route("/performance")
+@base.route("/performance/")
 def performance():
     datasets = get_datasets()
     print("DATASETS")
