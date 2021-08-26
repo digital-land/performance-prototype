@@ -73,7 +73,7 @@ def dataset_performance(dataset_name):
         "dataset/performance.html",
         name=dataset_name,
         info_page=url_for("base.dataset_info", dataset_name=dataset_name),
-        dataset=dataset,
+        dataset=dataset[0] if len(dataset) else "",
     )
 
 

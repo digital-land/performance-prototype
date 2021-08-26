@@ -7,6 +7,12 @@
   <span class="govuk-caption-xl">Dataset performance</span>
   <h1 class="govuk-heading-xl">{{ name }}</h1>
 
+  {% if dataset['pipeline'] %}
+  <h3 class="govuk-heading-m">Collection</h3>
+  <p class="govuk-body"><a href="https://github.com/digital-land/{{ dataset['pipeline'] }}" class="govuk-link">{{ dataset['pipeline'] }}</a> repository on github.</p>
+  {% endif %}
+  
+  <h3 class="govuk-heading-m">Dataset</h3>
   {{ dataset }}
 </main>
 {% endblock %}
