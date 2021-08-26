@@ -4,6 +4,7 @@ from flask import render_template, Blueprint, current_app
 from flask.helpers import url_for
 
 from application.googlesheetscollector import get_datasets
+from application.filters import clean_int_filter
 
 
 base = Blueprint("base", __name__)
@@ -29,11 +30,6 @@ def index():
     return render_template("index.html")
 
 
-def clean_int(s):
-    s = s.replace(",", "")
-    return int(s)
-
-
 @base.route("/performance")
 @base.route("/performance/")
 def performance():
@@ -41,9 +37,8 @@ def performance():
     print("DATASETS")
     high_level_numbers = {
         "datasets_with_data": len([d for d in datasets if d["total-resources"] != "0"]),
-        "resources": sum([clean_int(d["total-resources"]) for d in datasets]),
+        "resources": sum([clean_int_filter(d["total-resources"]) for d in datasets]),
     }
-    print("hello", high_level_numbers)
     return render_template(
         "performance.html",
         info_page=url_for("base.performance_info"),

@@ -48,7 +48,10 @@ def register_context_processors(app):
 
 
 def register_filters(app):
-    pass
+    from application.filters import clean_int_filter, to_float_filter
+
+    app.add_template_filter(clean_int_filter, name="to_int")
+    app.add_template_filter(to_float_filter, name="to_float")
 
 
 def register_extensions(app):

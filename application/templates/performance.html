@@ -33,36 +33,67 @@
     </div>
   </div>
 
+  <div class="data-table__wrapper" data-module="data-table">
+
+  
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">Datasets</caption>
     <thead class="govuk-table__head">
+      <!-- <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter"></th>
+        <th scope="col" class="govuk-table__header dl-cell-date"></th>
+        <th scope="colgroup" colspan="2" class="govuk-table__header">Publishers</th>
+        <th scope="col" class="govuk-table__header dl-cell-date"></th>
+        <th scope="col" class="govuk-table__header dl-cell-date"></th>
+      </tr>-->
       <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter">Name</th>
-        <th scope="col" class="govuk-table__header dl-cell-date">Started</th>
-        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Expected publishing orgs</th>
-        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Publishing orgs</th>
-        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Resources</th>
-        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Days since new data</th>
+        <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter" aria-sort="none">Name</th>
+        <th scope="col" class="govuk-table__header dl-cell-date" aria-sort="none">Started</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Expected publishers</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Current publishers</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Resources</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Days since update</th>
       </tr>
     </thead>
     <tbody class="govuk-table__body">
       {% for dataset in datasets %}
       <tr class="govuk-table__row{{ ' dl-row--inactive' if not dataset.pipeline }}">
-        <td scope="row" class="govuk-table__cell">
+        <td scope="row" class="govuk-table__cell" data-sort-value="{{ dataset.name }}">
           <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.name) }}" class="govuk-link govuk-link--bold">{{ dataset.name }}</a>
         </td>
-        <td scope="col" class="govuk-table__cell">{% if dataset.pipeline %}
+        <td class="govuk-table__cell">{% if dataset.pipeline %}
           {{ dataset['first-collected-resource'] }}
         {% else %}
           <strong class="govuk-tag govuk-tag--grey">Backlog</strong>
         {% endif %}</td>
-        <td scope="col" class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['organisations-expected-to-publish'] }}</td>
-        <td scope="col" class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['organisations-with-active-resources'] }}</td>
-        <td scope="col" class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['total-resources'] }}</td>
-        <td scope="col" class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['days-since-new-resource-added'] }}</td>
+        <td class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['organisations-expected-to-publish'] }}</td>
+        <td class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['organisations-with-active-resources'] }}</td>
+        <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value={{ dataset['total-resources']|to_int }}>{{ dataset['total-resources'] }}</td>
+        <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['days-since-new-resource-added']|to_int }}">{{ dataset['days-since-new-resource-added'] }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+
+</div>
 </main>
 {% endblock %}
+
+{% block bodyEnd %}
+{{ super() }}
+<script src="/static/javascripts/vendor/jquery-3.4.1.min.js"></script>
+<script src="/static/javascripts/vendor/MOJFrontend.SortableTable.js"></script>
+<script>
+(function($) {
+    $(function() {
+      var tables = $('table')
+      console.log(tables[0])
+        var sTable = new MOJFrontend.SortableTable({
+            table: $('table')[0],
+            statusVisible: true,
+            tableWrapperSelector: ".data-table__wrapper"
+        });
+    });
+}(jQuery));
+</script>  
+{% endblock bodyEnd %}
