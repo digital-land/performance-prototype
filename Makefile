@@ -15,3 +15,6 @@ flake8:
 	flake8 --exclude .venv,node_modules
 
 lint: black-check flake8
+
+run::
+	flask run
