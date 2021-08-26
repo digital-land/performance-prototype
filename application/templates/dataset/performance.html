@@ -7,12 +7,67 @@
   <span class="govuk-caption-xl">Dataset performance</span>
   <h1 class="govuk-heading-xl">{{ name }}</h1>
 
-  {% if dataset['pipeline'] %}
-  <h3 class="govuk-heading-m">Collection</h3>
-  <p class="govuk-body"><a href="https://github.com/digital-land/{{ dataset['pipeline'] }}" class="govuk-link">{{ dataset['pipeline'] }}</a> repository on github.</p>
-  {% endif %}
   
-  <h3 class="govuk-heading-m">Dataset</h3>
+  <h3 class="govuk-heading-m">Dataset info</h3>
+
+  <dl class="govuk-summary-list">
+
+    {% if dataset['name'] %}
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Name
+      </dt>
+      <dd class="govuk-summary-list__value">
+        {{ dataset['name'] }}
+      </dd>
+    </div>
+    {% endif %}
+
+    {% if dataset['project'] %}
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Project
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <a href="https://digital-land.github.io/project'{{ dataset['project'] }}">{{ dataset['project'] }}</a>
+      </dd>
+    </div>
+    {% endif %}
+
+    {% if dataset['pipeline'] %}
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Pipeline
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <a href="https://github.com/digital-land/{{ dataset['pipeline'] }}">{{ dataset['pipeline'] }}</a>
+      </dd>
+    </div>
+    {% endif %}
+
+    {% if dataset['data-provider'] %}
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Data provider
+      </dt>
+      <dd class="govuk-summary-list__value">
+        {{ dataset['data-provider'] }}
+      </dd>
+    </div>
+    {% endif %}
+
+    {% if dataset['category'] %}
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Category
+      </dt>
+      <dd class="govuk-summary-list__value">
+        {{ dataset['category'] }}
+      </dd>
+    </div>
+    {% endif %}
+    
+  </dl>
   {{ dataset }}
 </main>
 {% endblock %}
