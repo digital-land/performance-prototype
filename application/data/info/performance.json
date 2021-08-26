@@ -1,9 +1,11 @@
 {
   "why": "We need a way to track our progress collecting, processing and improving planning data. Once tracked it will be easier to report on progress and prioritise where needs more focus.",
   "questions": [
+    "Are we making progress?",
     "What datasets do we have data for?",
     "What datasets do we have no data for?",
     "What datasets do we know about?",
-    "How much data do we have for each dataset?"
+    "How much data do we have for each dataset?",
+    "How trustworthy is the data? (How to measure?)"
   ]
 }
