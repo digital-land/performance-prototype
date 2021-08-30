@@ -53,6 +53,11 @@
 
 {% block bodyEnd %}
 {{ super() }}
+<script src="{{ staticPath | default('https://digital-land.github.io') }}/javascripts/govuk/govuk-frontend.min.js"></script>
+<script>
+  // initiate all GOVUK components
+  window.GOVUKFrontend.initAll();
+</script>
 {% if info_page %}
   <script>
     document.addEventListener('keyup', function(e) {
