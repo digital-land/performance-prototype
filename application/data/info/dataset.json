@@ -1,7 +1,13 @@
 {
+  "user": "Proptech - users of the data",
   "why": "We need a way to measure the quality of a dataset. Measures include coverage, frequency it is updated and terms of use.",
   "questions": [
     "How complete is the dataset?",
-    "When was the dataset last updated?"
+    "When was the dataset last updated?",
+    "How much data do we have for the dataset?",
+    "How many of the expected publishers have published data?",
+    "How frequently is the dataset updated?",
+    "What other datasets are related?",
+    "What are the terms of use?"
   ]
 }

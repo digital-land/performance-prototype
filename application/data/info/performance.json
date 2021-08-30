@@ -1,5 +1,6 @@
 {
-  "why": "We need a way to track our progress collecting, processing and improving planning data. Once tracked it will be easier to report on progress and prioritise where needs more focus.",
+  "user": "Digital land",
+  "why": "We need a way to track our progress collecting, processing and improving planning data. Once tracked it will be easier to report on progress and prioritise what to do next.",
   "questions": [
     "Are we making progress?",
     "What datasets do we have data for?",
@@ -9,5 +10,11 @@
     "How trustworthy is the data? (How to measure?)",
     "How quickly did we get data?",
     "How good are we at getting data?"
+  ],
+  "qs": [
+    {
+      "question": "What datasets do we have data for?",
+      "how": "If we have collected resources for a dataset and extracted data from them then we can say we have data for it. On the dashbaord page we display the total number of resource collected for a given dataset."
+    }
   ]
 }
