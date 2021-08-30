@@ -68,6 +68,91 @@
     {% endif %}
     
   </dl>
-  {{ dataset }}
+
+  <h2 class="govuk-heading-l govuk-!-margin-top-9">By organisation</h2>
+
+  <div class="govuk-tabs" data-module="govuk-tabs">
+    <h2 class="govuk-tabs__title">
+      Contents
+    </h2>
+    <ul class="govuk-tabs__list">
+      <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+        <a class="govuk-tabs__tab" href="#expected-orgs">
+          Expected
+        </a>
+      </li>
+      <li class="govuk-tabs__list-item">
+        <a class="govuk-tabs__tab" href="#additional-orgs">
+          Additional
+        </a>
+      </li>
+    </ul>
+
+  <div class="govuk-tabs__panel" id="expected-orgs">
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">Expected organisations</caption>
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter" aria-sort="none">Name</th>
+          <th scope="col" class="govuk-table__header dl-cell-date" aria-sort="none">Total records</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Active sources</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Inactive sources</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Total resources</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Days since update</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        {% for org in orgs.expected %}
+        {% set total_resources = org['active-resource']|to_int + org['inactive-resource']|to_int %}
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell" data-sort-value="{{ org['name'] }}">{{ org['name'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['total-records']|to_int }}">{{ org['total-records'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['active-sources']|to_int }}">{{ org['active-sources'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['inactive-sources']|to_int }}">{{ org['inactive-sources'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ total_resources }}">{{ total_resources }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['days-since-new-resource-added']|to_int }}">{{ org['days-since-new-resource-added'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="govuk-tabs__panel" id="additional-orgs">
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">Additional organisations</caption>
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter" aria-sort="none">Name</th>
+          <th scope="col" class="govuk-table__header dl-cell-date" aria-sort="none">Total records</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Active sources</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Inactive sources</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Total resources</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Days since update</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        {% for org in orgs.additional %}
+        {% set total_resources = org['active-resource']|to_int + org['inactive-resource']|to_int %}
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell" data-sort-value="{{ org['name'] }}">{{ org['name'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['total-records']|to_int }}">{{ org['total-records'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['active-sources']|to_int }}">{{ org['active-sources'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['inactive-sources']|to_int }}">{{ org['inactive-sources'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ total_resources }}">{{ total_resources }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['days-since-new-resource-added']|to_int }}">{{ org['days-since-new-resource-added'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 </main>
 {% endblock %}
+
+{% block bodyEnd %}
+{{ super() }}
+<script>
+  console.log({{ dataset|tojson }})
+</script>
+{% endblock bodyEnd %}
+

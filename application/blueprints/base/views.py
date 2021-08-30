@@ -3,7 +3,7 @@ import json
 from flask import render_template, Blueprint, current_app
 from flask.helpers import url_for
 
-from application.googlesheetscollector import get_datasets
+from application.googlesheetscollector import get_datasets, get_bfl
 from application.filters import clean_int_filter
 
 
@@ -65,6 +65,17 @@ def dataset_performance(dataset_name):
     dataset = [
         d for d in datasets if d["name"] == dataset_name.replace("_", " ").capitalize()
     ]
+
+    if dataset_name.lower() == "brownfield land":
+        expected, additional = get_bfl()
+        return render_template(
+            "dataset/performance.html",
+            name=dataset_name,
+            info_page=url_for("base.dataset_info", dataset_name=dataset_name),
+            dataset=dataset[0] if len(dataset) else "",
+            orgs={"expected": expected, "additional": additional},
+        )
+
     return render_template(
         "dataset/performance.html",
         name=dataset_name,
