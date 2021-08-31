@@ -44,4 +44,6 @@ def get_bfl():
     # print(rows[0])
     expected = [o for o in rows if o["expected-to-publish"] == "yes"]
     additional = [o for o in rows if o["expected-to-publish"] != "yes"]
-    return expected, additional
+    noresource = [o for o in expected if o["active-resource"] == "0"]
+    withresource = [o for o in expected if int(o["active-resource"]) > 1]
+    return withresource, additional, noresource

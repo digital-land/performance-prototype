@@ -67,13 +67,17 @@ def dataset_performance(dataset_name):
     ]
 
     if dataset_name.lower() == "brownfield land":
-        expected, additional = get_bfl()
+        withresource, additional, noresource = get_bfl()
         return render_template(
             "dataset/performance.html",
             name=dataset_name,
             info_page=url_for("base.dataset_info", dataset_name=dataset_name),
             dataset=dataset[0] if len(dataset) else "",
-            orgs={"expected": expected, "additional": additional},
+            orgs={
+                "withresource": withresource,
+                "additional": additional,
+                "noresource": noresource,
+            },
         )
 
     return render_template(

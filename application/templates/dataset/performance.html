@@ -78,12 +78,12 @@
     <ul class="govuk-tabs__list">
       <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
         <a class="govuk-tabs__tab" href="#expected-orgs">
-          Expected
+          Active
         </a>
       </li>
       <li class="govuk-tabs__list-item">
-        <a class="govuk-tabs__tab" href="#additional-orgs">
-          Additional
+        <a class="govuk-tabs__tab" href="#no-resource">
+          No active resource
         </a>
       </li>
     </ul>
@@ -98,11 +98,12 @@
           <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Active sources</th>
           <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Inactive sources</th>
           <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Total resources</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Active resources</th>
           <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Days since update</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        {% for org in orgs.expected %}
+        {% for org in orgs.withresource %}
         {% set total_resources = org['active-resource']|to_int + org['inactive-resource']|to_int %}
         <tr class="govuk-table__row">
           <td class="govuk-table__cell" data-sort-value="{{ org['name'] }}">{{ org['name'] }}</td>
@@ -110,6 +111,7 @@
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['active-sources']|to_int }}">{{ org['active-sources'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['inactive-sources']|to_int }}">{{ org['inactive-sources'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ total_resources }}">{{ total_resources }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['active-resource']|to_int }}">{{ org['active-resource'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['days-since-new-resource-added']|to_int }}">{{ org['days-since-new-resource-added'] }}</td>
         </tr>
         {% endfor %}
@@ -117,9 +119,9 @@
     </table>
   </div>
 
-  <div class="govuk-tabs__panel" id="additional-orgs">
+  <div class="govuk-tabs__panel" id="no-resource">
     <table class="govuk-table">
-      <caption class="govuk-table__caption govuk-table__caption--m">Additional organisations</caption>
+      <caption class="govuk-table__caption govuk-table__caption--m">No active resource</caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter" aria-sort="none">Name</th>
@@ -127,11 +129,12 @@
           <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Active sources</th>
           <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Inactive sources</th>
           <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Total resources</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Active resources</th>
           <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Days since update</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        {% for org in orgs.additional %}
+        {% for org in orgs.noresource %}
         {% set total_resources = org['active-resource']|to_int + org['inactive-resource']|to_int %}
         <tr class="govuk-table__row">
           <td class="govuk-table__cell" data-sort-value="{{ org['name'] }}">{{ org['name'] }}</td>
@@ -139,6 +142,7 @@
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['active-sources']|to_int }}">{{ org['active-sources'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['inactive-sources']|to_int }}">{{ org['inactive-sources'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ total_resources }}">{{ total_resources }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['active-resource']|to_int }}">{{ org['active-resource'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['days-since-new-resource-added']|to_int }}">{{ org['days-since-new-resource-added'] }}</td>
         </tr>
         {% endfor %}
