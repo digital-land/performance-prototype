@@ -1,6 +1,7 @@
 {% extends "layouts/layout.html" %}
 {% block page_title %}Brownfield land | Dataset performance | Maturity Model | Digital Land{% endblock %}
 {%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+{%- from "tables/org-dataset-table.html" import datasetTable %}
 
 {% block content %}
 <main id="content" role="main">
@@ -15,6 +16,31 @@
       <p class="govuk-body"><a href="{{ url_for('base.organisation_performance', prefix='local-authority-eng', org_id='ESK') }}" class="govuk-link">East Suffolk</a> is a more complete example.</p>
     </div>
   </div>
+  {% else %}
+  {% if datasets.current|length %}
+    {{ datasetTable({
+        "datasets": datasets.current,
+        "caption": "Datasets with active resource"
+        })
+    }}
+  {% endif %}
+
+  {% if datasets.nocurrent|length %}
+    {{ datasetTable({
+      "datasets": datasets.nocurrent,
+      "caption": "Datasets with no active resource"
+      })
+    }}
+  {% endif %}
+  
+  {% if datasets.missing|length %}
+    {{ datasetTable({
+      "datasets": datasets.missing,
+      "caption": "Datasets with no resources"
+      })
+    }}
+  {% endif %}
+  
   {% endif %}
 
 </main>

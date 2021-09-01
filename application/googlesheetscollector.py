@@ -52,3 +52,9 @@ def get_bfl():
 def get_organisations():
     collector = GooglesheetsCollector(sheet="organisations")
     return collector.read_by_row()
+
+
+def get_esk_datasets():
+    collector = GooglesheetsCollector(sheet="east-suffolk")
+    datasets = collector.read_by_row()
+    return [d for d in datasets if d["expected-to-publish"] == "yes"]

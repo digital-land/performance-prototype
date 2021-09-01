@@ -3,7 +3,12 @@ import json
 from flask import render_template, Blueprint, current_app
 from flask.helpers import url_for
 
-from application.googlesheetscollector import get_datasets, get_bfl, get_organisations
+from application.googlesheetscollector import (
+    get_datasets,
+    get_bfl,
+    get_organisations,
+    get_esk_datasets,
+)
 from application.filters import clean_int_filter
 
 
@@ -108,6 +113,31 @@ def get_organisation(id):
 def organisation_performance(prefix, org_id):
     id = prefix + ":" + org_id
     organisation = get_organisation(id)
+
+    if org_id == "ESK":
+        datasets = get_esk_datasets()
+        no_current = [
+            d
+            for d in datasets
+            if int(d["total-resource"]) > 0 and int(d["active-resource"]) == 0
+        ]
+        has_current = [
+            d
+            for d in datasets
+            if int(d["total-resource"]) > 0 and int(d["active-resource"]) > 0
+        ]
+        no_data = [d for d in datasets if int(d["total-resource"]) == 0]
+        return render_template(
+            "organisation/performance.html",
+            organisation=organisation,
+            info_page=url_for("base.organisation_info", prefix=prefix, org_id=org_id),
+            datasets={
+                "current": has_current,
+                "nocurrent": no_current,
+                "missing": no_data,
+            },
+        )
+
     return render_template(
         "organisation/performance.html",
         organisation=organisation,
