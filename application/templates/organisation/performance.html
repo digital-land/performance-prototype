@@ -7,6 +7,22 @@
   <span class="govuk-caption-xl">Organisation performance</span>
   <h1 class="govuk-heading-xl">{{ organisation.name|default('Unknown') }}</h1>
 
-  {{ organisation }}
+  {% if organisation.organisation != 'local-authority-eng:ESK' %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body">This is a prototype. Currently, we don't have the data for {{ organisation.name|default('Unknown') }}.</p>
+      <h3 class="govuk-heading-s">Where to go next?</h3>
+      <p class="govuk-body"><a href="{{ url_for('base.organisation_performance', prefix='local-authority-eng', org_id='ESK') }}" class="govuk-link">East Suffolk</a> is a more complete example.</p>
+    </div>
+  </div>
+  {% endif %}
+
 </main>
 {% endblock %}
+
+{% block bodyEnd %}
+{{ super() }}
+<script>
+  console.log('organisation obj', {{ organisation|tojson }})
+</script>
+{% endblock bodyEnd %}
