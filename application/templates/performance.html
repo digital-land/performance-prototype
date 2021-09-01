@@ -34,8 +34,6 @@
   </div>
 
   <div class="data-table__wrapper" data-module="data-table">
-
-  
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">Datasets</caption>
     <thead class="govuk-table__head">
@@ -88,11 +86,11 @@
     $(function() {
       var tables = $('table')
       console.log(tables[0])
-        var sTable = new MOJFrontend.SortableTable({
-            table: $('table')[0],
-            statusVisible: true,
-            tableWrapperSelector: ".data-table__wrapper"
-        });
+      var sTable = new MOJFrontend.SortableTable({
+          table: $('table')[0],
+          statusVisible: true,
+          tableWrapperSelector: ".data-table__wrapper"
+      });
     });
 }(jQuery));
 </script>  
