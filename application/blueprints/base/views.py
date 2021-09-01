@@ -3,7 +3,7 @@ import json
 from flask import render_template, Blueprint, current_app
 from flask.helpers import url_for
 
-from application.googlesheetscollector import get_datasets, get_bfl
+from application.googlesheetscollector import get_datasets, get_bfl, get_organisations
 from application.filters import clean_int_filter
 
 
@@ -99,22 +99,29 @@ def dataset_info(dataset_name):
     )
 
 
-@base.route("/organisation/<organisation>")
-def organisation_performance(organisation):
+def get_organisation(id):
+    organisations = get_organisations()
+    return next(o for o in organisations if o["organisation"] == id)
+
+
+@base.route("/organisation/<prefix>/<org_id>")
+def organisation_performance(prefix, org_id):
+    id = prefix + ":" + org_id
+    organisation = get_organisation(id)
     return render_template(
         "organisation/performance.html",
         organisation=organisation,
-        info_page=url_for("base.organisation_info", organisation=organisation),
+        info_page=url_for("base.organisation_info", prefix=prefix, org_id=org_id),
     )
 
 
-@base.route("/organisation/<organisation>/info")
-def organisation_info(organisation):
+@base.route("/organisation/<prefix>/<org_id>/info")
+def organisation_info(prefix, org_id):
     data = read_json_file("application/data/info/organisation.json")
     return render_template(
         "info.html",
         page_title="Organisation performance",
-        page_url=url_for("base.organisation_performance", organisation=organisation),
+        page_url=url_for("base.organisation_performance", prefix=prefix, org_id=org_id),
         data=data,
     )
 

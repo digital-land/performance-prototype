@@ -5,6 +5,8 @@
 {% block content %}
 <main id="content" role="main">
   <span class="govuk-caption-xl">Organisation performance</span>
-  <h1 class="govuk-heading-xl">East Suffolk Council</h1>
+  <h1 class="govuk-heading-xl">{{ organisation.name|default('Unknown') }}</h1>
+
+  {{ organisation }}
 </main>
 {% endblock %}

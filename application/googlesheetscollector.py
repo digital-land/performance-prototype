@@ -47,3 +47,8 @@ def get_bfl():
     noresource = [o for o in expected if o["active-resource"] == "0"]
     withresource = [o for o in expected if int(o["active-resource"]) > 1]
     return withresource, additional, noresource
+
+
+def get_organisations():
+    collector = GooglesheetsCollector(sheet="organisations")
+    return collector.read_by_row()

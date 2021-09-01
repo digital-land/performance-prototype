@@ -105,8 +105,9 @@
       <tbody class="govuk-table__body">
         {% for org in orgs.withresource %}
         {% set total_resources = org['active-resource']|to_int + org['inactive-resource']|to_int %}
+        {% set orgIdPieces = org['organisation'].split(':')  %}
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell" data-sort-value="{{ org['name'] }}">{{ org['name'] }}</td>
+          <td class="govuk-table__cell" data-sort-value="{{ org['name'] }}"><a href="{{ url_for('base.organisation_performance', prefix=orgIdPieces[0], org_id=orgIdPieces[1]) }}" class="govuk-link">{{ org['name'] }}</a></td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['total-records']|to_int }}">{{ org['total-records'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['active-sources']|to_int }}">{{ org['active-sources'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['inactive-sources']|to_int }}">{{ org['inactive-sources'] }}</td>
@@ -136,8 +137,9 @@
       <tbody class="govuk-table__body">
         {% for org in orgs.noresource %}
         {% set total_resources = org['active-resource']|to_int + org['inactive-resource']|to_int %}
+        {% set orgIdPieces = org['organisation'].split(':')  %}
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell" data-sort-value="{{ org['name'] }}">{{ org['name'] }}</td>
+          <td class="govuk-table__cell" data-sort-value="{{ org['name'] }}"><a href="{{ url_for('base.organisation_performance', prefix=orgIdPieces[0], org_id=orgIdPieces[1]) }}" class="govuk-link">{{ org['name'] }}</a></td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['total-records']|to_int }}">{{ org['total-records'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['active-sources']|to_int }}">{{ org['active-sources'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ org['inactive-sources']|to_int }}">{{ org['inactive-sources'] }}</td>
