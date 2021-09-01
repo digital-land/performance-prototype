@@ -49,8 +49,7 @@
       <tr class="govuk-table__row">
         <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter" aria-sort="none">Name</th>
         <th scope="col" class="govuk-table__header dl-cell-date" aria-sort="none">Started</th>
-        <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Expected publishers</th>
-        <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Current publishers</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Publishers (current/expected)</th>
         <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Resources</th>
         <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Days since update</th>
       </tr>
@@ -68,8 +67,7 @@
         {% else %}
           <strong class="govuk-tag govuk-tag--grey">Backlog</strong>
         {% endif %}</td>
-        <td class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['organisations-expected-to-publish'] }}</td>
-        <td class="govuk-table__cell govuk-table__cell--numeric">{{ dataset['organisations-with-active-resources'] }}</td>
+        <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['organisations-with-active-resources']|to_int }}">{{ dataset['organisations-with-active-resources'] }} / {{ dataset['organisations-expected-to-publish'] }}</td>
         <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['total-resources']|to_int }}">{{ dataset['total-resources'] }}</td>
         <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['days-since-new-resource-added']|to_int }}">{{ dataset['days-since-new-resource-added'] }}</td>
       </tr>
