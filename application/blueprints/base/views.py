@@ -8,6 +8,7 @@ from application.googlesheetscollector import (
     get_bfl,
     get_organisations,
     get_esk_datasets,
+    get_resource_source_stats,
 )
 from application.filters import clean_int_filter
 
@@ -49,6 +50,7 @@ def performance():
         info_page=url_for("base.performance_info"),
         datasets=datasets,
         high_level_numbers=high_level_numbers,
+        stats=get_resource_source_stats(),
     )
 
 

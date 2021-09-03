@@ -18,6 +18,10 @@ class GooglesheetsCollector:
             % (self.key, self.sheet)
         )
 
+    def change_sheet(self, sheet):
+        self.sheet = sheet
+        self.main_url = self.generate_csv_url()
+
     def read_sheet(self):
         content = self.session.get(self.main_url)
         return content.content.decode("utf-8")
@@ -58,3 +62,38 @@ def get_esk_datasets():
     collector = GooglesheetsCollector(sheet="east-suffolk")
     datasets = collector.read_by_row()
     return [d for d in datasets if d["expected-to-publish"] == "yes"]
+
+
+def remove_item(l, item):
+    if item in l:
+        l.remove(item)
+    return l
+
+
+def get_resource_source_stats():
+    stats = {"sources": [], "resources": [], "months": []}
+    collector = GooglesheetsCollector(sheet="source-by-month-start")
+    data = collector.read_by_row()
+    months = data[0].keys()
+
+    for month in months:
+        if not month in ["pipeline", "name", ""]:
+            count = sum([int(d[month]) for d in data])
+            stats["sources"].append((month, count))
+
+    collector.change_sheet("resource-by-month-start")
+    d2 = collector.read_by_row()
+    months = d2[0].keys()
+
+    for month in months:
+        if not month in ["pipeline", "name", ""]:
+            count = sum([int(d[month]) for d in d2])
+            stats["resources"].append((month, count))
+
+    months = list(months)
+    months = remove_item(months, "pipeline")
+    months = remove_item(months, "name")
+    months = remove_item(months, "")
+    stats["months"] = months
+
+    return stats

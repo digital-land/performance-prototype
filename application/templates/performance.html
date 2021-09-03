@@ -33,6 +33,14 @@
     </div>
   </div>
 
+  <figure class="highcharts-figure govuk-!-margin-bottom-9">
+    <div id="container"></div>
+    <p class="highcharts-description govuk-body govuk-!-margin-top-4">
+      Basic line chart showing the number of sources Digital land have added each month and the number of new resources collected each month.
+      enhanced readability.
+    </p>
+  </figure>
+
   <div class="data-table__wrapper" data-module="data-table">
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">Datasets</caption>
@@ -79,6 +87,7 @@
 
 {% block bodyEnd %}
 {{ super() }}
+{% include 'partials/high-charts-scripts.html' %}
 <script src="/static/javascripts/vendor/jquery-3.4.1.min.js"></script>
 <script src="/static/javascripts/vendor/MOJFrontend.SortableTable.js"></script>
 <script>
@@ -93,5 +102,67 @@
       });
     });
 }(jQuery));
-</script>  
+</script>
+<script>
+  Highcharts.chart('container', {
+
+title: {
+  text: 'Sources and resources by month'
+},
+
+yAxis: {
+  title: {
+    text: 'Number of items'
+  }
+},
+
+xAxis: {
+  categories: {{ stats['months']|tojson }},
+  labels: {
+    step: 7
+  },
+  accessibility: {
+    rangeDescription: 'Range: December 2016 to now'
+  }
+},
+
+legend: {
+  layout: 'vertical',
+  align: 'right',
+  verticalAlign: 'middle'
+},
+
+plotOptions: {
+  series: {
+    label: {
+      connectorAllowed: false
+    }
+  }
+},
+
+series: [{
+  name: 'Sources',
+  data: {{ stats['sources']|tojson }}
+}, {
+  name: 'Resources',
+  data:{{ stats['resources']|tojson }}
+}],
+
+responsive: {
+  rules: [{
+    condition: {
+      maxWidth: 500
+    },
+    chartOptions: {
+      legend: {
+        layout: 'horizontal',
+        align: 'center',
+        verticalAlign: 'bottom'
+      }
+    }
+  }]
+}
+
+});
+</script>
 {% endblock bodyEnd %}
