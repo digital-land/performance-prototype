@@ -78,7 +78,7 @@ def get_resource_source_stats():
 
     for month in months:
         if not month in ["pipeline", "name", ""]:
-            count = sum([int(d[month]) for d in data])
+            count = sum([int(d[month]) for d in data if d[month] != ""])
             stats["sources"].append((month, count))
 
     collector.change_sheet("resource-by-month-start")
@@ -87,7 +87,7 @@ def get_resource_source_stats():
 
     for month in months:
         if not month in ["pipeline", "name", ""]:
-            count = sum([int(d[month]) for d in d2])
+            count = sum([int(d[month]) for d in d2 if d[month] != ""])
             stats["resources"].append((month, count))
 
     months = list(months)
