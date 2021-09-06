@@ -9,6 +9,7 @@ from application.googlesheetscollector import (
     get_organisations,
     get_esk_datasets,
     get_resource_source_stats,
+    get_org_count,
 )
 from application.filters import clean_int_filter
 
@@ -45,12 +46,17 @@ def performance():
         "datasets_with_data": len([d for d in datasets if d["total-resources"] != "0"]),
         "resources": sum([clean_int_filter(d["total-resources"]) for d in datasets]),
     }
+    org_count = get_org_count()
+    print(org_count)
     return render_template(
         "performance.html",
         info_page=url_for("base.performance_info"),
         datasets=datasets,
         high_level_numbers=high_level_numbers,
         stats=get_resource_source_stats(),
+        org_count=org_count.get(
+            "Number of organisations we're collecting data from", "?"
+        ),
     )
 
 

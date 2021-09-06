@@ -97,3 +97,10 @@ def get_resource_source_stats():
     stats["months"] = months
 
     return stats
+
+
+def get_org_count():
+    collector = GooglesheetsCollector(sheet="organisation-count")
+    data = collector.read_by_row()
+    # only interested in first row
+    return data[0]
