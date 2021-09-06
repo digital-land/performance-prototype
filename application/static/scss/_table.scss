@@ -1,0 +1,6 @@
+.dl-table__head--sticky {
+    position: sticky;
+    top: 0;
+    background: govuk-colour("white");
+    box-shadow: inset 0 -1px 0 govuk-colour("black");
+}
