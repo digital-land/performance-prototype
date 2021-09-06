@@ -20,3 +20,11 @@
 .govuk-header__link--service-name {
     font-weight: 400;
 }
+
+.dl-details--compressed {
+    margin-bottom: 15px;
+
+    &[open] {
+        margin-bottom: 30px;
+    }
+}

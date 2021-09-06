@@ -1,10 +1,11 @@
-{
+[{
   "user": "?",
   "why": "We need a way to measure the quality of a resource and what we have had to do to extract the data.",
   "questions": [
     "How many items have we fixed?",
     "How much data did we get from the resource?",
     "What was the original file format of the resource?",
-    "Did the resource contain geometry data?"
+    "Did the resource contain geometry data?",
+    "How different is this page to the /resource page?"
   ]
-}
+}]

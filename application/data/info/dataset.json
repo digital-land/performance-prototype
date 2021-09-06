@@ -1,6 +1,6 @@
-{
-  "user": "Proptech - users of the data",
-  "why": "We need a way to measure the quality of a dataset. Measures include coverage, frequency it is updated and terms of use.",
+[{
+  "user": "Digital land",
+  "why": "We need a way to measure the quality of a dataset and spot the gaps. Measures include coverage, frequency it is updated and terms of use.",
   "questions": [
     "How complete is the dataset?",
     "When was the dataset last updated?",
@@ -8,6 +8,18 @@
     "How many of the expected publishers have published data?",
     "How frequently is the dataset updated?",
     "What other datasets are related?",
+    "What project does it come from?",
+    "Where is the collection?"
+  ]
+},
+  {
+  "user": "Proptech - users of the data",
+  "why": "Proptech users want to know how complete, update to date the dataset is. And how good it is.",
+  "questions": [
+    "How complete is the dataset?",
+    "When was the dataset last updated?",
+    "How much data do we have for the dataset?",
+    "What other datasets are related?",
     "What are the terms of use?"
   ]
-}
+}]

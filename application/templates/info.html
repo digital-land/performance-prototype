@@ -15,34 +15,38 @@
   <span class="govuk-caption-xl">Purpose and information</span>
   <h1 class="govuk-heading-xl">{{ page_title }}</h1>
 
+  {% for user in data %}
+  {% if loop.index > 1 %}
+  <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+  {% endif %}
   <div class="govuk-grid-row govuk-!-margin-top-9">
     <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-heading-m">Main user</h2>
+      <h2 class="govuk-heading-m">User</h2>
     </div>
     <div class="govuk-grid-column-two-thirds">
-      <p class="govuk-body-l">{{ data.user }}</p>
+      <p class="govuk-body-l">{{ user.user }}</p>
     </div>
   </div>
 
   <div class="govuk-grid-row govuk-grid-row govuk-!-margin-top-6">
     <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-heading-m">What is this page for?</h2>
+      <h2 class="govuk-heading-s">How will this page help the user?</h2>
     </div>
     <div class="govuk-grid-column-two-thirds">
-      <p class="govuk-body-l">{{ data.why }}</p>
+      <p class="govuk-body">{{ user.why }}</p>
     </div>
   </div>
 
   <div class="govuk-grid-row govuk-!-margin-top-6">
     <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-heading-m">What questions do we have?</h2>
+      <h2 class="govuk-heading-s">What questions does the user have?</h2>
     </div>
     <div class="govuk-grid-column-two-thirds">
-      {% if data.qs %}
+      {% if user.qs %}
       <h4 class="govuk-heading-s">Questions we are answering</h4>
       <ul class="govuk-list">
-        {% for q in data.qs %}
-        <details class="govuk-details" data-module="govuk-details">
+        {% for q in user.qs %}
+        <details class="govuk-details dl-details--compressed" data-module="govuk-details">
           <summary class="govuk-details__summary">
             <span class="govuk-details__summary-text">
               {{ q.question }}
@@ -57,12 +61,13 @@
       {% endif %}
       <h4 class="govuk-heading-s">Questions we need to answer</h4>
       <ul class="govuk-list">
-        {% for q in data.questions  %}
+        {% for q in user.questions  %}
           <li>{{ q }}</li>
         {% endfor %}
       </ul>
     </div>
   </div>
+  {% endfor %}
   
 </main>
 {% endblock %}

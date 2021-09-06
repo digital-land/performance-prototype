@@ -1,11 +1,25 @@
-{
-  "user": "Local planning authorities",
-  "why": "We need a way to track how a local authority is doing.",
+[
+  {
+  "user": "Digital land",
+  "why": "We need a way to track how a local authority is doing. It will help us to pick which LPAs to focus on.",
   "questions": [
     "How many things are we collecting from an organisation?",
     "How good are LPAs at publishing data?",
     "Which datasets have they not yet published data for?",
     "Which datasets have we intervened with?",
+    "How often do they update their data?",
     "How often do they update their data?"
   ]
-}
+  },
+  {
+  "user": "Local planning authorities",
+  "why": "LPAs need to know if they are doing what is expected of them. They also need to understand if their data can be improved.",
+  "questions": [
+    "What things have we found/collected?",
+    "How good is the data LPAs are publishing?",
+    "Which datasets have they not yet published data for?",
+    "Which datasets have we intervened with?",
+    "Are we able to access their data?",
+    "Which datasets have been supplimented with extra data?"
+  ]
+}]

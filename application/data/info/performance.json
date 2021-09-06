@@ -1,6 +1,6 @@
-{
+[{
   "user": "Digital land",
-  "why": "We need a way to track our progress collecting, processing and improving planning data. Once tracked it will be easier to report on progress and prioritise what to do next.",
+  "why": "We need a way to track our progress collecting, processing and improving planning data. Once tracked it will be easier to report on progress and prioritise what to do next. This page will help us tell stories about our work.",
   "questions": [
     "Are we making progress?",
     "What datasets do we have data for?",
@@ -13,8 +13,16 @@
   ],
   "qs": [
     {
+      "question": "Is the platform producing accurate (meta)data?",
+      "how": "Exposing the numbers has shown us where either our data is potentially faulty or where we may have made a mistake when setting up a collection for a dataset. For example, when we have collect a resource but the number of publishers is still 0. In that case we have been able to investigate the issue and fix it."
+    },
+    {
       "question": "What datasets do we have data for?",
       "how": "If we have collected resources for a dataset and extracted data from them then we can say we have data for it. On the dashbaord page we display the total number of resource collected for a given dataset."
+    },
+    {
+      "question": "What datasets do we know about?",
+      "how": "Any dataset we are told about we add the list shown on the dashboard page. If it is on there we know about it and it is on our backlog to look into. Tell us if it is not on there and it is something we should know about."
     }
   ]
-}
+}]
