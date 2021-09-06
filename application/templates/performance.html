@@ -136,16 +136,22 @@ plotOptions: {
   series: {
     label: {
       connectorAllowed: false
+    },
+    marker: {
+      symbol: 'circle',
+      lineWidth: 1
     }
   }
 },
 
 series: [{
   name: 'Sources',
-  data: {{ stats['sources']|tojson }}
+  data: {{ stats['sources']|tojson }},
+  color: '#5694ca'
 }, {
   name: 'Resources',
-  data:{{ stats['resources']|tojson }}
+  data:{{ stats['resources']|tojson }},
+  color: '#003078'
 }],
 
 responsive: {
