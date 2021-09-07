@@ -4,3 +4,17 @@
     background: govuk-colour("white");
     box-shadow: inset 0 -1px 0 govuk-colour("black");
 }
+
+// th.govuk-table__header {
+//     vertical-align: bottom;
+// }
+
+.dl-table__header--border-right {
+    padding-right: 10px;
+    border-right: 1px solid govuk-colour("mid-grey");
+}
+
+.dl-table__header--border-right + .govuk-table__cell {
+    padding-left: 10px;
+    padding-right: 10px;
+}

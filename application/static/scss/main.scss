@@ -1,6 +1,5 @@
 // import all GOVUK Frontend scss
 @import "node_modules/govuk-frontend/govuk/all";
-
 @import "table";
 
 .govuk-link--bold {
@@ -27,4 +26,18 @@
     &[open] {
         margin-bottom: 30px;
     }
+}
+
+.dl-table__header--border-right + .govuk-table__cell,
+.dl-table__header--border-right + .govuk-table__header {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.govuk-tag--small {
+    font-size: 0.875rem;
+    padding-top: 4px;
+    padding-right: 6px;
+    padding-bottom: 3px;
+    padding-left: 6px;
 }
