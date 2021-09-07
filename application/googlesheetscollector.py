@@ -45,11 +45,12 @@ def get_datasets():
 def get_bfl():
     collector = GooglesheetsCollector(sheet="brownfield-land-by-org")
     rows = collector.read_by_row()
-    # print(rows[0])
+
     expected = [o for o in rows if o["expected-to-publish"] == "yes"]
+    print("Number of organisations", len(expected))
     additional = [o for o in rows if o["expected-to-publish"] != "yes"]
     noresource = [o for o in expected if o["active-resource"] == "0"]
-    withresource = [o for o in expected if int(o["active-resource"]) > 1]
+    withresource = [o for o in expected if int(o["active-resource"]) >= 1]
     return withresource, additional, noresource
 
 

@@ -81,6 +81,14 @@ def dataset_performance(dataset_name):
 
     if dataset_name.lower() == "brownfield land":
         withresource, additional, noresource = get_bfl()
+
+        # stats for chart
+        resource_stats = {
+            "over_one": len([o for o in withresource if int(o["active-resource"]) > 1]),
+            "one": len([o for o in withresource if int(o["active-resource"]) == 1]),
+            "zero": len(noresource),
+        }
+
         return render_template(
             "dataset/performance.html",
             name=dataset_name,
@@ -91,6 +99,7 @@ def dataset_performance(dataset_name):
                 "additional": additional,
                 "noresource": noresource,
             },
+            resource_stats=resource_stats,
         )
 
     return render_template(

@@ -70,7 +70,18 @@
   </dl>
 
   {% if orgs %}
-  <h2 class="govuk-heading-l govuk-!-margin-top-9">By organisation</h2>
+  <h2 class="govuk-heading-l govuk-!-margin-top-9">By publisher</h2>
+
+  <figure class="highcharts-figure govuk-!-margin-bottom-9 govuk-grid-row">
+    <div class="govuk-grid-column-one-quarter">
+      <p class="govuk-body highcharts-description govuk-!-padding-top-9">
+      Chart showing the number of active resources per publishers. Ideally each publisher would have only 1 active resource, then we can be confident this is the resource containing the latest data.
+      </p>
+    </div>
+    <div class="govuk-grid-column-three-quarters">
+      <div id="container"></div>
+    </div>
+  </figure>
 
   <div class="govuk-tabs" data-module="govuk-tabs">
     <h2 class="govuk-tabs__title">
@@ -92,7 +103,7 @@
     <div class="govuk-tabs__panel" id="expected-orgs">
       <div class="data-table__wrapper" data-module="data-table">
         <table class="govuk-table">
-          <caption class="govuk-table__caption govuk-table__caption--m">Expected organisations</caption>
+          <caption class="govuk-table__caption govuk-table__caption--m">Expected publishers</caption>
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
               <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter" aria-sort="none">Name</th>
@@ -163,6 +174,7 @@
 
 {% block bodyEnd %}
 {{ super() }}
+{% include 'partials/high-charts-scripts.html' %}
 <script>
   console.log({{ dataset|tojson }})
 </script>
@@ -181,6 +193,72 @@
       })
     });
 }(jQuery));
-</script>  
+</script>
+{% if resource_stats %}
+<script>
+  Highcharts.chart('container', {
+  chart: {
+    type: 'bar'
+  },
+  title: {
+    text: 'Active resources per publisher'
+  },
+  xAxis: {
+    categories: ['Active resources'],
+    title: {
+      text: null
+    }
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: 'Organisations',
+      align: 'high'
+    },
+    labels: {
+      overflow: 'justify'
+    }
+  },
+  tooltip: {
+    valueSuffix: ' organisations'
+  },
+  plotOptions: {
+    bar: {
+      dataLabels: {
+        enabled: true
+      }
+    }
+  },
+  legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'top',
+    x: -40,
+    y: 80,
+    floating: true,
+    borderWidth: 1,
+    backgroundColor:
+      Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+    shadow: true
+  },
+  credits: {
+    enabled: false
+  },
+  series: [{
+    name: 'More than 1',
+    data: [{{ resource_stats['over_one'] }}],
+    color: '#ffdd00'
+  }, {
+    name: '1',
+    data: [{{ resource_stats['one'] }}],
+    color: '#003078'
+  }, {
+    name: 'None',
+    data: [{{ resource_stats['zero'] }}],
+    color: '#d4351c'
+  }]
+});
+</script>
+{% endif %}
 {% endblock bodyEnd %}
 
