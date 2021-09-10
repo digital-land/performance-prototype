@@ -10,6 +10,7 @@ from application.googlesheetscollector import (
     get_esk_datasets,
     get_resource_source_stats,
     get_org_count,
+    get_publishing_orgs,
 )
 from application.filters import clean_int_filter
 
@@ -124,6 +125,48 @@ def dataset_info(dataset_name):
 def get_organisation(id):
     organisations = get_organisations()
     return next(o for o in organisations if o["organisation"] == id)
+
+
+@base.route("/organisation")
+def organisation():
+    publishers, orgs = get_publishing_orgs()
+    keyed_orgs = {}
+    for org in orgs:
+        keyed_orgs.setdefault(org["organisation"], [])
+        keyed_orgs[org["organisation"]].append(org)
+    lpas = [
+        keyed_orgs[publisher][0]
+        for publisher in publishers
+        if keyed_orgs[publisher][0]["local-authority-type"] != ""
+    ]
+    dev_corps = [
+        keyed_orgs[publisher][0]
+        for publisher in publishers
+        if "development-corporation" in publisher
+    ]
+    national_parks = [
+        keyed_orgs[publisher][0]
+        for publisher in publishers
+        if "national-park" in publisher
+    ]
+    other = [
+        keyed_orgs[publisher][0]
+        for publisher in publishers
+        if not any(
+            s in publisher
+            for s in ["local-authority", "development-corporation", "national-park"]
+        )
+    ]
+    print(other)
+    return render_template(
+        "organisation/index.html",
+        publishers={
+            "Development corporation": dev_corps,
+            "National parks": national_parks,
+            "Other publishers": other,
+            "Local planning authority": lpas,
+        },
+    )
 
 
 @base.route("/organisation/<prefix>/<org_id>")

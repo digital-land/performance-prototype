@@ -1,0 +1,32 @@
+{% extends "layouts/layout.html" %}
+{% block page_title %}Flask prototyping index{% endblock %}
+{%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+
+{% block dl_breadcrumbs %}{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+  <h1 class="govuk-heading-xl">Organisations</h1>
+  <p class="govuk-body">A place to see who has published what.</p>
+
+  
+  {% for t in publishers.keys() %}
+  <h3 class="govuk-heading-m">{{ t }}</h3>
+  <ul class="govuk-list govuk-list--bullet">
+    {% for pub in publishers[t] %}
+    {% set prefix = pub['organisation'].split(":")[0] %}
+    {% set org_id = pub['organisation'].split(":")[1] %}
+    <li data-org-id="{{ pub['organisation'] }}"><a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}">{{ pub['name'] }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+  
+
+</main>
+{% endblock %}
+
+{% block bodyEnd %}
+{{ super() }}
+<script src="/static/js/test.js"></script>
+{% endblock bodyEnd %}

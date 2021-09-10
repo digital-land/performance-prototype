@@ -105,3 +105,19 @@ def get_org_count():
     data = collector.read_by_row()
     # only interested in first row
     return data[0]
+
+
+def flatten(t, unique=False):
+    if unique:
+        return set([item for sublist in t for item in sublist])
+    return [item for sublist in t for item in sublist]
+
+
+def get_publishing_orgs():
+    collector = GooglesheetsCollector(sheet="organisation-count")
+    data = collector.read_by_row()
+    publishers = [r["Unique list of orgs"].split(";") for r in data]
+
+    collector.change_sheet("organisations")
+    orgs = collector.read_by_row()
+    return flatten(publishers, True), orgs
