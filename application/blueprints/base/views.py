@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from flask import render_template, Blueprint, current_app
 from flask.helpers import url_for
@@ -166,6 +167,7 @@ def organisation():
             "Other publishers": other,
             "Local planning authority": lpas,
         },
+        today=datetime.utcnow().isoformat()[:10],
     )
 
 

@@ -10,6 +10,44 @@
   <h1 class="govuk-heading-xl">Organisations</h1>
   <p class="govuk-body">A place to see who has published what.</p>
 
+  <p class="govuk-body">The following organisations have published some data we have been able to collect.</p>
+
+  {% for type_ in publishers.keys() %}
+  <div class="govuk-grid-row org-count">
+    <div class="govuk-grid-column-one-third">
+    {% if publishers[type_]|length == 1 %}
+     {% set are = "is" %}
+   {% else %}
+     {% set are = "are" %}
+   {% endif %}
+    <h2 class="govuk-heading-m org-count__name" id="{{type_|replace(' ', '-')}}">{{ type_ }}</h2>
+    <div class="org-count__wrapper">
+      <p class="govuk-visually-hidden">There {{are}}
+        <span class="js-accessible-list-count">{{ publishers[type_]|length }}</span>
+        {{ type_ }}
+      </p>
+      <span class="govuk-body govuk-!-font-weight-bold govuk-!-font-size-80 js-list-count" aria-hidden="true">{{ publishers[type_]|length }}</span>
+    </div>
+  </div>
+
+  <div class="govuk-grid-column-two-thirds">
+    <ol class="org-list" data-filter="list">
+    {% for organisation in publishers[type_]|sort(attribute='name') %}
+      {% set prefix = organisation['organisation'].split(":")[0] %}
+      {% set org_id = organisation['organisation'].split(":")[1] %}
+      <li class="org-list__item" data-filter="item" data-org-id="{{ organisation['organisation'] }}">
+        <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link org-list__item-title">{{organisation["name"]}}</a>
+        {% if organisation['end-date'] and organisation['end-date'] < today  %}
+        <strong class="govuk-tag govuk-tag--grey">
+          Dissolved
+        </strong>
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ol>
+  </div>
+</div>
+{% endfor %}
   
   {% for t in publishers.keys() %}
   <h3 class="govuk-heading-m">{{ t }}</h3>
