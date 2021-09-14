@@ -71,4 +71,13 @@
     })
   </script>
 {% endif %}
+
+{% block bodyEndScripts %}
+	{# needs to come after govuk frontend #}
+	<script src="{{ staticPath | default('https://digital-land.github.io') }}/javascripts/dl-frontend.js"></script>
+	<script>
+		// adds any necessary polyfills
+		window.DLFrontend.polyfill();
+	</script>
+{% endblock %}
 {% endblock %}
