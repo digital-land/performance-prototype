@@ -117,7 +117,31 @@ def get_publishing_orgs():
     collector = GooglesheetsCollector(sheet="organisation-count")
     data = collector.read_by_row()
     publishers = [r["Unique list of orgs"].split(";") for r in data]
+    publishers = flatten(publishers, True)
+    # remove stray blank publisher id
+    if "" in publishers:
+        publishers.remove("")
 
     collector.change_sheet("organisations")
     orgs = collector.read_by_row()
-    return flatten(publishers, True), orgs
+
+    k_orgs = {}
+    for org in orgs:
+        k_orgs.setdefault(org["organisation"], {"organisation": []})
+        k_orgs[org["organisation"]]["organisation"].append(org)
+
+    for row in data:
+        for org in row["Unique list of orgs"].split(";"):
+            if org and k_orgs.get(org):
+                k_orgs[org].setdefault("resources", {})
+                k_orgs[org]["resources"].setdefault("total", 0)
+                k_orgs[org]["resources"].setdefault("active", 0)
+                k_orgs[org]["resources"]["total"] = k_orgs[org]["resources"][
+                    "total"
+                ] + int(row["Total resources"])
+                k_orgs[org]["resources"]["active"] = k_orgs[org]["resources"][
+                    "active"
+                ] + int(row["Active resources"])
+            else:
+                print("no matching key", org)
+    return publishers, k_orgs

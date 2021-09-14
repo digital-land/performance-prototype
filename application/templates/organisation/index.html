@@ -15,7 +15,7 @@
   {% for type_ in publishers.keys() %}
   <div class="govuk-grid-row org-count">
     <div class="govuk-grid-column-one-third">
-    {% if publishers[type_]|length == 1 %}
+    {% if publishers[type_].keys()|length == 1 %}
      {% set are = "is" %}
    {% else %}
      {% set are = "are" %}
@@ -23,42 +23,44 @@
     <h2 class="govuk-heading-m org-count__name" id="{{type_|replace(' ', '-')}}">{{ type_ }}</h2>
     <div class="org-count__wrapper">
       <p class="govuk-visually-hidden">There {{are}}
-        <span class="js-accessible-list-count">{{ publishers[type_]|length }}</span>
+        <span class="js-accessible-list-count">{{ publishers[type_].keys()|length }}</span>
         {{ type_ }}
       </p>
-      <span class="govuk-body govuk-!-font-weight-bold govuk-!-font-size-80 js-list-count" aria-hidden="true">{{ publishers[type_]|length }}</span>
+      <span class="govuk-body govuk-!-font-weight-bold govuk-!-font-size-80 js-list-count" aria-hidden="true">{{ publishers[type_].keys()|length }}</span>
     </div>
   </div>
 
   <div class="govuk-grid-column-two-thirds">
     <ol class="org-list" data-filter="list">
-    {% for organisation in publishers[type_]|sort(attribute='name') %}
-      {% set prefix = organisation['organisation'].split(":")[0] %}
-      {% set org_id = organisation['organisation'].split(":")[1] %}
-      <li class="org-list__item" data-filter="item" data-org-id="{{ organisation['organisation'] }}">
-        <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link org-list__item-title">{{organisation["name"]}}</a>
-        {% if organisation['end-date'] and organisation['end-date'] < today  %}
+    {% for organisation in publishers[type_].keys()|sort(attribute='name') %}
+      {% set org_dict = publishers[type_][organisation] %}
+      {# shouldn't be more than one org per key so just select it #}
+      {% set org = org_dict['organisation'][0] %}
+      {% set prefix = org['organisation'].split(":")[0] %}
+      {% set org_id = org['organisation'].split(":")[1] %}
+      <li class="org-list__item" data-filter="item" data-org-id="{{ org['organisation'] }}">
+        <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link org-list__item-title">{{org["name"]}}</a>
+        {% if org['end-date'] and org['end-date'] < today  %}
         <strong class="govuk-tag govuk-tag--grey">
           Dissolved
         </strong>
         {% endif %}
+        <dl class="govuk-grid-row def-list--basic dl-secondary-text dl-small-text govuk-!-margin-top-1">
+          <div class="govuk-grid-column-one-half">
+            <dt>Total resources</dt>
+            <dd>{{ org_dict['resources']['total'] }}</dd>
+          </div>
+          <div class="govuk-grid-column-one-half">
+            <dt>Active resources</dt>
+            <dd>{{ org_dict['resources']['active'] }}</dd>
+          </div>
+        </dl>
       </li>
     {% endfor %}
     </ol>
   </div>
 </div>
 {% endfor %}
-  
-  {% for t in publishers.keys() %}
-  <h3 class="govuk-heading-m">{{ t }}</h3>
-  <ul class="govuk-list govuk-list--bullet">
-    {% for pub in publishers[t] %}
-    {% set prefix = pub['organisation'].split(":")[0] %}
-    {% set org_id = pub['organisation'].split(":")[1] %}
-    <li data-org-id="{{ pub['organisation'] }}"><a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}">{{ pub['name'] }}</a></li>
-    {% endfor %}
-  </ul>
-  {% endfor %}
   
 
 </main>

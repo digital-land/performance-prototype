@@ -130,35 +130,31 @@ def get_organisation(id):
 
 @base.route("/organisation")
 def organisation():
-    publishers, orgs = get_publishing_orgs()
-    keyed_orgs = {}
-    for org in orgs:
-        keyed_orgs.setdefault(org["organisation"], [])
-        keyed_orgs[org["organisation"]].append(org)
-    lpas = [
-        keyed_orgs[publisher][0]
+    publishers, keyed_orgs = get_publishing_orgs()
+
+    lpas = {
+        publisher: keyed_orgs[publisher]
         for publisher in publishers
-        if keyed_orgs[publisher][0]["local-authority-type"] != ""
-    ]
-    dev_corps = [
-        keyed_orgs[publisher][0]
+        if keyed_orgs[publisher]["organisation"][0]["local-authority-type"] != ""
+    }
+    dev_corps = {
+        publisher: keyed_orgs[publisher]
         for publisher in publishers
         if "development-corporation" in publisher
-    ]
-    national_parks = [
-        keyed_orgs[publisher][0]
+    }
+    national_parks = {
+        publisher: keyed_orgs[publisher]
         for publisher in publishers
         if "national-park" in publisher
-    ]
-    other = [
-        keyed_orgs[publisher][0]
+    }
+    other = {
+        publisher: keyed_orgs[publisher]
         for publisher in publishers
         if not any(
             s in publisher
             for s in ["local-authority", "development-corporation", "national-park"]
         )
-    ]
-    print(other)
+    }
     return render_template(
         "organisation/index.html",
         publishers={
