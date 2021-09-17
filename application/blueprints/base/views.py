@@ -14,6 +14,7 @@ from application.googlesheetscollector import (
     get_publishing_orgs,
 )
 from application.filters import clean_int_filter
+from application.datasette import sources_with_endpoint
 
 
 base = Blueprint("base", __name__)
@@ -50,6 +51,7 @@ def performance():
     }
     org_count = get_org_count()
     print(org_count)
+
     return render_template(
         "performance.html",
         info_page=url_for("base.performance_info"),
@@ -59,6 +61,7 @@ def performance():
         org_count=org_count.get(
             "Number of organisations we're collecting data from", "?"
         ),
+        sources=sources_with_endpoint(),
     )
 
 

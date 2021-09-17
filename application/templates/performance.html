@@ -95,7 +95,24 @@
     </div>
   </div>
 
-</div>
+  </div>
+
+  <h3 class="govuk-heading-l govuk-!-margin-top-9">Sources</h3>
+  <div class="govuk-grid-row govuk-!-margin-bottom-9">
+    <div class="govuk-grid-column-one-half">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-48">{{ sources['with_endpoint'] }}</span>
+        <p class="govuk-body govuk-!-font-size-19">Total</p>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-half">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-48">{{ sources['no_documentation'] }}</span>
+        <p class="govuk-body govuk-!-font-size-19">Without a documentation URL</p>
+      </div>
+    </div>
+  </div>
+
 </main>
 {% endblock %}
 
