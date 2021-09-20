@@ -10,8 +10,8 @@ class DLDatasette:
     def generate_query(self, table, params, format="json"):
         param_str = ""
         if params.keys():
-            param_str = "&" + "&".join([f"{k}={v}" for k, v in params.items()])
-        return "%s%s.%s?_sort=rowid%s" % (self.BASE_URL, table, format, param_str)
+            param_str = "&".join([f"{k}={v}" for k, v in params.items()])
+        return "%s%s.%s?%s" % (self.BASE_URL, table, format, param_str)
 
     def query(self, table, params, format="json"):
         query = self.generate_query(table, params, format)
@@ -36,5 +36,8 @@ def sources_with_endpoint():
 
     return {
         "with_endpoint": endpoint_results["filtered_table_rows_count"],
-        "no_documentation": no_documentation_url_results["filtered_table_rows_count"],
+        "no_documentation": {
+            "count": no_documentation_url_results["filtered_table_rows_count"],
+            "rows": no_documentation_url_results["rows"],
+        },
     }
