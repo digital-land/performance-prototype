@@ -67,12 +67,32 @@
             <span class="data-item__number govuk-!-font-size-48">{{ sources['with_endpoint'] }}</span>
             <p class="govuk-body govuk-!-font-size-19">Total</p>
           </div>
+          <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text dl-small-text">
+                Why is this interesting?
+              </span>
+            </summary>
+            <div class="govuk-details__text dl-small-text">
+              This is the number of places Digital land attempts to collect data from each night. The number shows the challenge anyone looking for planning data faces.
+            </div>
+          </details>
         </div>
         <div class="govuk-grid-column-one-half">
           <div class="data-item govuk-!-margin-bottom-6">
             <span class="data-item__number govuk-!-font-size-48">{{ sources['no_documentation'] }}</span>
             <p class="govuk-body govuk-!-font-size-19">Without a documentation URL</p>
           </div>
+          <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text dl-small-text">
+                Why is this interesting?
+              </span>
+            </summary>
+            <div class="govuk-details__text dl-small-text">
+              When we add a source we usually record a <code>documentation-url</code>. This is the place where we found the source. It helps us answer questions about where we found the source and why we are collecting it. Without it we are less confident about the origin of the source and therefore the authority of the data.
+            </div>
+          </details>
         </div>
       </div>
 
