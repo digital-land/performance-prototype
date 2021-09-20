@@ -101,8 +101,8 @@
             </summary>
             <div class="govuk-details__text dl-small-text">
               <ul class="govuk-list">
-                {% for c, v in sources['no_documentation']['row_by_collection'].items() %}
-                  <li><a href="{{ url_for('base.dataset_performance', dataset_name=v['name']) }}">{{ v['name'] }}</a>: {{ v['source']|length }}</li>
+                {% for col in sources['no_documentation']['collection'] %}
+                  <li><a href="{{ url_for('base.dataset_performance', dataset_name=col['label']) }}">{{ col['label'] }}</a>: {{ col['count'] }}</li>
                 {% endfor %}
               </ul>
             </div>
