@@ -21,6 +21,17 @@ class DLDatasette:
         return r.json()
 
 
+def by_collection(data):
+    # used to by pipeline
+    by_collection = {}
+    for r in data:
+        id = r["collection"]["value"]
+        name = r["collection"]["label"]
+        by_collection.setdefault(id, {"name": name, "source": []})
+        by_collection[id]["source"].append(r)
+    return by_collection
+
+
 def sources_with_endpoint():
     # query
     # "http://datasetteawsentityv2-env.eba-gbrdriub.eu-west-2.elasticbeanstalk.com/digital-land/source.json?_sort=rowid&endpoint__notblank=1&_labels=on"
@@ -38,6 +49,6 @@ def sources_with_endpoint():
         "with_endpoint": endpoint_results["filtered_table_rows_count"],
         "no_documentation": {
             "count": no_documentation_url_results["filtered_table_rows_count"],
-            "rows": no_documentation_url_results["rows"],
+            "row_by_collection": by_collection(no_documentation_url_results["rows"]),
         },
     }

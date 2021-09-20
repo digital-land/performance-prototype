@@ -70,7 +70,7 @@
           <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
               <span class="govuk-details__summary-text dl-small-text">
-                Why is this interesting?
+                What does this tell us?
               </span>
             </summary>
             <div class="govuk-details__text dl-small-text">
@@ -86,11 +86,25 @@
           <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
               <span class="govuk-details__summary-text dl-small-text">
-                Why is this interesting?
+                What does this tell us?
               </span>
             </summary>
             <div class="govuk-details__text dl-small-text">
               When we add a source we usually record a <code>documentation-url</code>. This is the place where we found the source. It helps us answer questions about where we found the source and why we are collecting it. Without it we are less confident about the origin of the source and therefore the authority of the data.
+            </div>
+          </details>
+          <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text dl-small-text">
+                See breakdown by dataset
+              </span>
+            </summary>
+            <div class="govuk-details__text dl-small-text">
+              <ul class="govuk-list">
+                {% for c, v in sources['no_documentation']['row_by_collection'].items() %}
+                  <li><a href="{{ url_for('base.dataset_performance', dataset_name=v['name']) }}">{{ v['name'] }}</a>: {{ v['source']|length }}</li>
+                {% endfor %}
+              </ul>
             </div>
           </details>
         </div>
