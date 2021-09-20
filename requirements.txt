@@ -1,5 +1,6 @@
 appdirs
 black
+CacheControl
 flake8
 Flask==1.1.1
 Flask-Assets

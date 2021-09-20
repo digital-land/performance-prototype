@@ -1,4 +1,6 @@
-import requests
+import json
+
+from application.caching import get
 
 
 class DLDatasette:
@@ -17,8 +19,8 @@ class DLDatasette:
         query = self.generate_query(table, params, format)
 
         # only returns 100
-        r = requests.get(query)
-        return r.json()
+        r = get(query)
+        return json.loads(r)
 
 
 def by_collection(data):
@@ -49,7 +51,7 @@ def sources_with_endpoint():
             "_facet": "collection",
         },
     )
-    print(no_documentation_url_results)
+
     return {
         "with_endpoint": endpoint_results["filtered_table_rows_count"],
         "no_documentation": {
