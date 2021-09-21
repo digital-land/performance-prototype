@@ -61,3 +61,11 @@ def sources_with_endpoint():
             ],
         },
     }
+
+
+def datasets_per_organisation(id):
+    org_id = id.replace(";", "%3")
+    query = (
+        "http://datasetteawsentityv2-env.eba-gbrdriub.eu-west-2.elasticbeanstalk.com/digital-land.json?sql=select%0D%0A++resource_organisation.resource%2C%0D%0A++resource_organisation.organisation%2C%0D%0A++resource_endpoint.endpoint%2C%0D%0A++resource.end_date%2C%0D%0A++source.source%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource_organisation%0D%0A++INNER+JOIN+resource+ON+resource_organisation.resource+%3D+resource.resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource_organisation.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source_pipeline.source+%3D+source.source%0D%0AWHERE%0D%0A++resource_organisation.organisation+%3D+%3Aorganisation&organisation="
+        + org_id
+    )
