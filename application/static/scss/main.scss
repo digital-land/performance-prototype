@@ -41,3 +41,15 @@
     padding-bottom: 3px;
     padding-left: 6px;
 }
+
+.govuk-header__link--service-name--bold {
+    font-weight: 700;
+}
+
+.govuk-header--flush {
+    border-color: govuk-colour('black');
+
+    .govuk-header__container {
+        border: none
+    }
+}

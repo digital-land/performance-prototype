@@ -1,38 +1,88 @@
 {% extends "layouts/layout.html" %}
 {% block page_title %}Flask prototyping index{% endblock %}
 {%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+{%- from "digital-land-frontend/components/hero/macro.html" import dlHero -%}
 
 {% block dl_breadcrumbs %}{% endblock %}
+
+{% block header %}
+<header role="banner" id="global-header" class="govuk-header govuk-header--flush  with-proposition dl-header" data-module="govuk-header">
+  <div class="govuk-header__container govuk-width-container">
+    <div class="header-proposition">
+      <div class="govuk-header__content">
+        <a href="https://digital-land.github.io/" class="govuk-header__link govuk-header__link--service-name govuk-header__link--service-name--bold">
+        Digital Land
+        </a>
+        <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+        <span class="dl-header__service-name"><a href="/" class="govuk-header__link govuk-header__link--service-name">Platform operations</a></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% set heroHTML %}
+<h1 class="govuk-heading-l">Operating the digital land platform</h1>
+<p class="govuk-body-l">Digital Land use the operations dashboard to monitor the performance of the planning data platform.</p>
+{% endset %}
+
+{{ dlHero({
+  "wrapper_classes": "govuk-!-margin-bottom-0",
+  "classes": "govuk-width-container",
+  "html": heroHTML
+}) }}
+{% endblock header %}
 
 {% block content %}
 
 <main id="content" role="main">
-  <h1 class="govuk-heading-xl">Digital Land maturity model</h1>
-  <p class="govuk-body">A place to create in-browser prototypes and design experiments for digital land</p>
-  <h2 class="govuk-heading-l">Pages</h2>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <h3 class="govuk-heading-l">Overview</h3>
+      <p class="govuk-body">
+        An overview of the whole platform, including the number of datasets and number of publishers.
+      </p>
+      <p class="govuk-body govuk-!-margin-bottom-0">
+        <a href="{{ url_for('base.performance') }}" class="govuk-link govuk-!-font-weight-bold">Browse overview</a>
+      </p>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <h3 class="govuk-heading-l">Datasets</h3>
+      <p class="govuk-body">
+        A list of all the datasets the platform collects data for and how complete Digital Land believes each of the datasets are. 
+      </p>
+      <p class="govuk-body govuk-!-margin-bottom-0">
+        <a href="{{ url_for('base.dataset_performance', dataset_name='Brownfield land') }}" class="govuk-link govuk-!-font-weight-bold">Browse datasets</a>
+      </p>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <h3 class="govuk-heading-l">Publishers</h3>
+      <p class="govuk-body">
+        A complete list of all the publishers we are collecting data from.
+      </p>
+      <p class="govuk-body govuk-!-margin-bottom-0">
+        <a href="{{ url_for('base.organisation') }}" class="govuk-link govuk-!-font-weight-bold">Browse publishers</a>
+      </p>
+    </div>
+    <div class="govuk-grid-column-full">
+      <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+    </div>
+  </div>
+  <h2 class="govuk-heading-m">Additional pages</h2>
   <ul class="govuk-list">
     <li>
-      <h3 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="{{ url_for('base.performance') }}" class="govuk-link">Dashboard</a></h3>
-      <p class="govuk-body">A dashboard to show the progress the digital land team is making. It shows how much data the team has collected and highlights the gaps at a project level.</p>
-    </li>
-    <li>
-      <h3 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="{{ url_for('base.dataset_performance', dataset_name='Brownfield land') }}" class="govuk-link">Dataset example (Brownfield-land)</a></h3>
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-2"><a href="{{ url_for('base.dataset_performance', dataset_name='Brownfield land') }}" class="govuk-link">Dataset example (Brownfield-land)</a></h3>
       <p class="govuk-body"></p>
     </li>
     <li>
-      <h3 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="{{ url_for('base.organisation') }}" class="govuk-link">Organisation (Who has published something?)</a></h3>
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-2"><a href="{{ url_for('base.organisation_performance', prefix='local-authority-eng', org_id='ESK') }}" class="govuk-link">Organisation example</a></h3>
       <p class="govuk-body"></p>
     </li>
     <li>
-      <h3 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="{{ url_for('base.organisation_performance', prefix='local-authority-eng', org_id='ESK') }}" class="govuk-link">Organisation example</a></h3>
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-2"><a href="{{ url_for('base.resource_performance', resource='000b261f1757b69b9435ec20bae8f2b141677d17c054f01b187c8952e117db33') }}" class="govuk-link">Resource example</a></h3>
       <p class="govuk-body"></p>
     </li>
     <li>
-      <h3 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="{{ url_for('base.resource_performance', resource='000b261f1757b69b9435ec20bae8f2b141677d17c054f01b187c8952e117db33') }}" class="govuk-link">Resource example</a></h3>
-      <p class="govuk-body"></p>
-    </li>
-    <li>
-      <h3 class="govuk-heading-m govuk-!-margin-bottom-2"><a href="https://docs.google.com/spreadsheets/d/1Euj1Hok-gggrOyZFbaRl7A7Ck7bL6koYTGiuOMHjRF8" class="govuk-link">Data spreadsheet</a></h3>
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-2"><a href="https://docs.google.com/spreadsheets/d/1Euj1Hok-gggrOyZFbaRl7A7Ck7bL6koYTGiuOMHjRF8" class="govuk-link">Data spreadsheet</a></h3>
       <p class="govuk-body"></p>
     </li>
     
