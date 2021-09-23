@@ -22,6 +22,10 @@ class DLDatasette:
         r = get(query)
         return json.loads(r)
 
+    def sqlQuery(self, query):
+        r = get(query)
+        return json.loads(r)
+
 
 def by_collection(data):
     # used to by pipeline
@@ -64,8 +68,14 @@ def sources_with_endpoint():
 
 
 def datasets_per_organisation(id):
-    org_id = id.replace(";", "%3")
+    org_id = id.replace(":", "%3A")
     query = (
-        "http://datasetteawsentityv2-env.eba-gbrdriub.eu-west-2.elasticbeanstalk.com/digital-land.json?sql=select%0D%0A++resource_organisation.resource%2C%0D%0A++resource_organisation.organisation%2C%0D%0A++resource_endpoint.endpoint%2C%0D%0A++resource.end_date%2C%0D%0A++source.source%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource_organisation%0D%0A++INNER+JOIN+resource+ON+resource_organisation.resource+%3D+resource.resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource_organisation.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source_pipeline.source+%3D+source.source%0D%0AWHERE%0D%0A++resource_organisation.organisation+%3D+%3Aorganisation&organisation="
+        "http://datasetteawsentityv2-env.eba-gbrdriub.eu-west-2.elasticbeanstalk.com/digital-land.json?sql=select%0D%0A++resource.resource%2C%0D%0A++resource.end_date%2C%0D%0A++source.source%2C%0D%0A++resource_endpoint.endpoint%2C%0D%0A++endpoint.endpoint_url%2C%0D%0A++source.organisation%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0AWHERE%0D%0A++source.organisation+%3D+%3Aorganisation%0D%0AGROUP+BY%0D%0A++resource.resource&organisation="
         + org_id
     )
+    ds = DLDatasette()
+    results = ds.sqlQuery(query)
+    return {
+        "resources": results["rows"],
+        "datasets_covered": list(set([r[6] for r in results["rows"]])),
+    }

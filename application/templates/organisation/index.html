@@ -46,11 +46,15 @@
         </strong>
         {% endif %}
         <dl class="govuk-grid-row def-list--basic dl-secondary-text dl-small-text govuk-!-margin-top-1">
-          <div class="govuk-grid-column-one-half">
+          <div class="govuk-grid-column-one-third">
+            <dt>Datasets</dt>
+            <dd>{{ org_dict['datasets']|length if org_dict['datasets'] else "N/A" }}</dd>
+          </div>
+          <div class="govuk-grid-column-one-third">
             <dt>Total resources</dt>
             <dd>{{ org_dict['resources']['total'] }}</dd>
           </div>
-          <div class="govuk-grid-column-one-half">
+          <div class="govuk-grid-column-one-third">
             <dt>Active resources</dt>
             <dd>{{ org_dict['resources']['active'] }}</dd>
           </div>
