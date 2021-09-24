@@ -14,7 +14,11 @@ from application.googlesheetscollector import (
     get_publishing_orgs,
 )
 from application.filters import clean_int_filter
-from application.datasette import sources_with_endpoint, datasets_per_organisation
+from application.datasette import (
+    sources_with_endpoint,
+    datasets_per_organisation,
+    datasets_by_organistion,
+)
 
 
 base = Blueprint("base", __name__)
@@ -134,11 +138,12 @@ def get_organisation(id):
 @base.route("/organisation")
 def organisation():
     publishers, keyed_orgs = get_publishing_orgs()
+
+    dataset_counts = datasets_by_organistion()
     for publisher in publishers:
         # get the number of datasets
-        if publisher in keyed_orgs.keys():
-            datasets = datasets_per_organisation(publisher)
-            keyed_orgs[publisher]["datasets"] = datasets["datasets_covered"]
+        if publisher in keyed_orgs.keys() and publisher in dataset_counts.keys():
+            keyed_orgs[publisher]["counts"] = dataset_counts[publisher]
 
     lpas = {
         publisher: keyed_orgs[publisher]

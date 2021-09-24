@@ -1,6 +1,7 @@
 import json
 
 from application.caching import get
+from application.utils import create_dict, index_by
 
 
 class DLDatasette:
@@ -79,3 +80,11 @@ def datasets_per_organisation(id):
         "resources": results["rows"],
         "datasets_covered": list(set([r[6] for r in results["rows"]])),
     }
+
+
+def datasets_by_organistion():
+    query = "http://datasetteawsentityv2-env.eba-gbrdriub.eu-west-2.elasticbeanstalk.com/digital-land.json?sql=select%0D%0A++organisation.name%2C%0D%0A++source.organisation%2C%0D%0A++COUNT%28DISTINCT+resource.resource%29+AS+resources%2C%0D%0A++COUNT%28DISTINCT+CASE+%0D%0A++++WHEN+resource.end_date+%3D%3D+%27%27+THEN+resource.resource%0D%0A++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+resource.end_date%29+%3E%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+resource.resource%0D%0A++END%29+AS+active%2C%0D%0A++COUNT%28DISTINCT+resource_endpoint.endpoint%29+AS+endpoints%2C%0D%0A++COUNT%28DISTINCT+source_pipeline.pipeline%29+AS+pipelines%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0AGROUP+BY%0D%0A++source.organisation"
+    ds = DLDatasette()
+    results = ds.sqlQuery(query)
+    organisations = [create_dict(results["columns"], row) for row in results["rows"]]
+    return index_by("organisation", organisations)

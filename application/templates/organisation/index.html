@@ -32,7 +32,7 @@
 
   <div class="govuk-grid-column-two-thirds">
     <ol class="org-list" data-filter="list">
-    {% for organisation in publishers[type_].keys()|sort(attribute='name') %}
+    {% for organisation in publishers[type_].keys()|sort() %}
       {% set org_dict = publishers[type_][organisation] %}
       {# shouldn't be more than one org per key so just select it #}
       {% set org = org_dict['organisation'][0] %}
@@ -48,15 +48,15 @@
         <dl class="govuk-grid-row def-list--basic dl-secondary-text dl-small-text govuk-!-margin-top-1">
           <div class="govuk-grid-column-one-third">
             <dt>Datasets</dt>
-            <dd>{{ org_dict['datasets']|length if org_dict['datasets'] else "N/A" }}</dd>
+            <dd>{{ org_dict['counts']['pipelines'] }}</dd>
           </div>
           <div class="govuk-grid-column-one-third">
             <dt>Total resources</dt>
-            <dd>{{ org_dict['resources']['total'] }}</dd>
+            <dd>{{ org_dict['counts']['resources'] }}</dd>
           </div>
           <div class="govuk-grid-column-one-third">
             <dt>Active resources</dt>
-            <dd>{{ org_dict['resources']['active'] }}</dd>
+            <dd>{{ org_dict['counts']['active'] }}</dd>
           </div>
         </dl>
       </li>
