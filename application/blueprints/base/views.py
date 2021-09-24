@@ -179,6 +179,7 @@ def organisation():
 def organisation_performance(prefix, org_id):
     id = prefix + ":" + org_id
     organisation = get_organisation(id)
+    data = datasets_per_organisation(id)
 
     if org_id == "ESK":
         datasets = get_esk_datasets()
@@ -202,12 +203,14 @@ def organisation_performance(prefix, org_id):
                 "nocurrent": no_current,
                 "missing": no_data,
             },
+            data=data,
         )
 
     return render_template(
         "organisation/performance.html",
         organisation=organisation,
         info_page=url_for("base.organisation_info", prefix=prefix, org_id=org_id),
+        data=data,
     )
 
 

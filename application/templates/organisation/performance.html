@@ -8,6 +8,21 @@
   <span class="govuk-caption-xl">Organisation performance</span>
   <h1 class="govuk-heading-xl">{{ organisation.name|default('Unknown') }}</h1>
 
+  <div class="govuk-grid-row govuk-!-margin-bottom-9 govuk-!-margin-top-9">
+    <div class="govuk-grid-column-one-quarter">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-80">{{ data['datasets_covered']|length }}<span class="govuk-!-font-size-19"></span></span>
+        <p class="govuk-body govuk-!-font-size-36">Datasets</p>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-80">{{ data['resources']|length }}</span>
+        <p class="govuk-body govuk-!-font-size-36">Total resources</p>
+      </div>
+    </div>
+  </div>
+
   {% if organisation.organisation != 'local-authority-eng:ESK' %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
