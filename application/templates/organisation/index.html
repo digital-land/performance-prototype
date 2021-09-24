@@ -38,15 +38,15 @@
       {% set org = org_dict['organisation'][0] %}
       {% set prefix = org['organisation'].split(":")[0] %}
       {% set org_id = org['organisation'].split(":")[1] %}
-      <li class="org-list__item" data-filter="item" data-org-id="{{ org['organisation'] }}">
+      <li class="org-list__item govuk-grid-row" data-filter="item" data-org-id="{{ org['organisation'] }}">
         <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link org-list__item-title">{{org["name"]}}</a>
         {% if org['end-date'] and org['end-date'] < today  %}
         <strong class="govuk-tag govuk-tag--grey">
           Dissolved
         </strong>
         {% endif %}
-        <dl class="govuk-grid-row def-list--basic dl-secondary-text dl-small-text govuk-!-margin-top-1">
-          <div class="govuk-grid-column-one-third">
+        <dl class="def-list--basic dl-secondary-text dl-small-text govuk-!-margin-top-1">
+          <div class="govuk-grid-column-one-third govuk-!-padding-left-0">
             <dt>Datasets</dt>
             <dd>{{ org_dict['counts']['pipelines'] }}</dd>
           </div>
@@ -54,7 +54,7 @@
             <dt>Total resources</dt>
             <dd>{{ org_dict['counts']['resources'] }}</dd>
           </div>
-          <div class="govuk-grid-column-one-third">
+          <div class="govuk-grid-column-one-third{{ ' dl-warning-text' if org_dict['counts']['active'] != org_dict['counts']['pipelines'] }}">
             <dt>Active resources</dt>
             <dd>{{ org_dict['counts']['active'] }}</dd>
           </div>
