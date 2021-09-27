@@ -58,3 +58,8 @@
     color: #594d00;
     background: #fff7bf;
 }
+
+.govuk-notification-banner--error {
+    background-color: darken(govuk-colour("red"), 10%);
+    border-color: darken(govuk-colour("red"), 10%)
+}

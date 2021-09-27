@@ -19,6 +19,7 @@ from application.datasette import (
     datasets_for_an_organisation,
     datasets_by_organistion,
     total_entities,
+    sources_per_dataset_for_organisation,
 )
 
 
@@ -186,6 +187,7 @@ def organisation_performance(prefix, org_id):
     id = prefix + ":" + org_id
     organisation = get_organisation(id)
     data = datasets_for_an_organisation(id)
+    source_counts = sources_per_dataset_for_organisation(id)
 
     if org_id == "ESK":
         datasets = get_esk_datasets()
@@ -217,6 +219,7 @@ def organisation_performance(prefix, org_id):
         organisation=organisation,
         info_page=url_for("base.organisation_info", prefix=prefix, org_id=org_id),
         data=data,
+        sources_per_dataset=source_counts,
     )
 
 

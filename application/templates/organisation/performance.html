@@ -11,7 +11,7 @@
   <div class="govuk-grid-row govuk-!-margin-bottom-9 govuk-!-margin-top-9">
     <div class="govuk-grid-column-one-quarter">
       <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ data['datasets_covered']|length }}<span class="govuk-!-font-size-19"></span></span>
+        <span class="data-item__number govuk-!-font-size-80">{{ data['datasets_covered']|length }}<span class="govuk-!-font-size-19">/{{ sources_per_dataset|length }}</span></span>
         <p class="govuk-body govuk-!-font-size-36">Datasets</p>
       </div>
     </div>
@@ -50,10 +50,30 @@
   
   {% endif %}
 
+  <div class="govuk-notification-banner govuk-notification-banner--error" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+      <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+        Missing datasets
+      </h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+      <p class="govuk-body">We expected to collect data from {{organisation.name}} for the following datasets.</p>
+      <ul class="govuk-list govuk-list--bullet">
+        {% for dataset in sources_per_dataset %}
+        {% if dataset['sources_with_endpoint'] == 0 %}
+        <li>{{ dataset['pipeline'] }}</li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
   {% if data["dataset_counts"]|length %}
+    <h3 class="govuk-heading-m">Datasets with data</h3>
+    <p class="govuk-body">We have been able to collect resources and extract data from {{ organisation.name }} for {{data["dataset_counts"]|length}} dataset{{ "" if data["dataset_counts"]|length else "s" }}.</p>
     {{ simplifiedDatasetTable({
       "datasets": data["dataset_counts"],
-      "caption": "Datasets with collected data"
+      "caption": "Table showing datasets we have collected data for"
       })
     }}
   {% endif %}

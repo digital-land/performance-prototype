@@ -27,6 +27,11 @@ class DLDatasette:
         r = get(query)
         return json.loads(r)
 
+    @staticmethod
+    def urlencode(s):
+        s.replace(":", "%3A")
+        return s
+
 
 def by_collection(data):
     # used to by pipeline
@@ -66,6 +71,16 @@ def sources_with_endpoint():
             ],
         },
     }
+
+
+def sources_per_dataset_for_organisation(id):
+    query = (
+        "http://datasetteawsentityv2-env.eba-gbrdriub.eu-west-2.elasticbeanstalk.com/digital-land.json?sql=select%0D%0A++source_pipeline.pipeline+AS+pipeline%2C%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%2C%0D%0A++SUM%28CASE+WHEN+%28source.endpoint%29+is+not+null+and+%28source.endpoint%29+%21%3D+%22%22+THEN+1+ELSE+0+END%29++AS+sources_with_endpoint%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source.organisation+%3D+%3Aorganisation%0D%0Agroup+by%0D%0A++source_pipeline.pipeline&organisation="
+        + DLDatasette.urlencode(id)
+    )
+    ds = DLDatasette()
+    r1 = ds.sqlQuery(query)
+    return [create_dict(r1["columns"], row) for row in r1["rows"]]
 
 
 def datasets_for_an_organisation(id):
