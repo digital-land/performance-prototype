@@ -88,3 +88,10 @@ def datasets_by_organistion():
     results = ds.sqlQuery(query)
     organisations = [create_dict(results["columns"], row) for row in results["rows"]]
     return index_by("organisation", organisations)
+
+
+def total_entities():
+    query = "https://datasette.digital-land.info/view_model.json?sql=select+count%28*%29+from+entity+order+by+entity"
+    ds = DLDatasette()
+    results = ds.sqlQuery(query)
+    return results["rows"][0][0]

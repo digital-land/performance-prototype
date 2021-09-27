@@ -18,6 +18,7 @@ from application.datasette import (
     sources_with_endpoint,
     datasets_per_organisation,
     datasets_by_organistion,
+    total_entities,
 )
 
 
@@ -54,7 +55,6 @@ def performance():
         "resources": sum([clean_int_filter(d["total-resources"]) for d in datasets]),
     }
     org_count = get_org_count()
-    print(org_count)
 
     return render_template(
         "performance.html",
@@ -66,6 +66,7 @@ def performance():
             "Number of organisations we're collecting data from", "?"
         ),
         sources=sources_with_endpoint(),
+        entity_count=total_entities(),
     )
 
 

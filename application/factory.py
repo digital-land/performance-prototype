@@ -53,6 +53,10 @@ def register_filters(app):
     app.add_template_filter(clean_int_filter, name="to_int")
     app.add_template_filter(to_float_filter, name="to_float")
 
+    from digital_land_frontend.filters import commanum
+
+    app.add_template_filter(commanum)
+
 
 def register_extensions(app):
     """
