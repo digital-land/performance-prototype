@@ -119,3 +119,15 @@ def total_entities():
     ds = DLDatasette()
     results = ds.sqlQuery(query)
     return results["rows"][0][0]
+
+
+def latest_resource(dataset):
+    ds = DLDatasette()
+    query = (
+        "http://datasetteawsentityv2-env.eba-gbrdriub.eu-west-2.elasticbeanstalk.com/digital-land.json?sql=select%0D%0A++resource.resource%2C%0D%0A++resource.end_date%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source_pipeline.pipeline+%3D+%3Apipeline%0D%0Aorder+by%0D%0A++resource.start_date+DESC%0D%0Alimit+1&pipeline="
+        + dataset
+    )
+    r1 = ds.sqlQuery(query)
+    if len(r1["rows"]):
+        return create_dict(r1["columns"], r1["rows"][0])
+    return []

@@ -20,6 +20,7 @@ from application.datasette import (
     datasets_by_organistion,
     total_entities,
     sources_per_dataset_for_organisation,
+    latest_resource,
 )
 
 
@@ -118,6 +119,7 @@ def dataset_performance(dataset_name):
         name=dataset_name,
         info_page=url_for("base.dataset_info", dataset_name=dataset_name),
         dataset=dataset[0] if len(dataset) else "",
+        latest_resource=latest_resource(dataset_name),
     )
 
 
