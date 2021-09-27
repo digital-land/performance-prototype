@@ -1,11 +1,11 @@
 {% extends "layouts/layout.html" %}
 {% block page_title %}Brownfield land | Dataset performance | Maturity Model | Digital Land{% endblock %}
 {%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
-{%- from "tables/org-dataset-table.html" import datasetTable %}
+{%- from "tables/org-dataset-table.html" import datasetTable, simplifiedDatasetTable %}
 
 {% block content %}
 <main id="content" role="main">
-  <span class="govuk-caption-xl">Organisation performance</span>
+  <span class="govuk-caption-xl">Organisation overview</span>
   <h1 class="govuk-heading-xl">{{ organisation.name|default('Unknown') }}</h1>
 
   <div class="govuk-grid-row govuk-!-margin-bottom-9 govuk-!-margin-top-9">
@@ -23,15 +23,7 @@
     </div>
   </div>
 
-  {% if organisation.organisation != 'local-authority-eng:ESK' %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <p class="govuk-body">This is a prototype. Currently, we don't have the data for {{ organisation.name|default('Unknown') }}.</p>
-      <h3 class="govuk-heading-s">Where to go next?</h3>
-      <p class="govuk-body"><a href="{{ url_for('base.organisation_performance', prefix='local-authority-eng', org_id='ESK') }}" class="govuk-link">East Suffolk</a> is a more complete example.</p>
-    </div>
-  </div>
-  {% else %}
+  {% if organisation.organisation == 'local-authority-eng:ESK' %}
   {% if datasets.current|length %}
     {{ datasetTable({
         "datasets": datasets.current,
@@ -56,6 +48,14 @@
     }}
   {% endif %}
   
+  {% endif %}
+
+  {% if data["dataset_counts"]|length %}
+    {{ simplifiedDatasetTable({
+      "datasets": data["dataset_counts"],
+      "caption": "Datasets with collected data"
+      })
+    }}
   {% endif %}
 
 </main>

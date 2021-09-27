@@ -29,3 +29,29 @@
   </table>
 </div>
 {% endmacro %}
+
+{% macro simplifiedDatasetTable(params) %}
+<div class="data-table__wrapper" data-module="data-table">
+  <table class="govuk-table">
+    <caption class="govuk-table__caption govuk-table__caption--m">{{ params.caption }}</caption>
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter" aria-sort="none">Name</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Total resources</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Active resources</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Endpoints</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      {% for dataset in params.datasets %}
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell" data-sort-value="{{ dataset['name'] }}"><a href="{{ url_for('base.dataset_performance', dataset_name=dataset['pipeline']) }}" class="govuk-link">{{ dataset['pipeline'] }}</a></td>
+        <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['resources']|to_int }}">{{ dataset['resources'] }}</td>
+        <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['active_resources']|to_int }}">{{ dataset['active_resources'] }}</td>
+        <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['endpoints']|to_int }}">{{ dataset['endpoints'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endmacro %}

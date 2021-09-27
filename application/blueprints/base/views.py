@@ -16,7 +16,7 @@ from application.googlesheetscollector import (
 from application.filters import clean_int_filter
 from application.datasette import (
     sources_with_endpoint,
-    datasets_per_organisation,
+    datasets_for_an_organisation,
     datasets_by_organistion,
     total_entities,
 )
@@ -185,7 +185,7 @@ def organisation():
 def organisation_performance(prefix, org_id):
     id = prefix + ":" + org_id
     organisation = get_organisation(id)
-    data = datasets_per_organisation(id)
+    data = datasets_for_an_organisation(id)
 
     if org_id == "ESK":
         datasets = get_esk_datasets()
