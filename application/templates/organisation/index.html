@@ -22,7 +22,18 @@
   <h1 class="govuk-heading-xl">Publishers</h1>
   <p class="govuk-body-l">A place to see who has published what.</p>
 
-  <p id="btt-hook" class="govuk-body">The following organisations have published some data we have been able to collect.</p>
+  <p id="btt-hook" class="govuk-body">The organisations listed have all published some data we have been able to collect.</p>
+
+  <p class="govuk-body">The organisations have been separated into these groups.</p>
+  <ul class="govuk-list govuk-list--bullet">
+    {% for type_ in publishers.keys() -%}
+    <li>
+      <a href="#{{type_|lower|replace(' ', '-')}}">{{ type_ }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
 
   {% for type_ in publishers.keys() %}
   <div class="govuk-grid-row org-count">
