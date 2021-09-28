@@ -2,13 +2,25 @@
 {% block page_title %}Flask prototyping index{% endblock %}
 {%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
 
-{% block dl_breadcrumbs %}{% endblock %}
+{% block dl_breadcrumbs %}
+{{ govukBreadcrumbs({
+  "items": [
+    {
+      "text": "Data operations",
+      "href": "/"
+    },
+    {
+      "text": "Publishers"
+    }
+  ]
+}) }}
+{% endblock %}
 
 {% block content %}
 
 <main id="content" role="main">
-  <h1 class="govuk-heading-xl">Organisations</h1>
-  <p class="govuk-body">A place to see who has published what.</p>
+  <h1 class="govuk-heading-xl">Publishers</h1>
+  <p class="govuk-body-l">A place to see who has published what.</p>
 
   <p id="btt-hook" class="govuk-body">The following organisations have published some data we have been able to collect.</p>
 
@@ -53,7 +65,7 @@
             <dt>Total resources</dt>
             <dd>{{ publisher['resources'] }}</dd>
           </div>
-          <div class="govuk-grid-column-one-third{{ ' dl-warning-text' if publisher['active'] != publisher['pipelines'] }}">
+          <div class="govuk-grid-column-one-third{{ ' dl-warning-text' if publisher['active'] != publisher['pipelines'] }}"{% if publisher['active'] != publisher['pipelines'] %} title="More active resources than datasets covered"{% endif %}>
             <dt>Active resources</dt>
             <dd>{{ publisher['active'] }}</dd>
           </div>
