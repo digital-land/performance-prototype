@@ -35,16 +35,21 @@
 
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
 
+  <form class="filter-organisations-list__form filter-organisations-list__form--active govuk-!-margin-bottom-9" data-filter="form">
+    <label class="filter-list__label govuk-label govuk-!-font-weight-bold dl-form-label--inline" for="filter-organisations-list">I'm looking for</label>
+    <input class="filter-list__input govuk-input" type="text" id="filter-organisations-list" placeholder="For example, Office for National Statistics">
+  </form>
+
   {% for type_ in publishers.keys() %}
-  <div class="govuk-grid-row org-count">
+  <div class="govuk-grid-row org-type__grouping">
     <div class="govuk-grid-column-one-third">
     {% if publishers[type_].keys()|length == 1 %}
      {% set are = "is" %}
    {% else %}
      {% set are = "are" %}
    {% endif %}
-    <h2 class="govuk-heading-m org-count__name" id="{{type_|replace(' ', '-')}}">{{ type_ }}</h2>
-    <div class="org-count__wrapper">
+    <h2 class="govuk-heading-m org-count__name" id="{{type_|lower|replace(' ', '-')}}">{{ type_ }}</h2>
+    <div class="org-type__count">
       <p class="govuk-visually-hidden">There {{are}}
         <span class="js-accessible-list-count">{{ publishers[type_].keys()|length }}</span>
         {{ type_ }}
@@ -87,6 +92,10 @@
   </div>
 </div>
 {% endfor %}
+<div class="js-no-filter-list-matches">
+  <p class="govuk-body">No publisher matches the search term you have entered.</p>
+  <p class="govuk-body">That could be because we do not recognise the name you have entered OR we have not collected any data from the organisation.</p>
+</div>
   
 
 </main>
@@ -120,5 +129,12 @@
       fixClass: 'dl-sticky-banner--fixed'
   })
 </script>
-<script src="/static/js/test.js"></script>
+<script>
+  // initialise list filter
+  const $form = document.querySelector('[data-filter="form"]');
+  new window.DLFrontend.FilterList($form).init({
+      list_section_selector: '.org-type__grouping',
+      count_wrapper_selector: '.org-type__count'
+  })
+</script>
 {% endblock bodyEndScripts %}

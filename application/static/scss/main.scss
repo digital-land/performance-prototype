@@ -1,6 +1,7 @@
 // import all GOVUK Frontend scss
 @import "node_modules/govuk-frontend/govuk/all";
 @import "table";
+@import "forms";
 
 .govuk-link--bold {
     font-weight: bold !important;
