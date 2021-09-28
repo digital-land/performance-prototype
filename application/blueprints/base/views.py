@@ -216,6 +216,7 @@ def organisation_performance(prefix, org_id):
         info_page=url_for("base.organisation_info", prefix=prefix, org_id=org_id),
         data=data,
         sources_per_dataset=source_counts,
+        has_missing_datasets=any(dataset['sources_with_endpoint'] == 0 for dataset in source_counts)
     )
 
 

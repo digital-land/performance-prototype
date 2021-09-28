@@ -68,6 +68,7 @@
   
   {% endif %}
 
+  {% if has_missing_datasets %}
   <div class="govuk-notification-banner govuk-notification-banner--error" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
     <div class="govuk-notification-banner__header">
       <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
@@ -85,6 +86,7 @@
       </ul>
     </div>
   </div>
+  {% endif %}
 
   {% if data["dataset_counts"]|length %}
     <h3 class="govuk-heading-m">Datasets with data</h3>
