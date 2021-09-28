@@ -3,6 +3,24 @@
 {%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
 {%- from "tables/org-dataset-table.html" import datasetTable, simplifiedDatasetTable %}
 
+{% block dl_breadcrumbs %}
+{{ govukBreadcrumbs({
+  "items": [
+    {
+      "text": "Data operations",
+      "href": "/"
+    },
+    {
+      "text": "Publishers",
+      "href": url_for('base.organisation')
+    },
+    {
+      "text": organisation.name
+    }
+  ]
+}) }}
+{% endblock %}
+
 {% block content %}
 <main id="content" role="main">
   <span class="govuk-caption-xl">Publisher overview</span>
