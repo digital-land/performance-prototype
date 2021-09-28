@@ -141,32 +141,26 @@ def get_organisation(id):
 
 @base.route("/organisation")
 def organisation():
-    publishers, keyed_orgs = get_publishing_orgs()
-
-    dataset_counts = datasets_by_organistion()
-    for publisher in publishers:
-        # get the number of datasets
-        if publisher in keyed_orgs.keys() and publisher in dataset_counts.keys():
-            keyed_orgs[publisher]["counts"] = dataset_counts[publisher]
+    dataset_counts_by_organisations = datasets_by_organistion()
 
     lpas = {
-        publisher: keyed_orgs[publisher]
-        for publisher in publishers
-        if keyed_orgs[publisher]["organisation"][0]["local-authority-type"] != ""
+        publisher: dataset_counts_by_organisations[publisher]
+        for publisher in dataset_counts_by_organisations.keys()
+        if "local-authority-eng" in publisher
     }
     dev_corps = {
-        publisher: keyed_orgs[publisher]
-        for publisher in publishers
+        publisher: dataset_counts_by_organisations[publisher]
+        for publisher in dataset_counts_by_organisations.keys()
         if "development-corporation" in publisher
     }
     national_parks = {
-        publisher: keyed_orgs[publisher]
-        for publisher in publishers
+        publisher: dataset_counts_by_organisations[publisher]
+        for publisher in dataset_counts_by_organisations.keys()
         if "national-park" in publisher
     }
     other = {
-        publisher: keyed_orgs[publisher]
-        for publisher in publishers
+        publisher: dataset_counts_by_organisations[publisher]
+        for publisher in dataset_counts_by_organisations.keys()
         if not any(
             s in publisher
             for s in ["local-authority", "development-corporation", "national-park"]
