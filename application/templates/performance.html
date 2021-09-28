@@ -112,20 +112,18 @@
               When we add a source we usually record a <code>documentation-url</code>. This is the place where we found the source. It helps us answer questions about where we found the source and why we are collecting it. Without it we are less confident about the origin of the source and therefore the authority of the data.
             </div>
           </details>
-          <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-              <span class="govuk-details__summary-text dl-small-text">
-                See breakdown by dataset
-              </span>
-            </summary>
-            <div class="govuk-details__text dl-small-text">
-              <ul class="govuk-list">
-                {% for col in sources['no_documentation']['collection'] %}
-                  <li><a href="{{ url_for('base.dataset_performance', dataset_name=col['label']) }}">{{ col['label'] }}</a>: {{ col['count'] }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-          </details>
+          <div class="dl-collapsible no-doc-endpoints" data-collapsible="open">
+            <ul class="govuk-list">
+              {% for col in sources['no_documentation']['collection'] %}
+              <li><a href="{{ url_for('base.dataset_performance', dataset_name=col['label']) }}">{{ col['label'] }}</a>: {{ col['count'] }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="expanding-line-break">
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            <span class="govuk-link dl-collapsible__btn open-section" data-action="open-section"><span class="dl-collapsible__icon">⊻</span>see breakdown by dataset</span>
+            <span class="govuk-link dl-collapsible__btn close-section" data-action="close-section"><span class="dl-collapsible__icon">⊼</span>close breakdown</span>
+          </div>
         </div>
       </div>
 
@@ -235,5 +233,11 @@ responsive: {
 }
 
 });
+</script>
+<script src="/static/javascripts/collapsible-section.js"></script>
+<script>
+  const $section = document.querySelector('.no-doc-endpoints');
+  const $triggers = document.querySelector('.expanding-line-break')
+  const collapsibleComponent = new CollapsibleSection($section, $triggers).init()
 </script>
 {% endblock bodyEnd %}
