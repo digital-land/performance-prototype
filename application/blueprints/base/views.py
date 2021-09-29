@@ -87,6 +87,13 @@ def performance_info():
     )
 
 
+@base.route("/dataset")
+def dataset():
+    return render_template(
+        "dataset/index.html",
+    )
+
+
 @base.route("/dataset/<dataset_name>")
 def dataset_performance(dataset_name):
     datasets = get_datasets()

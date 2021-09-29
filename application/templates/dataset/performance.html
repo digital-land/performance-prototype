@@ -4,6 +4,24 @@
 {% from 'macro/resources-sources-by-month.html' import sourcesAndResourcesByMonthChart, sourcesAndResourcesByMonthJS %}
 {% from 'tables/org-table-on-dataset.html' import orgTableOnDataset %}
 
+{% block dl_breadcrumbs %}
+{{ govukBreadcrumbs({
+  "items": [
+    {
+      "text": "Data operations",
+      "href": "/"
+    },
+    {
+      "text": "Datasets",
+      "href": url_for('base.dataset')
+    },
+    {
+      "text": name|replace("-", " ")|capitalize
+    }
+  ]
+}) }}
+{% endblock %}
+
 {% block content %}
 <main id="content" role="main">
   <span class="govuk-caption-xl">Dataset performance</span>
