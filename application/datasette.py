@@ -194,3 +194,10 @@ def publisher_counts(pipeline):
     results = ds.sqlQuery(query)
     organisations = [create_dict(results["columns"], row) for row in results["rows"]]
     return index_by("organisation", organisations)
+
+
+def entity_count(pipeline):
+    ds = DLDatasette()
+    query = f"https://datasette.digital-land.info/{pipeline}.json?sql=select%0D%0A++count%28DISTINCT+entity%29+AS+entities%0D%0Afrom%0D%0A++entity"
+    results = ds.sqlQuery(query)
+    return results["rows"][0][0]

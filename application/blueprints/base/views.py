@@ -23,6 +23,7 @@ from application.datasette import (
     latest_resource,
     get_monthly_counts,
     publisher_counts,
+    entity_count,
 )
 
 
@@ -135,6 +136,7 @@ def dataset_performance(dataset_name):
         monthly_counts=get_monthly_counts(pipeline=dataset_name),
         publishers=publisher_splits,
         today=datetime.utcnow().isoformat()[:10],
+        entity_count=entity_count(dataset_name),
     )
 
 
