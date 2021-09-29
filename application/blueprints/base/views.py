@@ -24,6 +24,7 @@ from application.datasette import (
     get_monthly_counts,
     publisher_counts,
     entity_count,
+    publisher_coverage,
 )
 
 
@@ -137,6 +138,7 @@ def dataset_performance(dataset_name):
         publishers=publisher_splits,
         today=datetime.utcnow().isoformat()[:10],
         entity_count=entity_count(dataset_name),
+        coverage=publisher_coverage(dataset_name),
     )
 
 

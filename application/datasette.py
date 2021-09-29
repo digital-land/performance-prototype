@@ -201,3 +201,13 @@ def entity_count(pipeline):
     query = f"https://datasette.digital-land.info/{pipeline}.json?sql=select%0D%0A++count%28DISTINCT+entity%29+AS+entities%0D%0Afrom%0D%0A++entity"
     results = ds.sqlQuery(query)
     return results["rows"][0][0]
+
+
+def publisher_coverage(pipeline):
+    ds = DLDatasette()
+    query = (
+        "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++count%28DISTINCT+source.organisation%29+as+expected_publishers%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+source.endpoint+%21%3D+%27%27+THEN+source.organisation%0D%0A++++END%0D%0A++%29+AS+publishers%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+on+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source_pipeline.pipeline+%3D+%3Apipeline&pipeline="
+        + pipeline
+    )
+    results = ds.sqlQuery(query)
+    return create_dict(results["columns"], results["rows"][0])
