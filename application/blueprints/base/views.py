@@ -22,6 +22,7 @@ from application.datasette import (
     sources_per_dataset_for_organisation,
     latest_resource,
     get_monthly_counts,
+    publisher_counts,
 )
 
 
@@ -114,7 +115,16 @@ def dataset_performance(dataset_name):
             },
             resource_stats=resource_stats,
             latest_resource=latest_resource(dataset_name),
+            monthly_counts=get_monthly_counts(pipeline=dataset_name),
         )
+
+    publishers = publisher_counts(dataset_name)
+    publisher_splits = {"active": [], "noactive": []}
+    for k, publisher in publishers.items():
+        if publisher["active_resources"] == 0:
+            publisher_splits["noactive"].append(publisher)
+        else:
+            publisher_splits["active"].append(publisher)
 
     return render_template(
         "dataset/performance.html",
@@ -123,6 +133,8 @@ def dataset_performance(dataset_name):
         dataset=dataset[0] if len(dataset) else "",
         latest_resource=latest_resource(dataset_name),
         monthly_counts=get_monthly_counts(pipeline=dataset_name),
+        publishers=publisher_splits,
+        today=datetime.utcnow().isoformat()[:10],
     )
 
 
