@@ -22,6 +22,8 @@ def months_since(start_date):
 
 
 def month_dict(num_months):
+    counts = {}
     today = datetime.datetime.now()
-    for m in range(0, num_months + 1):
-        print((today - relativedelta(months=m)).strftime("%Y-%m"))
+    for m in list(reversed(range(0, num_months + 1))):
+        counts.setdefault((today - relativedelta(months=m)).strftime("%Y-%m"), 0)
+    return counts

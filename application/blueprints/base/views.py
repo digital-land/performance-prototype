@@ -21,6 +21,7 @@ from application.datasette import (
     total_entities,
     sources_per_dataset_for_organisation,
     latest_resource,
+    get_monthly_counts,
 )
 
 
@@ -63,7 +64,7 @@ def performance():
         info_page=url_for("base.performance_info"),
         datasets=datasets,
         high_level_numbers=high_level_numbers,
-        stats=get_resource_source_stats(),
+        stats=get_monthly_counts(),
         org_count=org_count.get(
             "Number of organisations we're collecting data from", "?"
         ),
@@ -216,7 +217,9 @@ def organisation_performance(prefix, org_id):
         info_page=url_for("base.organisation_info", prefix=prefix, org_id=org_id),
         data=data,
         sources_per_dataset=source_counts,
-        has_missing_datasets=any(dataset['sources_with_endpoint'] == 0 for dataset in source_counts)
+        has_missing_datasets=any(
+            dataset["sources_with_endpoint"] == 0 for dataset in source_counts
+        ),
     )
 
 

@@ -1,7 +1,8 @@
 import json
+from datetime import datetime
 
 from application.caching import get
-from application.utils import create_dict, index_by
+from application.utils import create_dict, index_by, months_since, month_dict
 
 
 class DLDatasette:
@@ -131,3 +132,44 @@ def latest_resource(dataset):
     if len(r1["rows"]):
         return create_dict(r1["columns"], r1["rows"][0])
     return []
+
+
+def source_monthly_counts():
+    ds = DLDatasette()
+    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+source.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+source.source%29%0D%0Afrom%0D%0A++source%0D%0Awhere%0D%0A++source.start_date+%21%3D+%22%22%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm"
+    results = ds.sqlQuery(query)
+    return results["rows"]
+
+
+def resource_monthly_counts():
+    ds = DLDatasette()
+    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+resource.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+resource.resource%29%0D%0Afrom%0D%0A++resource%0D%0Awhere%0D%0A++resource.start_date+%21%3D+%22%22%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm"
+    results = ds.sqlQuery(query)
+    return results["rows"]
+
+
+def get_monthly_counts():
+    resource_counts = resource_monthly_counts()
+    source_counts = source_monthly_counts()
+    first_resource_month_str = resource_counts[0][0]
+    first_source_month_str = source_counts[0][0]
+
+    earliest = (
+        first_source_month_str
+        if first_source_month_str < first_resource_month_str
+        else first_resource_month_str
+    )
+    start_date = datetime.strptime(earliest, "%Y-%m")
+    months_since_start = months_since(start_date)
+    all_months = month_dict(months_since_start)
+
+    counts = {}
+    for k, v in {"resources": resource_counts, "sources": source_counts}.items():
+        d = all_months.copy()
+        for row in v:
+            if row[0] in d.keys():
+                d[row[0]] = d[row[0]] + row[1]
+        # needs to be in tuple form
+        counts[k] = [(k, v) for k, v in d.items()]
+    counts["months"] = list(all_months.keys())
+    return counts
