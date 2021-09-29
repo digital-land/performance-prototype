@@ -87,12 +87,12 @@ def performance_info():
 @base.route("/dataset/<dataset_name>")
 def dataset_performance(dataset_name):
     datasets = get_datasets()
-    name = dataset_name.replace("_", " ").capitalize()
-    dataset = [
-        d for d in datasets if d["name"] == dataset_name.replace("_", " ").capitalize()
-    ]
+    # name = dataset_name.replace("_", " ").capitalize()
+    dataset = [d for d in datasets if d["pipeline"] == dataset_name]
 
-    if dataset_name.lower() == "brownfield land":
+    print(get_monthly_counts(pipeline=dataset_name))
+
+    if dataset_name.lower() == "brownfield-land":
         withresource, additional, noresource = get_bfl()
 
         # stats for chart
@@ -113,6 +113,7 @@ def dataset_performance(dataset_name):
                 "noresource": noresource,
             },
             resource_stats=resource_stats,
+            latest_resource=latest_resource(dataset_name),
         )
 
     return render_template(
@@ -121,6 +122,7 @@ def dataset_performance(dataset_name):
         info_page=url_for("base.dataset_info", dataset_name=dataset_name),
         dataset=dataset[0] if len(dataset) else "",
         latest_resource=latest_resource(dataset_name),
+        monthly_counts=get_monthly_counts(pipeline=dataset_name),
     )
 
 

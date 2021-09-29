@@ -22,7 +22,8 @@
         {% for dataset in datasets %}
         <tr class="govuk-table__row{{ ' dl-row--inactive' if not dataset.pipeline }}">
           <td scope="row" class="govuk-table__cell dl-table__header--border-right" data-sort-value="{{ dataset.name }}">
-            <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.name) }}" class="govuk-link govuk-link--bold">{{ dataset.name }}</a>
+            {% set dataset_url_str = dataset.name|lower|replace(" ", "-") %}
+            <a href="{{ url_for('base.dataset_performance', dataset_name=dataset_url_str) }}" class="govuk-link govuk-link--bold">{{ dataset.name }}</a>
           </td>
           <td class="govuk-table__cell" data-sort-value="{{ dataset['data-provider'] }}">{{ dataset['data-provider'] }}</td>
           <td class="govuk-table__cell">{% if dataset['first-collected-resource'] %}
