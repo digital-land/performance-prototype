@@ -27,3 +27,12 @@ def month_dict(num_months):
     for m in list(reversed(range(0, num_months + 1))):
         counts.setdefault((today - relativedelta(months=m)).strftime("%Y-%m"), 0)
     return counts
+
+
+def resources_per_publishers(resources):
+    publishers = {}
+    for resource in resources:
+        publishers.setdefault(resource["organisation"], [])
+        if not resource["resource"] in publishers[resource["organisation"]]:
+            publishers[resource["organisation"]].append(resource["resource"])
+    return publishers

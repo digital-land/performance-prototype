@@ -25,7 +25,9 @@ from application.datasette import (
     publisher_counts,
     entity_count,
     publisher_coverage,
+    active_resources,
 )
+from application.utils import resources_per_publishers
 
 
 base = Blueprint("base", __name__)
@@ -100,32 +102,7 @@ def dataset_performance(dataset_name):
     # name = dataset_name.replace("_", " ").capitalize()
     dataset = [d for d in datasets if d["pipeline"] == dataset_name]
 
-    print(get_monthly_counts(pipeline=dataset_name))
-
-    if dataset_name.lower() == "brownfield-land":
-        withresource, additional, noresource = get_bfl()
-
-        # stats for chart
-        resource_stats = {
-            "over_one": len([o for o in withresource if int(o["active-resource"]) > 1]),
-            "one": len([o for o in withresource if int(o["active-resource"]) == 1]),
-            "zero": len(noresource),
-        }
-
-        return render_template(
-            "dataset/performance.html",
-            name=dataset_name,
-            info_page=url_for("base.dataset_info", dataset_name=dataset_name),
-            dataset=dataset[0] if len(dataset) else "",
-            orgs={
-                "withresource": withresource,
-                "additional": additional,
-                "noresource": noresource,
-            },
-            resource_stats=resource_stats,
-            latest_resource=latest_resource(dataset_name),
-            monthly_counts=get_monthly_counts(pipeline=dataset_name),
-        )
+    resources_by_publisher = resources_per_publishers(active_resources(dataset_name))
 
     publishers = publisher_counts(dataset_name)
     publisher_splits = {"active": [], "noactive": []}
@@ -134,6 +111,17 @@ def dataset_performance(dataset_name):
             publisher_splits["noactive"].append(publisher)
         else:
             publisher_splits["active"].append(publisher)
+
+    # for the active resource charts
+    resource_stats = {
+        "over_one": len(
+            [p for p in resources_by_publisher if len(resources_by_publisher[p]) > 1]
+        ),
+        "one": len(
+            [p for p in resources_by_publisher if len(resources_by_publisher[p]) == 1]
+        ),
+        "zero": len(publisher_splits["noactive"]),
+    }
 
     return render_template(
         "dataset/performance.html",
@@ -146,6 +134,7 @@ def dataset_performance(dataset_name):
         today=datetime.utcnow().isoformat()[:10],
         entity_count=entity_count(dataset_name),
         coverage=publisher_coverage(dataset_name),
+        resource_stats=resource_stats,
     )
 
 
