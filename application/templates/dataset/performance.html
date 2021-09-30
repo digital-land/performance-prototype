@@ -48,7 +48,7 @@
   </div>
 
   <h3 class="govuk-heading-m">Dataset info</h3>
-  <dl class="govuk-summary-list">
+  <dl class="govuk-summary-list govuk-!-margin-bottom-9">
 
     {% if dataset['name'] %}
     <div class="govuk-summary-list__row">
@@ -118,42 +118,68 @@
     
   </dl>
 
-  {{ sourcesAndResourcesByMonthChart({}) }}
-
-  {% if publishers %}
-  <h2 class="govuk-heading-l">Publishers</h2>
-  <div class="govuk-tabs" data-module="govuk-tabs">
+  <div class="govuk-tabs" data-module="dlf-subnav">
     <h2 class="govuk-tabs__title">
       Contents
     </h2>
-    <ul class="govuk-tabs__list">
-      <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-        <a class="govuk-tabs__tab" href="#active-publishers">
-          {{ publishers['active']|length }} active
-        </a>
-      </li>
-      <li class="govuk-tabs__list-item">
-        <a class="govuk-tabs__tab" href="#no-active-publishers">
-          {{ publishers['noactive']|length }} no active resource
-        </a>
-      </li>
-    </ul>
-    <div class="govuk-tabs__panel" id="active-publishers">
-    {{ orgTableOnDataset({
-      "caption": "Publishers with an active resource",
-      "organisations": publishers['active'],
-      "today": today
-    }) }}
+    <nav class="dlf-subnav" aria-label="Sub navigation">
+      <ul class="dlf-subnav__list">
+        <li class="dlf-subnav__list-item">
+          <a class="dlf-subnav__list-item__link" href="#sources-resources" data-module-sub-nav="tab">
+          Sources and resources
+          </a>
+        </li>
+        {% if publishers %}
+        <li class="dlf-subnav__list-item dlf-subnav__list-item--selected">
+          <a class="dlf-subnav__list-item__link" href="#publishers" data-module-sub-nav="tab">
+          Publishers
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    <div id="sources-resources">
+    {{ sourcesAndResourcesByMonthChart({}) }}
     </div>
-    <div class="govuk-tabs__panel" id="no-active-publishers">
-      {{ orgTableOnDataset({
-        "caption": "Publishers without an active resource",
-        "organisations": publishers['noactive'],
-        "today": today
-      }) }}
+
+    <div id="publishers">
+      {% if publishers %}
+      <h2 class="govuk-heading-l">Publishers</h2>
+      <div class="govuk-tabs" data-module="govuk-tabs">
+        <h2 class="govuk-tabs__title">
+          Contents
+        </h2>
+        <ul class="govuk-tabs__list">
+          <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+            <a class="govuk-tabs__tab" href="#active-publishers">
+              {{ publishers['active']|length }} active
+            </a>
+          </li>
+          <li class="govuk-tabs__list-item">
+            <a class="govuk-tabs__tab" href="#no-active-publishers">
+              {{ publishers['noactive']|length }} no active resource
+            </a>
+          </li>
+        </ul>
+        <div class="govuk-tabs__panel" id="active-publishers">
+        {{ orgTableOnDataset({
+          "caption": "Publishers with an active resource",
+          "organisations": publishers['active'],
+          "today": today
+        }) }}
+        </div>
+        <div class="govuk-tabs__panel" id="no-active-publishers">
+          {{ orgTableOnDataset({
+            "caption": "Publishers without an active resource",
+            "organisations": publishers['noactive'],
+            "today": today
+          }) }}
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
-  {% endif %}
 
   {% if orgs %}
   <h2 class="govuk-heading-l govuk-!-margin-top-9">By publisher</h2>
@@ -264,6 +290,12 @@
 <script>
   console.log({{ dataset|tojson }})
 </script>
+
+<script>
+  const $subNavTabs = document.querySelector('[data-module="dlf-subnav"]')
+  const subNavTabsComponent = new DLFrontend.SubNavTabs($subNavTabs).init({})
+</script>
+
 <script src="/static/javascripts/vendor/jquery-3.4.1.min.js"></script>
 <script src="/static/javascripts/vendor/MOJFrontend.SortableTable.js"></script>
 
