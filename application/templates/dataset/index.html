@@ -21,6 +21,14 @@
 <main id="content" role="main">
   <h1 class="govuk-heading-xl">Datasets</h1>
   <p class="govuk-body-l">A place to see what datasets we have data for.</p>
+
+  <ul class="govuk-list">
+    {% for dataset in datasets %}
+    <li>
+      <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.dataset) }}" class="govuk-link">{{ dataset['name'] }}</a>
+    </li>
+    {% endfor %}
+  </ul>
 </main>
 {% endblock %}
 

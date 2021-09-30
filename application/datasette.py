@@ -221,3 +221,10 @@ def active_resources(pipeline):
     )
     results = ds.sqlQuery(query)
     return [create_dict(results["columns"], row) for row in results["rows"]]
+
+
+def active_datasets():
+    ds = DLDatasette()
+    query = "http://datasetteawsentityv2-env.eba-gbrdriub.eu-west-2.elasticbeanstalk.com/digital-land/dataset.json?_labels=on"
+    results = ds.sqlQuery(query)
+    return results["rows"]

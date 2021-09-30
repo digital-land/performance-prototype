@@ -26,6 +26,7 @@ from application.datasette import (
     entity_count,
     publisher_coverage,
     active_resources,
+    active_datasets,
 )
 from application.utils import resources_per_publishers
 
@@ -91,9 +92,8 @@ def performance_info():
 
 @base.route("/dataset")
 def dataset():
-    return render_template(
-        "dataset/index.html",
-    )
+    datasets = active_datasets()
+    return render_template("dataset/index.html", datasets=datasets)
 
 
 @base.route("/dataset/<dataset_name>")
