@@ -27,6 +27,7 @@ from application.datasette import (
     publisher_coverage,
     active_resources,
     active_datasets,
+    sources_by_dataset,
 )
 from application.utils import resources_per_publishers
 
@@ -266,3 +267,8 @@ def resource_info(resource):
         page_url=url_for("base.resource_performance", resource=resource),
         data=data,
     )
+
+
+@base.route("/source")
+def source():
+    return render_template("source/index.html", by_dataset=sources_by_dataset())
