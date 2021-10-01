@@ -28,6 +28,7 @@ from application.datasette import (
     active_resources,
     active_datasets,
     sources_by_dataset,
+    resources_by_dataset,
 )
 from application.utils import resources_per_publishers
 
@@ -282,3 +283,10 @@ def source():
     }
 
     return render_template("source/index.html", by_dataset=datasets, stats=stats)
+
+
+@base.route("/resource")
+def resource():
+    datasets = resources_by_dataset()
+
+    return render_template("resource/index.html", by_dataset=datasets)
