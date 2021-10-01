@@ -21,6 +21,28 @@
 <main id="content" role="main">
   <h1 class="govuk-heading-xl">Sources</h1>
 
+  <div class="govuk-grid-row govuk-!-margin-bottom-9">
+    <div class="govuk-grid-column-one-quarter">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-80">{{ stats['active'] }}</span>
+        <p class="govuk-body govuk-!-font-size-36">Active sources</p>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-80">{{ stats['inactive'] }}</span>
+        <p class="govuk-body govuk-!-font-size-36">Old sources</p>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-quarter">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-80">{{ stats['datasets'] }}</span>
+        <p class="govuk-body govuk-!-font-size-36">Datasets</p>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="govuk-heading-l">By dataset</h2>
   <ul class="govuk-list">
     {% for dataset in by_dataset %}
     <li>

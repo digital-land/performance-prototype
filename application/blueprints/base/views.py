@@ -271,4 +271,14 @@ def resource_info(resource):
 
 @base.route("/source")
 def source():
-    return render_template("source/index.html", by_dataset=sources_by_dataset())
+    datasets = sources_by_dataset()
+
+    stats = {
+        "active": sum(
+            [d["active_sources"] for d in datasets if d["active_sources"] > 0]
+        ),
+        "inactive": sum([d["ended_sources"] for d in datasets]),
+        "datasets": len([d for d in datasets if d["active_sources"] > 0]),
+    }
+
+    return render_template("source/index.html", by_dataset=datasets, stats=stats)
