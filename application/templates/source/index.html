@@ -42,6 +42,18 @@
     </div>
   </div>
 
+  {% if pipeline %}
+  <h2 class="govuk-heading-m">Sources</h2>
+  <p class="govuk-body">Showing for {{ pipeline|replace("-", " ")}}</p>
+  <ul class="govuk-list">
+    {% for source in sources %}
+    <li>
+      <a href="{{ url_for('base.source', source=source.source) }}" class="govuk-link">{{ source.source }}</a>
+      <span class="govuk-!-font-size-19"> for {{ source.name }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
   <h2 class="govuk-heading-l">By dataset</h2>
   <ul class="govuk-list">
     {% for dataset in by_dataset %}
@@ -50,6 +62,8 @@
     </li>
     {% endfor %}
   </ul>
+  {% endif %}
+  
 </main>
 {% endblock %}
 

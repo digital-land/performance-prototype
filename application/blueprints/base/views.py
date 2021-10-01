@@ -3,6 +3,7 @@ from datetime import datetime
 
 from flask import render_template, Blueprint, current_app
 from flask.helpers import url_for
+from flask import request
 
 from application.googlesheetscollector import (
     get_datasets,
@@ -29,6 +30,7 @@ from application.datasette import (
     active_datasets,
     sources_by_dataset,
     resources_by_dataset,
+    get_source,
 )
 from application.utils import resources_per_publishers
 
@@ -271,7 +273,8 @@ def resource_info(resource):
 
 
 @base.route("/source")
-def source():
+def sources():
+    pipeline = request.args.get("pipeline")
     datasets = sources_by_dataset()
 
     stats = {
@@ -282,7 +285,23 @@ def source():
         "datasets": len([d for d in datasets if d["active_sources"] > 0]),
     }
 
+    if pipeline:
+        sources = sources_by_dataset(pipeline)
+        return render_template(
+            "source/index.html",
+            by_dataset=datasets,
+            stats=stats,
+            sources=sources,
+            pipeline=pipeline,
+        )
+
     return render_template("source/index.html", by_dataset=datasets, stats=stats)
+
+
+@base.route("/source/<source>")
+def source(source):
+    source_data = get_source(source)
+    return render_template("source/source.html", source=source_data[0])
 
 
 @base.route("/resource")
