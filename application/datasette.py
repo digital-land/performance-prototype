@@ -266,3 +266,13 @@ def datasets():
         "active": [row[0] for row in results["rows"] if row[1] == 1],
         "inactive": [row[0] for row in results["rows"] if row[1] != 1],
     }
+
+
+def get_organisation(id):
+    ds = DLDatasette()
+    query = (
+        "http://datasetteawsentityv2-env.eba-gbrdriub.eu-west-2.elasticbeanstalk.com/digital-land/organisation.json?_sort=organisation&organisation__exact="
+        + id
+    )
+    results = ds.sqlQuery(query)
+    return create_dict(results["columns"], results["rows"][0])

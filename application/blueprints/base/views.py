@@ -32,6 +32,7 @@ from application.datasette import (
     resources_by_dataset,
     get_source,
     datasets,
+    get_organisation,
 )
 from application.utils import resources_per_publishers
 
@@ -155,11 +156,6 @@ def dataset_info(dataset_name):
         page_url=url_for("base.dataset_performance", dataset_name=dataset_name),
         data=data,
     )
-
-
-def get_organisation(id):
-    organisations = get_organisations()
-    return next(o for o in organisations if o["organisation"] == id)
 
 
 @base.route("/organisation")
