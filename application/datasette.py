@@ -256,3 +256,13 @@ def resources_by_dataset():
     query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++count%28DISTINCT+resource.resource%29+as+total%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+resource.end_date+%3D%3D+%27%27+THEN+resource.resource%0D%0A++++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+resource.end_date%29+%3E%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+resource.resource%0D%0A++++END%0D%0A++%29+AS+active_resources%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+resource.end_date+%21%3D+%27%27%0D%0A++++++AND+strftime%28%27%25Y%25m%25d%27%2C+resource.end_date%29+%3C%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+resource.resource%0D%0A++++END%0D%0A++%29+AS+ended_resources%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+source.endpoint+%3D+resource_endpoint.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Agroup+by%0D%0A++source_pipeline.pipeline"
     results = ds.sqlQuery(query)
     return [create_dict(results["columns"], row) for row in results["rows"]]
+
+
+def datasets():
+    ds = DLDatasette()
+    query = "https://datasette.digital-land.info/digital-land.json?sql=SELECT+%0D%0A++DISTINCT+dataset.dataset%2C%0D%0A++%28CASE+%0D%0A++++WHEN+pipeline.pipeline+IS+NOT+NULL+THEN+1%0D%0A++END%29+AS+dataset_active%0D%0AFROM+dataset%0D%0A++++LEFT+JOIN+pipeline+ON+dataset.dataset+%3D+pipeline.pipeline%0D%0A"
+    results = ds.sqlQuery(query)
+    return {
+        "active": [row[0] for row in results["rows"] if row[1] == 1],
+        "inactive": [row[0] for row in results["rows"] if row[1] != 1],
+    }

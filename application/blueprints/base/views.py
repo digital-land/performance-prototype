@@ -31,6 +31,7 @@ from application.datasette import (
     sources_by_dataset,
     resources_by_dataset,
     get_source,
+    datasets,
 )
 from application.utils import resources_per_publishers
 
@@ -61,18 +62,20 @@ def index():
 @base.route("/performance")
 @base.route("/performance/")
 def performance():
-    datasets = get_datasets()
+    gs_datasets = get_datasets()
     print("DATASETS")
     high_level_numbers = {
-        "datasets_with_data": len([d for d in datasets if d["total-resources"] != "0"]),
-        "resources": sum([clean_int_filter(d["total-resources"]) for d in datasets]),
+        "datasets_with_data": len(
+            [d for d in gs_datasets if d["total-resources"] != "0"]
+        ),
+        "resources": sum([clean_int_filter(d["total-resources"]) for d in gs_datasets]),
     }
     org_count = get_org_count()
 
     return render_template(
         "performance.html",
         info_page=url_for("base.performance_info"),
-        datasets=datasets,
+        datasets=gs_datasets,
         high_level_numbers=high_level_numbers,
         stats=get_monthly_counts(),
         org_count=org_count.get(
@@ -80,6 +83,7 @@ def performance():
         ),
         sources=sources_with_endpoint(),
         entity_count=total_entities(),
+        datasette_datasets=datasets(),
     )
 
 

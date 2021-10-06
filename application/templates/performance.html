@@ -28,7 +28,7 @@
   <div class="govuk-grid-row govuk-!-margin-bottom-9">
     <div class="govuk-grid-column-one-quarter">
       <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ high_level_numbers['datasets_with_data'] }}<span class="govuk-!-font-size-19">/{{ datasets|length }}</span></span>
+        <span class="data-item__number govuk-!-font-size-80">{{ datasette_datasets['active']|length }}<span class="govuk-!-font-size-19">/{{ datasette_datasets['active']|length + datasette_datasets['inactive']|length }}</span></span>
         <p class="govuk-body govuk-!-font-size-36">Datasets</p>
       </div>
     </div>
