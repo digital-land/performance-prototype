@@ -71,7 +71,6 @@ def performance():
         ),
         "resources": sum([clean_int_filter(d["total-resources"]) for d in gs_datasets]),
     }
-    org_count = get_org_count()
 
     return render_template(
         "performance.html",
@@ -79,9 +78,7 @@ def performance():
         datasets=gs_datasets,
         high_level_numbers=high_level_numbers,
         stats=get_monthly_counts(),
-        org_count=org_count.get(
-            "Number of organisations we're collecting data from", "?"
-        ),
+        org_count=len(datasets_by_organistion().keys()),
         sources=sources_with_endpoint(),
         entity_count=total_entities(),
         datasette_datasets=datasets(),
