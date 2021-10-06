@@ -7,12 +7,6 @@ from flask import request
 
 from application.googlesheetscollector import (
     get_datasets,
-    get_bfl,
-    get_organisations,
-    get_esk_datasets,
-    get_resource_source_stats,
-    get_org_count,
-    get_publishing_orgs,
 )
 from application.filters import clean_int_filter
 from application.datasette import (
