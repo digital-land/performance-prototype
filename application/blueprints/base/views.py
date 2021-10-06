@@ -201,31 +201,6 @@ def organisation_performance(prefix, org_id):
     data = datasets_for_an_organisation(id)
     source_counts = sources_per_dataset_for_organisation(id)
 
-    if org_id == "ESK":
-        datasets = get_esk_datasets()
-        no_current = [
-            d
-            for d in datasets
-            if int(d["total-resource"]) > 0 and int(d["active-resource"]) == 0
-        ]
-        has_current = [
-            d
-            for d in datasets
-            if int(d["total-resource"]) > 0 and int(d["active-resource"]) > 0
-        ]
-        no_data = [d for d in datasets if int(d["total-resource"]) == 0]
-        return render_template(
-            "organisation/performance.html",
-            organisation=organisation,
-            info_page=url_for("base.organisation_info", prefix=prefix, org_id=org_id),
-            datasets={
-                "current": has_current,
-                "nocurrent": no_current,
-                "missing": no_data,
-            },
-            data=data,
-        )
-
     return render_template(
         "organisation/performance.html",
         organisation=organisation,

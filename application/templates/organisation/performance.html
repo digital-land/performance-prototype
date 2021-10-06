@@ -41,33 +41,6 @@
     </div>
   </div>
 
-  {% if organisation.organisation == 'local-authority-eng:ESK' %}
-  {% if datasets.current|length %}
-    {{ datasetTable({
-        "datasets": datasets.current,
-        "caption": "Datasets with active resource"
-        })
-    }}
-  {% endif %}
-
-  {% if datasets.nocurrent|length %}
-    {{ datasetTable({
-      "datasets": datasets.nocurrent,
-      "caption": "Datasets with no active resource"
-      })
-    }}
-  {% endif %}
-  
-  {% if datasets.missing|length %}
-    {{ datasetTable({
-      "datasets": datasets.missing,
-      "caption": "Datasets with no resources"
-      })
-    }}
-  {% endif %}
-  
-  {% endif %}
-
   {% if has_missing_datasets %}
   <div class="govuk-notification-banner govuk-notification-banner--error" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
     <div class="govuk-notification-banner__header">
