@@ -5,9 +5,6 @@ from flask import render_template, Blueprint, current_app
 from flask.helpers import url_for
 from flask import request
 
-from application.googlesheetscollector import (
-    get_datasets,
-)
 from application.filters import clean_int_filter
 from application.datasette import (
     sources_with_endpoint,
@@ -27,6 +24,8 @@ from application.datasette import (
     get_source,
     datasets,
     get_organisation,
+    get_datasets_summary,
+    get_resource_count,
 )
 from application.utils import resources_per_publishers
 
@@ -57,25 +56,18 @@ def index():
 @base.route("/performance")
 @base.route("/performance/")
 def performance():
-    gs_datasets = get_datasets()
-    print("DATASETS")
-    high_level_numbers = {
-        "datasets_with_data": len(
-            [d for d in gs_datasets if d["total-resources"] != "0"]
-        ),
-        "resources": sum([clean_int_filter(d["total-resources"]) for d in gs_datasets]),
-    }
+    gs_datasets = get_datasets_summary()
 
     return render_template(
         "performance.html",
         info_page=url_for("base.performance_info"),
         datasets=gs_datasets,
-        high_level_numbers=high_level_numbers,
         stats=get_monthly_counts(),
         org_count=len(datasets_by_organistion().keys()),
         sources=sources_with_endpoint(),
         entity_count=total_entities(),
         datasette_datasets=datasets(split=True),
+        resource_count=get_resource_count(),
     )
 
 
@@ -98,9 +90,9 @@ def dataset():
 
 @base.route("/dataset/<dataset_name>")
 def dataset_performance(dataset_name):
-    datasets = get_datasets()
+    datasets = get_datasets_summary()
     # name = dataset_name.replace("_", " ").capitalize()
-    dataset = [d for d in datasets if d["pipeline"] == dataset_name]
+    dataset = [v for k, v in datasets.items() if v.get("pipeline") == dataset_name]
 
     resources_by_publisher = resources_per_publishers(active_resources(dataset_name))
 

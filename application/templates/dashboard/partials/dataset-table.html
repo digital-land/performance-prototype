@@ -11,7 +11,6 @@
         </tr>-->
         <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header dl-table__header--border-right govuk-\!-width-one-quarter" aria-sort="none">Name</th>
-          <th scope="col" class="govuk-table__header" aria-sort="none">Provider</th>
           <th scope="col" class="govuk-table__header dl-cell-date" aria-sort="none">Started</th>
           <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Publishers (current/expected)</th>
           <th scope="col" class="govuk-table__header govuk-table__header--numeric" aria-sort="none">Resources</th>
@@ -19,23 +18,22 @@
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        {% for dataset in datasets %}
+        {% for k, dataset in datasets.items() %}
         <tr class="govuk-table__row{{ ' dl-row--inactive' if not dataset.pipeline }}">
           <td scope="row" class="govuk-table__cell dl-table__header--border-right" data-sort-value="{{ dataset.name }}">
             {% set dataset_url_str = dataset.name|lower|replace(" ", "-") %}
             <a href="{{ url_for('base.dataset_performance', dataset_name=dataset_url_str) }}" class="govuk-link govuk-link--bold">{{ dataset.name }}</a>
           </td>
-          <td class="govuk-table__cell" data-sort-value="{{ dataset['data-provider'] }}">{{ dataset['data-provider'] }}</td>
-          <td class="govuk-table__cell">{% if dataset['first-collected-resource'] %}
-            {{ dataset['first-collected-resource'] }}
+          <td class="govuk-table__cell">{% if dataset['first'] %}
+            {{ dataset['first'] }}
           {% elif dataset.pipeline %}
             <strong class="govuk-tag govuk-tag--yellow">No data</strong>
           {% else %}
             <strong class="govuk-tag govuk-tag--grey">Backlog</strong>
           {% endif %}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['organisations-with-active-resources']|to_int }}">{{ dataset['organisations-with-active-resources'] }} / {{ dataset['organisations-expected-to-publish'] }}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['total-resources']|to_int }}">{{ dataset['total-resources'] }}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['days-since-new-resource-added']|to_int }}">{{ dataset['days-since-new-resource-added'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['publishers']|to_int }}">{{ dataset['publishers'] }} / {{ dataset['expected_publishers'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['total']|to_int }}">{{ dataset['total'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['latest'] }}">{{ dataset['latest'] }}</td>
         </tr>
         {% endfor %}
       </tbody>

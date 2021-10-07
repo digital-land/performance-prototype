@@ -260,16 +260,31 @@ def resources_by_dataset():
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
+def first_and_last_resource(pipeline=None):
+    ds = DLDatasette()
+    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++resource.resource%2C%0D%0A++MAX%28resource.start_date%29+AS+latest%2C%0D%0A++MIN%28resource.start_date%29+AS+first%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Agroup+by%0D%0A++source_pipeline.pipeline%0D%0Aorder+by%0D%0A++resource.start_date+DESC"
+    results = ds.sqlQuery(query)
+    return [create_dict(results["columns"], row) for row in results["rows"]]
+
+
 def datasets(split=False):
     ds = DLDatasette()
-    query = "https://datasette.digital-land.info/digital-land.json?sql=SELECT+%0D%0A++DISTINCT+dataset.dataset%2C%0D%0A++%28CASE+%0D%0A++++WHEN+pipeline.pipeline+IS+NOT+NULL+THEN+1%0D%0A++END%29+AS+dataset_active%0D%0AFROM+dataset%0D%0A++++LEFT+JOIN+pipeline+ON+dataset.dataset+%3D+pipeline.pipeline%0D%0A"
+    query = "https://datasette.digital-land.info/digital-land.json?sql=SELECT+%0D%0A++DISTINCT+dataset.dataset%2C%0D%0A++dataset.name%2C%0D%0A++%28CASE+%0D%0A++++WHEN+pipeline.pipeline+IS+NOT+NULL+THEN+1%0D%0A++END%29+AS+dataset_active%0D%0AFROM+dataset%0D%0A++++LEFT+JOIN+pipeline+ON+dataset.dataset+%3D+pipeline.pipeline%0D%0A"
     results = ds.sqlQuery(query)
     if split:
         return {
-            "active": [row[0] for row in results["rows"] if row[1] == 1],
-            "inactive": [row[0] for row in results["rows"] if row[1] != 1],
+            "active": [
+                create_dict(results["columns"], row)
+                for row in results["rows"]
+                if row[2] == 1
+            ],
+            "inactive": [
+                create_dict(results["columns"], row)
+                for row in results["rows"]
+                if row[2] != 1
+            ],
         }
-    return [row[0] for row in results["rows"]]
+    return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
 def get_organisation(id):
@@ -280,3 +295,46 @@ def get_organisation(id):
     )
     results = ds.sqlQuery(query)
     return create_dict(results["columns"], results["rows"][0])
+
+
+def get_resource_count():
+    ds = DLDatasette()
+    query = "http://datasette.digital-land.info/digital-land.json?sql=select+count%28distinct+resource%29+from+resource"
+    results = ds.sqlQuery(query)
+    return results["rows"][0][0]
+
+
+def get_datasets_summary():
+    # get all the datasets listed with their active status
+    all_datasets = index_by("dataset", datasets())
+    missing = []
+
+    # add the publisher coverage numbers
+    dataset_coverage = publisher_coverage()
+    for d in dataset_coverage:
+        if all_datasets.get(d["pipeline"]):
+            all_datasets[d["pipeline"]] = {**all_datasets[d["pipeline"]], **d}
+        else:
+            missing.append(d["pipeline"])
+
+    # add the total resource count
+    dataset_resource_counts = resources_by_dataset()
+    for d in dataset_resource_counts:
+        if all_datasets.get(d["pipeline"]):
+            all_datasets[d["pipeline"]] = {**all_datasets[d["pipeline"]], **d}
+        else:
+            missing.append(d["pipeline"])
+
+    # add the first and last resource dates
+    dataset_resource_dates = first_and_last_resource()
+    for d in dataset_resource_dates:
+        if all_datasets.get(d["pipeline"]):
+            all_datasets[d["pipeline"]] = {**all_datasets[d["pipeline"]], **d}
+        else:
+            missing.append(d["pipeline"])
+
+    print(all_datasets)
+    print("MISSING")
+    print(set(missing))
+
+    return all_datasets
