@@ -260,14 +260,16 @@ def resources_by_dataset():
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
-def datasets():
+def datasets(split=False):
     ds = DLDatasette()
     query = "https://datasette.digital-land.info/digital-land.json?sql=SELECT+%0D%0A++DISTINCT+dataset.dataset%2C%0D%0A++%28CASE+%0D%0A++++WHEN+pipeline.pipeline+IS+NOT+NULL+THEN+1%0D%0A++END%29+AS+dataset_active%0D%0AFROM+dataset%0D%0A++++LEFT+JOIN+pipeline+ON+dataset.dataset+%3D+pipeline.pipeline%0D%0A"
     results = ds.sqlQuery(query)
-    return {
-        "active": [row[0] for row in results["rows"] if row[1] == 1],
-        "inactive": [row[0] for row in results["rows"] if row[1] != 1],
-    }
+    if split:
+        return {
+            "active": [row[0] for row in results["rows"] if row[1] == 1],
+            "inactive": [row[0] for row in results["rows"] if row[1] != 1],
+        }
+    return [row[0] for row in results["rows"]]
 
 
 def get_organisation(id):

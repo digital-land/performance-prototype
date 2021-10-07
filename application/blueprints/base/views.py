@@ -75,7 +75,7 @@ def performance():
         org_count=len(datasets_by_organistion().keys()),
         sources=sources_with_endpoint(),
         entity_count=total_entities(),
-        datasette_datasets=datasets(),
+        datasette_datasets=datasets(split=True),
     )
 
 
