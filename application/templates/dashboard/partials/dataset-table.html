@@ -33,7 +33,7 @@
           {% endif %}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['publishers']|to_int }}">{{ dataset['publishers'] }} / {{ dataset['expected_publishers'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['total']|to_int }}">{{ dataset['total'] }}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['latest'] }}">{{ dataset['latest'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['latest'] }}">{{ dataset['latest']|days_since if dataset['latest'] }}</td>
         </tr>
         {% endfor %}
       </tbody>
