@@ -269,7 +269,7 @@ def first_and_last_resource(pipeline=None):
 
 def datasets(split=False):
     ds = DLDatasette()
-    query = "https://datasette.digital-land.info/digital-land.json?sql=SELECT+%0D%0A++DISTINCT+dataset.dataset%2C%0D%0A++dataset.name%2C%0D%0A++%28CASE+%0D%0A++++WHEN+pipeline.pipeline+IS+NOT+NULL+THEN+1%0D%0A++END%29+AS+dataset_active%0D%0AFROM+dataset%0D%0A++++LEFT+JOIN+pipeline+ON+dataset.dataset+%3D+pipeline.pipeline%0D%0A"
+    query = "https://datasette.digital-land.info/digital-land.json?sql=SELECT%0D%0A++DISTINCT+dataset.dataset%2C%0D%0A++dataset.name%2C%0D%0A++%28%0D%0A++++CASE%0D%0A++++++WHEN+pipeline.pipeline+IS+NOT+NULL+THEN+1%0D%0A++++END%0D%0A++%29+AS+dataset_active%2C%0D%0A++GROUP_CONCAT%28dataset_theme.theme%2C+%22%3B%22%29+AS+themes%0D%0AFROM%0D%0A++dataset%0D%0A++LEFT+JOIN+pipeline+ON+dataset.dataset+%3D+pipeline.pipeline%0D%0A++INNER+JOIN+dataset_theme+ON+dataset.dataset+%3D+dataset_theme.dataset%0D%0Agroup+by%0D%0Adataset.dataset"
     results = ds.sqlQuery(query)
     if split:
         return {
