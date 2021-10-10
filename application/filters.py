@@ -27,3 +27,7 @@ def days_since(d):
         d = datetime.strptime(d, "%Y-%m-%d")
     delta = today - d
     return delta.days
+
+
+def split_filter(s, d):
+    return s.split(d)

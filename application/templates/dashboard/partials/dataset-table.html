@@ -25,7 +25,7 @@
             {% set dataset_url_str = dataset.name|lower|replace(" ", "-") %}
             <a href="{{ url_for('base.dataset_performance', dataset_name=dataset_url_str) }}" class="govuk-link govuk-link--bold">{{ dataset.name }}</a>
           </td>
-          <td class="govuk-table__cell" data-sort-value="{{ dataset['themes'] }}">{{ dataset['themes'] }}</td>
+          <td class="govuk-table__cell" data-sort-value="{{ dataset['themes'] }}">{{ dataset['themes']|split(';')|join(", ") }}</td>
           <td class="govuk-table__cell">{% if dataset['first'] %}
             {{ dataset['first'] }}
           {% elif dataset.pipeline %}

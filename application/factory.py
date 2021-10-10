@@ -48,11 +48,17 @@ def register_context_processors(app):
 
 
 def register_filters(app):
-    from application.filters import clean_int_filter, to_float_filter, days_since
+    from application.filters import (
+        clean_int_filter,
+        to_float_filter,
+        days_since,
+        split_filter,
+    )
 
     app.add_template_filter(clean_int_filter, name="to_int")
     app.add_template_filter(to_float_filter, name="to_float")
     app.add_template_filter(days_since, name="days_since")
+    app.add_template_filter(split_filter, name="split")
 
     from digital_land_frontend.filters import commanum
 
