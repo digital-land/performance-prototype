@@ -8,6 +8,7 @@ from flask import request
 from application.filters import clean_int_filter
 from application.datasette import (
     sources_with_endpoint,
+    active_source_no_doc,
     datasets_for_an_organisation,
     datasets_by_organistion,
     total_entities,
@@ -127,6 +128,7 @@ def dataset_performance(dataset_name):
         entity_count=entity_count(dataset_name),
         coverage=publisher_coverage(dataset_name)[0],
         resource_stats=resource_stats,
+        no_doc_url=active_source_no_doc(dataset_name),
     )
 
 
