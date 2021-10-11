@@ -1,4 +1,6 @@
+aiohttp
 appdirs
+asyncio
 black
 CacheControl
 flake8
