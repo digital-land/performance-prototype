@@ -148,7 +148,19 @@
     <p class="govuk-body">{{ no_doc_url|length }} active sources are missing <code>documentation-urls</code>.</p>
     <ul class="govuk-list">
     {% for source in no_doc_url %}
-      <li>{{ source['organisation_name'] }} - {{ source['source'] }}</li>
+      <li class="data-record govuk-!-margin-bottom-3">
+        <h4 class="govuk-heading-s data-record__identifier govuk-!-margin-bottom-0">Source <a href="{{ url_for('base.source', source=source['source']) }}">{{ source['source'] }}</a></h4>
+        <dl class="govuk-summary-list data-record__properties govuk-!-margin-bottom-0">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Organisation</dt>
+            <dd class="govuk-summary-list__value">{{ source['organisation_name'] }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Endpoint url</dt>
+            <dd class="govuk-summary-list__value"><a href="{{ source['endpoint_url'] }}">{{ source['endpoint_url'] }}</a></dd>
+          </div>
+        </dl>
+      </li>
     {% endfor %}
     </ul>
     {% endif %}
