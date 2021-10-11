@@ -23,12 +23,70 @@
 {% block content %}
 
 <main id="content" role="main">
-  <span class="govuk-caption-xl">Source</span>
-  <h1 class="govuk-heading-xl">{{ source['source'] }}</h1>
+  <h2 class="govuk-heading-l">Source</h2>
 
-  <code>{{ source }}</code>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <article class="data-record">
+        <h1 class="govuk-heading-s data-record__identifier govuk-!-margin-bottom-0">{{ source['source'] }}</h1>
+        <dl class="govuk-summary-list data-record__properties govuk-!-margin-bottom-0">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Organisation</dt>
+            <dd class="govuk-summary-list__value">{{ source['organisation']['label'] }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Endpoint</dt>
+            <dd class="govuk-summary-list__value">{{ source['endpoint']['value'] }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Documentation url</dt>
+            <dd class="govuk-summary-list__value">{% if source['documentation-url'] %}
+            {{ source['documentation-url'] }}
+            {% else %}
+            <span class="govuk-tag govuk-tag--yellow">Missing</span>
+            {% endif %}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Attribution</dt>
+            <dd class="govuk-summary-list__value">{% if source['attribution'] %}
+            {{ source['attribution'] }}
+            {% else %}
+            <span class="govuk-tag govuk-tag--yellow">Missing</span>
+            {% endif %}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Licence</dt>
+            <dd class="govuk-summary-list__value">{% if source['licence'] %}
+            {{ source['licence'] }}
+            {% else %}
+            <span class="govuk-tag govuk-tag--yellow">Missing</span>
+            {% endif %}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Entry date</dt>
+            <dd class="govuk-summary-list__value">{{ source['entry_date'] }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Start date</dt>
+            <dd class="govuk-summary-list__value">{{ source['start_date'] }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">End date</dt>
+            <dd class="govuk-summary-list__value">{{ source['end_date'] }}</dd>
+          </div>
+        </dl>
+      </article>
+    </div>
+  </div>
 </main>
 {% endblock %}
+
+{% block bodyEnd %}
+{{ super() }}
+<script>
+  console.log('source object', {{ source|tojson }})
+</script>
+{% endblock bodyEnd %}
 
 
 
