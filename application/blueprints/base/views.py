@@ -27,6 +27,7 @@ from application.datasette import (
     get_organisation,
     get_datasets_summary,
     get_resource_count,
+    total_publisher_coverage,
 )
 from application.utils import resources_per_publishers
 from application.enddatechecker import EndDateChecker
@@ -66,7 +67,7 @@ def performance():
         info_page=url_for("base.performance_info"),
         datasets=gs_datasets,
         stats=get_monthly_counts(),
-        org_count=len(datasets_by_organistion().keys()),
+        publisher_count=total_publisher_coverage(),
         sources=sources_with_endpoint(),
         entity_count=total_entities(),
         datasette_datasets=datasets(split=True),

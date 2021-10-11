@@ -213,6 +213,15 @@ def entity_count(pipeline):
     return results["rows"][0][0]
 
 
+def total_publisher_coverage():
+    # returns count for expected publishers and publishers with source that have an endpoint
+    ds = DLDatasette()
+    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++count%28DISTINCT+source.organisation%29+AS+total%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+source.endpoint+%21%3D+%27%27+THEN+source.organisation%0D%0A++++END%0D%0A++%29+AS+active%0D%0Afrom%0D%0A++source%0D%0Aorder+by%0D%0A++source.source"
+    results = ds.sqlQuery(query)
+    return create_dict(results["columns"], results["rows"][0])
+
+
+# returns organisation counts per dataset
 def publisher_coverage(pipeline=None):
     ds = DLDatasette()
     query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source_pipeline.pipeline%2C%0D%0A++count%28DISTINCT+source.organisation%29+as+expected_publishers%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+source.endpoint+%21%3D+%27%27+THEN+source.organisation%0D%0A++++END%0D%0A++%29+AS+publishers%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Agroup+by%0D%0Asource_pipeline.pipeline"

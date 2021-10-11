@@ -46,7 +46,7 @@
     </div>
     <div class="govuk-grid-column-one-quarter">
       <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ org_count }}</span>
+        <span class="data-item__number govuk-!-font-size-80">{{ publisher_count['active'] }}<span class="govuk-!-font-size-19">/{{ publisher_count['total'] }}</span></span>
         <p class="govuk-body govuk-!-font-size-36">Organisations</p>
       </div>
     </div>
@@ -145,6 +145,12 @@
     <div id="publishers">
       <h3 class="govuk-heading-m">Overview of publishers</h3>
       <div class="govuk-grid-row govuk-!-margin-bottom-9">
+        <div class="govuk-grid-column-one-half">
+          <div class="data-item govuk-!-margin-bottom-6">
+            <span class="data-item__number govuk-!-font-size-48">{{ publisher_count['active'] }}<span class="govuk-!-font-size-19">/{{ publisher_count['total'] }}</span></span>
+            <p class="govuk-body govuk-!-font-size-19">Publisher coverage</code></p>
+          </div>
+        </div>
         <div class="govuk-grid-column-one-half">
           <div class="data-item govuk-!-margin-bottom-6">
             <span class="data-item__number govuk-!-font-size-48">{{ using_enddate }}</span>
