@@ -191,6 +191,8 @@ def organisation_performance(prefix, org_id):
     organisation = get_organisation(id)
     data = datasets_for_an_organisation(id)
     source_counts = sources_per_dataset_for_organisation(id)
+    checker = EndDateChecker()
+    used_enddate, datasets_with_enddate = checker.has_used_enddate(id)
 
     return render_template(
         "organisation/performance.html",
@@ -201,6 +203,7 @@ def organisation_performance(prefix, org_id):
         has_missing_datasets=any(
             dataset["sources_with_endpoint"] == 0 for dataset in source_counts
         ),
+        enddate={"used": used_enddate, "datasets": datasets_with_enddate},
     )
 
 
