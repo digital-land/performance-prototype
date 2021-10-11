@@ -29,6 +29,7 @@ from application.datasette import (
     get_resource_count,
 )
 from application.utils import resources_per_publishers
+from application.enddatechecker import EndDateChecker
 
 
 base = Blueprint("base", __name__)
@@ -58,6 +59,7 @@ def index():
 @base.route("/performance/")
 def performance():
     gs_datasets = get_datasets_summary()
+    checker = EndDateChecker()
 
     return render_template(
         "performance.html",
@@ -69,6 +71,7 @@ def performance():
         entity_count=total_entities(),
         datasette_datasets=datasets(split=True),
         resource_count=get_resource_count(),
+        using_enddate=checker.get_count(),
     )
 
 

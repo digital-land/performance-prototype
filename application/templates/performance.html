@@ -68,6 +68,11 @@
                 Sources and resources
                 </a>
             </li>
+            <li class="dlf-subnav__list-item">
+              <a class="dlf-subnav__list-item__link" href="#publishers" data-module-sub-nav="tab">
+              Publishers
+              </a>
+            </li>
         </ul>
     </nav>
 
@@ -135,6 +140,28 @@
           enhanced readability.
         </p>
       </figure>
+    </div>
+
+    <div id="publishers">
+      <h3 class="govuk-heading-m">Overview of publishers</h3>
+      <div class="govuk-grid-row govuk-!-margin-bottom-9">
+        <div class="govuk-grid-column-one-half">
+          <div class="data-item govuk-!-margin-bottom-6">
+            <span class="data-item__number govuk-!-font-size-48">{{ using_enddate }}</span>
+            <p class="govuk-body govuk-!-font-size-19">Have used <code>end-date</code></p>
+          </div>
+          <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text dl-small-text">
+                What does this tell us?
+              </span>
+            </summary>
+            <div class="govuk-details__text dl-small-text">
+              {{ using_enddate }} different publishers have used an <code>end-date</code>. End dates are used to indicate something is historical. It is a concept we expected publishers to struggle with. Therefore it is good to know who is using them and who isn't. 
+            </div>
+          </details>
+        </div>
+      </div>
     </div>
 
   </div>
