@@ -120,7 +120,9 @@
           <div class="dl-collapsible no-doc-endpoints" data-collapsible="open">
             <ul class="govuk-list">
               {% for col in sources['no_documentation']['collection'] %}
-              <li><a href="{{ url_for('base.dataset_performance', dataset_name=col['label']) }}">{{ col['label'] }}</a>: {{ col['count'] }}</li>
+              <li>
+                <a href="{{ url_for('base.dataset_performance', dataset_name=col['value'], _anchor='sources-missing-documentation-url') }}">{{ col['label'] }}</a>: {{ col['count'] }}
+              </li>
               {% endfor %}
             </ul>
           </div>
