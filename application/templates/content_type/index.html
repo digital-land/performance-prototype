@@ -21,6 +21,18 @@
 <main id="content" role="main">
   <h1 class="govuk-heading-xl">Content types</h1>
 
+  <p class="govuk-body results-summary">Showing {{ content_type_counts|length }} content-type{{ "" if content_type_counts|length == 1 else "s" }}</p>
+  {% if pipeline -%}
+  <div class="applied-filters">
+    <div class="applied-filter__group">
+      <span class="applied-filter__name govuk-!-font-weight-bold">Filter:</span>
+      <span class="applied-filter__item">
+        <a href="{{ url_for('base.content_type') }}" class="govuk-link">x<span class="govuk-visually-hidden">remove filtering by true</span></a>
+        {{ pipeline }}
+      </span>
+    </div>
+  </div>
+  {% endif %}
   <ul class="govuk-list">
     {% for _type in content_type_counts %}
     <li>

@@ -283,6 +283,15 @@ def resource():
 
 @base.route("/content-type")
 def content_type():
+    pipeline = request.args.get("pipeline")
+
+    if pipeline:
+        return render_template(
+            "content_type/index.html",
+            content_type_counts=content_type_counts(pipeline),
+            pipeline=pipeline,
+        )
+
     return render_template(
         "content_type/index.html", content_type_counts=content_type_counts()
     )
