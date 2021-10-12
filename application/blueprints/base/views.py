@@ -279,3 +279,10 @@ def resource():
     datasets = resources_by_dataset()
 
     return render_template("resource/index.html", by_dataset=datasets)
+
+
+@base.route("/content-type")
+def content_type():
+    return render_template(
+        "content_type/index.html", content_type_counts=content_type_counts()
+    )
