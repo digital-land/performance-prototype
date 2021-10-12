@@ -19,6 +19,7 @@ class DLDatasette:
 
     def query(self, table, params, format="json"):
         query = self.generate_query(table, params, format)
+        print("Running: ", query)
 
         # only returns 100
         r = get(query)
@@ -47,12 +48,13 @@ def by_collection(data):
 
 def sources_with_endpoint():
     # query
-    # "https://datasette.digital-land.info/digital-land/source.json?_sort=rowid&endpoint__notblank=1&_labels=on"
+    # "https://datasette.digital-land.info/digital-land/source.json?endpoint__notblank=1&_labels=on"
     ds = DLDatasette()
 
     endpoint_results = ds.query("source", {"endpoint__notblank": 1, "_labels": "on"})
+    print(endpoint_results)
 
-    # https://datasette.digital-land.info/digital-land/source?_sort=rowid&documentation_url__isblank=1&endpoint__notblank=1
+    # https://datasette.digital-land.info/digital-land/source?documentation_url__isblank=1&endpoint__notblank=1
     no_documentation_url_results = ds.query(
         "source",
         {
@@ -357,3 +359,14 @@ def get_datasets_summary():
     print(set(missing))
 
     return all_datasets
+
+
+def content_type_counts(pipeline=None):
+    ds = DLDatasette()
+    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++content_type%2C%0D%0A++count%28DISTINCT+resource%29+AS+resource_count%0D%0Afrom%0D%0A++log%0D%0Agroup+by%0D%0A++content_type%0D%0A"
+    results = ds.sqlQuery(query)
+    return sorted(
+        [create_dict(results["columns"], row) for row in results["rows"]],
+        key=lambda x: x["resource_count"],
+        reverse=True,
+    )

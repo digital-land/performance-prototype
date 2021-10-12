@@ -22,8 +22,6 @@ def to_float_filter(s):
 def days_since(d):
     today = datetime.now()
     if not isinstance(d, datetime):
-        print("DATE: ")
-        print(d)
         d = datetime.strptime(d, "%Y-%m-%d")
     delta = today - d
     return delta.days

@@ -28,6 +28,7 @@ from application.datasette import (
     get_datasets_summary,
     get_resource_count,
     total_publisher_coverage,
+    content_type_counts,
 )
 from application.utils import resources_per_publishers
 from application.enddatechecker import EndDateChecker
@@ -73,6 +74,7 @@ def performance():
         datasette_datasets=datasets(split=True),
         resource_count=get_resource_count(),
         using_enddate=checker.get_count(),
+        content_type_counts=content_type_counts(),
     )
 
 
