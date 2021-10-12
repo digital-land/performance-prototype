@@ -1,4 +1,5 @@
 from datetime import datetime
+import urllib.parse
 
 
 def clean_int_filter(s):
@@ -29,3 +30,7 @@ def days_since(d):
 
 def split_filter(s, d):
     return s.split(d)
+
+
+def urlencode_filter(s):
+    return urllib.parse.quote_plus(s)

@@ -27,7 +27,7 @@
     <div class="applied-filter__group">
       <span class="applied-filter__name govuk-!-font-weight-bold">Filter:</span>
       <span class="applied-filter__item">
-        <a href="{{ url_for('base.content_type') }}" class="govuk-link">x<span class="govuk-visually-hidden">remove filtering by true</span></a>
+        <a href="{{ url_for('base.content_types') }}" class="govuk-link">x<span class="govuk-visually-hidden">remove filtering by true</span></a>
         {{ pipeline }}
       </span>
     </div>
@@ -41,7 +41,7 @@
       {% else %}
       <span class="govuk-tag govuk-tag--yellow">No content-type</span> 
       {% endif %}
-    {{ _type['resource_count'] }} resource{{ "" if _type['resource_count'] == 1 else "s" }}
+      <a href="{{ url_for('base.content_type', content_type=_type['content_type']|urlencode) }}" class="govuk-link">{{ _type['resource_count'] }} resource{{ "" if _type['resource_count'] == 1 else "s" }}</a>
     </li>
     {% endfor %}
   </ul>

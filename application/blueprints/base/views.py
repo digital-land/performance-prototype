@@ -29,6 +29,7 @@ from application.datasette import (
     get_resource_count,
     total_publisher_coverage,
     content_type_counts,
+    resources_of_type,
 )
 from application.utils import resources_per_publishers
 from application.enddatechecker import EndDateChecker
@@ -282,7 +283,7 @@ def resource():
 
 
 @base.route("/content-type")
-def content_type():
+def content_types():
     pipeline = request.args.get("pipeline")
 
     if pipeline:
@@ -294,4 +295,14 @@ def content_type():
 
     return render_template(
         "content_type/index.html", content_type_counts=content_type_counts()
+    )
+
+
+@base.route("/content-type/<content_type>")
+def content_type(content_type):
+
+    return render_template(
+        "content_type/type.html",
+        content_type=content_type,
+        resources=resources_of_type(content_type),
     )

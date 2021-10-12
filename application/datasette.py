@@ -1,4 +1,5 @@
 import json
+import urllib.parse
 from datetime import datetime
 
 from application.caching import get
@@ -375,3 +376,13 @@ def content_type_counts(pipeline=None):
         key=lambda x: x["resource_count"],
         reverse=True,
     )
+
+
+def resources_of_type(t):
+    ds = DLDatasette()
+    query = (
+        "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++log.content_type%2C%0D%0A++log.resource%0D%0Afrom%0D%0A++log%0D%0A++INNER+JOIN+source+ON+log.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+on+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++log.content_type+%3D+%3Atype%0D%0Agroup+by%0D%0A+log.resource&type="
+        + t
+    )
+    results = ds.sqlQuery(query)
+    return [create_dict(results["columns"], row) for row in results["rows"]]
