@@ -135,6 +135,7 @@ def dataset_performance(dataset_name):
         coverage=publisher_coverage(dataset_name)[0],
         resource_stats=resource_stats,
         no_doc_url=active_source_no_doc(dataset_name),
+        content_type_counts=content_type_counts(dataset_name),
     )
 
 

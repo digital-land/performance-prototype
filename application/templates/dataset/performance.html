@@ -164,6 +164,42 @@
     {% endfor %}
     </ul>
     {% endif %}
+    <h3 id="sources-missing-documentation-url" class="govuk-heading-m">Resource content-types</h3>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-half">
+        <div class="data-item govuk-!-margin-bottom-6">
+          <span class="data-item__number govuk-!-font-size-48">{{ content_type_counts|length }}</span>
+          <p class="govuk-body govuk-!-font-size-19">Content types</p>
+        </div>
+        <details class="govuk-details" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text dl-small-text">
+              What does this tell us?
+            </span>
+          </summary>
+          <div class="govuk-details__text dl-small-text">
+            The higher the number of different content-types, the more variety there is in the types of resource we have to process. It is easier to process, extract and combine data from the same type of resource.
+          </div>
+        </details>
+      </div>
+      <div class="govuk-grid-column-one-half">
+        <ul class="govuk-list">
+          <h4 class="govuk-heading-xs">Most common types</h4>
+          {# only want to show most common types #}
+          {% set items = content_type_counts|length if content_type_counts|length < 4 else 4 %}
+          {% for n in range(items) %}
+            <li>
+              {% if content_type_counts[n]['content_type'] %}
+              <span class="govuk-!-font-weight-bold">{{ content_type_counts[n]['content_type'] }}</span>: 
+              {% else %}
+              <span class="govuk-tag govuk-tag--yellow">No content-type</span> 
+              {% endif %}
+            {{ content_type_counts[n]['resource_count'] }} resource{{ "" if content_type_counts[n]['resource_count'] == 1 else "s" }}
+            </li>
+          {% endfor %}
+          </ul>
+      </div>
+    </div>
     </div>
 
     <div id="publishers">

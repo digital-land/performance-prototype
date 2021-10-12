@@ -364,6 +364,11 @@ def get_datasets_summary():
 def content_type_counts(pipeline=None):
     ds = DLDatasette()
     query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++content_type%2C%0D%0A++count%28DISTINCT+resource%29+AS+resource_count%0D%0Afrom%0D%0A++log%0D%0Agroup+by%0D%0A++content_type%0D%0A"
+    if pipeline:
+        query = (
+            "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++content_type%2C%0D%0A++count%28DISTINCT+resource%29+AS+resource_count%0D%0Afrom%0D%0A++log%0D%0A++INNER+JOIN+source+ON+log.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+on+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0Asource_pipeline.pipeline+%3D+%3Apipeline%0D%0Agroup+by%0D%0A++content_type%0D%0A&pipeline="
+            + pipeline
+        )
     results = ds.sqlQuery(query)
     return sorted(
         [create_dict(results["columns"], row) for row in results["rows"]],
