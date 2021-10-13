@@ -1,24 +1,33 @@
-{% extends "resource/base.html" %}
-{% block page_title %}Flask prototyping index{% endblock %}
-{%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+{% extends "layouts/layout.html" %}
 
-{% block dl_breadcrumbs %}{% endblock %}
-
-{% block content %}
-
-<main id="content" role="main">
-  <h1 class="govuk-heading-xl">Resources</h1>
-
-  <h2 class="govuk-heading-l">By dataset</h2>
-  <ul class="govuk-list">
-    {% for dataset in by_dataset %}
-    <li>
-      <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.pipeline) }}" class="govuk-link">{{ dataset['pipeline']|replace("-", " ")|capitalize }}</a><span class="govuk-!govuk-!-font-size-19">{{ dataset['total'] }}</span>
-    </li>
-    {% endfor %}
-  </ul>
-</main>
-{% endblock %}
+{% block primaryNav %}
+{{ primaryNavigation({
+    "items": [
+        {
+            "text": "Overview",
+            "href": url_for('base.performance')
+        },
+        {
+            "text": "Datasets",
+            "href": url_for('base.dataset'),
+            "active": True
+        },
+        {
+            "text": "Publishers",
+            "href": url_for('base.organisation')
+        },
+        {
+            "text": "Sources",
+            "href": url_for('base.sources')
+        },
+        {
+            "text": "Resources",
+            "href": url_for('base.resources')
+        },
+    ]
+})
+}}
+{% endblock primaryNav %}
 
 {% block footer %}
 <div class="dl-sticky-banner__container" data-module="sticky-banner">

@@ -1,0 +1,9 @@
+.app-light-header {
+  border-bottom-color: govuk-colour("blue");
+
+  .govuk-header__logo {
+    @include govuk-media-query($from: tablet) {
+      width: 50%;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 {% extends "govuk-jinja-components/template.html" %}
 {% from "govuk-jinja-components/components/header/macro.jinja" import govukHeader -%}
 {% from "govuk-jinja-components/components/breadcrumbs/macro.jinja" import govukBreadcrumbs -%}
+{% from 'macro/primary-nav.html' import primaryNavigation %}
 
 {% block head %}
 
@@ -30,19 +31,25 @@
 {% endblock %}
 
 {% block header %}
-<header role="banner" id="global-header" class="govuk-header  with-proposition dl-header" data-module="govuk-header">
+<header class="govuk-header app-light-header" role="banner" data-module="govuk-header">
   <div class="govuk-header__container govuk-width-container">
-    <div class="header-proposition">
-      <div class="govuk-header__content">
-        <a href="https://digital-land.github.io/" class="govuk-header__link govuk-header__link--service-name">
-        Digital Land
-        </a>
-        <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
-        <span class="dl-header__service-name"><a href="/" class="govuk-header__link govuk-header__link--service-name">Operations dashboard</a></span>
-      </div>
+    <div class="govuk-header__logo">
+      <a href="/start-page" class="govuk-header__link govuk-header__link--homepage">
+        <span class="govuk-header__logotype">
+          <span class="govuk-header__logotype-text">
+            Digital Land
+          </span>
+        </span>
+        <span class="govuk-header__product-name">
+          Operations dashboard
+        </span>
+      </a>
     </div>
   </div>
 </header>
+{% block primaryNav %}
+{% include 'partials/primary-navigation.html' %}
+{% endblock primaryNav %}
 {% endblock %}
 
 

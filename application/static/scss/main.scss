@@ -3,6 +3,10 @@
 @import "table";
 @import "forms";
 @import "applied-filter";
+@import "header";
+
+// import components
+@import "components/moj-primary-navigation";
 
 .govuk-link--bold {
     font-weight: bold !important;

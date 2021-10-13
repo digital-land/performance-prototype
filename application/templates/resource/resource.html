@@ -1,14 +1,10 @@
-{% extends "layouts/layout.html" %}
+{% extends "resource/base.html" %}
 {% block page_title %}Flask prototyping index{% endblock %}
 {%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
 
 {% block dl_breadcrumbs %}
 {{ govukBreadcrumbs({
   "items": [
-    {
-      "text": "Data operations",
-      "href": "/"
-    },
     {
       "text": "Resources",
       "href": url_for('base.resources')
