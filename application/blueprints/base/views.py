@@ -5,7 +5,7 @@ from flask import render_template, Blueprint, current_app
 from flask.helpers import url_for
 from flask import request
 
-from application.filters import clean_int_filter
+from application.filters import clean_int_filter, days_since
 from application.datasette import (
     sources_with_endpoint,
     active_source_no_doc,
@@ -19,7 +19,6 @@ from application.datasette import (
     entity_count,
     publisher_coverage,
     active_resources,
-    active_datasets,
     sources_by_dataset,
     resources_by_dataset,
     get_source,
@@ -93,8 +92,13 @@ def performance_info():
 
 @base.route("/dataset")
 def dataset():
-    datasets = active_datasets()
-    return render_template("dataset/index.html", datasets=datasets)
+    only_active = request.args.get("only_active")
+    if only_active:
+        ds = datasets(split=True)
+        return render_template(
+            "dataset/index.html", datasets=ds["active"], only_active=True
+        )
+    return render_template("dataset/index.html", datasets=datasets())
 
 
 @base.route("/dataset/<dataset_name>")

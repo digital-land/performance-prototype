@@ -247,13 +247,6 @@ def active_resources(pipeline):
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
-def active_datasets():
-    ds = DLDatasette()
-    query = "https://datasette.digital-land.info/digital-land/dataset.json?_labels=on"
-    results = ds.sqlQuery(query)
-    return results["rows"]
-
-
 def sources_by_dataset(pipeline=None):
     ds = DLDatasette()
     query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++count%28DISTINCT+source.source%29+as+total%2C%0D%0A++COUNT%28DISTINCT+CASE+%0D%0A++++WHEN+source.end_date+%3D%3D+%27%27+AND+source.endpoint+%21%3D+%27%27+THEN+source.source%0D%0A++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3E%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+AND+source.endpoint+%21%3D+%27%27+THEN+source.source%0D%0A++END%29+AS+active_sources%2C%0D%0A++COUNT%28DISTINCT+CASE+%0D%0A++++WHEN+source.endpoint+%3D%3D+%27%27+THEN+source.source%0D%0A++END%29+AS+blank_sources%2C%0D%0A++COUNT%28DISTINCT+CASE+%0D%0A++++WHEN+source.end_date+%21%3D+%27%27+AND+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3C%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29++THEN+source.source%0D%0A++END%29+AS+ended_sources%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Agroup+by%0D%0Asource_pipeline.pipeline%0D%0A"
@@ -310,19 +303,19 @@ def first_and_last_resource(pipeline=None):
 
 def datasets(split=False):
     ds = DLDatasette()
-    query = "https://datasette.digital-land.info/digital-land.json?sql=SELECT%0D%0A++DISTINCT+dataset.dataset%2C%0D%0A++dataset.name%2C%0D%0A++%28%0D%0A++++CASE%0D%0A++++++WHEN+pipeline.pipeline+IS+NOT+NULL+THEN+1%0D%0A++++END%0D%0A++%29+AS+dataset_active%2C%0D%0A++GROUP_CONCAT%28dataset_theme.theme%2C+%22%3B%22%29+AS+themes%0D%0AFROM%0D%0A++dataset%0D%0A++LEFT+JOIN+pipeline+ON+dataset.dataset+%3D+pipeline.pipeline%0D%0A++INNER+JOIN+dataset_theme+ON+dataset.dataset+%3D+dataset_theme.dataset%0D%0Agroup+by%0D%0Adataset.dataset"
+    query = "https://datasette.digital-land.info/digital-land.json?sql=SELECT%0D%0A++DISTINCT+dataset.dataset%2C%0D%0A++dataset.name%2C%0D%0A++dataset.plural%2C%0D%0A++dataset.typology%2C%0D%0A++%28%0D%0A++++CASE%0D%0A++++++WHEN+pipeline.pipeline+IS+NOT+NULL+THEN+1%0D%0A++++END%0D%0A++%29+AS+dataset_active%2C%0D%0A++GROUP_CONCAT%28dataset_theme.theme%2C+%22%3B%22%29+AS+themes%0D%0AFROM%0D%0A++dataset%0D%0A++LEFT+JOIN+pipeline+ON+dataset.dataset+%3D+pipeline.pipeline%0D%0A++INNER+JOIN+dataset_theme+ON+dataset.dataset+%3D+dataset_theme.dataset%0D%0Agroup+by%0D%0Adataset.dataset"
     results = ds.sqlQuery(query)
     if split:
         return {
             "active": [
                 create_dict(results["columns"], row)
                 for row in results["rows"]
-                if row[2] == 1
+                if row[4] == 1
             ],
             "inactive": [
                 create_dict(results["columns"], row)
                 for row in results["rows"]
-                if row[2] != 1
+                if row[4] != 1
             ],
         }
     return [create_dict(results["columns"], row) for row in results["rows"]]

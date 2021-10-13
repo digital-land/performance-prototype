@@ -10,10 +10,29 @@
   <h1 class="govuk-heading-xl">Datasets</h1>
   <p class="govuk-body-l">A place to see what datasets we have data for.</p>
 
+  <form action="{{ url_for('base.dataset') }}">
+    <div class="govuk-form-group">
+      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+        <div class="govuk-checkboxes__item">
+          <input class="govuk-checkboxes__input" id="only_active" name="only_active" type="checkbox" value="True"{{ ' checked=checked' if only_active }}>
+          <label class="govuk-label govuk-checkboxes__label" for="only_active">
+            Show only active datasets
+          </label>
+        </div>
+      </div>
+    </div>
+    <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+      Apply filter
+    </button>
+  </form>
+
   <ul class="govuk-list">
     {% for dataset in datasets %}
     <li>
       <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.dataset) }}" class="govuk-link">{{ dataset['name'] }}</a>
+      {% if not dataset.dataset_active %}
+        <span class="govuk-tag govuk-tag--grey">No Data</span>
+      {% endif %}
     </li>
     {% endfor %}
   </ul>
