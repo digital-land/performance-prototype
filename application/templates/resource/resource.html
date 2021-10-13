@@ -1,0 +1,89 @@
+{% extends "layouts/layout.html" %}
+{% block page_title %}Flask prototyping index{% endblock %}
+{%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+
+{% block dl_breadcrumbs %}
+{{ govukBreadcrumbs({
+  "items": [
+    {
+      "text": "Data operations",
+      "href": "/"
+    },
+    {
+      "text": "Resources",
+      "href": url_for('base.resources')
+    },
+    {
+      "text": resource[0]['resource']
+    }
+  ]
+}) }}
+{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+  <h2 class="govuk-heading-l">Resource</h2>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <article class="data-record govuk-!-margin-bottom-9">
+        <h1 class="govuk-heading-s data-record__identifier govuk-!-margin-bottom-0">{{ resource[0]['resource'] }}</h1>
+        <dl class="govuk-summary-list data-record__properties govuk-!-margin-bottom-0">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Organisation</dt>
+            <dd class="govuk-summary-list__value">{{ resource[0]['name'] }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Content type</dt>
+            <dd class="govuk-summary-list__value">
+                {%- for typ in resource[0]['content_type'] %}
+                {% if typ == "" %}
+                <span class="dl-secondary-text">no content-type</span>
+                {%- else -%}
+                {{ typ }}
+                {%- endif -%}
+                {{ ", " if not loop.last else "" }}
+                {% endfor -%}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Start date</dt>
+            <dd class="govuk-summary-list__value">{{ resource[0]['start_date'] }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">End date</dt>
+            <dd class="govuk-summary-list__value">{{ resource[0]['end_date'] }}</dd>
+          </div>
+        </dl>
+      </article>
+    </div>
+  </div>
+
+  <h3 class="govuk-heading-m">Endpoints</h3>
+  <p class="govuk-body">The resource has been collected from {{ resource|length }} endpoint{{ "" if resource|length == 1 else "s" }}.</p>
+  <ul class="govuk-list">
+      {% for r in resource %}
+        <li>
+            <h4 class="govuk-heading-s">{{ r['endpoint'] }}</h4>
+            <dl class="govuk-summary-list govuk-!-margin-bottom-0">
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">URL</dt>
+                  <dd class="govuk-summary-list__value">{{ r['endpoint_url'] }}</dd>
+                </div>
+            </dl>
+        </li>
+      {% endfor %}
+  </ul>
+</main>
+{% endblock %}
+
+{% block bodyEnd %}
+{{ super() }}
+<script>
+  console.log('resource object', {{ resource|tojson }})
+</script>
+{% endblock bodyEnd %}
+
+
+

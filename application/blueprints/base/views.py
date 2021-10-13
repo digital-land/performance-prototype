@@ -30,6 +30,7 @@ from application.datasette import (
     total_publisher_coverage,
     content_type_counts,
     resources_of_type,
+    get_resource,
 )
 from application.utils import resources_per_publishers
 from application.enddatechecker import EndDateChecker
@@ -223,13 +224,13 @@ def organisation_info(prefix, org_id):
     )
 
 
-@base.route("/resource/<resource>")
-def resource_performance(resource):
-    return render_template(
-        "resource/performance.html",
-        resource=resource,
-        info_page=url_for("base.resource_info", resource=resource),
-    )
+# @base.route("/resource/<resource>")
+# def resource_performance(resource):
+#     return render_template(
+#         "resource/performance.html",
+#         resource=resource,
+#         info_page=url_for("base.resource_info", resource=resource),
+#     )
 
 
 @base.route("/resource/<resource>/info")
@@ -238,7 +239,7 @@ def resource_info(resource):
     return render_template(
         "info.html",
         page_title="Resource performance",
-        page_url=url_for("base.resource_performance", resource=resource),
+        page_url=url_for("base.resource", resource=resource),
         data=data,
     )
 
@@ -276,10 +277,19 @@ def source(source):
 
 
 @base.route("/resource")
-def resource():
+def resources():
     datasets = resources_by_dataset()
 
     return render_template("resource/index.html", by_dataset=datasets)
+
+
+@base.route("/resource/<resource>")
+def resource(resource):
+    return render_template(
+        "resource/resource.html",
+        resource=get_resource(resource),
+        info_page=url_for("base.resource_info", resource=resource),
+    )
 
 
 @base.route("/content-type")

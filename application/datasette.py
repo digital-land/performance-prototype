@@ -275,6 +275,25 @@ def get_source(source):
     return source_result["rows"]
 
 
+def clean_content_type_field(rows):
+    for row in rows:
+        if row.get("content_type"):
+            row["content_type"] = list(set(row["content_type"].split(";")))
+    return rows
+
+
+def get_resource(resource):
+    ds = DLDatasette()
+    query = (
+        "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++DISTINCT+resource.resource%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++resource.end_date%2C%0D%0A++resource_organisation.organisation%2C%0D%0A++organisation.name%2C%0D%0A++endpoint.endpoint%2C%0D%0A++endpoint.endpoint_url%2C%0D%0A++GROUP_CONCAT%28log.content_type%2C+%22%3B%22%29+AS+content_type%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_organisation+ON+resource.resource+%3D+resource_organisation.resource%0D%0A++INNER+JOIN+organisation+ON+resource_organisation.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+log+ON+resource.resource+%3D+log.resource%0D%0Awhere%0D%0A++resource.resource+%3D+%3Aresource%0D%0Agroup+by%0D%0A++endpoint.endpoint&resource="
+        + resource
+    )
+    results = ds.sqlQuery(query)
+    return clean_content_type_field(
+        [create_dict(results["columns"], row) for row in results["rows"]]
+    )
+
+
 def resources_by_dataset():
     ds = DLDatasette()
     query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++count%28DISTINCT+resource.resource%29+as+total%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+resource.end_date+%3D%3D+%27%27+THEN+resource.resource%0D%0A++++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+resource.end_date%29+%3E%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+resource.resource%0D%0A++++END%0D%0A++%29+AS+active_resources%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+resource.end_date+%21%3D+%27%27%0D%0A++++++AND+strftime%28%27%25Y%25m%25d%27%2C+resource.end_date%29+%3C%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+resource.resource%0D%0A++++END%0D%0A++%29+AS+ended_resources%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+source.endpoint+%3D+resource_endpoint.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Agroup+by%0D%0A++source_pipeline.pipeline"
