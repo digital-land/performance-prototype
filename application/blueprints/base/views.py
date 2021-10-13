@@ -282,9 +282,15 @@ def source(source):
 
 @base.route("/resource")
 def resources():
-    datasets = resources_by_dataset()
+    resources_per_dataset = resources_by_dataset()
 
-    return render_template("resource/index.html", by_dataset=datasets)
+    return render_template(
+        "resource/index.html",
+        by_dataset=resources_per_dataset,
+        resource_count=get_resource_count(),
+        content_type_counts=content_type_counts(),
+        datasets=datasets(split=True),
+    )
 
 
 @base.route("/resource/<resource>")
