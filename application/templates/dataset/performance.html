@@ -45,7 +45,7 @@
     <div class="govuk-grid-column-one-quarter">
       <div class="data-item govuk-!-margin-bottom-6">
         <span class="data-item__number govuk-!-font-size-80">{{ resource_count[0]['total'] }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Resources</p>
+        <p class="govuk-body govuk-!-font-size-36"><a class="govuk-link--text-colour" href="{{ url_for('base.resources', pipeline=name) }}">Resources</a></p>
       </div>
     </div>
     {% endif %}
