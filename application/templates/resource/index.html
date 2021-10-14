@@ -9,7 +9,7 @@
 <main id="content" role="main">
   <h1 class="govuk-heading-xl">Resources</h1>
 
-  <div class="govuk-grid-row">
+  <div id="btt-hook" class="govuk-grid-row govuk-!-margin-bottom-9">
     <div class="govuk-grid-column-one-third">
       <div class="data-item govuk-!-margin-bottom-6">
         <span class="data-item__number govuk-!-font-size-80">{{ resource_count }}</span>
@@ -62,20 +62,45 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-heading-l">By dataset</h2>
-      <ul class="govuk-list">
-        {% for dataset in by_dataset %}
-        <li>
-          <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.pipeline) }}" class="govuk-link">{{ dataset['pipeline']|replace("-", " ")|capitalize }}</a><span class="govuk-!govuk-!-font-size-19">{{ dataset['total'] }}</span>
-        </li>
-        {% endfor %}
-      </ul>
+      <h2 class="govuk-heading-m">Filters</h2>
+      <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            By dataset
+          </span>
+        </summary>
+        <div class="govuk-details__text">
+          <ul class="govuk-list">
+            {% for dataset in by_dataset %}
+            <li>
+              <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.pipeline) }}" class="govuk-link">{{ dataset['pipeline']|replace("-", " ")|capitalize }}</a><span class="govuk-!govuk-!-font-size-19"> ({{ dataset['total'] }})</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </details>
     </div>
     <div class="govuk-grid-column-two-thirds">
       <p class="govuk-body results-summary">Showing {{ resources|length }} of {{ resource_count }} resource{{ "" if resource_count == 1 else "s" }}</p>
       <ul class="govuk-list">
       {% for resource in resources %}
-        <li><a href="{{ url_for('base.resource', resource=resource.resource) }}">{{ resource.resource }}</a></li>
+      <li class="data-record app-card govuk-!-margin-bottom-3">
+        <h4 class="govuk-heading-s data-record__identifier govuk-!-margin-bottom-0">Resource <a href="{{ url_for('base.resource', resource=resource['resource']) }}">{{ resource['resource']|truncate(15) }}</a></h4>
+        <dl class="govuk-summary-list data-record__properties app-card__properties govuk-!-margin-bottom-0">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Organisation</dt>
+            <dd class="govuk-summary-list__value">{{ resource['name'] }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Dataset</dt>
+            <dd class="govuk-summary-list__value">{{ resource['pipeline'] }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Content type</dt>
+            <dd class="govuk-summary-list__value">{{ resource['content_type'] }}</dd>
+          </div>
+        </dl>
+      </li>
       {% endfor %}
       </ul>
     </div>

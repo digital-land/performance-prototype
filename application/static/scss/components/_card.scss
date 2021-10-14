@@ -1,0 +1,8 @@
+.app-card {
+  border-color: $govuk-border-colour;
+}
+
+.app-card__properties {
+  background: govuk-colour("white");
+  @include govuk-font($size: 16);
+}
