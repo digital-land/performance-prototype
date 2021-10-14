@@ -140,6 +140,7 @@ def dataset_performance(dataset_name):
         publishers=publisher_splits,
         today=datetime.utcnow().isoformat()[:10],
         entity_count=entity_count(dataset_name),
+        resource_count=resources_by_dataset(dataset_name),
         coverage=publisher_coverage(dataset_name)[0],
         resource_stats=resource_stats,
         no_doc_url=active_source_no_doc(dataset_name),
