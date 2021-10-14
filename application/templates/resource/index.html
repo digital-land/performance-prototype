@@ -79,6 +79,23 @@
           </ul>
         </div>
       </details>
+
+      <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            By content_type
+          </span>
+        </summary>
+        <div class="govuk-details__text">
+          <ul class="govuk-list">
+            {% for content_type in content_type_counts %}
+            <li>
+              <a href="{{ url_for('base.resources', content_type=content_type['content_type']) }}" class="govuk-link">{{ content_type['content_type'] }}</a><span class="govuk-!govuk-!-font-size-19"> ({{ content_type['resource_count'] }})</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </details>
     </div>
     <div class="govuk-grid-column-two-thirds">
       <p class="govuk-body results-summary">Showing {{ resources|length }} resource{{ "" if total_results == 1 else "s" }}{% if resources|length == 100 %} (limited to most recent 100){% endif %}</p>
