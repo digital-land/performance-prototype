@@ -291,7 +291,7 @@ def clean_content_type_field(rows):
 def get_resources(limit=100, filter=None):
     ds = DLDatasette()
     where_clause = ""
-    param = ""
+    params = ""
     limit_str = ""
     if limit:
         limit_str = "%0D%0Alimit+{}".format(limit)
