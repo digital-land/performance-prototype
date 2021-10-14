@@ -29,6 +29,7 @@ from application.datasette import (
     total_publisher_coverage,
     content_type_counts,
     resources_of_type,
+    get_resources,
     get_resource,
     entry_count,
 )
@@ -284,6 +285,7 @@ def source(source):
 @base.route("/resource")
 def resources():
     resources_per_dataset = resources_by_dataset()
+    resource_records = get_resources()
 
     return render_template(
         "resource/index.html",
@@ -291,6 +293,7 @@ def resources():
         resource_count=get_resource_count(),
         content_type_counts=content_type_counts(),
         datasets=datasets(split=True),
+        resources=get_resources(),
     )
 
 

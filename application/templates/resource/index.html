@@ -60,14 +60,28 @@
     </div>
   </div>
 
-  <h2 class="govuk-heading-l">By dataset</h2>
-  <ul class="govuk-list">
-    {% for dataset in by_dataset %}
-    <li>
-      <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.pipeline) }}" class="govuk-link">{{ dataset['pipeline']|replace("-", " ")|capitalize }}</a><span class="govuk-!govuk-!-font-size-19">{{ dataset['total'] }}</span>
-    </li>
-    {% endfor %}
-  </ul>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <h2 class="govuk-heading-l">By dataset</h2>
+      <ul class="govuk-list">
+        {% for dataset in by_dataset %}
+        <li>
+          <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.pipeline) }}" class="govuk-link">{{ dataset['pipeline']|replace("-", " ")|capitalize }}</a><span class="govuk-!govuk-!-font-size-19">{{ dataset['total'] }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body results-summary">Showing {{ resources|length }} of {{ resource_count }} resource{{ "" if resource_count == 1 else "s" }}</p>
+      <ul class="govuk-list">
+      {% for resource in resources %}
+        <li><a href="{{ url_for('base.resource', resource=resource.resource) }}">{{ resource.resource }}</a></li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  
 </main>
 {% endblock %}
 
