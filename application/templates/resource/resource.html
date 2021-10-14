@@ -30,6 +30,12 @@
             <dt class="govuk-summary-list__key">Organisation</dt>
             <dd class="govuk-summary-list__value">{{ resource[0]['name'] }}</dd>
           </div>
+          {% if entry_count %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Entries</dt>
+            <dd class="govuk-summary-list__value">{{ entry_count['entries'] }}</dd>
+          </div>
+          {% endif %}
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Content type</dt>
             <dd class="govuk-summary-list__value">

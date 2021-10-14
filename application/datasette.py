@@ -277,8 +277,9 @@ def clean_content_type_field(rows):
 
 def get_resource(resource):
     ds = DLDatasette()
+    # e.g https://datasette.digital-land.info/digital-land?sql=select%0D%0A++DISTINCT+resource.resource%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++resource.end_date%2C%0D%0A++resource_organisation.organisation%2C%0D%0A++organisation.name%2C%0D%0A++endpoint.endpoint%2C%0D%0A++endpoint.endpoint_url%2C%0D%0A++REPLACE%28GROUP_CONCAT%28DISTINCT+log.content_type%29%2C+%22%2C%22%2C+%22%3B%22%29+AS+content_type%2C%0D%0A++REPLACE%28GROUP_CONCAT%28DISTINCT+source_pipeline.pipeline%29%2C+%22%2C%22%2C+%22%3B%22%29+AS+pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_organisation+ON+resource.resource+%3D+resource_organisation.resource%0D%0A++INNER+JOIN+organisation+ON+resource_organisation.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+log+ON+resource.resource+%3D+log.resource%0D%0A++INNER+JOIN+source+ON+source.endpoint+%3D+resource_endpoint.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++resource.resource+%3D+%3Aresource%0D%0Agroup+by%0D%0A++endpoint.endpoint&resource=0001a1baf9ddd7505cfef2e671292122de73a44299e5f5e584e9ec1514c0181c
     query = (
-        "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++DISTINCT+resource.resource%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++resource.end_date%2C%0D%0A++resource_organisation.organisation%2C%0D%0A++organisation.name%2C%0D%0A++endpoint.endpoint%2C%0D%0A++endpoint.endpoint_url%2C%0D%0A++GROUP_CONCAT%28log.content_type%2C+%22%3B%22%29+AS+content_type%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_organisation+ON+resource.resource+%3D+resource_organisation.resource%0D%0A++INNER+JOIN+organisation+ON+resource_organisation.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+log+ON+resource.resource+%3D+log.resource%0D%0Awhere%0D%0A++resource.resource+%3D+%3Aresource%0D%0Agroup+by%0D%0A++endpoint.endpoint&resource="
+        "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++DISTINCT+resource.resource%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++resource.end_date%2C%0D%0A++resource_organisation.organisation%2C%0D%0A++organisation.name%2C%0D%0A++endpoint.endpoint%2C%0D%0A++endpoint.endpoint_url%2C%0D%0A++REPLACE%28GROUP_CONCAT%28DISTINCT+log.content_type%29%2C+%22%2C%22%2C+%22%3B%22%29+AS+content_type%2C%0D%0A++REPLACE%28GROUP_CONCAT%28DISTINCT+source_pipeline.pipeline%29%2C+%22%2C%22%2C+%22%3B%22%29+AS+pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_organisation+ON+resource.resource+%3D+resource_organisation.resource%0D%0A++INNER+JOIN+organisation+ON+resource_organisation.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+log+ON+resource.resource+%3D+log.resource%0D%0A++INNER+JOIN+source+ON+source.endpoint+%3D+resource_endpoint.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++resource.resource+%3D+%3Aresource%0D%0Agroup+by%0D%0A++endpoint.endpoint&resource="
         + resource
     )
     results = ds.sqlQuery(query)
@@ -396,5 +397,18 @@ def resources_of_type(t):
         "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++log.content_type%2C%0D%0A++log.resource%0D%0Afrom%0D%0A++log%0D%0A++INNER+JOIN+source+ON+log.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+on+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++log.content_type+%3D+%3Atype%0D%0Agroup+by%0D%0A+log.resource&type="
         + t
     )
+    results = ds.sqlQuery(query)
+    return [create_dict(results["columns"], row) for row in results["rows"]]
+
+
+def entry_count(dataset, resource=None):
+    ds = DLDatasette()
+    query = "https://datasette.digital-land.info/{}.json?sql=select%0D%0A++resource%2C%0D%0A++count%28id%29+AS+entries%0D%0Afrom%0D%0A++entry%0D%0Agroup+by%0D%0Aresource".format(
+        dataset
+    )
+    if resource is not None:
+        query = "https://datasette.digital-land.info/{}.json?sql=select%0D%0A++resource%2C%0D%0A++count%28id%29+AS+entries%0D%0Afrom%0D%0A++entry%0D%0Awhere%0D%0A++resource+%3D+%3Aresource%0D%0Agroup+by%0D%0A++resource&resource={}".format(
+            dataset, resource
+        )
     results = ds.sqlQuery(query)
     return [create_dict(results["columns"], row) for row in results["rows"]]

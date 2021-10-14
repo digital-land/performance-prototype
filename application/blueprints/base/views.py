@@ -30,6 +30,7 @@ from application.datasette import (
     content_type_counts,
     resources_of_type,
     get_resource,
+    entry_count,
 )
 from application.utils import resources_per_publishers
 from application.enddatechecker import EndDateChecker
@@ -295,10 +296,13 @@ def resources():
 
 @base.route("/resource/<resource>")
 def resource(resource):
+    resource_data = get_resource(resource)
+    dataset = resource_data[0]["pipeline"].split(";")[0]
     return render_template(
         "resource/resource.html",
-        resource=get_resource(resource),
+        resource=resource_data,
         info_page=url_for("base.resource_info", resource=resource),
+        entry_count=entry_count(dataset, resource)[0],
     )
 
 
