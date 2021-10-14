@@ -282,18 +282,27 @@ def source(source):
     return render_template("source/source.html", source=source_data[0])
 
 
+def filter_off_btns(filters):
+    btns = []
+    for filter, value in filters.items():
+        filters_copy = filters.copy()
+        del filters_copy[filter]
+        btns.append({"value": value, "url_params": filters_copy})
+    return btns
+
+
 @base.route("/resource")
 def resources():
-    pipeline = request.args.get("pipeline")
-    resources_per_dataset = index_by("pipeline", resources_by_dataset())
-    filter = False
+    filters = {}
+    if request.args.get("pipeline"):
+        filters["pipeline"] = request.args.get("pipeline")
+    if request.args.get("content_type"):
+        filters["content_type"] = request.args.get("content_type")
 
-    total_resource_count = get_resource_count()
-    total_results = total_resource_count
-    if pipeline:
-        resource_records = get_resources(pipeline=pipeline)
-        total_results = resources_per_dataset[pipeline]["total"]
-        filter = pipeline
+    resources_per_dataset = index_by("pipeline", resources_by_dataset())
+
+    if len(filters.keys()):
+        resource_records = get_resources(filter=filters)
     else:
         resource_records = get_resources()
 
@@ -304,8 +313,8 @@ def resources():
         content_type_counts=content_type_counts(),
         datasets=datasets(split=True),
         resources=resource_records,
-        total_results=total_results,
-        filter=filter,
+        filters=filters,
+        filter_btns=filter_off_btns(filters),
     )
 
 

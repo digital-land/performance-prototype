@@ -81,15 +81,17 @@
       </details>
     </div>
     <div class="govuk-grid-column-two-thirds">
-      <p class="govuk-body results-summary">Showing {{ resources|length }} of {{ total_results }} resource{{ "" if total_results == 1 else "s" }}</p>
-      {% if filter -%}
+      <p class="govuk-body results-summary">Showing {{ resources|length }} resource{{ "" if total_results == 1 else "s" }}{% if resources|length == 100 %} (limited to most recent 100){% endif %}</p>
+      {% if filters -%}
       <div class="applied-filters">
         <div class="applied-filter__group">
           <span class="applied-filter__name govuk-!-font-weight-bold">Filter:</span>
+          {% for filter in filter_btns %}
           <span class="applied-filter__item">
-            <a href="{{ url_for('base.resources') }}" class="govuk-link">x<span class="govuk-visually-hidden">remove filtering by {{ filter }}</span></a>
-            {{ filter }}
+            <a href="{{ url_for('base.resources', **filter['url_params']) }}" class="govuk-link">x<span class="govuk-visually-hidden">remove filtering by {{ filter['value'] }}</span></a>
+            {{ filter['value'] }}
           </span>
+          {% endfor %}
         </div>
       </div>
       {% endif %}
