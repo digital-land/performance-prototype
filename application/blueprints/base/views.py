@@ -33,7 +33,7 @@ from application.datasette import (
     get_resource,
     entry_count,
 )
-from application.utils import resources_per_publishers
+from application.utils import resources_per_publishers, index_by
 from application.enddatechecker import EndDateChecker
 
 
@@ -284,8 +284,16 @@ def source(source):
 
 @base.route("/resource")
 def resources():
-    resources_per_dataset = resources_by_dataset()
-    resource_records = get_resources()
+    pipeline = request.args.get("pipeline")
+    resources_per_dataset = index_by("pipeline", resources_by_dataset())
+
+    total_resource_count = get_resource_count()
+    total_results = total_resource_count
+    if pipeline:
+        resource_records = get_resources(pipeline=pipeline)
+        total_results = resources_per_dataset[pipeline]["total"]
+    else:
+        resource_records = get_resources()
 
     return render_template(
         "resource/index.html",
@@ -293,7 +301,8 @@ def resources():
         resource_count=get_resource_count(),
         content_type_counts=content_type_counts(),
         datasets=datasets(split=True),
-        resources=get_resources(),
+        resources=resource_records,
+        total_results=total_results,
     )
 
 
