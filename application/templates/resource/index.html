@@ -82,6 +82,17 @@
     </div>
     <div class="govuk-grid-column-two-thirds">
       <p class="govuk-body results-summary">Showing {{ resources|length }} of {{ total_results }} resource{{ "" if total_results == 1 else "s" }}</p>
+      {% if filter -%}
+      <div class="applied-filters">
+        <div class="applied-filter__group">
+          <span class="applied-filter__name govuk-!-font-weight-bold">Filter:</span>
+          <span class="applied-filter__item">
+            <a href="{{ url_for('base.resources') }}" class="govuk-link">x<span class="govuk-visually-hidden">remove filtering by {{ filter }}</span></a>
+            {{ filter }}
+          </span>
+        </div>
+      </div>
+      {% endif %}
       <ul class="govuk-list">
       {% for resource in resources %}
       <li class="data-record app-card govuk-!-margin-bottom-3">

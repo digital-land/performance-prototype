@@ -286,12 +286,14 @@ def source(source):
 def resources():
     pipeline = request.args.get("pipeline")
     resources_per_dataset = index_by("pipeline", resources_by_dataset())
+    filter = False
 
     total_resource_count = get_resource_count()
     total_results = total_resource_count
     if pipeline:
         resource_records = get_resources(pipeline=pipeline)
         total_results = resources_per_dataset[pipeline]["total"]
+        filter = pipeline
     else:
         resource_records = get_resources()
 
@@ -303,6 +305,7 @@ def resources():
         datasets=datasets(split=True),
         resources=resource_records,
         total_results=total_results,
+        filter=filter,
     )
 
 
