@@ -62,9 +62,30 @@
           </ul>
         </div>
       </details>
+
+      <!-- filter by organisation -->
+      <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            By organisation
+          </span>
+        </summary>
+        <div class="govuk-details__text">
+          <ul class="govuk-list">
+            {% for organisation in organisations %}
+            <li>
+              <a href="{{ url_for('base.sources', organisation=organisation['organisation']) }}" class="govuk-link">{{ organisation['name'] }}</a><span class="govuk-!govuk-!-font-size-19"> ({{ organisation['sources'] }})</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </details>
     </div>
     <div class="govuk-grid-column-two-thirds">
       <p class="govuk-body results-summary">Showing {{ sources|length }} source{{ "" if total_results == 1 else "s" }}{% if sources|length == 100 %} (limited to 100 most recently added){% endif %}</p>
+      <div class="govuk-inset-text">
+        This list only shows sources that have an endpoint.
+      </div>
       {% if filters -%}
       <div class="applied-filters">
         <div class="applied-filter__group">

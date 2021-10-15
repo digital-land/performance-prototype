@@ -33,6 +33,7 @@ from application.datasette import (
     get_resource,
     entry_count,
     get_sources,
+    source_count_per_organisation,
 )
 from application.utils import resources_per_publishers, index_by
 from application.enddatechecker import EndDateChecker
@@ -257,7 +258,10 @@ def sources():
     filters = {}
     if request.args.get("pipeline"):
         filters["pipeline"] = request.args.get("pipeline")
+    if request.args.get("organisation"):
+        filters["organisation"] = request.args.get("organisation")
     datasets = sources_by_dataset()
+    organisations = source_count_per_organisation()
 
     stats = {
         "active": sum(
@@ -279,6 +283,7 @@ def sources():
         sources=source_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),
+        organisations=organisations,
     )
 
 

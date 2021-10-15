@@ -275,6 +275,13 @@ def sources_by_dataset(pipeline=None):
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
+def source_count_per_organisation():
+    ds = DLDatasette()
+    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++organisation.name%2C%0D%0A++source.organisation%2C%0D%0A++organisation.end_date+AS+organisation_end_date%2C%0D%0A++COUNT%28DISTINCT+source_pipeline.pipeline%29+AS+pipelines%2C%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%0D%0Afrom%0D%0Asource%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0Awhere%0D%0Asource.endpoint+%21%3D+%27%27%0D%0AGROUP+BY%0D%0A++source.organisation"
+    results = ds.sqlQuery(query)
+    return [create_dict(results["columns"], row) for row in results["rows"]]
+
+
 def get_sources(limit=100, filter=None):
     ds = DLDatasette()
     where_clause = "where%0D%0A++source.endpoint+%21%3D+%27%27%0D%0A"
@@ -284,11 +291,14 @@ def get_sources(limit=100, filter=None):
     if limit:
         limit_str = "%0D%0Alimit+{}".format(limit)
     if filter:
-        where_clause, params = DLDatasette.sql_for_filter(filter)
+        where_clause, params = DLDatasette.sql_for_filter(
+            filter, {"organisation": "source.organisation"}
+        )
         where_clause = where_clause + "++AND+source.endpoint+%21%3D+%27%27%0D%0A"
     query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source.source%2C%0D%0A++source.organisation%2C%0D%0A++organisation.name%2C%0D%0A++source.entry_date%2C%0D%0A++source.start_date%2C%0D%0A++source.end_date%2C%0D%0A++GROUP_CONCAT%28DISTINCT+source_pipeline.pipeline%29+AS+pipeline%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+endpoint+ON+source.endpoint+%3D+endpoint.endpoint%0D%0A{}group+by%0D%0Asource.source%0D%0Aorder+by%0D%0A++source.start_date+DESC{}{}".format(
         where_clause, limit_str, params
     )
+    print(query)
     results = ds.sqlQuery(query)
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
