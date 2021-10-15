@@ -508,3 +508,10 @@ def get_theme():
     query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++name%2C%0D%0A++theme%0D%0Afrom%0D%0A++theme%0D%0Aorder+by%0D%0A++theme%0D%0A"
     results = ds.sqlQuery(query)
     return [create_dict(results["columns"], row) for row in results["rows"]]
+
+
+def get_typology():
+    ds = DLDatasette()
+    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++name%2C%0D%0A++typology%0D%0Afrom%0D%0A++typology%0D%0Aorder+by%0D%0A++typology"
+    results = ds.sqlQuery(query)
+    return [create_dict(results["columns"], row) for row in results["rows"]]

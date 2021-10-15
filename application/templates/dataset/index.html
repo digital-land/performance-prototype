@@ -13,21 +13,23 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
       <h2 class="govuk-heading-m">Filters</h2>
-      <form action="{{ url_for('base.dataset') }}">
-        <div class="govuk-form-group">
-          <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-            <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="active" name="active" type="checkbox" value=1{{ ' checked=checked' if 'active' in filters.keys() }}>
-              <label class="govuk-label govuk-checkboxes__label" for="active">
-                Show only active datasets
-              </label>
-            </div>
-          </div>
+      <!-- filter by typology -->
+      <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            By typology
+          </span>
+        </summary>
+        <div class="govuk-details__text">
+          <ul class="govuk-list">
+            {% for typology in typologies %}
+            <li>
+              <a href="{{ url_for('base.dataset', typology=typology['typology']) }}" class="govuk-link">{{ typology['name'] }}</a>
+            </li>
+            {% endfor %}
+          </ul>
         </div>
-        <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
-          Apply filter
-        </button>
-      </form>
+      </details>
 
       <!-- filter by theme -->
       <details class="govuk-details" data-module="govuk-details">
@@ -46,6 +48,23 @@
           </ul>
         </div>
       </details>
+
+      <form action="{{ url_for('base.dataset') }}">
+        <div class="govuk-form-group">
+          <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="active" name="active" type="checkbox" value=1{{ ' checked=checked' if 'active' in filters.keys() }}>
+              <label class="govuk-label govuk-checkboxes__label" for="active">
+                Show only active datasets
+              </label>
+            </div>
+          </div>
+        </div>
+        <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+          Apply filter
+        </button>
+      </form>
+      
     </div>
     <div class="govuk-grid-column-two-thirds">
       <p class="govuk-body results-summary">Showing {{ datasets|length }} dataset{{ "" if datasets|length == 1 else "s" }}</p>

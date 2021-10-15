@@ -37,6 +37,7 @@ from application.datasette import (
     source_counts,
     get_datasets,
     get_theme,
+    get_typology,
 )
 from application.utils import resources_per_publishers, index_by
 from application.enddatechecker import EndDateChecker
@@ -104,6 +105,8 @@ def dataset():
         filters["active"] = request.args.get("active")
     if request.args.get("theme"):
         filters["theme"] = request.args.get("theme")
+    if request.args.get("typology"):
+        filters["typology"] = request.args.get("typology")
 
     if len(filters.keys()):
         dataset_records = get_datasets(filter=filters)
@@ -116,6 +119,7 @@ def dataset():
         filters=filters,
         filter_btns=filter_off_btns(filters),
         themes=get_theme(),
+        typologies=get_typology(),
     )
 
 
