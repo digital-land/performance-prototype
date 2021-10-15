@@ -302,7 +302,7 @@ def get_sources(limit=100, filter=None):
             filter, {"organisation": "source.organisation"}
         )
         where_clause = where_clause + "++AND+source.endpoint+%21%3D+%27%27%0D%0A"
-    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source.source%2C%0D%0A++source.organisation%2C%0D%0A++organisation.name%2C%0D%0A++source.entry_date%2C%0D%0A++source.start_date%2C%0D%0A++source.end_date%2C%0D%0A++GROUP_CONCAT%28DISTINCT+source_pipeline.pipeline%29+AS+pipeline%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+endpoint+ON+source.endpoint+%3D+endpoint.endpoint%0D%0A{}group+by%0D%0Asource.source%0D%0Aorder+by%0D%0A++source.start_date+DESC{}{}".format(
+    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source.source%2C%0D%0A++source.organisation%2C%0D%0A++organisation.name%2C%0D%0A++source.endpoint%2C%0D%0A++source.documentation_url%2C%0D%0A++source.entry_date%2C%0D%0A++source.start_date%2C%0D%0A++source.end_date%2C%0D%0A++GROUP_CONCAT%28DISTINCT+source_pipeline.pipeline%29+AS+pipeline%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+endpoint+ON+source.endpoint+%3D+endpoint.endpoint%0D%0A{}group+by%0D%0Asource.source%0D%0Aorder+by%0D%0A++source.start_date+DESC{}{}".format(
         where_clause, limit_str, params
     )
     print(query)

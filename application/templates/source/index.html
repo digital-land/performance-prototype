@@ -102,7 +102,16 @@
       <ul class="govuk-list">
         {% for source in sources %}
         <li class="data-record app-card govuk-!-margin-bottom-3">
-          <h4 class="govuk-heading-s data-record__identifier govuk-!-margin-bottom-0">Source <a href="{{ url_for('base.source', source=source['source']) }}">{{ source['source'] }}</a></h4>
+          <div class="data-record__identifier">
+            <h4 class="govuk-heading-s govuk-!-margin-bottom-0">
+            Source <a href="{{ url_for('base.source', source=source['source']) }}">{{ source['source'] }}</a></h4>
+            {%- if source['end_date'] or source['documentation_url'] == "" -%}
+            <div class="app-card__flags govuk-!-margin-top-1">
+              {% if source['end_date'] %}<span class="govuk-tag govuk-tag--grey">Historical</span>{% endif %}
+              {% if source['documentation_url'] == "" %}<span class="govuk-tag govuk-tag--yellow">No documentation url</span>{% endif %}
+            </div>
+            {% endif -%}
+          </div>
           <dl class="govuk-summary-list data-record__properties app-card__properties govuk-!-margin-bottom-0">
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Organisation</dt>
