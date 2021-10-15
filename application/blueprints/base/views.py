@@ -35,6 +35,7 @@ from application.datasette import (
     get_sources,
     source_count_per_organisation,
     source_counts,
+    get_datasets,
 )
 from application.utils import resources_per_publishers, index_by
 from application.enddatechecker import EndDateChecker
@@ -97,13 +98,21 @@ def performance_info():
 
 @base.route("/dataset")
 def dataset():
-    only_active = request.args.get("only_active")
-    if only_active:
-        ds = datasets(split=True)
-        return render_template(
-            "dataset/index.html", datasets=ds["active"], only_active=True
-        )
-    return render_template("dataset/index.html", datasets=datasets())
+    filters = {}
+    if request.args.get("active"):
+        filters["active"] = request.args.get("active")
+
+    if len(filters.keys()):
+        dataset_records = get_datasets(filter=filters)
+    else:
+        dataset_records = get_datasets()
+
+    return render_template(
+        "dataset/index.html",
+        datasets=dataset_records,
+        filters=filters,
+        filter_btns=filter_off_btns(filters),
+    )
 
 
 @base.route("/dataset/<dataset_name>")
