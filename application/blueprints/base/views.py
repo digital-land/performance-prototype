@@ -32,6 +32,7 @@ from application.datasette import (
     get_resources,
     get_resource,
     entry_count,
+    get_sources,
 )
 from application.utils import resources_per_publishers, index_by
 from application.enddatechecker import EndDateChecker
@@ -253,7 +254,9 @@ def resource_info(resource):
 
 @base.route("/source")
 def sources():
-    pipeline = request.args.get("pipeline")
+    filters = {}
+    if request.args.get("pipeline"):
+        filters["pipeline"] = request.args.get("pipeline")
     datasets = sources_by_dataset()
 
     stats = {
@@ -264,17 +267,19 @@ def sources():
         "datasets": len([d for d in datasets if d["active_sources"] > 0]),
     }
 
-    if pipeline:
-        sources = sources_by_dataset(pipeline)
-        return render_template(
-            "source/index.html",
-            by_dataset=datasets,
-            stats=stats,
-            sources=sources,
-            pipeline=pipeline,
-        )
+    if len(filters.keys()):
+        source_records = get_sources(filter=filters)
+    else:
+        source_records = get_sources()
 
-    return render_template("source/index.html", by_dataset=datasets, stats=stats)
+    return render_template(
+        "source/index.html",
+        by_dataset=datasets,
+        stats=stats,
+        sources=source_records,
+        filters=filters,
+        filter_btns=filter_off_btns(filters),
+    )
 
 
 @base.route("/source/<source>")
