@@ -28,6 +28,24 @@
           Apply filter
         </button>
       </form>
+
+      <!-- filter by theme -->
+      <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            By theme
+          </span>
+        </summary>
+        <div class="govuk-details__text">
+          <ul class="govuk-list">
+            {% for theme in themes %}
+            <li>
+              <a href="{{ url_for('base.dataset', theme=theme['theme']) }}" class="govuk-link">{{ theme['name'] }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </details>
     </div>
     <div class="govuk-grid-column-two-thirds">
       <p class="govuk-body results-summary">Showing {{ datasets|length }} dataset{{ "" if datasets|length == 1 else "s" }}</p>
@@ -64,7 +82,7 @@
             </div>
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Dataset</dt>
-              <dd class="govuk-summary-list__value">{{ dataset['themes'] }}</dd>
+              <dd class="govuk-summary-list__value">{{ dataset['dataset_themes'] }}</dd>
             </div>
           </dl>
         </li>
