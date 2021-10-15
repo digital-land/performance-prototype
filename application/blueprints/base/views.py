@@ -299,6 +299,8 @@ def resources():
         filters["pipeline"] = request.args.get("pipeline")
     if request.args.get("content_type"):
         filters["content_type"] = request.args.get("content_type")
+    if request.args.get("organisation"):
+        filters["organisation"] = request.args.get("organisation")
 
     resources_per_dataset = index_by("pipeline", resources_by_dataset())
 
@@ -316,6 +318,7 @@ def resources():
         resources=resource_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),
+        organisations=datasets_by_organistion(),
     )
 
 

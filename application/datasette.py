@@ -36,14 +36,17 @@ class DLDatasette:
         return s
 
     @staticmethod
-    def sql_for_filter(filters):
+    def sql_for_filter(filters, mappings={}):
         if len(filters.keys()) == 0:
             return "", ""
         where_str = "where%0D%0A"
         clauses = []
         param_str = ""
         for filter, value in filters.items():
-            clauses.append("{}+LIKE+%3A{}%0D%0A".format(filter, filter))
+            column = filter
+            if filter in mappings.keys():
+                column = mappings[filter]
+            clauses.append("{}+LIKE+%3A{}%0D%0A".format(column, filter))
             param = "&{}={}".format(filter, value)
             param_str = param_str + param
         return where_str + "AND%0D%0A".join(clauses), param_str
@@ -296,7 +299,9 @@ def get_resources(limit=100, filter=None):
     if limit:
         limit_str = "%0D%0Alimit+{}".format(limit)
     if filter:
-        where_clause, params = DLDatasette.sql_for_filter(filter)
+        where_clause, params = DLDatasette.sql_for_filter(
+            filter, {"organisation": "resource_organisation.organisation"}
+        )
     query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++DISTINCT+resource.resource%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++resource.end_date%2C%0D%0A++REPLACE%28GROUP_CONCAT%28DISTINCT+resource_organisation.organisation%29%2C%22%2C%22%2C+%22%3B%22%29+AS+organisation%2C%0D%0A++REPLACE%28GROUP_CONCAT%28DISTINCT+organisation.name%29%2C%22%2C%22%2C+%22%3B%22%29+AS+name%2C%0D%0A++REPLACE%28%0D%0A++++GROUP_CONCAT%28DISTINCT+log.content_type%29%2C%0D%0A++++%22%2C%22%2C%0D%0A++++%22%3B%22%0D%0A++%29+AS+content_type%2C%0D%0A++REPLACE%28%0D%0A++++GROUP_CONCAT%28DISTINCT+source_pipeline.pipeline%29%2C%0D%0A++++%22%2C%22%2C%0D%0A++++%22%3B%22%0D%0A++%29+AS+pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_organisation+ON+resource.resource+%3D+resource_organisation.resource%0D%0A++INNER+JOIN+organisation+ON+resource_organisation.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+log+ON+resource.resource+%3D+log.resource%0D%0A++INNER+JOIN+source+ON+source.endpoint+%3D+resource_endpoint.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A{}group+by%0D%0A++resource.resource%0D%0Aorder+by%0D%0Aresource.start_date+DESC{}{}".format(
         where_clause, limit_str, params
     )

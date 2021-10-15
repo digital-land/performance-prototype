@@ -63,6 +63,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
       <h2 class="govuk-heading-m">Filters</h2>
+      <!-- filter by dataset -->
       <details class="govuk-details" data-module="govuk-details">
         <summary class="govuk-details__summary">
           <span class="govuk-details__summary-text">
@@ -80,6 +81,25 @@
         </div>
       </details>
 
+      <!-- filter by organisation -->
+      <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            By organisation
+          </span>
+        </summary>
+        <div class="govuk-details__text">
+          <ul class="govuk-list">
+            {% for key, organisation in organisations.items() %}
+            <li>
+              <a href="{{ url_for('base.resources', organisation=organisation['organisation']) }}" class="govuk-link">{{ organisation['name'] }}</a><span class="govuk-!govuk-!-font-size-19"> ({{ organisation['resources'] }})</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </details>
+
+      <!-- filter by content-type -->
       <details class="govuk-details" data-module="govuk-details">
         <summary class="govuk-details__summary">
           <span class="govuk-details__summary-text">
