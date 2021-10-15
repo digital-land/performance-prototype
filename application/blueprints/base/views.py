@@ -34,6 +34,7 @@ from application.datasette import (
     entry_count,
     get_sources,
     source_count_per_organisation,
+    source_counts,
 )
 from application.utils import resources_per_publishers, index_by
 from application.enddatechecker import EndDateChecker
@@ -263,14 +264,6 @@ def sources():
     datasets = sources_by_dataset()
     organisations = source_count_per_organisation()
 
-    stats = {
-        "active": sum(
-            [d["active_sources"] for d in datasets if d["active_sources"] > 0]
-        ),
-        "inactive": sum([d["ended_sources"] for d in datasets]),
-        "datasets": len([d for d in datasets if d["active_sources"] > 0]),
-    }
-
     if len(filters.keys()):
         source_records = get_sources(filter=filters)
     else:
@@ -279,7 +272,7 @@ def sources():
     return render_template(
         "source/index.html",
         by_dataset=datasets,
-        stats=stats,
+        counts=source_counts()[0],
         sources=source_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),
