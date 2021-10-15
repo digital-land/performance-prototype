@@ -32,7 +32,7 @@
     <div class="govuk-grid-column-one-quarter">
       <div class="data-item govuk-!-margin-bottom-6">
         <span class="data-item__number govuk-!-font-size-80">{{ data['resources']|length }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Total resources</p>
+        <p class="govuk-body govuk-!-font-size-36">Total <a class="govuk-link--text-colour" href="{{ url_for('base.resources', organisation=organisation['organisation']) }}">resources</a></p>
       </div>
     </div>
     <div class="govuk-grid-column-one-half">
@@ -90,7 +90,8 @@
     <p class="govuk-body">We have been able to collect resources and extract data from {{ organisation.name }} for {{data["dataset_counts"]|length}} dataset{{ "" if data["dataset_counts"]|length else "s" }}.</p>
     {{ simplifiedDatasetTable({
       "datasets": data["dataset_counts"],
-      "caption": "Table showing datasets we have collected data for"
+      "caption": "Table showing datasets we have collected data for",
+      "organisation": organisation['organisation']
       })
     }}
   {% endif %}
