@@ -80,6 +80,46 @@
           </ul>
         </div>
       </details>
+
+      <!-- search form -->
+      <h2 class="govuk-heading-m">Search</h2>
+      <form action="{{ url_for('base.sources') }}" class="govuk-form">
+        {% from "govuk-jinja-components/components/input/macro.jinja" import govukInput %}
+        <div class="govuk-form-group">
+          {{ govukInput({
+            "label": {
+              "text": "By source"
+            },
+            "id": "source",
+            "name": "source",
+            "value": filters['source'] if filters['source'] else ""
+          }) }}
+        </div>
+
+        <div class="govuk-form-group">
+          {{ govukInput({
+            "label": {
+              "text": "By endpoint"
+            },
+            "id": "endpoint_",
+            "name": "endpoint_",
+            "value": filters['endpoint_'] if filters['endpoint_'] else ""
+          }) }}
+        </div>
+        <div class="govuk-form-group">
+          {{ govukInput({
+            "label": {
+              "text": "By URL"
+            },
+            "id": "endpoint_url",
+            "name": "endpoint_url",
+            "value": filters['endpoint_url'] if filters['endpoint_url'] else ""
+          }) }}
+        </div>
+        <div class="govuk-form-group">
+          <button class="govuk-button govuk-button--secondary">Search</button>
+        </div>
+      </form>
     </div>
     <div class="govuk-grid-column-two-thirds">
       <p class="govuk-body results-summary">Showing {{ sources|length }} source{{ "" if total_results == 1 else "s" }}{% if sources|length == 100 %} (limited to 100 most recently added){% endif %}</p>
@@ -159,5 +199,8 @@
       startElementSelector: '#btt-hook',
       fixClass: 'dl-sticky-banner--fixed'
   })
+</script>
+<script>
+  console.log('filters object', {{ filters|tojson }})
 </script>
 {% endblock bodyEndScripts %}

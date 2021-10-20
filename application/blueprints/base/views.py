@@ -284,6 +284,13 @@ def sources():
         filters["pipeline"] = request.args.get("pipeline")
     if request.args.get("organisation"):
         filters["organisation"] = request.args.get("organisation")
+    if request.args.get("endpoint_url"):
+        filters["endpoint_url"] = request.args.get("endpoint_url")
+    if request.args.get("endpoint_"):
+        filters["endpoint_"] = request.args.get("endpoint_")
+    if request.args.get("source"):
+        filters["source"] = request.args.get("source")
+
     datasets = sources_by_dataset()
     organisations = source_count_per_organisation()
 
