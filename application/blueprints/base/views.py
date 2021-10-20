@@ -315,7 +315,11 @@ def sources():
 @base.route("/source/<source>")
 def source(source):
     source_data = get_source(source)
-    return render_template("source/source.html", source=source_data[0])
+    return render_template(
+        "source/source.html",
+        source=source_data[0],
+        resources=get_resources(filter={"source": source}),
+    )
 
 
 def filter_off_btns(filters):
