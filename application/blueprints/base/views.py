@@ -290,6 +290,8 @@ def sources():
         filters["endpoint_"] = request.args.get("endpoint_")
     if request.args.get("source"):
         filters["source"] = request.args.get("source")
+    if request.args.get("documentation_url"):
+        filters["documentation_url"] = request.args.get("documentation_url")
 
     datasets = sources_by_dataset()
     organisations = source_count_per_organisation()

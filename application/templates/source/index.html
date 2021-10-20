@@ -81,6 +81,11 @@
         </div>
       </details>
 
+      <!-- filter by no documentation url -->
+      <p class="govuk-body">
+        <a href="{{ url_for('base.sources', documentation_url='') }}" class="govuk-link">Sources with no documentation url</a>
+      </p>
+
       <!-- search form -->
       <h2 class="govuk-heading-m">Search</h2>
       <form action="{{ url_for('base.sources') }}" class="govuk-form">
