@@ -3,7 +3,13 @@ import urllib.parse
 from datetime import datetime
 
 from application.caching import get
-from application.utils import create_dict, index_by, months_since, month_dict
+from application.utils import (
+    create_dict,
+    index_by,
+    months_since,
+    month_dict,
+    this_month,
+)
 
 
 class DLDatasette:
@@ -24,10 +30,14 @@ class DLDatasette:
 
         # only returns 100
         r = get(query)
+        if r is None:
+            return None
         return json.loads(r)
 
     def sqlQuery(self, query):
         r = get(query)
+        if r is None:
+            return None
         return json.loads(r)
 
     @staticmethod
@@ -172,6 +182,7 @@ def source_monthly_counts(pipeline=None):
             + pipeline
         )
     results = ds.sqlQuery(query)
+    print(results)
     return results["rows"]
 
 
@@ -188,10 +199,17 @@ def resource_monthly_counts(pipeline=None):
 
 
 def get_monthly_counts(pipeline=None):
-    resource_counts = resource_monthly_counts(pipeline)
     source_counts = source_monthly_counts(pipeline)
-    first_resource_month_str = resource_counts[0][0]
+    resource_counts = resource_monthly_counts(pipeline)
+
+    # handle if either are empty
+    if not bool(source_counts):
+        return None
+
     first_source_month_str = source_counts[0][0]
+    first_resource_month_str = (
+        resource_counts[0][0] if bool(resource_counts) else this_month()
+    )
 
     earliest = (
         first_source_month_str
@@ -229,7 +247,9 @@ def entity_count(pipeline):
     ds = DLDatasette()
     query = f"https://datasette.digital-land.info/{pipeline}.json?sql=select%0D%0A++count%28DISTINCT+entity%29+AS+entities%0D%0Afrom%0D%0A++entity"
     results = ds.sqlQuery(query)
-    return results["rows"][0][0]
+    if results is None:
+        return 0
+    return results["rows"][0][0] if bool(results["rows"]) else 0
 
 
 def total_publisher_coverage():

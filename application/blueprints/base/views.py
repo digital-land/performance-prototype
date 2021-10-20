@@ -150,6 +150,12 @@ def dataset_performance(dataset_name):
         "zero": len(publisher_splits["noactive"]),
     }
 
+    resource_count = (
+        resources_by_dataset(dataset_name)[0]
+        if resources_by_dataset(dataset_name)
+        else 0
+    )
+
     return render_template(
         "dataset/performance.html",
         name=dataset_name,
@@ -160,7 +166,7 @@ def dataset_performance(dataset_name):
         publishers=publisher_splits,
         today=datetime.utcnow().isoformat()[:10],
         entity_count=entity_count(dataset_name),
-        resource_count=resources_by_dataset(dataset_name),
+        resource_count=resource_count,
         coverage=publisher_coverage(dataset_name)[0],
         resource_stats=resource_stats,
         no_doc_url=active_source_no_doc(dataset_name),
