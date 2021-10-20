@@ -36,8 +36,8 @@
           </div>
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Documentation url</dt>
-            <dd class="govuk-summary-list__value">{% if source['documentation-url'] %}
-            {{ source['documentation-url'] }}
+            <dd class="govuk-summary-list__value">{% if source['documentation_url'] %}
+            <a href="{{ source['documentation_url'] }}">{{ source['documentation_url'] }}</a>
             {% else %}
             <span class="govuk-tag govuk-tag--yellow">Missing</span>
             {% endif %}</dd>
