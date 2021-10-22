@@ -185,41 +185,54 @@ def dataset_info(dataset_name):
     )
 
 
-@base.route("/organisation")
-def organisation():
-    dataset_counts_by_organisations = datasets_by_organistion()
-
+def split_publishers(organisations):
     lpas = {
-        publisher: dataset_counts_by_organisations[publisher]
-        for publisher in dataset_counts_by_organisations.keys()
+        publisher: organisations[publisher]
+        for publisher in organisations.keys()
         if "local-authority-eng" in publisher
     }
     dev_corps = {
-        publisher: dataset_counts_by_organisations[publisher]
-        for publisher in dataset_counts_by_organisations.keys()
+        publisher: organisations[publisher]
+        for publisher in organisations.keys()
         if "development-corporation" in publisher
     }
     national_parks = {
-        publisher: dataset_counts_by_organisations[publisher]
-        for publisher in dataset_counts_by_organisations.keys()
+        publisher: organisations[publisher]
+        for publisher in organisations.keys()
         if "national-park" in publisher
     }
     other = {
-        publisher: dataset_counts_by_organisations[publisher]
-        for publisher in dataset_counts_by_organisations.keys()
+        publisher: organisations[publisher]
+        for publisher in organisations.keys()
         if not any(
             s in publisher
             for s in ["local-authority", "development-corporation", "national-park"]
         )
     }
+    return {
+        "Development corporation": dev_corps,
+        "National parks": national_parks,
+        "Other publishers": other,
+        "Local planning authority": lpas,
+    }
+
+
+@base.route("/organisation")
+def organisation():
+    # currently doesn't provide the right info to populate the list of publishers
+    # if request.args.get("enddate"):
+    #     checker = EndDateChecker()
+    #     orgs = split_publishers(checker.get_organisations())
+
+    #     return render_template(
+    #         "organisation/index.html",
+    #         publishers=orgs,
+    #         today=datetime.utcnow().isoformat()[:10],
+    #     )
+
     return render_template(
         "organisation/index.html",
-        publishers={
-            "Development corporation": dev_corps,
-            "National parks": national_parks,
-            "Other publishers": other,
-            "Local planning authority": lpas,
-        },
+        publishers=split_publishers(datasets_by_organistion()),
         today=datetime.utcnow().isoformat()[:10],
     )
 

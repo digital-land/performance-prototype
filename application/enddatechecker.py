@@ -82,7 +82,7 @@ class EndDateChecker:
     def get_organisations(self, organisation=None):
         start_time = time.time()
         asyncio.run(self.main(organisation))
-        # print(self.orgs_with_end_dates)
+        return self.orgs_with_end_dates
         # print(time.time() - start_time)
 
     def get_count(self):
