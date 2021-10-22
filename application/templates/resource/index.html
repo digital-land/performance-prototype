@@ -116,6 +116,25 @@
           </ul>
         </div>
       </details>
+
+      <!-- search form -->
+      <h2 class="govuk-heading-m">Search</h2>
+      <form action="{{ url_for('base.resources') }}" class="govuk-form">
+        {% from "govuk-jinja-components/components/input/macro.jinja" import govukInput %}
+        <div class="govuk-form-group">
+          {{ govukInput({
+            "label": {
+              "text": "Resource"
+            },
+            "id": "resource",
+            "name": "resource",
+            "value": filters['resource'] if filters['resource'] else ""
+          }) }}
+        </div>
+        <div class="govuk-form-group">
+          <button class="govuk-button govuk-button--secondary">Search</button>
+        </div>
+      </form>
     </div>
     <div class="govuk-grid-column-two-thirds">
       <p class="govuk-body results-summary">Showing {{ resources|length }} resource{{ "" if total_results == 1 else "s" }}{% if resources|length == 100 %} (limited to most recent 100){% endif %}</p>

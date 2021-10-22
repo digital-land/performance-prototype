@@ -257,15 +257,6 @@ def organisation_info(prefix, org_id):
     )
 
 
-# @base.route("/resource/<resource>")
-# def resource_performance(resource):
-#     return render_template(
-#         "resource/performance.html",
-#         resource=resource,
-#         info_page=url_for("base.resource_info", resource=resource),
-#     )
-
-
 @base.route("/resource/<resource>/info")
 def resource_info(resource):
     data = read_json_file("application/data/info/resource.json")
@@ -340,6 +331,8 @@ def resources():
         filters["content_type"] = request.args.get("content_type")
     if request.args.get("organisation"):
         filters["organisation"] = request.args.get("organisation")
+    if request.args.get("resource"):
+        filters["resource"] = request.args.get("resource")
 
     resources_per_dataset = index_by("pipeline", resources_by_dataset())
 
