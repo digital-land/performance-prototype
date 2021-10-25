@@ -74,7 +74,7 @@
           <span class="applied-filter__name govuk-!-font-weight-bold">Filter:</span>
           {% for filter in filter_btns %}
           <span class="applied-filter__item">
-            <a href="{{ url_for('base.sources', **filter['url_params']) }}" class="govuk-link">x<span class="govuk-visually-hidden">remove filtering by {{ filter['value'] }}</span></a>
+            <a href="{{ url_for('base.dataset', **filter['url_params']) }}" class="govuk-link">x<span class="govuk-visually-hidden">remove filtering by {{ filter['value'] }}</span></a>
             {{ filter['value'] }}
           </span>
           {% endfor %}
