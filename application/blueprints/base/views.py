@@ -38,6 +38,7 @@ from application.datasette import (
     get_datasets,
     get_theme,
     get_typology,
+    dataset_latest_logs,
 )
 from application.utils import resources_per_publishers, index_by
 from application.enddatechecker import EndDateChecker
@@ -171,6 +172,7 @@ def dataset_performance(dataset_name):
         resource_stats=resource_stats,
         no_doc_url=active_source_no_doc(dataset_name),
         content_type_counts=content_type_counts(dataset_name),
+        latest_logs=dataset_latest_logs(),
     )
 
 
