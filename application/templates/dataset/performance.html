@@ -158,29 +158,38 @@
     {{ sourcesAndResourcesByMonthChart({}) }}
 
     
-    {% if no_doc_url|length > 0 %}
+    {% if sources_no_doc_url|length > 0 %}
     <h3 id="sources-missing-documentation-url" class="govuk-heading-m">Missing documentation urls</h3>
-    <p class="govuk-body">{{ no_doc_url|length }} active sources are missing <code>documentation-urls</code>.</p>
+    <p class="govuk-body">{{ sources_no_doc_url|length }} active sources are missing <code>documentation-urls</code>.</p>
     <ul class="govuk-list">
     {# only want to show 5 sources #}
-    {% set items = no_doc_url|length if no_doc_url|length < 5 else 5 %}
+    {% set items = sources_no_doc_url|length if sources_no_doc_url|length < 5 else 5 %}
     {% for n in range(items) %}
-      <li class="data-record govuk-!-margin-bottom-3">
-        <h4 class="govuk-heading-s data-record__identifier govuk-!-margin-bottom-0">Source <a href="{{ url_for('base.source', source=no_doc_url[n]['source']) }}">{{ no_doc_url[n]['source'] }}</a></h4>
-        <dl class="govuk-summary-list data-record__properties govuk-!-margin-bottom-0">
+      <li class="data-record app-card govuk-!-margin-bottom-3">
+        <div class="data-record__identifier">
+          <h4 class="govuk-heading-s govuk-!-margin-bottom-0">
+          Source <a href="{{ url_for('base.source', source=sources_no_doc_url[n]['source']) }}">{{ sources_no_doc_url[n]['source'] }}</a></h4>
+          {%- if sources_no_doc_url[n]['end_date'] or sources_no_doc_url[n]['documentation_url'] == "" -%}
+          <div class="app-card__flags govuk-!-margin-top-1">
+            {% if sources_no_doc_url[n]['end_date'] %}<span class="govuk-tag govuk-tag--grey">Historical</span>{% endif %}
+            {% if sources_no_doc_url[n]['documentation_url'] == "" %}<span class="govuk-tag govuk-tag--yellow">No documentation url</span>{% endif %}
+          </div>
+          {% endif -%}
+        </div>
+        <dl class="govuk-summary-list data-record__properties app-card__properties govuk-!-margin-bottom-0">
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Organisation</dt>
-            <dd class="govuk-summary-list__value">{{ no_doc_url[n]['organisation_name'] }}</dd>
+            <dd class="govuk-summary-list__value">{{ sources_no_doc_url[n]['name'] }}</dd>
           </div>
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Endpoint url</dt>
-            <dd class="govuk-summary-list__value"><a href="{{ no_doc_url[n]['endpoint_url'] }}">{{ no_doc_url[n]['endpoint_url'] }}</a></dd>
+            <dt class="govuk-summary-list__key">Dataset</dt>
+            <dd class="govuk-summary-list__value">{{ sources_no_doc_url[n]['pipeline'] }}</dd>
           </div>
         </dl>
       </li>
     {% endfor %}
     </ul>
-    {% if no_doc_url|length > 5 %}
+    {% if sources_no_doc_url|length > 5 %}
     <p class="govuk-body">
       <a href="{{ url_for('base.sources', dataset=name) }}" class="govuk-link">See all {{ name }} sources missing a <code>documentation-url</code></a>.
     </p>

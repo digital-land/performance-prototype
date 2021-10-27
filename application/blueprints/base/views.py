@@ -8,7 +8,6 @@ from flask import request
 from application.filters import clean_int_filter, days_since
 from application.datasette import (
     sources_with_endpoint,
-    active_source_no_doc,
     datasets_for_an_organisation,
     datasets_by_organistion,
     total_entities,
@@ -157,6 +156,8 @@ def dataset_performance(dataset_name):
         else 0
     )
 
+    source_filters = {"documentation_url": "", "pipeline": dataset_name}
+
     return render_template(
         "dataset/performance.html",
         name=dataset_name,
@@ -170,7 +171,7 @@ def dataset_performance(dataset_name):
         resource_count=resource_count,
         coverage=publisher_coverage(dataset_name)[0],
         resource_stats=resource_stats,
-        no_doc_url=active_source_no_doc(dataset_name),
+        sources_no_doc_url=get_sources(filter=source_filters),
         content_type_counts=content_type_counts(dataset_name),
         latest_logs=dataset_latest_logs(),
     )
