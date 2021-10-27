@@ -80,8 +80,32 @@ class DLDatasette:
         query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+source.end_date+%3D%3D+%27%27+THEN+source.source%0D%0A++++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3E%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+source.source%0D%0A++++END%0D%0A++%29+AS+active%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+end_date+%21%3D+%27%27+THEN+source.source%0D%0A++++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3C%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+source.source%0D%0A++++END%0D%0A++%29+AS+inactive%2C%0D%0A++COUNT%28DISTINCT+source_pipeline.pipeline%29+AS+pipelines%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0Asource.endpoint+%21%3D+%27%27%0D%0A%0D%0A"
         return self.sqlQuery(query, results="rows_with_column_names")
 
-    def get_entity_count(self):
+    def get_monthly_source_counts(self, pipeline=None):
+        query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+source.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+source.source%29%0D%0Afrom%0D%0A++source%0D%0Awhere%0D%0A++source.start_date+%21%3D+%22%22%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm"
+        if pipeline:
+            query = (
+                "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+source.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+source.source%29%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source.start_date+%21%3D+%22%22%0D%0A++AND+source_pipeline.pipeline+%3D+%3Apipeline%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm&pipeline="
+                + pipeline
+            )
+        return self.sqlQuery(query, results="rows")
+
+    def get_entity_count(self, pipeline=None):
         query = "https://datasette.digital-land.info/view_model.json?sql=select+count%28*%29+from+entity+order+by+entity"
+        if pipeline is not None:
+            query = f"https://datasette.digital-land.info/{pipeline}.json?sql=select%0D%0A++count%28DISTINCT+entity%29+AS+entities%0D%0Afrom%0D%0A++entity"
+
+        results = self.sqlQuery(query, results="rows")
+        if results is None:
+            return 0
+        return results[0][0] if bool(results) else 0
+
+    def get_monthly_resource_counts(self, pipeline=None):
+        query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+resource.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+resource.resource%29%0D%0Afrom%0D%0A++resource%0D%0Awhere%0D%0A++resource.start_date+%21%3D+%22%22%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm"
+        if pipeline:
+            query = (
+                "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+resource.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+resource.resource%29%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++resource.start_date+%21%3D+%22%22%0D%0A++AND+source_pipeline.pipeline+%3D+%3Apipeline%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm&pipeline="
+                + pipeline
+            )
         return self.sqlQuery(query, results="rows")
 
     def get_latest_resource(self, dataset):
@@ -178,34 +202,10 @@ def datasets_by_organistion():
     return index_by("organisation", organisations)
 
 
-def source_monthly_counts(pipeline=None):
-    ds = DLDatasette()
-    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+source.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+source.source%29%0D%0Afrom%0D%0A++source%0D%0Awhere%0D%0A++source.start_date+%21%3D+%22%22%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm"
-    if pipeline:
-        query = (
-            "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+source.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+source.source%29%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source.start_date+%21%3D+%22%22%0D%0A++AND+source_pipeline.pipeline+%3D+%3Apipeline%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm&pipeline="
-            + pipeline
-        )
-    results = ds.sqlQuery(query)
-    print(results)
-    return results["rows"]
-
-
-def resource_monthly_counts(pipeline=None):
-    ds = DLDatasette()
-    query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+resource.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+resource.resource%29%0D%0Afrom%0D%0A++resource%0D%0Awhere%0D%0A++resource.start_date+%21%3D+%22%22%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm"
-    if pipeline:
-        query = (
-            "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+resource.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+resource.resource%29%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++resource.start_date+%21%3D+%22%22%0D%0A++AND+source_pipeline.pipeline+%3D+%3Apipeline%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm&pipeline="
-            + pipeline
-        )
-    results = ds.sqlQuery(query)
-    return results["rows"]
-
-
 def get_monthly_counts(pipeline=None):
-    source_counts = source_monthly_counts(pipeline)
-    resource_counts = resource_monthly_counts(pipeline)
+    ds = DLDatasette()
+    source_counts = ds.get_monthly_source_counts(pipeline)
+    resource_counts = ds.get_monthly_resource_counts(pipeline)
 
     # handle if either are empty
     if not bool(source_counts):
@@ -247,15 +247,6 @@ def publisher_counts(pipeline):
     results = ds.sqlQuery(query)
     organisations = [create_dict(results["columns"], row) for row in results["rows"]]
     return index_by("organisation", organisations)
-
-
-def entity_count(pipeline):
-    ds = DLDatasette()
-    query = f"https://datasette.digital-land.info/{pipeline}.json?sql=select%0D%0A++count%28DISTINCT+entity%29+AS+entities%0D%0Afrom%0D%0A++entity"
-    results = ds.sqlQuery(query)
-    if results is None:
-        return 0
-    return results["rows"][0][0] if bool(results["rows"]) else 0
 
 
 def total_publisher_coverage():
