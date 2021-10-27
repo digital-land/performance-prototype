@@ -231,11 +231,18 @@ def organisation():
     #         publishers=orgs,
     #         today=datetime.utcnow().isoformat()[:10],
     #     )
+    ds = DLDatasette()
+    publishers_with_no_data = {
+        k: publisher
+        for k, publisher in ds.get_expected_publishers().items()
+        if publisher["active"] == 0
+    }
 
     return render_template(
         "organisation/index.html",
         publishers=split_publishers(datasets_by_organistion()),
         today=datetime.utcnow().isoformat()[:10],
+        none_publishers=split_publishers(publishers_with_no_data),
     )
 
 

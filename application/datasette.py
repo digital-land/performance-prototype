@@ -125,6 +125,12 @@ class DLDatasette:
             return create_dict(results["columns"], results["rows"][0])
         return []
 
+    def get_expected_publishers(self):
+        query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0Asource.organisation%2C%0D%0Aorganisation.name%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+source.endpoint+%21%3D+%27%27+THEN+source.organisation%0D%0A++++END%0D%0A++%29+AS+active%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0Agroup+by%0D%0A++source.organisation"
+        return index_by(
+            "organisation", self.sqlQuery(query, results="rows_with_column_names")
+        )
+
 
 def sql_str_query(func):
     @functools.wraps(func)

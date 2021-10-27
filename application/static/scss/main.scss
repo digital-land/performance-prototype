@@ -66,6 +66,11 @@
     background: #fff7bf;
 }
 
+.dl-error-text {
+    color: govuk-shade(govuk-colour("red"), 30);
+    background: govuk-tint(govuk-colour("red"), 80);
+}
+
 .govuk-notification-banner--error {
     background-color: darken(govuk-colour("red"), 10%);
     border-color: darken(govuk-colour("red"), 10%)
@@ -119,6 +124,12 @@
 
 .app__tag--in-accordion {
     vertical-align: middle;
+}
+
+.govuk-summary-list__row--no-border {
+    .govuk-summary-list__key, .govuk-summary-list__value {
+        border: 0;
+    }
 }
 
 @keyframes opening-panel {

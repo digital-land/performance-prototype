@@ -49,8 +49,18 @@
     <div class="govuk-grid-column-one-quarter">
       <div class="data-item govuk-!-margin-bottom-6">
         <span class="data-item__number govuk-!-font-size-80">{{ publisher_count['active'] }}<span class="govuk-!-font-size-19">/{{ publisher_count['total'] }}</span></span>
-        <p class="govuk-body govuk-!-font-size-36">Organisations</p>
+        <p class="govuk-body govuk-!-font-size-36">Publishers</p>
       </div>
+      <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text dl-small-text">
+            What does this tell us?
+          </span>
+        </summary>
+        <div class="govuk-details__text dl-small-text">
+          It measures the number of publishers we have collected data from against the number we expect to collect data from. Ideally these numbers would be the same.
+        </div>
+      </details>
     </div>
   </div>
 

@@ -8,84 +8,160 @@
 
 <main id="content" role="main">
   <h1 class="govuk-heading-xl">Publishers</h1>
-  <p class="govuk-body-l">A place to see who has published what.</p>
+  <p id="btt-hook" class="govuk-body-l">A list of all the publishers we have collected data from and the expected publishers we have not yet collected from.</p>
 
-  <p id="btt-hook" class="govuk-body">The organisations listed have all published some data we have been able to collect.</p>
+  <div class="govuk-tabs" data-module="dlf-subnav">
+    <h2 class="govuk-tabs__title">
+      Contents
+    </h2>
+    <nav class="dlf-subnav" aria-label="Sub navigation">
+        <ul class="dlf-subnav__list">
+            <li class="dlf-subnav__list-item dlf-subnav__list-item--selected">
+                <a class="dlf-subnav__list-item__link" href="#publishers-with-data" data-module-sub-nav="tab">
+                Publishers
+                </a>
+            </li>
+            <li class="dlf-subnav__list-item">
+              <a class="dlf-subnav__list-item__link" href="#publishers-with-no-data" data-module-sub-nav="tab">
+              Missing publishers
+              </a>
+            </li>
+        </ul>
+    </nav>
+    <div id="publishers-with-data">
+      <form class="filter-organisations-list__form filter-organisations-list__form--active govuk-!-margin-bottom-2" data-filter="form">
+        <label class="filter-list__label govuk-label govuk-!-font-weight-bold dl-form-label--inline" for="filter-organisations-list">I'm looking for</label>
+        <input class="filter-list__input govuk-input" type="text" id="filter-organisations-list" placeholder="For example, Office for National Statistics">
+      </form>
 
-  <p class="govuk-body">The organisations have been separated into these groups.</p>
-  <ul class="govuk-list govuk-list--bullet">
-    {% for type_ in publishers.keys() -%}
-    <li>
-      <a href="#{{type_|lower|replace(' ', '-')}}">{{ type_ }}</a>
-    </li>
-    {% endfor %}
-  </ul>
+      <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+        <div class="govuk-summary-list__row govuk-summary-list__row--no-border">
+          <dt class="govuk-summary-list__key">
+            Jump to straight to
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {% for type_ in publishers.keys() -%}
+            <a href="#{{type_|lower|replace(' ', '-')}}">{{ type_ }}</a>{{ ", " if not loop.last else "" }}
+            {% endfor %}
+          </dd>
+        </div>
+      </dl>
 
-  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+      {% for type_ in publishers.keys() %}
+      <div class="govuk-grid-row org-type__grouping">
+        <div class="govuk-grid-column-one-third">
+        {% if publishers[type_].keys()|length == 1 %}
+          {% set are = "is" %}
+        {% else %}
+          {% set are = "are" %}
+        {% endif %}
+          <h2 class="govuk-heading-m org-count__name" id="{{type_|lower|replace(' ', '-')}}">{{ type_ }}</h2>
+          <div class="org-type__count">
+            <p class="govuk-visually-hidden">There {{are}}
+              <span class="js-accessible-list-count">{{ publishers[type_].keys()|length }}</span>
+              {{ type_ }}
+            </p>
+            <span class="govuk-body govuk-!-font-weight-bold govuk-!-font-size-80 js-list-count" aria-hidden="true">{{ publishers[type_].keys()|length }}</span>
+          </div>
+        </div>
 
-  <form class="filter-organisations-list__form filter-organisations-list__form--active govuk-!-margin-bottom-9" data-filter="form">
-    <label class="filter-list__label govuk-label govuk-!-font-weight-bold dl-form-label--inline" for="filter-organisations-list">I'm looking for</label>
-    <input class="filter-list__input govuk-input" type="text" id="filter-organisations-list" placeholder="For example, Office for National Statistics">
-  </form>
+        <div class="govuk-grid-column-two-thirds">
+          <ol class="org-list" data-filter="list">
+          {% for organisation in publishers[type_].keys()|sort() %}
+            {% set publisher = publishers[type_][organisation] %}
+            {# shouldn't be more than one org per key so just select it #}
+            {% set prefix = publisher['organisation'].split(":")[0] %}
+            {% set org_id = publisher['organisation'].split(":")[1] %}
+            <li class="org-list__item govuk-grid-row" data-filter="item" data-org-id="{{ publisher['organisation'] }}">
+              <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link org-list__item-title">{{publisher["name"]}}</a>
+              {% if publisher['organisation_end_date'] and publisher['organisation_end_date'] < today  %}
+              <strong class="govuk-tag govuk-tag--grey">
+                Dissolved
+              </strong>
+              {% endif %}
+              <dl class="def-list--basic dl-secondary-text dl-small-text govuk-!-margin-top-1">
+                <div class="govuk-grid-column-one-third govuk-!-padding-left-0">
+                  <dt>Datasets</dt>
+                  <dd>{{ publisher['pipelines'] }}</dd>
+                </div>
+                <div class="govuk-grid-column-one-third">
+                  <dt>Total resources</dt>
+                  <dd>{{ publisher['resources'] }}</dd>
+                </div>
+                <div class="govuk-grid-column-one-third{{ ' dl-warning-text' if publisher['active'] != publisher['pipelines'] }}"{% if publisher['active'] != publisher['pipelines'] %} title="More active resources than datasets covered"{% endif %}>
+                  <dt>Active resources</dt>
+                  <dd>{{ publisher['active'] }}</dd>
+                </div>
+              </dl>
+            </li>
+          {% endfor %}
+          </ol>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="js-no-filter-list-matches">
+        <p class="govuk-body">No publisher matches the search term you have entered.</p>
+        <p class="govuk-body">That could be because we do not recognise the name you have entered OR we have not collected any data from the organisation.</p>
+      </div>
+    </div>
 
-  {% for type_ in publishers.keys() %}
-  <div class="govuk-grid-row org-type__grouping">
-    <div class="govuk-grid-column-one-third">
-    {% if publishers[type_].keys()|length == 1 %}
-     {% set are = "is" %}
-   {% else %}
-     {% set are = "are" %}
-   {% endif %}
-    <h2 class="govuk-heading-m org-count__name" id="{{type_|lower|replace(' ', '-')}}">{{ type_ }}</h2>
-    <div class="org-type__count">
-      <p class="govuk-visually-hidden">There {{are}}
-        <span class="js-accessible-list-count">{{ publishers[type_].keys()|length }}</span>
-        {{ type_ }}
-      </p>
-      <span class="govuk-body govuk-!-font-weight-bold govuk-!-font-size-80 js-list-count" aria-hidden="true">{{ publishers[type_].keys()|length }}</span>
+    <div id="publishers-with-no-data">
+      {% for type_ in none_publishers.keys() %}
+      {% if none_publishers[type_].keys()|length != 0 %}
+      <div class="govuk-grid-row org-type__grouping">
+        <div class="govuk-grid-column-one-third">
+        {% if none_publishers[type_].keys()|length == 1 %}
+          {% set are = "is" %}
+        {% else %}
+          {% set are = "are" %}
+        {% endif %}
+          <h2 class="govuk-heading-m org-count__name" id="{{type_|lower|replace(' ', '-')}}">{{ type_ }}</h2>
+          <div class="org-type__count">
+            <p class="govuk-visually-hidden">There {{are}}
+              <span class="js-accessible-list-count">{{ none_publishers[type_].keys()|length }}</span>
+              {{ type_ }}
+            </p>
+            <span class="govuk-body govuk-!-font-weight-bold govuk-!-font-size-80 js-list-count" aria-hidden="true">{{ none_publishers[type_].keys()|length }}</span>
+          </div>
+        </div>
+
+        <div class="govuk-grid-column-two-thirds">
+          <ol class="org-list" data-filter="list">
+          {% for organisation in none_publishers[type_].keys()|sort() %}
+            {% set publisher = none_publishers[type_][organisation] %}
+            {# shouldn't be more than one org per key so just select it #}
+            {% set prefix = publisher['organisation'].split(":")[0] %}
+            {% set org_id = publisher['organisation'].split(":")[1] %}
+            <li class="org-list__item govuk-grid-row" data-filter="item" data-org-id="{{ publisher['organisation'] }}">
+              <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link org-list__item-title">{{publisher["name"]}}</a>
+              {% if publisher['organisation_end_date'] and publisher['organisation_end_date'] < today  %}
+              <strong class="govuk-tag govuk-tag--grey">
+                Dissolved
+              </strong>
+              {% endif %}
+              <dl class="def-list--basic dl-secondary-text dl-small-text govuk-!-margin-top-1">
+                <div class="govuk-grid-column-one-third govuk-!-padding-left-0">
+                  <dt>Datasets</dt>
+                  <dd>{{ publisher['pipelines']|default('0') }}</dd>
+                </div>
+                <div class="govuk-grid-column-one-third{{ ' dl-error-text' if not publisher['resources'] }}">
+                  <dt>Total resources</dt>
+                  <dd>{{ publisher['resources']|default('0') }}</dd>
+                </div>
+                <div class="govuk-grid-column-one-third"{% if publisher['active'] != publisher['pipelines'] %} title="More active resources than datasets covered"{% endif %}>
+                  <dt>Active resources</dt>
+                  <dd>{{ publisher['active'] }}</dd>
+                </div>
+              </dl>
+            </li>
+          {% endfor %}
+          </ol>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
     </div>
   </div>
-
-  <div class="govuk-grid-column-two-thirds">
-    <ol class="org-list" data-filter="list">
-    {% for organisation in publishers[type_].keys()|sort() %}
-      {% set publisher = publishers[type_][organisation] %}
-      {# shouldn't be more than one org per key so just select it #}
-      {% set prefix = publisher['organisation'].split(":")[0] %}
-      {% set org_id = publisher['organisation'].split(":")[1] %}
-      <li class="org-list__item govuk-grid-row" data-filter="item" data-org-id="{{ publisher['organisation'] }}">
-        <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link org-list__item-title">{{publisher["name"]}}</a>
-        {% if publisher['organisation_end_date'] and publisher['organisation_end_date'] < today  %}
-        <strong class="govuk-tag govuk-tag--grey">
-          Dissolved
-        </strong>
-        {% endif %}
-        <dl class="def-list--basic dl-secondary-text dl-small-text govuk-!-margin-top-1">
-          <div class="govuk-grid-column-one-third govuk-!-padding-left-0">
-            <dt>Datasets</dt>
-            <dd>{{ publisher['pipelines'] }}</dd>
-          </div>
-          <div class="govuk-grid-column-one-third">
-            <dt>Total resources</dt>
-            <dd>{{ publisher['resources'] }}</dd>
-          </div>
-          <div class="govuk-grid-column-one-third{{ ' dl-warning-text' if publisher['active'] != publisher['pipelines'] }}"{% if publisher['active'] != publisher['pipelines'] %} title="More active resources than datasets covered"{% endif %}>
-            <dt>Active resources</dt>
-            <dd>{{ publisher['active'] }}</dd>
-          </div>
-        </dl>
-      </li>
-    {% endfor %}
-    </ol>
-  </div>
-</div>
-{% endfor %}
-<div class="js-no-filter-list-matches">
-  <p class="govuk-body">No publisher matches the search term you have entered.</p>
-  <p class="govuk-body">That could be because we do not recognise the name you have entered OR we have not collected any data from the organisation.</p>
-</div>
-  
-
 </main>
 {% endblock %}
 
@@ -98,5 +174,10 @@
       list_section_selector: '.org-type__grouping',
       count_wrapper_selector: '.org-type__count'
   })
+</script>
+
+<script>
+  const $subNavTabs = document.querySelector('[data-module="dlf-subnav"]')
+  const subNavTabsComponent = new DLFrontend.SubNavTabs($subNavTabs).init({})
 </script>
 {% endblock bodyEndScripts %}
