@@ -32,7 +32,6 @@ from application.datasette import (
     entry_count,
     get_sources,
     source_count_per_organisation,
-    source_counts,
     get_datasets,
     get_theme,
     get_typology,
@@ -287,10 +286,11 @@ def resource_info(resource):
 
 @base.route("/source")
 def sources():
+    ds = DLDatasette()
     filters = {}
     if request.args.get("pipeline"):
         filters["pipeline"] = request.args.get("pipeline")
-    if request.args.get("organisation"):
+    if request.args.get("organisation") is not None:
         filters["organisation"] = request.args.get("organisation")
     if request.args.get("endpoint_url"):
         filters["endpoint_url"] = request.args.get("endpoint_url")
@@ -312,7 +312,7 @@ def sources():
     return render_template(
         "source/index.html",
         by_dataset=datasets,
-        counts=source_counts()[0],
+        counts=ds.source_counts()[0],
         sources=source_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),
