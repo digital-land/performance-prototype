@@ -117,6 +117,10 @@
     overflow: hidden;
 }
 
+.app__tag--in-accordion {
+    vertical-align: middle;
+}
+
 @keyframes opening-panel {
     to {
         max-height: 850px;

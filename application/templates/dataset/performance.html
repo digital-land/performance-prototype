@@ -286,6 +286,29 @@
             }) }}
           </div>
         </div>
+        {% if blank_sources|length %}
+        <div class="govuk-accordion__section ">
+          <div class="govuk-accordion__section-header">
+            <h2 class="govuk-accordion__section-heading">
+              <span class="govuk-accordion__section-button" id="accordion-default-heading-3">
+                No data for {{ blank_sources|length }} expected publishers
+                <span class="govuk-tag govuk-tag--red app__tag--in-accordion">Missing</span>
+              </span>
+            </h2>
+          </div>
+          <div id="accordion-default-content-3" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-3">
+            <ul class="govuk-list">
+              {% for source in blank_sources %}
+              {%- set prefix = source['organisation'].split(":")[0] %}
+              {%- set org_id = source['organisation'].split(":")[1] %}
+              <li>
+                <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link">{{ source['name'] }}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endif %} 
       </div>
       {% endif %}
     </div>

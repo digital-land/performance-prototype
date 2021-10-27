@@ -172,6 +172,7 @@ def dataset_performance(dataset_name):
         sources_no_doc_url=get_sources(filter=source_filters),
         content_type_counts=content_type_counts(dataset_name),
         latest_logs=dataset_latest_logs(),
+        blank_sources=ds.get_blank_sources(dataset_name),
     )
 
 
