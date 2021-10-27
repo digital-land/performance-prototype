@@ -191,7 +191,7 @@
     </ul>
     {% if sources_no_doc_url|length > 5 %}
     <p class="govuk-body">
-      <a href="{{ url_for('base.sources', dataset=name) }}" class="govuk-link">See all {{ name }} sources missing a <code>documentation-url</code></a>.
+      <a href="{{ url_for('base.sources', pipeline=name, documentation_url='') }}" class="govuk-link">See all {{ name }} sources missing a <code>documentation-url</code></a>.
     </p>
     {% endif %}
     {% endif %}
