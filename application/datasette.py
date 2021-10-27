@@ -1,5 +1,6 @@
 import json
 import urllib.parse
+import functools
 from datetime import datetime
 
 from application.caching import get
@@ -62,6 +63,17 @@ class DLDatasette:
         return where_str + "AND%0D%0A".join(clauses), param_str
 
 
+def sql_str_query(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        ds = DLDatasette()
+        query = func(*args, **kwargs)
+        result = ds.sqlQuery(query)
+        return [create_dict(result["columns"], row) for row in result["rows"]]
+
+    return wrapper
+
+
 def by_collection(data):
     # used to by pipeline
     by_collection = {}
@@ -103,14 +115,15 @@ def sources_with_endpoint():
     }
 
 
+@sql_str_query
 def active_source_no_doc(pipeline):
-    ds = DLDatasette()
-    query = (
+    # ds = DLDatasette()
+    return (
         "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source.attribution%2C%0D%0A++source.collection%2C%0D%0A++source.documentation_url%2C%0D%0A++source.end_date%2C%0D%0A++source.endpoint%2C%0D%0A++endpoint.endpoint_url%2C%0D%0A++source.entry_date%2C%0D%0A++source.licence%2C%0D%0A++source.organisation%2C%0D%0A++organisation.name+AS+organisation_name%2C%0D%0A++source.source%2C%0D%0A++source.start_date%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+endpoint+ON+source.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0Awhere%0D%0A++%28%0D%0A++++%22documentation_url%22+is+null%0D%0A++++or+%22documentation_url%22+%3D+%22%22%0D%0A++%29%0D%0A++and+%28%0D%0A++++%22source.endpoint%22+is+not+null%0D%0A++++and+%22source.endpoint%22+%21%3D+%22%22%0D%0A++%29%0D%0A++AND%0D%0A++source_pipeline.pipeline+%3D+%3Apipeline%0D%0Aorder+by%0D%0A++source.source&pipeline="
         + pipeline
     )
-    result = ds.sqlQuery(query)
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    # result = ds.sqlQuery(query)
+    # return [create_dict(result["columns"], row) for row in result["rows"]]
 
 
 def sources_per_dataset_for_organisation(id):
