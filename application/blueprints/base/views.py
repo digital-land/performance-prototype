@@ -11,7 +11,6 @@ from application.datasette import (
     datasets_for_an_organisation,
     datasets_by_organistion,
     total_entities,
-    sources_per_dataset_for_organisation,
     latest_resource,
     get_monthly_counts,
     publisher_counts,
@@ -38,6 +37,7 @@ from application.datasette import (
     get_theme,
     get_typology,
     dataset_latest_logs,
+    DLDatasette,
 )
 from application.utils import resources_per_publishers, index_by
 from application.enddatechecker import EndDateChecker
@@ -242,10 +242,11 @@ def organisation():
 
 @base.route("/organisation/<prefix>/<org_id>")
 def organisation_performance(prefix, org_id):
+    ds = DLDatasette()
     id = prefix + ":" + org_id
     organisation = get_organisation(id)
     data = datasets_for_an_organisation(id)
-    source_counts = sources_per_dataset_for_organisation(id)
+    source_counts = ds.get_sources_per_dataset_for_organisation(id)
     checker = EndDateChecker()
     used_enddate, datasets_with_enddate = checker.has_used_enddate(id)
 

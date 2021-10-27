@@ -35,11 +35,16 @@ class DLDatasette:
             return None
         return json.loads(r)
 
-    def sqlQuery(self, query):
+    def sqlQuery(self, query, results="complete"):
         r = get(query)
         if r is None:
             return None
-        return json.loads(r)
+        response = json.loads(r)
+        if results == "rows":
+            return response["rows"]
+        if results == "rows_with_column_names":
+            return [create_dict(response["columns"], row) for row in response["rows"]]
+        return response
 
     @staticmethod
     def urlencode(s):
@@ -61,6 +66,14 @@ class DLDatasette:
             param = "&{}={}".format(filter, value)
             param_str = param_str + param
         return where_str + "AND%0D%0A".join(clauses), param_str
+
+    def get_sources_per_dataset_for_organisation(self, organisation):
+        # returns number of sources with and without endpoint for each dataset for the provided organisation
+        query = (
+            "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source_pipeline.pipeline+AS+pipeline%2C%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%2C%0D%0A++SUM%28CASE+WHEN+%28source.endpoint%29+is+not+null+and+%28source.endpoint%29+%21%3D+%22%22+THEN+1+ELSE+0+END%29++AS+sources_with_endpoint%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source.organisation+%3D+%3Aorganisation%0D%0Agroup+by%0D%0A++source_pipeline.pipeline&organisation="
+            + DLDatasette.urlencode(organisation)
+        )
+        return self.sqlQuery(query, results="rows_with_column_names")
 
 
 def sql_str_query(func):
@@ -115,12 +128,12 @@ def sources_with_endpoint():
     }
 
 
-@sql_str_query
-def sources_per_dataset_for_organisation(organisation):
-    return (
-        "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source_pipeline.pipeline+AS+pipeline%2C%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%2C%0D%0A++SUM%28CASE+WHEN+%28source.endpoint%29+is+not+null+and+%28source.endpoint%29+%21%3D+%22%22+THEN+1+ELSE+0+END%29++AS+sources_with_endpoint%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source.organisation+%3D+%3Aorganisation%0D%0Agroup+by%0D%0A++source_pipeline.pipeline&organisation="
-        + DLDatasette.urlencode(organisation)
-    )
+# @sql_str_query
+# def get_sources_per_dataset_for_organisation(organisation):
+#     return (
+#         "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source_pipeline.pipeline+AS+pipeline%2C%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%2C%0D%0A++SUM%28CASE+WHEN+%28source.endpoint%29+is+not+null+and+%28source.endpoint%29+%21%3D+%22%22+THEN+1+ELSE+0+END%29++AS+sources_with_endpoint%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source.organisation+%3D+%3Aorganisation%0D%0Agroup+by%0D%0A++source_pipeline.pipeline&organisation="
+#         + DLDatasette.urlencode(organisation)
+#     )
 
 
 def datasets_for_an_organisation(id):
