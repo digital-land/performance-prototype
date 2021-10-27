@@ -80,6 +80,20 @@ class DLDatasette:
         query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+source.end_date+%3D%3D+%27%27+THEN+source.source%0D%0A++++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3E%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+source.source%0D%0A++++END%0D%0A++%29+AS+active%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+end_date+%21%3D+%27%27+THEN+source.source%0D%0A++++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3C%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+source.source%0D%0A++++END%0D%0A++%29+AS+inactive%2C%0D%0A++COUNT%28DISTINCT+source_pipeline.pipeline%29+AS+pipelines%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0Asource.endpoint+%21%3D+%27%27%0D%0A%0D%0A"
         return self.sqlQuery(query, results="rows_with_column_names")
 
+    def get_entity_count(self):
+        query = "https://datasette.digital-land.info/view_model.json?sql=select+count%28*%29+from+entity+order+by+entity"
+        return self.sqlQuery(query, results="rows")
+
+    def get_latest_resource(self, dataset):
+        query = (
+            "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++resource.resource%2C%0D%0A++resource.end_date%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source_pipeline.pipeline+%3D+%3Apipeline%0D%0Aorder+by%0D%0A++resource.start_date+DESC%0D%0Alimit+1&pipeline="
+            + dataset
+        )
+        results = self.sqlQuery(query)
+        if len(results["rows"]):
+            return create_dict(results["columns"], results["rows"][0])
+        return []
+
 
 def sql_str_query(func):
     @functools.wraps(func)
@@ -133,14 +147,6 @@ def sources_with_endpoint():
     }
 
 
-# @sql_str_query
-# def get_sources_per_dataset_for_organisation(organisation):
-#     return (
-#         "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source_pipeline.pipeline+AS+pipeline%2C%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%2C%0D%0A++SUM%28CASE+WHEN+%28source.endpoint%29+is+not+null+and+%28source.endpoint%29+%21%3D+%22%22+THEN+1+ELSE+0+END%29++AS+sources_with_endpoint%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source.organisation+%3D+%3Aorganisation%0D%0Agroup+by%0D%0A++source_pipeline.pipeline&organisation="
-#         + DLDatasette.urlencode(organisation)
-#     )
-
-
 def datasets_for_an_organisation(id):
     org_id = id.replace(":", "%3A")
     ds = DLDatasette()
@@ -170,25 +176,6 @@ def datasets_by_organistion():
     results = ds.sqlQuery(query)
     organisations = [create_dict(results["columns"], row) for row in results["rows"]]
     return index_by("organisation", organisations)
-
-
-def total_entities():
-    query = "https://datasette.digital-land.info/view_model.json?sql=select+count%28*%29+from+entity+order+by+entity"
-    ds = DLDatasette()
-    results = ds.sqlQuery(query)
-    return results["rows"][0][0]
-
-
-def latest_resource(dataset):
-    ds = DLDatasette()
-    query = (
-        "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++resource.resource%2C%0D%0A++resource.end_date%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source_pipeline.pipeline+%3D+%3Apipeline%0D%0Aorder+by%0D%0A++resource.start_date+DESC%0D%0Alimit+1&pipeline="
-        + dataset
-    )
-    r1 = ds.sqlQuery(query)
-    if len(r1["rows"]):
-        return create_dict(r1["columns"], r1["rows"][0])
-    return []
 
 
 def source_monthly_counts(pipeline=None):

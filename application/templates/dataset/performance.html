@@ -116,6 +116,7 @@
       </dt>
       <dd class="govuk-summary-list__value">
         {{ latest_resource['start_date'] }}
+        <div class="dl-secondary-text dl-small-text govuk-!-margin-top-1">(<a href="{{ url_for('base.resource', resource=latest_resource['resource']) }}" class="govuk-link">{{ latest_resource['resource']|truncate(15) }}</a> was the resource collected)</div>
       </dd>
     </div>
     {% endif %}

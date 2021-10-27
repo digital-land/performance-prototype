@@ -10,8 +10,6 @@ from application.datasette import (
     sources_with_endpoint,
     datasets_for_an_organisation,
     datasets_by_organistion,
-    total_entities,
-    latest_resource,
     get_monthly_counts,
     publisher_counts,
     entity_count,
@@ -68,6 +66,7 @@ def index():
 @base.route("/performance")
 @base.route("/performance/")
 def performance():
+    ds = DLDatasette()
     gs_datasets = get_datasets_summary()
     checker = EndDateChecker()
 
@@ -78,7 +77,7 @@ def performance():
         stats=get_monthly_counts(),
         publisher_count=total_publisher_coverage(),
         sources=sources_with_endpoint(),
-        entity_count=total_entities(),
+        entity_count=ds.get_entity_count()[0][0],
         datasette_datasets=datasets(split=True),
         resource_count=get_resource_count(),
         using_enddate=checker.get_count(),
@@ -124,6 +123,7 @@ def dataset():
 
 @base.route("/dataset/<dataset_name>")
 def dataset_performance(dataset_name):
+    ds = DLDatasette()
     datasets = get_datasets_summary()
     # name = dataset_name.replace("_", " ").capitalize()
     dataset = [v for k, v in datasets.items() if v.get("pipeline") == dataset_name]
@@ -162,7 +162,7 @@ def dataset_performance(dataset_name):
         name=dataset_name,
         info_page=url_for("base.dataset_info", dataset_name=dataset_name),
         dataset=dataset[0] if len(dataset) else "",
-        latest_resource=latest_resource(dataset_name),
+        latest_resource=ds.get_latest_resource(dataset_name),
         monthly_counts=get_monthly_counts(pipeline=dataset_name),
         publishers=publisher_splits,
         today=datetime.utcnow().isoformat()[:10],
