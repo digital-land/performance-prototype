@@ -83,27 +83,47 @@
       {% endif %}
       <ul class="govuk-list">
         {% for dataset in datasets %}
-        <li class="data-record app-card govuk-!-margin-bottom-3">
-          <div class="data-record__identifier">
-            <h4 class="govuk-heading-s govuk-!-margin-bottom-0">
-              <a href="{{ url_for('base.dataset_performance', dataset_name=dataset.dataset) }}" class="govuk-link">{{ dataset['name'] }}</a>
-            </h4>
-            {% if not dataset.dataset_active %}
-            <div class="app-card__flags govuk-!-margin-top-1">
-              <span class="govuk-tag govuk-tag--yellow">No data</span>
+        <li class="govuk-!-margin-bottom-3">
+          <article class="app-card app-card--small">
+            <div class="app-card__header">
+              <div class="app-card__header__primary">
+                <h3 class="app-card__title"><a href="{{ url_for('base.dataset_performance', dataset_name=dataset.dataset) }}" class="govuk-link">{{ dataset['name'] }}</a></h3>
+              </div>
+              <div class="app-card__header__secondary">
+                <div class="flags">
+                {% if not dataset.dataset_active %}
+                  <strong class="govuk-tag govuk-tag--yellow">No data</strong>
+                {% endif -%}
+                </div>
+                <dl class="app-card__datalist">
+                  <div class="app-card__datalist__row">
+                    <dt class="app-card__datalist__key">Id:</dt>
+                    <dd class="app-card__datalist__value">{{ dataset.dataset }}</dd>
+                  </div>
+                </dl>
+              </div>
             </div>
-            {% endif -%}
-          </div>
-          <dl class="govuk-summary-list data-record__properties app-card__properties govuk-!-margin-bottom-0">
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Typology</dt>
-              <dd class="govuk-summary-list__value">{{ dataset['typology'] }}</dd>
+            <div class="app-card__body">
+              <div class="app-card__row">
+                <div class="app-card__properties">
+                  <dl class="govuk-summary-list govuk-!-margin-bottom-0">
+                    
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">Typology</dt>
+                      <dd class="govuk-summary-list__value">{{ dataset['typology'] }}</dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">Dataset</dt>
+                      <dd class="govuk-summary-list__value">{{ dataset['dataset_themes'] }}</dd>
+                    </div>
+                    
+                  </dl>
+                </div>
+              </div>
+
             </div>
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">Dataset</dt>
-              <dd class="govuk-summary-list__value">{{ dataset['dataset_themes'] }}</dd>
-            </div>
-          </dl>
+          </article>
+          
         </li>
         {% endfor %}
       </ul>

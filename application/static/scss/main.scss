@@ -2,10 +2,10 @@
 @import "node_modules/govuk-frontend/govuk/all";
 @import "table";
 @import "forms";
-@import "applied-filter";
 @import "header";
 
 // import components
+@import "components/applied-filter";
 @import "components/moj-primary-navigation";
 @import "components/card";
 
