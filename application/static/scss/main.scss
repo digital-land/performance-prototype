@@ -3,143 +3,153 @@
 @import "table";
 @import "forms";
 @import "header";
+@import "typography";
 
 // import components
 @import "components/applied-filter";
+@import "components/data-item";
 @import "components/moj-primary-navigation";
 @import "components/card";
+@import "components/summary-banner";
+@import "components/govuk-details";
+
+.app-main-wrapper {
+  @include moj-width-container;
+}
 
 .govuk-link--bold {
-    font-weight: bold !important;
+  font-weight: bold !important;
 }
 
 .dl-cell-date {
-    min-width: govuk-em(100, 19);
+  min-width: govuk-em(100, 19);
 }
 
 .dl-row--inactive {
-    td {
-        color: govuk-colour('mid-grey');
-    }
+  td {
+    color: govuk-colour('mid-grey');
+  }
 }
 
 .govuk-header__link--service-name {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 .dl-details--compressed {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 
-    &[open] {
-        margin-bottom: 30px;
-    }
+  &[open] {
+    margin-bottom: 30px;
+  }
 }
 
-.dl-table__header--border-right + .govuk-table__cell,
-.dl-table__header--border-right + .govuk-table__header {
-    padding-left: 10px;
-    padding-right: 10px;
+.dl-table__header--border-right+.govuk-table__cell,
+.dl-table__header--border-right+.govuk-table__header {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .govuk-tag--small {
-    font-size: 0.875rem;
-    padding-top: 4px;
-    padding-right: 6px;
-    padding-bottom: 3px;
-    padding-left: 6px;
+  font-size: 0.875rem;
+  padding-top: 4px;
+  padding-right: 6px;
+  padding-bottom: 3px;
+  padding-left: 6px;
 }
 
 .govuk-header__link--service-name--bold {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .govuk-header--flush {
-    border-color: govuk-colour('black');
+  border-color: govuk-colour('black');
 
-    .govuk-header__container {
-        border: none
-    }
+  .govuk-header__container {
+    border: none
+  }
 }
 
 .dl-warning-text {
-    color: #594d00;
-    background: #fff7bf;
+  color: #594d00;
+  background: #fff7bf;
 }
 
 .dl-error-text {
-    color: govuk-shade(govuk-colour("red"), 30);
-    background: govuk-tint(govuk-colour("red"), 80);
+  color: govuk-shade(govuk-colour("red"), 30);
+  background: govuk-tint(govuk-colour("red"), 80);
 }
 
 .govuk-notification-banner--error {
-    background-color: darken(govuk-colour("red"), 10%);
-    border-color: darken(govuk-colour("red"), 10%)
+  background-color: darken(govuk-colour("red"), 10%);
+  border-color: darken(govuk-colour("red"), 10%)
 }
 
 .expanding-line-break {
-    position: relative;
+  position: relative;
 
-    .dl-collapsible__btn {
-        border: 1px solid #bfc1c3;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        padding: 0 15px;
-        transform: translateY(-50%) translateX(-50%);
-        background: #ffffff;
-        cursor: pointer;
-        text-decoration: none;
-        min-width: 50%;
-        text-align: center;
+  .dl-collapsible__btn {
+    border: 1px solid #bfc1c3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 0 15px;
+    transform: translateY(-50%) translateX(-50%);
+    background: #ffffff;
+    cursor: pointer;
+    text-decoration: none;
+    min-width: 50%;
+    text-align: center;
 
-        .dl-collapsible__icon {
-            padding-right: 10px;
-        }
+    .dl-collapsible__icon {
+      padding-right: 10px;
     }
+  }
 }
 
 .dl-collapsible {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
 
-    &[data-collapsible="open"] {
-        max-height: 850px;
-    }
+  &[data-collapsible="open"] {
+    max-height: 850px;
+  }
 
-    &.opening {
-        animation: opening-panel .3s alternate;
-        animation-iteration-count: 1;
-    }
+  &.opening {
+    animation: opening-panel .3s alternate;
+    animation-iteration-count: 1;
+  }
 
-    &[data-collapsible="closed"] {
-        max-height: 0px;
-    }
+  &[data-collapsible="closed"] {
+    max-height: 0px;
+  }
 }
 
 .dl-collapsible.closing {
-    animation: closing-panel .3s alternate;
-    animation-iteration-count: 1;
-    overflow: hidden;
+  animation: closing-panel .3s alternate;
+  animation-iteration-count: 1;
+  overflow: hidden;
 }
 
 .app__tag--in-accordion {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .govuk-summary-list__row--no-border {
-    .govuk-summary-list__key, .govuk-summary-list__value {
-        border: 0;
-    }
+
+  .govuk-summary-list__key,
+  .govuk-summary-list__value {
+    border: 0;
+  }
 }
 
 @keyframes opening-panel {
-    to {
-        max-height: 850px;
-    }
+  to {
+    max-height: 850px;
+  }
 }
 
 @keyframes closing-panel {
-    to {
-        max-height: 0px;
-    }
+  to {
+    max-height: 0px;
+  }
 }
