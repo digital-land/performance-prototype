@@ -1,0 +1,23 @@
+// adding additional item to font scale
+$app-typography-scale: (
+  60: (
+    null: (
+      font-size: 48px,
+      line-height: 50px
+    ),
+    tablet: (
+      font-size: 60px,
+      line-height: 65px
+    ),
+    print: (
+      font-size: 48pt,
+      line-height: 1.05
+    )
+  )
+);
+
+$govuk-typography-scale: map-merge($govuk-typography-scale, $app-typography-scale);
+
+.app-\!-font-size-60 {
+  @include govuk-font($size: 60, $weight: bold);
+}
