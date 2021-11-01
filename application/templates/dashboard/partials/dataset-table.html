@@ -1,6 +1,6 @@
 <div class="data-table__wrapper" data-module="data-table">
     <table class="govuk-table">
-      <caption class="govuk-table__caption govuk-table__caption--l">Datasets</caption>
+      <caption class="govuk-table__caption govuk-table__caption--l govuk-visually-hidden">Table of datasets</caption>
       <thead class="govuk-table__head dl-table__head--sticky">
         <!-- <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header govuk-\!-width-one-quarter"></th>
@@ -35,7 +35,7 @@
           {% endif %}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['publishers']|to_int }}">{{ dataset['publishers'] }} / {{ dataset['expected_publishers'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['total']|to_int }}">{{ dataset['total'] }}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['latest'] }}">{{ dataset['latest']|days_since if dataset['latest'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['latest']|days_since if dataset['latest'] }}">{{ dataset['latest']|days_since if dataset['latest'] }}</td>
         </tr>
         {% endfor %}
       </tbody>

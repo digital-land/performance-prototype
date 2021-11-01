@@ -4,67 +4,71 @@
 
 {% block dl_breadcrumbs %}{% endblock %}
 
+{% block main %}
+<div class="app-summary-banner">
+    <div class="app-summary-banner__header">
+        <h3 class="govuk-heading-l">Summary</h3>
+    </div>
+    <div class="app-summary-banner__body">
+        <div class="app-summary-banner__row">
+            <div class="app-data-item">
+                <p class="govuk-body app-data-item__label">Entities</p>
+                <span class="app-data-item__number app-!-font-size-60">{{ entity_count|commanum }}</span>
+                <details class="govuk-details govuk-details--small app-data-item__explainer" data-module="govuk-details">
+                    <summary class="govuk-details__summary">
+                        <span class="govuk-details__summary-text">
+                            What is an entity?
+                        </span>
+                    </summary>
+                    <div class="govuk-details__text">
+                    An entity is a unit of data with a distinct and independent purpuse, such as an organisation, document, location, policy, etc
+                    </div>
+                </details>
+            </div>
+        </div>
+        <div class="app-summary-banner__row">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-one-quarter">
+                  <div class="app-data-item">
+                    <p class="govuk-body app-data-item__label">Datasets</p>
+                    <span class="app-data-item__number app-!-font-size-60">{{ datasette_datasets['active']|length }}<span class="govuk-!-font-size-19">/{{ datasette_datasets['active']|length + datasette_datasets['inactive']|length }}</span></span>
+                  </div>
+                </div>
+                <div class="govuk-grid-column-one-quarter">
+                  <div class="app-data-item">
+                    <p class="govuk-body app-data-item__label">Sources</p>
+                    <span class="app-data-item__number app-!-font-size-60">{{ sources['with_endpoint'] }}</span>
+                  </div>
+                </div>
+                <div class="govuk-grid-column-one-quarter">
+                  <div class="app-data-item">
+                    <p class="govuk-body app-data-item__label">Resources</p>
+                    <span class="app-data-item__number app-!-font-size-60">{{ resource_count }}</span>
+                  </div>
+                </div>
+                <div class="govuk-grid-column-one-quarter">
+                  <div class="app-data-item">
+                    <p class="govuk-body app-data-item__label">Publishers</p>
+                    <span class="app-data-item__number app-!-font-size-60">{{ publisher_count['active'] }}<span class="govuk-!-font-size-19">/{{ publisher_count['total'] }}</span></span>
+                    <details class="govuk-details govuk-details--small app-data-item__explainer" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                          <span class="govuk-details__summary-text">
+                            What does this tell us?
+                          </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                          It measures the number of publishers we have collected data from against the number we expect to collect data from. Ideally these numbers would be the same.
+                          <p><a href="{{ url_for('base.organisation', _anchor='publishers-with-no-data')}}" class="govuk-link">See missing publishers</a></p>
+                        </div>
+                      </details>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<main class="app-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>
 {% block content %}
-<main id="content" role="main">
-  <h1 class="govuk-heading-xl">Overall performance</h1>
-
-  <div class="govuk-grid-row govuk-!-margin-bottom-2 govuk-!-margin-top-9">
-    <div class="govuk-grid-column-one-half">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ entity_count|commanum }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Entities</p>
-      </div>
-      <details class="govuk-details" data-module="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text dl-small-text">
-            What is an entity?
-          </span>
-        </summary>
-        <div class="govuk-details__text dl-small-text">
-          An entity is a unit of data with a distinct and independent purpuse, such as an organisation, document, location, policy, etc
-        </div>
-      </details>
-    </div>
-  </div>
-
-  <div class="govuk-grid-row govuk-!-margin-bottom-9">
-    <div class="govuk-grid-column-one-quarter">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ datasette_datasets['active']|length }}<span class="govuk-!-font-size-19">/{{ datasette_datasets['active']|length + datasette_datasets['inactive']|length }}</span></span>
-        <p class="govuk-body govuk-!-font-size-36">Datasets</p>
-      </div>
-    </div>
-    <div class="govuk-grid-column-one-quarter">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ sources['with_endpoint'] }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Sources</p>
-      </div>
-    </div>
-    <div class="govuk-grid-column-one-quarter">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ resource_count }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Resources</p>
-      </div>
-    </div>
-    <div class="govuk-grid-column-one-quarter">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ publisher_count['active'] }}<span class="govuk-!-font-size-19">/{{ publisher_count['total'] }}</span></span>
-        <p class="govuk-body govuk-!-font-size-36">Publishers</p>
-      </div>
-      <details class="govuk-details" data-module="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text dl-small-text">
-            What does this tell us?
-          </span>
-        </summary>
-        <div class="govuk-details__text dl-small-text">
-          It measures the number of publishers we have collected data from against the number we expect to collect data from. Ideally these numbers would be the same.
-          <p><a href="{{ url_for('base.organisation', _anchor='publishers-with-no-data')}}" class="govuk-link">See missing publishers</a></p>
-        </div>
-      </details>
-    </div>
-  </div>
-
   <div class="govuk-tabs" data-module="dlf-subnav">
     <h2 class="govuk-tabs__title">
       Contents
@@ -90,6 +94,8 @@
     </nav>
 
     <div id="dataset">
+      <h2 class="govuk-heading-l">Overview of datasets</h2>
+      <p class="govuk-body">The datasets used to make planning related decisions. Digital land are either collecting some data for each dataset listed or plan to do so in the future.</p>
       {% include 'dashboard/partials/dataset-table.html' %}
     </div>
   
@@ -228,9 +234,9 @@
     </div>
 
   </div>
-
+  {% endblock content %}
 </main>
-{% endblock %}
+{% endblock main %}
 
 {% block bodyEnd %}
 {{ super() }}
