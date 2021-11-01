@@ -36,7 +36,7 @@
             <strong class="govuk-tag govuk-tag--grey">Backlog</strong>
           {% endif %}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['publishers']|to_int }}">{{ dataset['publishers'] }} / {{ dataset['expected_publishers'] }}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['total']|to_int }}">{{ dataset['total'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['total']|to_int }}"><a class="govuk-link govuk-link--text-colour" href="{{ url_for('base.resources', pipeline=dataset_url_str) }}">{{ dataset['total'] }}</a></td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['latest']|days_since if dataset['latest'] }}">{{ dataset['latest']|days_since if dataset['latest'] }}</td>
         </tr>
         {% endfor %}
