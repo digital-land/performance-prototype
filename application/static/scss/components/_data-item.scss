@@ -1,0 +1,14 @@
+.app-data-item__label {
+  @include govuk-responsive-margin(1, "bottom");
+  color: govuk-colour("dark-grey");
+  @include govuk-font($size: 24);
+}
+
+.app-data-item__number {
+  display: inline-block;
+  @include govuk-responsive-margin(1, "bottom");
+}
+
+.app-data-item__explainer {
+  margin-bottom: 0;
+}
