@@ -16,7 +16,7 @@
     <tbody class="govuk-table__body">
       {% for dataset in params.datasets %}
       <tr class="govuk-table__row">
-        <td class="govuk-table__cell" data-sort-value="{{ dataset['name'] }}"><a href="{{ url_for('base.dataset_performance', dataset_name=dataset['name']) }}" class="govuk-link">{{ dataset['name'] }}</a></td>
+        <td class="govuk-table__cell" data-sort-value="{{ dataset['name'] }}"><a href="{{ url_for('base.dataset', dataset=dataset['name']) }}" class="govuk-link">{{ dataset['name'] }}</a></td>
         <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['active-source']|to_int }}">{{ dataset['active-source'] }}</td>
         <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['inactive-source']|to_int }}">{{ dataset['inactive-source'] }}</td>
         <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['active-endpoint']|to_int }}">{{ dataset['active-endpoint'] }}</td>
@@ -45,7 +45,7 @@
     <tbody class="govuk-table__body">
       {% for dataset in params.datasets %}
       <tr class="govuk-table__row">
-        <td class="govuk-table__cell" data-sort-value="{{ dataset['name'] }}"><a href="{{ url_for('base.dataset_performance', dataset_name=dataset['pipeline']) }}" class="govuk-link">{{ dataset['pipeline'] }}</a></td>
+        <td class="govuk-table__cell" data-sort-value="{{ dataset['name'] }}"><a href="{{ url_for('base.dataset', dataset=dataset['pipeline']) }}" class="govuk-link">{{ dataset['pipeline'] }}</a></td>
         <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['resources']|to_int }}"><a href="{{ url_for('base.resources', organisation=params.organisation, pipeline=dataset['pipeline']) }}">{{ dataset['resources'] }}</a></td>
         <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['active_resources']|to_int }}">{{ dataset['active_resources'] }}</td>
         <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['endpoints']|to_int }}">{{ dataset['endpoints'] }}</td>

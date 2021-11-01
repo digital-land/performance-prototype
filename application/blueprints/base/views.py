@@ -17,7 +17,7 @@ from application.datasette import (
     sources_by_dataset,
     resources_by_dataset,
     get_source,
-    datasets,
+    get_datasets_info,
     get_organisation,
     get_datasets_summary,
     get_resource_count,
@@ -77,7 +77,7 @@ def performance():
         publisher_count=total_publisher_coverage(),
         sources=sources_with_endpoint(),
         entity_count=ds.get_entity_count(),
-        datasette_datasets=datasets(split=True),
+        datasette_datasets=get_datasets_info(split=True),
         resource_count=get_resource_count(),
         using_enddate=checker.get_count(),
         content_type_counts=content_type_counts(),
@@ -96,7 +96,7 @@ def performance_info():
 
 
 @base.route("/dataset")
-def dataset():
+def datasets():
     filters = {}
     if request.args.get("active"):
         filters["active"] = request.args.get("active")
@@ -120,12 +120,12 @@ def dataset():
     )
 
 
-@base.route("/dataset/<dataset_name>")
-def dataset_performance(dataset_name):
+@base.route("/dataset/<dataset>")
+def dataset(dataset):
     ds = DLDatasette()
     datasets = get_datasets_summary()
-    # name = dataset_name.replace("_", " ").capitalize()
-    dataset = [v for k, v in datasets.items() if v.get("pipeline") == dataset_name]
+    dataset_name = dataset
+    dataset = [v for k, v in datasets.items() if v.get("pipeline") == dataset]
 
     resources_by_publisher = resources_per_publishers(active_resources(dataset_name))
 
@@ -159,7 +159,7 @@ def dataset_performance(dataset_name):
     return render_template(
         "dataset/performance.html",
         name=dataset_name,
-        info_page=url_for("base.dataset_info", dataset_name=dataset_name),
+        info_page=url_for("base.dataset_info", dataset=dataset_name),
         dataset=dataset[0] if len(dataset) else "",
         latest_resource=ds.get_latest_resource(dataset_name),
         monthly_counts=get_monthly_counts(pipeline=dataset_name),
@@ -176,13 +176,13 @@ def dataset_performance(dataset_name):
     )
 
 
-@base.route("/dataset/<dataset_name>/info")
-def dataset_info(dataset_name):
+@base.route("/dataset/<dataset>/info")
+def dataset_info(dataset):
     data = read_json_file("application/data/info/dataset.json")
     return render_template(
         "info.html",
-        page_title=dataset_name + " performance",
-        page_url=url_for("base.dataset_performance", dataset_name=dataset_name),
+        page_title=dataset + " performance",
+        page_url=url_for("base.dataset_performance", dataset_name=dataset),
         data=data,
     )
 
@@ -370,7 +370,7 @@ def resources():
         by_dataset=resources_per_dataset,
         resource_count=get_resource_count(),
         content_type_counts=content_type_counts(),
-        datasets=datasets(split=True),
+        datasets=get_datasets_info(split=True),
         resources=resource_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),

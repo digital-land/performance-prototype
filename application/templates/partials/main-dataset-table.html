@@ -23,10 +23,10 @@
         <tr class="govuk-table__row{{ ' dl-row--inactive' if not dataset.pipeline }}">
           <td scope="row" class="govuk-table__cell dl-table__header--border-right" data-sort-value="{{ dataset.name }}">
             {% set dataset_url_str = dataset.name|lower|replace(" ", "-") %}
-            <a href="{{ url_for('base.dataset_performance', dataset_name=dataset_url_str) }}" class="govuk-link govuk-link--bold">{{ dataset.name }}</a>
+            <a href="{{ url_for('base.dataset', dataset=dataset_url_str) }}" class="govuk-link govuk-link--bold">{{ dataset.name }}</a>
           </td>
           <td class="govuk-table__cell" data-sort-value="{{ dataset['themes'] }}">{% set themes = dataset['themes']|split(';') %}{% for theme in themes %}
-            <a href="{{ url_for('base.dataset', theme=theme) }}" class="govuk-link govuk-link--text-colour">{{ theme }}</a>{{ ", " if not loop.last else "" }}
+            <a href="{{ url_for('base.datasets', theme=theme) }}" class="govuk-link govuk-link--text-colour">{{ theme }}</a>{{ ", " if not loop.last else "" }}
           {% endfor %}</td>
           <td class="govuk-table__cell">{% if dataset['first'] %}
             {{ dataset['first'] }}
@@ -35,7 +35,7 @@
           {% else %}
             <strong class="govuk-tag govuk-tag--grey">Backlog</strong>
           {% endif %}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['publishers']|to_int }}"><a class="govuk-link govuk-link--text-colour" href="{{ url_for('base.dataset_performance', dataset_name=dataset_url_str, _anchor='publishers') }}">{{ dataset['publishers'] }}</a> / {{ dataset['expected_publishers'] }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['publishers']|to_int }}"><a class="govuk-link govuk-link--text-colour" href="{{ url_for('base.dataset', dataset=dataset_url_str, _anchor='publishers') }}">{{ dataset['publishers'] }}</a> / {{ dataset['expected_publishers'] }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['total']|to_int }}"><a class="govuk-link govuk-link--text-colour" href="{{ url_for('base.resources', pipeline=dataset_url_str) }}">{{ dataset['total'] }}</a></td>
           <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['latest']|days_since if dataset['latest'] }}">{{ dataset['latest']|days_since if dataset['latest'] }}</td>
         </tr>

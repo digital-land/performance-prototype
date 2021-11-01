@@ -24,7 +24,7 @@
           <ul class="govuk-list">
             {% for typology in typologies %}
             <li>
-              <a href="{{ url_for('base.dataset', typology=typology['typology']) }}" class="govuk-link">{{ typology['name'] }}</a>
+              <a href="{{ url_for('base.datasets', typology=typology['typology']) }}" class="govuk-link">{{ typology['name'] }}</a>
             </li>
             {% endfor %}
           </ul>
@@ -42,14 +42,14 @@
           <ul class="govuk-list">
             {% for theme in themes %}
             <li>
-              <a href="{{ url_for('base.dataset', theme=theme['theme']) }}" class="govuk-link">{{ theme['name'] }}</a>
+              <a href="{{ url_for('base.datasets', theme=theme['theme']) }}" class="govuk-link">{{ theme['name'] }}</a>
             </li>
             {% endfor %}
           </ul>
         </div>
       </details>
 
-      <form action="{{ url_for('base.dataset') }}">
+      <form action="{{ url_for('base.datasets') }}">
         <div class="govuk-form-group">
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
             <div class="govuk-checkboxes__item">
@@ -74,7 +74,7 @@
           <span class="applied-filter__name govuk-!-font-weight-bold">Filter:</span>
           {% for filter in filter_btns %}
           <span class="applied-filter__item">
-            <a href="{{ url_for('base.dataset', **filter['url_params']) }}" class="govuk-link">x<span class="govuk-visually-hidden">remove filtering by {{ filter['value'] }}</span></a>
+            <a href="{{ url_for('base.datasets', **filter['url_params']) }}" class="govuk-link">x<span class="govuk-visually-hidden">remove filtering by {{ filter['value'] }}</span></a>
             {{ filter['value'] }}
           </span>
           {% endfor %}
@@ -87,7 +87,7 @@
           <article class="app-card app-card--small">
             <div class="app-card__header">
               <div class="app-card__header__primary">
-                <h3 class="app-card__title"><a href="{{ url_for('base.dataset_performance', dataset_name=dataset.dataset) }}" class="govuk-link">{{ dataset['name'] }}</a></h3>
+                <h3 class="app-card__title"><a href="{{ url_for('base.dataset', dataset=dataset.dataset) }}" class="govuk-link">{{ dataset['name'] }}</a></h3>
               </div>
               <div class="app-card__header__secondary">
                 <div class="flags">

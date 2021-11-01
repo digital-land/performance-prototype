@@ -141,7 +141,7 @@
               <ul class="govuk-list">
                 {% for col in sources['no_documentation']['collection'] %}
                 <li>
-                  <a href="{{ url_for('base.dataset_performance', dataset_name=col['value'], _anchor='sources-missing-documentation-url') }}">{{ col['label'] }}</a>: {{ col['count'] }}
+                  <a href="{{ url_for('base.dataset', dataset=col['value'], _anchor='sources-missing-documentation-url') }}">{{ col['label'] }}</a>: {{ col['count'] }}
                 </li>
                 {% endfor %}
               </ul>
