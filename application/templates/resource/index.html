@@ -4,61 +4,70 @@
 
 {% block dl_breadcrumbs %}{% endblock %}
 
-{% block content %}
 
-<main id="content" role="main">
-  <h1 class="govuk-heading-xl">Resources</h1>
-
-  <div id="btt-hook" class="govuk-grid-row govuk-!-margin-bottom-9">
-    <div class="govuk-grid-column-one-third">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ resource_count }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Resources</p>
-      </div>
-      <details class="govuk-details" data-module="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text dl-small-text">
-            What does this tell us?
-          </span>
-        </summary>
-        <div class="govuk-details__text dl-small-text">
-          The total number of unique resources digital land have collected, processed and extracted data from.
+{% block main %}
+<div class="app-summary-banner">
+  <div class="app-summary-banner__header">
+    <h3 class="govuk-heading-l">Resources summary</h3>
+  </div>
+  <div class="app-summary-banner__body">
+    <div class="app-summary-banner__row">
+      <div id="btt-hook" class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third">
+          <div class="app-data-item">
+            <p class="govuk-body app-data-item__label">Resources</p>
+            <span class="app-data-item__number app-!-font-size-60">{{ resource_count }}</span>
+            <details class="govuk-details govuk-details--small app-data-item__explainer" data-module="govuk-details">
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  What does this tell us?
+                </span>
+              </summary>
+              <div class="govuk-details__text">
+                The total number of unique resources digital land have collected, processed and extracted data from.
+              </div>
+            </details>
+          </div>
         </div>
-      </details>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ datasets['active']|length }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Datasets</p>
-      </div>
-      <details class="govuk-details" data-module="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text dl-small-text">
-            What does this tell us?
-          </span>
-        </summary>
-        <div class="govuk-details__text dl-small-text">
-          The number of datasets the {{ resource_count }} resources cover. Some national datasets, such as Heritage Coast, will have very few resources. We will only collect new ones when there has been an update. Potentially, only once a year. However, there will be other datasets, such as Brownfield land, where we collect many more resources. This is because to make a national dataset we need to collect resources from the 360+ publishers and any one of these publishers can update their data at any time.
+        <div class="govuk-grid-column-one-third">
+          <p class="govuk-body app-data-item__label">Datasets</p>
+          <div class="app-data-item">
+            <span class="app-data-item__number app-!-font-size-60">{{ datasets['active']|length }}</span>
+            <details class="govuk-details govuk-details--small app-data-item__explainer" data-module="govuk-details">
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  What does this tell us?
+                </span>
+              </summary>
+              <div class="govuk-details__text">
+                The number of datasets the {{ resource_count }} resources cover. Some national datasets, such as Heritage Coast, will have very few resources. We will only collect new ones when there has been an update. Potentially, only once a year. However, there will be other datasets, such as Brownfield land, where we collect many more resources. This is because to make a national dataset we need to collect resources from the 360+ publishers and any one of these publishers can update their data at any time.
+              </div>
+            </details>
+          </div>
         </div>
-      </details>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ content_type_counts|length }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Content types</p>
-      </div>
-      <details class="govuk-details" data-module="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text dl-small-text">
-            What does this tell us?
-          </span>
-        </summary>
-        <div class="govuk-details__text dl-small-text">
-          The higher the number of different content-types, the more variety there is in the types of resource we have to process. It is easier to process, extract and combine data from the same type of resource.
+        <div class="govuk-grid-column-one-third">
+          <div class="app-data-item">
+            <p class="govuk-body app-data-item__label">Content types</p>
+            <span class="app-data-item__number app-!-font-size-60">{{ content_type_counts|length }}</span>
+            <details class="govuk-details govuk-details--small app-data-item__explainer" data-module="govuk-details">
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  What does this tell us?
+                </span>
+              </summary>
+              <div class="govuk-details__text">
+                The higher the number of different content-types, the more variety there is in the types of resource we have to process. It is easier to process, extract and combine data from the same type of resource.
+              </div>
+            </details>
+          </div>
         </div>
-      </details>
+      </div>
     </div>
   </div>
+</div>
+<main class="app-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>
+{% block content %}
+  <h1 class="govuk-heading-xl govuk-!-margin-top-6">Resources</h1>
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
@@ -175,9 +184,9 @@
     </div>
   </div>
 
-  
+  {% endblock content %}
 </main>
-{% endblock %}
+{% endblock main %}
 
 {% block footer %}
 <div class="dl-sticky-banner__container" data-module="sticky-banner">
