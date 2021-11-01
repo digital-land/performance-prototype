@@ -41,3 +41,10 @@ def resources_per_publishers(resources):
         if not resource["resource"] in publishers[resource["organisation"]]:
             publishers[resource["organisation"]].append(resource["resource"])
     return publishers
+
+
+def yesterday(string=False, frmt="%Y-%m-%d"):
+    yesterday = datetime.datetime.now() - datetime.timedelta(1)
+    if string:
+        return yesterday.strftime(frmt)
+    return yesterday

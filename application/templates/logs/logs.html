@@ -1,0 +1,31 @@
+{% extends "resource/base.html" %}
+{% block page_title %}Flask prototyping index{% endblock %}
+{%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+
+{% block dl_breadcrumbs %}
+{{ govukBreadcrumbs({
+  "items": [
+    {
+      "text": "Logs"
+    }
+  ]
+}) }}
+{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+  <h2 class="govuk-heading-l">Logs</h2>
+  {{ summary }}
+</main>
+{% endblock %}
+
+{% block bodyEnd %}
+{{ super() }}
+<script>
+  console.log('summary object', {{ summary|tojson }})
+</script>
+{% endblock bodyEnd %}
+
+
+

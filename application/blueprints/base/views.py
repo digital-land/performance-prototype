@@ -414,3 +414,10 @@ def content_type(content_type):
         content_type=content_type,
         resources=resources_of_type(content_type),
     )
+
+
+@base.route("/logs")
+def logs():
+    ds = DLDatasette()
+
+    return render_template("logs/logs.html", summary=ds.get_daily_log_summary())
