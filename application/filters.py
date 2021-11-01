@@ -3,7 +3,8 @@ import urllib.parse
 
 
 def clean_int_filter(s):
-    if s == "":
+    # s might be passed in as undefined so need to test for that
+    if not s or s == "":
         s = "0"
     if isinstance(s, str):
         s = s.replace(",", "")
