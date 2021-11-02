@@ -186,6 +186,7 @@ def dataset(dataset):
         content_type_counts=content_type_counts(dataset_name),
         latest_logs=dataset_latest_logs(),
         blank_sources=ds.get_blank_sources(dataset_name),
+        source_count=ds.source_counts(pipeline=dataset_name),
     )
 
 

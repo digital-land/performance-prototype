@@ -83,9 +83,15 @@ class DLDatasette:
         )
         return self.sqlQuery(query, results="rows_with_column_names")
 
-    def source_counts(self):
+    def source_counts(self, pipeline=None):
         # returns high level source counts
         query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+source.end_date+%3D%3D+%27%27+THEN+source.source%0D%0A++++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3E%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+source.source%0D%0A++++END%0D%0A++%29+AS+active%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+end_date+%21%3D+%27%27+THEN+source.source%0D%0A++++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3C%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+source.source%0D%0A++++END%0D%0A++%29+AS+inactive%2C%0D%0A++COUNT%28DISTINCT+source_pipeline.pipeline%29+AS+pipelines%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0Asource.endpoint+%21%3D+%27%27%0D%0A%0D%0A"
+        if pipeline:
+            query = (
+                query
+                + "AND+source_pipeline.pipeline+%3D+%3Apipeline%0D%0A%0D%0A&pipeline="
+                + pipeline
+            )
         return self.sqlQuery(query, results="rows_with_column_names")
 
     def get_monthly_source_counts(self, pipeline=None):
@@ -157,6 +163,7 @@ class DLDatasette:
             "organisation", self.sqlQuery(query, results="rows_with_column_names")
         )
 
+    # log related
     def get_daily_log_summary(self, date=yesterday(string=True)):
         query = (
             "http://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++entry_date%2C%0D%0A++status%2C%0D%0A++COUNT%28DISTINCT+endpoint%29+AS+count%0D%0Afrom%0D%0A++log%0D%0Awhere%0D%0A++%22entry_date%22+%3D+%3Adate%0D%0Agroup+by%0D%0A++status&date="

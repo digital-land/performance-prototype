@@ -49,6 +49,14 @@
       </div>
     </div>
     {% endif %}
+    {% if source_count is not none %}
+    <div class="govuk-grid-column-one-quarter">
+      <div class="data-item govuk-!-margin-bottom-6">
+        <span class="data-item__number govuk-!-font-size-80">{{ source_count[0]['active']|default('0') }}</span>
+        <p class="govuk-body govuk-!-font-size-36"><a class="govuk-link--text-colour" href="{{ url_for('base.sources', pipeline=name) }}">Active sources</a></p>
+      </div>
+    </div>
+    {% endif %}
   </div>
 
   <h3 class="govuk-heading-m">Dataset info</h3>
@@ -420,6 +428,8 @@
     color: '#d4351c'
   }]
 });
+
+console.log("source_count", {{ source_count|tojson }})
 </script>
 {% endif %}
 {% endblock bodyEnd %}
