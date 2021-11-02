@@ -17,6 +17,15 @@ def index_by(key_field, dict_list):
     return idx
 
 
+def index_with_list(key_field, dict_list):
+    idx = {}
+    for d in dict_list:
+        if key_field in d.keys():
+            idx.setdefault(d[key_field], [])
+            idx[d[key_field]].append(d)
+    return idx
+
+
 def this_month():
     n = datetime.datetime.now()
     return datetime.strptime(n, "%Y-%m")

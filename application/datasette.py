@@ -76,6 +76,13 @@ class DLDatasette:
         )
         return self.sqlQuery(query, results="rows_with_column_names")
 
+    def get_all_sources_for_organisation(self, organisation):
+        query = (
+            "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source.source%2C%0D%0A++source.organisation%2C%0D%0A++organisation.name%2C%0D%0A++source.endpoint%2C%0D%0A++source.documentation_url%2C%0D%0A++source.entry_date%2C%0D%0A++source.start_date%2C%0D%0A++source.end_date%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0Awhere%0D%0Asource.organisation+LIKE+%3Aorganisation%0D%0Aorder+by%0D%0A++source.start_date+DESC&organisation="
+            + organisation
+        )
+        return self.sqlQuery(query, results="rows_with_column_names")
+
     def source_counts(self):
         # returns high level source counts
         query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+source.end_date+%3D%3D+%27%27+THEN+source.source%0D%0A++++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3E%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+source.source%0D%0A++++END%0D%0A++%29+AS+active%2C%0D%0A++COUNT%28%0D%0A++++DISTINCT+CASE%0D%0A++++++WHEN+end_date+%21%3D+%27%27+THEN+source.source%0D%0A++++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3C%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+THEN+source.source%0D%0A++++END%0D%0A++%29+AS+inactive%2C%0D%0A++COUNT%28DISTINCT+source_pipeline.pipeline%29+AS+pipelines%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0Asource.endpoint+%21%3D+%27%27%0D%0A%0D%0A"
@@ -329,9 +336,10 @@ def source_count_per_organisation():
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
-def get_sources(limit=100, filter=None):
+def get_sources(limit=100, filter=None, include_blanks=False):
     ds = DLDatasette()
-    where_clause = "where%0D%0A++source.endpoint+%21%3D+%27%27%0D%0A"
+    if not include_blanks:
+        where_clause = "where%0D%0A++source.endpoint+%21%3D+%27%27%0D%0A"
     # "where%0D%0A++source_pipeline.pipeline+LIKE+%3Apipeline%0D%0A++AND+source.endpoint+%21%3D+%27%27%0D%0A"
     params = ""
     limit_str = ""
@@ -346,11 +354,22 @@ def get_sources(limit=100, filter=None):
                 "source": "source.source",
             },
         )
-        where_clause = where_clause + "++AND+source.endpoint+%21%3D+%27%27%0D%0A"
+        if not include_blanks:
+            where_clause = where_clause + "++AND+source.endpoint+%21%3D+%27%27%0D%0A"
     query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source.source%2C%0D%0A++source.organisation%2C%0D%0A++organisation.name%2C%0D%0A++source.endpoint%2C%0D%0A++source.documentation_url%2C%0D%0A++source.entry_date%2C%0D%0A++source.start_date%2C%0D%0A++source.end_date%2C%0D%0A++GROUP_CONCAT%28DISTINCT+source_pipeline.pipeline%29+AS+pipeline%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+endpoint+ON+source.endpoint+%3D+endpoint.endpoint%0D%0A{}group+by%0D%0Asource.source%0D%0Aorder+by%0D%0A++source.start_date+DESC{}{}".format(
         where_clause, limit_str, params
     )
     print(query)
+    results = ds.sqlQuery(query)
+    return [create_dict(results["columns"], row) for row in results["rows"]]
+
+
+def get_blank_source(source):
+    ds = DLDatasette()
+    query = (
+        "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++source.attribution%2C%0D%0A++source.collection%2C%0D%0A++source.documentation_url%2C%0D%0A++source.end_date%2C%0D%0A++source.endpoint%2C%0D%0A++source.entry_date%2C%0D%0A++source.licence%2C%0D%0A++source.organisation%2C%0D%0A++source.source%2C%0D%0A++source.start_date%0D%0Afrom%0D%0A++source%0D%0Awhere%0D%0A++source.source+%3D+%3Asource%0D%0Aorder+by%0D%0A++source.source&source="
+        + source
+    )
     results = ds.sqlQuery(query)
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
@@ -362,6 +381,8 @@ def get_source(source):
         + source
     )
     results = ds.sqlQuery(query)
+    if len(results["rows"]) == 0:
+        return get_blank_source(source)
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 

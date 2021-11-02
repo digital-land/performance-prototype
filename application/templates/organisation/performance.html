@@ -65,7 +65,7 @@
     </div>
   </div>
 
-  {% if has_missing_datasets %}
+  {% if missing_datasets|length > 0 %}
   <div class="govuk-notification-banner govuk-notification-banner--error" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
     <div class="govuk-notification-banner__header">
       <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
@@ -75,10 +75,8 @@
     <div class="govuk-notification-banner__content">
       <p class="govuk-body">We expected to collect data from {{organisation.name}} for the following datasets.</p>
       <ul class="govuk-list govuk-list--bullet">
-        {% for dataset in sources_per_dataset %}
-        {% if dataset['sources_with_endpoint'] == 0 %}
+        {% for dataset in missing_datasets %}
         <li>{{ dataset['pipeline'] }}</li>
-        {% endif %}
         {% endfor %}
       </ul>
     </div>
@@ -95,6 +93,17 @@
       })
     }}
   {% endif %}
+
+  {% if erroneous_sources|length > 0 %}
+  <h3 class="govuk-heading-m">Duplicate sources</h3>
+  <p class="govuk-body">The following sources are empty (no endpoint has been added). However, we already have active sources for the datasets. We should check why these exist.</p>
+  <ul class="govuk-list">
+  {% for source in erroneous_sources %}
+    <li><a href="{{ url_for('base.source', source=source['source']) }}" class="govuk-link">{{ source['source'] }}</a> for {{ source['pipeline'] }}</li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+  
 
 </main>
 {% endblock %}

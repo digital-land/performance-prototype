@@ -38,6 +38,7 @@ from application.datasette import (
 from application.utils import (
     resources_per_publishers,
     index_by,
+    index_with_list,
     recent_dates,
     read_json_file,
 )
@@ -262,6 +263,16 @@ def organisation_performance(prefix, org_id):
     source_counts = ds.get_sources_per_dataset_for_organisation(id)
     checker = EndDateChecker()
     used_enddate, datasets_with_enddate = checker.has_used_enddate(id)
+    sources = index_with_list("pipeline", ds.get_all_sources_for_organisation(id))
+    missing_datasets = [
+        dataset for dataset in source_counts if dataset["sources_with_endpoint"] == 0
+    ]
+
+    erroneous_sources = []
+    for dataset in data["datasets_covered"]:
+        for source in sources[dataset]:
+            if source["endpoint"] == "":
+                erroneous_sources.append(source)
 
     return render_template(
         "organisation/performance.html",
@@ -269,10 +280,10 @@ def organisation_performance(prefix, org_id):
         info_page=url_for("base.organisation_info", prefix=prefix, org_id=org_id),
         data=data,
         sources_per_dataset=source_counts,
-        has_missing_datasets=any(
-            dataset["sources_with_endpoint"] == 0 for dataset in source_counts
-        ),
+        missing_datasets=missing_datasets,
         enddate={"used": used_enddate, "datasets": datasets_with_enddate},
+        sources=sources,
+        erroneous_sources=erroneous_sources,
     )
 
 
