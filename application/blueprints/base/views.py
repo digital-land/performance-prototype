@@ -373,6 +373,15 @@ def resource_info(resource):
 #########
 
 
+def paramify(url):
+    # there was a problem if the url to search on included url params
+    # this can be avoid if all & are replaced with %26
+    url = url.replace("&", "%26")
+    # replace spaces (' ' or '%20' ) with %2520 - datasette automatically decoded %20
+    url = url.replace(" ", "%2520")
+    return url.replace("%20", "%2520")
+
+
 @base.route("/source")
 def sources():
     ds = DLDatasette()
@@ -382,7 +391,7 @@ def sources():
     if request.args.get("organisation") is not None:
         filters["organisation"] = request.args.get("organisation")
     if request.args.get("endpoint_url"):
-        filters["endpoint_url"] = request.args.get("endpoint_url")
+        filters["endpoint_url"] = paramify(request.args.get("endpoint_url"))
     if request.args.get("endpoint_"):
         filters["endpoint_"] = request.args.get("endpoint_")
     if request.args.get("source"):
