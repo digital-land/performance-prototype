@@ -147,7 +147,7 @@
     {% if latest_logs.get(name) is not none %}
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">
-        Last checked on
+        Collector last ran on
       </dt>
       <dd class="govuk-summary-list__value">
         {{ latest_logs.get(name)['latest_attempt'] }}
