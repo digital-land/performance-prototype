@@ -1,3 +1,4 @@
+import json
 import datetime
 from dateutil.relativedelta import *
 
@@ -53,3 +54,12 @@ def yesterday(string=False, frmt="%Y-%m-%d"):
 def recent_dates(days=1, frmt="%Y-%m-%d"):
     today = datetime.datetime.now()
     return [(today - datetime.timedelta(d)).strftime(frmt) for d in range(1, days + 1)]
+
+
+def read_json_file(data_file_path):
+    f = open(
+        data_file_path,
+    )
+    data = json.load(f)
+    f.close()
+    return data

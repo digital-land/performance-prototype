@@ -35,7 +35,12 @@ from application.datasette import (
     dataset_latest_logs,
     DLDatasette,
 )
-from application.utils import resources_per_publishers, index_by, recent_dates
+from application.utils import (
+    resources_per_publishers,
+    index_by,
+    recent_dates,
+    read_json_file,
+)
 from application.enddatechecker import EndDateChecker
 
 
@@ -47,19 +52,20 @@ def set_globals():
     return {"staticPath": "https://digital-land.github.io"}
 
 
-def read_json_file(data_file_path):
-    f = open(
-        data_file_path,
-    )
-    data = json.load(f)
-    f.close()
-    return data
+###################
+# Service homepage
+###################
 
 
 @base.route("/")
 @base.route("/index")
 def index():
     return render_template("index.html")
+
+
+####################
+# Overview dashboard
+####################
 
 
 @base.route("/performance")
@@ -94,6 +100,11 @@ def performance_info():
         page_url=url_for("base.performance"),
         data=data,
     )
+
+
+##########
+# Datasets
+##########
 
 
 @base.route("/dataset")
@@ -188,6 +199,11 @@ def dataset_info(dataset):
     )
 
 
+############
+# Publishers
+############
+
+
 def split_publishers(organisations):
     lpas = {
         publisher: organisations[publisher]
@@ -222,16 +238,6 @@ def split_publishers(organisations):
 
 @base.route("/organisation")
 def organisation():
-    # currently doesn't provide the right info to populate the list of publishers
-    # if request.args.get("enddate"):
-    #     checker = EndDateChecker()
-    #     orgs = split_publishers(checker.get_organisations())
-
-    #     return render_template(
-    #         "organisation/index.html",
-    #         publishers=orgs,
-    #         today=datetime.utcnow().isoformat()[:10],
-    #     )
     ds = DLDatasette()
     publishers_with_no_data = {
         k: publisher
@@ -281,64 +287,13 @@ def organisation_info(prefix, org_id):
     )
 
 
-@base.route("/resource/<resource>/info")
-def resource_info(resource):
-    data = read_json_file("application/data/info/resource.json")
-    return render_template(
-        "info.html",
-        page_title="Resource performance",
-        page_url=url_for("base.resource", resource=resource),
-        data=data,
-    )
-
-
-@base.route("/source")
-def sources():
-    ds = DLDatasette()
-    filters = {}
-    if request.args.get("pipeline"):
-        filters["pipeline"] = request.args.get("pipeline")
-    if request.args.get("organisation") is not None:
-        filters["organisation"] = request.args.get("organisation")
-    if request.args.get("endpoint_url"):
-        filters["endpoint_url"] = request.args.get("endpoint_url")
-    if request.args.get("endpoint_"):
-        filters["endpoint_"] = request.args.get("endpoint_")
-    if request.args.get("source"):
-        filters["source"] = request.args.get("source")
-    if request.args.get("documentation_url") is not None:
-        filters["documentation_url"] = request.args.get("documentation_url")
-
-    datasets = sources_by_dataset()
-    organisations = source_count_per_organisation()
-
-    if len(filters.keys()):
-        source_records = get_sources(filter=filters)
-    else:
-        source_records = get_sources()
-
-    return render_template(
-        "source/index.html",
-        by_dataset=datasets,
-        counts=ds.source_counts()[0],
-        sources=source_records,
-        filters=filters,
-        filter_btns=filter_off_btns(filters),
-        organisations=organisations,
-    )
-
-
-@base.route("/source/<source>")
-def source(source):
-    source_data = get_source(source)
-    return render_template(
-        "source/source.html",
-        source=source_data[0],
-        resources=get_resources(filter={"source": source}),
-    )
+###########
+# Resources
+###########
 
 
 def filter_off_btns(filters):
+    # used by all index pages with filter options
     btns = []
     for filter, value in filters.items():
         filters_copy = filters.copy()
@@ -391,6 +346,73 @@ def resource(resource):
     )
 
 
+@base.route("/resource/<resource>/info")
+def resource_info(resource):
+    data = read_json_file("application/data/info/resource.json")
+    return render_template(
+        "info.html",
+        page_title="Resource performance",
+        page_url=url_for("base.resource", resource=resource),
+        data=data,
+    )
+
+
+#########
+# Sources
+#########
+
+
+@base.route("/source")
+def sources():
+    ds = DLDatasette()
+    filters = {}
+    if request.args.get("pipeline"):
+        filters["pipeline"] = request.args.get("pipeline")
+    if request.args.get("organisation") is not None:
+        filters["organisation"] = request.args.get("organisation")
+    if request.args.get("endpoint_url"):
+        filters["endpoint_url"] = request.args.get("endpoint_url")
+    if request.args.get("endpoint_"):
+        filters["endpoint_"] = request.args.get("endpoint_")
+    if request.args.get("source"):
+        filters["source"] = request.args.get("source")
+    if request.args.get("documentation_url") is not None:
+        filters["documentation_url"] = request.args.get("documentation_url")
+
+    datasets = sources_by_dataset()
+    organisations = source_count_per_organisation()
+
+    if len(filters.keys()):
+        source_records = get_sources(filter=filters)
+    else:
+        source_records = get_sources()
+
+    return render_template(
+        "source/index.html",
+        by_dataset=datasets,
+        counts=ds.source_counts()[0],
+        sources=source_records,
+        filters=filters,
+        filter_btns=filter_off_btns(filters),
+        organisations=organisations,
+    )
+
+
+@base.route("/source/<source>")
+def source(source):
+    source_data = get_source(source)
+    return render_template(
+        "source/source.html",
+        source=source_data[0],
+        resources=get_resources(filter={"source": source}),
+    )
+
+
+###############
+# Content-types
+###############
+
+
 @base.route("/content-type")
 def content_types():
     pipeline = request.args.get("pipeline")
@@ -415,6 +437,11 @@ def content_type(content_type):
         content_type=content_type,
         resources=resources_of_type(content_type),
     )
+
+
+######
+# Logs
+######
 
 
 @base.route("/logs")
