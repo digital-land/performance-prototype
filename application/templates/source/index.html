@@ -1,47 +1,44 @@
 {% extends "source/base.html" %}
 {% block page_title %}Sources | Operations dashboard | Digital Land{% endblock %}
 {%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+{% from 'macro/data-item.html' import appDataItem %}
 
 {% block dl_breadcrumbs %}{% endblock %}
 
-{% block content %}
-
-<main id="content" role="main">
-  <h1 class="govuk-heading-xl">Sources</h1>
-
-  <div class="govuk-grid-row govuk-!-margin-bottom-9">
-    <div class="govuk-grid-column-one-quarter">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ counts['sources'] }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Total sources</p>
-      </div>
-    </div>
-    <div class="govuk-grid-column-one-quarter">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ counts['inactive'] }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Old sources</p>
-      </div>
-    </div>
-    <div class="govuk-grid-column-one-quarter">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ counts['pipelines'] }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Datasets</p>
+{% block main %}
+<div class="app-summary-banner">
+  <div class="app-summary-banner__header">
+    <h3 class="govuk-heading-l">Sources summary</h3>
+  </div>
+  <div class="app-summary-banner__body">
+    <div class="app-summary-banner__row">
+      <div id="btt-hook" class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third">
+          {{ appDataItem({
+            "label": "Total",
+            "value": counts['sources']
+          }) }}
+        </div>
+        <div class="govuk-grid-column-one-third">
+          {{ appDataItem({
+            "label": "Old",
+            "value": counts['inactive']
+          }) }}
+        </div>
+        <div class="govuk-grid-column-one-third">
+          {{ appDataItem({
+            "label": "Datasets",
+            "value": counts['pipelines']
+          }) }}
+        </div>
       </div>
     </div>
   </div>
+</div>
+<main class="app-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>  
+{% block content %}
+  <h1 class="govuk-heading-xl govuk-!-margin-top-6">Sources</h1>
 
-  {% if pipeline %}
-  <h2 class="govuk-heading-m">Sources</h2>
-  <p class="govuk-body">Showing for {{ pipeline|replace("-", " ")}}</p>
-  <ul class="govuk-list">
-    {% for source in sources %}
-    <li>
-      <a href="{{ url_for('base.source', source=source.source) }}" class="govuk-link">{{ source.source }}</a>
-      <span class="govuk-!-font-size-19"> for {{ source.name }}</span>
-    </li>
-    {% endfor %}
-  </ul>
-  {% else %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
       <h2 class="govuk-heading-m">Filters</h2>
@@ -172,10 +169,10 @@
       </ul>
     </div>
   </div>
-  {% endif %}
   
+{% endblock content %}
 </main>
-{% endblock %}
+{% endblock main %}
 
 {% block footer %}
 <div class="dl-sticky-banner__container" data-module="sticky-banner">
