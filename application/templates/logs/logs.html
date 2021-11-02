@@ -15,11 +15,30 @@
 {% block content %}
 
 <main id="content" role="main">
+  {% if date %}
+  <span class="govuk-caption-xl">Logs</span>
+  <h2 class="govuk-heading-l">{{ date }}</h2>
+  {% else %}
   <h2 class="govuk-heading-l">Logs</h2>
+  {% endif %}
+  
   <h3 class="govuk-heading-m">Summary</h3>
-  {{ summary }}
+
+  <ul class="govuk-list">
+  {% for status in summary %}
+    <li>Status: {{ status.status }} - {{ status.count }}</li>
+  {% endfor %}
+  </ul>
+
+  {% if resources|length %}
   <h3 class="govuk-heading-m">New resources</h3>
-  {{ resources }}
+  <ul class="govuk-list govuk-list--bullet">
+    {% for resource in resources %}
+      <li><a href="{{ url_for('base.resource', resource=resource.resource) }}" class="govuk-link">{{ resource.resource }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
 </main>
 {% endblock %}
 

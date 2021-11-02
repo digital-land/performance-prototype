@@ -474,3 +474,15 @@ def logs():
         summary=ds.get_daily_log_summary(),
         resources=ds.get_new_resources(),
     )
+
+
+@base.route("/logs/<date>")
+def log(date):
+    ds = DLDatasette()
+
+    return render_template(
+        "logs/logs.html",
+        summary=ds.get_daily_log_summary(date=date),
+        resources=ds.get_new_resources(dates=[date]),
+        date=date,
+    )
