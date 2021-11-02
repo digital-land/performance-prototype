@@ -65,16 +65,6 @@
   }
 }
 
-.dl-warning-text {
-  color: #594d00;
-  background: #fff7bf;
-}
-
-.dl-error-text {
-  color: govuk-shade(govuk-colour("red"), 30);
-  background: govuk-tint(govuk-colour("red"), 80);
-}
-
 .govuk-notification-banner--error {
   background-color: darken(govuk-colour("red"), 10%);
   border-color: darken(govuk-colour("red"), 10%)

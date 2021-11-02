@@ -29,3 +29,13 @@ $govuk-typography-scale: map-merge($govuk-typography-scale, $app-typography-scal
 .govuk-link--bold {
   font-weight: bold !important;
 }
+
+.dl-warning-text {
+  color: #594d00;
+  background: #fff7bf;
+}
+
+.dl-error-text {
+  color: govuk-shade(govuk-colour("red"), 30);
+  background: govuk-tint(govuk-colour("red"), 80);
+}
