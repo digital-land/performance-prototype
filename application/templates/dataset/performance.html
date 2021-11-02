@@ -52,9 +52,12 @@
         </div>
         <div class="govuk-grid-column-one-third">
           {% if source_count is not none %}
+          {% set sourceLinkHTML %}<a href="{{ url_for('base.sources', pipeline=name) }}" class="govuk-link govuk-link--text-colour app-link--large-bold">{{ source_count[0]['active']|default('0') }}</a>{% endset %}
           {{ appDataItem({
             "label": "Active sources",
-            "value": source_count[0]['active']|default('0'),
+            "value": {
+              "html": sourceLinkHTML
+            },
             "explainer": {
               "summary": "What is an active source?",
               "text": "It is a source with an endpoint (a url) that the digital land collector visits looking for resources. A source can become inactive if an end-date is added."

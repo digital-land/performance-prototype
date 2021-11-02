@@ -128,6 +128,27 @@
   }
 }
 
+.app-link--large-bold {
+  position: relative;
+  text-decoration: none;
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 92%;
+    height: 2px;
+    background: govuk-colour('dark-grey');
+    bottom: 2px;
+    left: 4%;
+  }
+
+  &:hover:after {
+    height: 3px;
+    bottom: 3px;
+    background: govuk-colour('black');
+  }
+}
+
 @keyframes opening-panel {
   to {
     max-height: 850px;

@@ -1,7 +1,9 @@
 {% macro appDataItem(params) %}
 <div class="app-data-item">
   <p class="govuk-body app-data-item__label">{{ params.label }}</p>
-  <span class="app-data-item__number app-!-font-size-60">{{ params.value }}</span>
+  <span class="app-data-item__number app-!-font-size-60">
+    {% if params.value.html %}{{ params.value.html }}{% else %}{{ params.value }}{% endif %}
+  </span>
   {% if params.indicator %}
   <div>
     <span class="govuk-tag govuk-tag--green govuk-!-font-weight-regular app-!-text-lowercase">
