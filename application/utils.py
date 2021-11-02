@@ -48,3 +48,8 @@ def yesterday(string=False, frmt="%Y-%m-%d"):
     if string:
         return yesterday.strftime(frmt)
     return yesterday
+
+
+def recent_dates(days=1, frmt="%Y-%m-%d"):
+    today = datetime.datetime.now()
+    return [(today - datetime.timedelta(d)).strftime(frmt) for d in range(1, days + 1)]

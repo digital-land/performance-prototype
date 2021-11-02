@@ -35,7 +35,7 @@ from application.datasette import (
     dataset_latest_logs,
     DLDatasette,
 )
-from application.utils import resources_per_publishers, index_by
+from application.utils import resources_per_publishers, index_by, recent_dates
 from application.enddatechecker import EndDateChecker
 
 
@@ -81,6 +81,7 @@ def performance():
         resource_count=get_resource_count(),
         using_enddate=checker.get_count(),
         content_type_counts=content_type_counts(),
+        new_resources=ds.get_new_resources(dates=recent_dates(7)),
     )
 
 
@@ -420,4 +421,8 @@ def content_type(content_type):
 def logs():
     ds = DLDatasette()
 
-    return render_template("logs/logs.html", summary=ds.get_daily_log_summary())
+    return render_template(
+        "logs/logs.html",
+        summary=ds.get_daily_log_summary(),
+        resources=ds.get_new_resources(),
+    )
