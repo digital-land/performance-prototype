@@ -104,15 +104,24 @@ class DLDatasette:
         )
         return self.sqlQuery(query, results="rows_with_column_names")
 
-    def get_entity_count(self, pipeline=None):
-        query = "https://datasette.digital-land.info/view_model.json?sql=select+count%28*%29+from+entity+order+by+entity"
-        if pipeline is not None:
-            query = f"https://datasette.digital-land.info/{pipeline}.json?sql=select%0D%0A++count%28DISTINCT+entity%29+AS+entities%0D%0Afrom%0D%0A++entity"
-
+    def get_total_entity_count(self):
+        query = "https://datasette.digital-land.info/entity.json?sql=select%0D%0A++COUNT%28DISTINCT+entity%29+AS+count%0D%0Afrom%0D%0A++entity%0D%0A"
         results = self.sqlQuery(query, results="rows")
-        if results is None:
-            return 0
         return results[0][0] if bool(results) else 0
+
+    def get_entity_count(self, pipeline=None):
+        if pipeline is not None:
+            query = "https://datasette.digital-land.info/entity.json?sql=select%0D%0Adataset%2C%0D%0A++COUNT%28DISTINCT+entity%29+AS+count%0D%0Afrom%0D%0A++entity%0D%0Agroup+by%0D%0Adataset%0D%0A"
+            results = index_by(
+                "dataset", self.sqlQuery(query, results="rows_with_column_names")
+            )
+            return (
+                results.get(pipeline)["count"]
+                if results.get(pipeline) is not None
+                else 0
+            )
+
+        return self.get_total_entity_count()
 
     def get_monthly_resource_counts(self, pipeline=None):
         query = "https://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+resource.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+resource.resource%29%0D%0Afrom%0D%0A++resource%0D%0Awhere%0D%0A++resource.start_date+%21%3D+%22%22%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm"
