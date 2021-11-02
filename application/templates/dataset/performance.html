@@ -18,46 +18,58 @@
 }) }}
 {% endblock %}
 
-{% block content %}
-<main id="content" role="main">
-  <span class="govuk-caption-xl">Dataset performance</span>
-  <h1 class="govuk-heading-xl">{{ name|replace("-", " ")|capitalize }}</h1>
-
-  
-  <div class="govuk-grid-row govuk-!-margin-bottom-2 govuk-!-margin-top-9">
-    {% if entity_count is not none -%}
-    <div class="govuk-grid-column-one-half">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ entity_count|commanum }}</span>
-        <p class="govuk-body govuk-!-font-size-36">Entit{{ "y" if entity_count == 1 else "ies" }}</p>
-      </div>
-    </div>
-    {%- endif %}
-    {% if coverage -%}
-    <div class="govuk-grid-column-one-quarter">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ coverage['publishers']|commanum }}<span class="govuk-!-font-size-19">/{{ coverage['expected_publishers']|commanum }}</span></span>
-        <p class="govuk-body govuk-!-font-size-36">Publishers</p>
-      </div>
-    </div>
-    {%- endif %}
-    {% if resource_count is not none %}
-    <div class="govuk-grid-column-one-quarter">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ resource_count['total']|default('0') }}</span>
-        <p class="govuk-body govuk-!-font-size-36"><a class="govuk-link--text-colour" href="{{ url_for('base.resources', pipeline=name) }}">Resources</a></p>
-      </div>
-    </div>
-    {% endif %}
-    {% if source_count is not none %}
-    <div class="govuk-grid-column-one-quarter">
-      <div class="data-item govuk-!-margin-bottom-6">
-        <span class="data-item__number govuk-!-font-size-80">{{ source_count[0]['active']|default('0') }}</span>
-        <p class="govuk-body govuk-!-font-size-36"><a class="govuk-link--text-colour" href="{{ url_for('base.sources', pipeline=name) }}">Active sources</a></p>
-      </div>
-    </div>
-    {% endif %}
+{% block main %}
+<div class="app-summary-banner">
+  <div class="app-summary-banner__header">
+    <h3 class="govuk-heading-l">{{ name|replace("-", " ")|capitalize }} summary</h3>
   </div>
+  <div class="app-summary-banner__body">
+    <div class="app-summary-banner__row">
+      {% if entity_count is not none -%}
+        {{ appDataItem({
+          "label": "Entity" if entity_count == 1 else "Entities",
+          "value": entity_count|commanum
+        }) }}
+      {%- endif %}
+    </div>
+    <div class="app-summary-banner__row">
+      <div id="btt-hook" class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third">
+          {% if coverage -%}
+          {{ appDataItem({
+            "label": "Publishers",
+            "value": coverage['publishers']|commanum
+          }) }}
+          {%- endif %}
+        </div>
+        <div class="govuk-grid-column-one-third">
+          {% if resource_count is not none %}
+          {{ appDataItem({
+            "label": "Resources",
+            "value": resource_count['total']|default('0')
+          }) }}
+          {%- endif %}
+        </div>
+        <div class="govuk-grid-column-one-third">
+          {% if source_count is not none %}
+          {{ appDataItem({
+            "label": "Active sources",
+            "value": source_count[0]['active']|default('0'),
+            "explainer": {
+              "summary": "What is an active source?",
+              "text": "It is a source with an endpoint (a url) that the digital land collector visits looking for resources. A source can become inactive if an end-date is added."
+            }
+          }) }}
+          {%- endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<main class="app-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>  
+{% block content %}
+  <span class="govuk-caption-xl govuk-!-margin-top-6">Dataset performance</span>
+  <h1 class="govuk-heading-xl">{{ name|replace("-", " ")|capitalize }}</h1>
 
   <h3 class="govuk-heading-m">Dataset info</h3>
   <dl class="govuk-summary-list govuk-!-margin-bottom-9">
@@ -322,8 +334,9 @@
     </div>
   </div>
 
+  {% endblock content %}
 </main>
-{% endblock %}
+{% endblock main %}
 
 {% block bodyEnd %}
 {{ super() }}
