@@ -21,3 +21,11 @@ $govuk-typography-scale: map-merge($govuk-typography-scale, $app-typography-scal
 .app-\!-font-size-60 {
   @include govuk-font($size: 60, $weight: bold);
 }
+
+.app-\!-text-lowercase {
+  text-transform: lowercase !important;
+}
+
+.govuk-link--bold {
+  font-weight: bold !important;
+}

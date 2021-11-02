@@ -2,7 +2,7 @@
   background: govuk-colour("light-grey");
   color: govuk-colour('black');
   @include govuk-responsive-padding(6, "top");
-  @include govuk-responsive-padding(6, "bottom");
+  @include govuk-responsive-padding(7, "bottom");
 }
 
 .app-summary-banner__header,

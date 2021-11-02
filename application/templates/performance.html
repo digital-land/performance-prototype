@@ -42,8 +42,18 @@
                 </div>
                 <div class="govuk-grid-column-one-quarter">
                   <div class="app-data-item">
-                    <p class="govuk-body app-data-item__label">Resources</p>
+                    <p class="govuk-body app-data-item__label" data-weekly-increase="{{ new_resources|length }}">Resources</p>
                     <span class="app-data-item__number app-!-font-size-60">{{ resource_count }}</span>
+                    {% if new_resources|length %}
+                    <div>
+                      <span class="govuk-tag govuk-tag--green govuk-!-font-weight-regular app-!-text-lowercase">
+                        <img src="/static/images/arrow-up-green.png" alt="Up arrow" width="12px" aria-hidden="true" class="govuk-!-margin-right-1" loading="lazy">
+                        <span class="govuk-visually-hidden">There has been an increase of </span>
+                        <strong>{{ new_resources|length }}</strong><span class="govuk-visually-hidden"> new resources </span>
+                        (<span class="govuk-visually-hidden">compared to the </span>last 7 days)
+                      </span>
+                    </div>
+                    {% endif %}
                   </div>
                 </div>
                 <div class="govuk-grid-column-one-quarter">
