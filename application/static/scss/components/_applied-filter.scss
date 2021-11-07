@@ -28,3 +28,73 @@
   border-radius: 4px;
   background: govuk-colour("light-grey");
 }
+
+
+.app-applied-filters {
+  @include govuk-typography-common;
+  @include govuk-text-colour;
+  @include govuk-font($size: 16);
+  margin-bottom: $govuk-gutter-half;
+  padding-bottom: 5px;
+  border-bottom: 1px solid $govuk-text-colour;
+}
+
+.app-applied-filter__group {
+  padding: 5px;
+
+  &:nth-child(odd) {
+    background: govuk-colour("light-grey");
+  }
+}
+
+.app-applied-filter__name {
+  display: inline-block;
+}
+
+.app-applied-filter__item {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 5px 8px;
+  border: 1px solid govuk-colour("mid-grey");
+  border-radius: 4px;
+  background: govuk-colour("light-grey");
+  @include govuk-font($size: 14);
+}
+
+.app-applied-filter__button {
+  font-family: monospace;
+  line-height: 1em;
+  text-decoration: none;
+
+  .app-facet-tag__icon {
+    font-size: 12px;
+  }
+}
+
+.app-facet-tag {
+	border: 1px solid $govuk-border-colour;
+	background-color: govuk-colour("light-grey");
+	border-radius: 0.5em;
+	@include govuk-responsive-padding(2);
+	&:active,
+	&:focus {
+		box-shadow: inset 0 0 0 2px;
+		border: solid 1px #0b0c0c;
+		outline: 3px solid #fd0;
+		color: #000;
+	}
+}
+
+.app-facet-tag__icon {
+	font-family: $govuk-font-family;
+	display: inline-block;
+	vertical-align: middle;
+	font-weight: bold;
+	width: 1em;
+	height: auto;
+	margin-right: 0.25em;
+	svg, img {
+		width: 100%;
+		height: 100%;
+	}
+}

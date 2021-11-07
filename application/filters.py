@@ -35,3 +35,11 @@ def split_filter(s, d):
 
 def urlencode_filter(s):
     return urllib.parse.quote_plus(s)
+
+
+def remove_query_param_filter(v, filter_name, current_str):
+    query_str = str(current_str)
+    if f"{filter_name}={v}" in query_str:
+        s = query_str.replace(f"{filter_name}={v}", "")
+        return "?" + s.strip("&")
+    return "?" + query_str

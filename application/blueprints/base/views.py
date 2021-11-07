@@ -310,7 +310,7 @@ def filter_off_btns(filters):
     for filter, value in filters.items():
         filters_copy = filters.copy()
         del filters_copy[filter]
-        btns.append({"value": value, "url_params": filters_copy})
+        btns.append({"filter": filter, "value": value, "url_params": filters_copy})
     return btns
 
 

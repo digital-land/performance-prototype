@@ -54,6 +54,7 @@ def register_filters(app):
         days_since,
         split_filter,
         urlencode_filter,
+        remove_query_param_filter,
     )
 
     app.add_template_filter(clean_int_filter, name="to_int")
@@ -61,6 +62,7 @@ def register_filters(app):
     app.add_template_filter(days_since, name="days_since")
     app.add_template_filter(split_filter, name="split")
     app.add_template_filter(urlencode_filter, name="urlencode")
+    app.add_template_filter(remove_query_param_filter, name="remove_query_param")
 
     from digital_land_frontend.filters import commanum
 

@@ -12,6 +12,7 @@
 @import "components/card";
 @import "components/summary-banner";
 @import "components/govuk-details";
+@import "components/filter-group";
 
 .app-main-wrapper {
   @include moj-width-container;
