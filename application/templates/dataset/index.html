@@ -63,18 +63,23 @@
         </div>
         {% endif -%}
         
-        <div class="govuk-form-group">
-          <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-            <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="active" name="active" type="checkbox" value=1{{ ' checked=checked' if 'active' in filters.keys() }}>
-              <label class="govuk-label govuk-checkboxes__label" for="active">
-                Show only datasets with data
-              </label>
+        <div class="filter-group govuk-!-margin-bottom-6">
+          <h3 class="filter-group__heading govuk-heading-s">Data</h3>
+          <div class="filter-group__body">
+            <div class="govuk-form-group">
+              <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="active" name="active" type="checkbox" value=1{{ ' checked=checked' if 'active' in filters.keys() }}>
+                  <label class="govuk-label govuk-checkboxes__label" for="active">
+                    Show only datasets with data
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
-          Apply filter
+          Filter
         </button>
       </form>
       
