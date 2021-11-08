@@ -83,27 +83,57 @@
         {% endif -%}
 
         <!-- filter by organisation -->
-        <details class="govuk-details" data-module="govuk-details">
-          <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text">
-              By organisation
-            </span>
-          </summary>
-          <div class="govuk-details__text">
-            <ul class="govuk-list">
-              {% for organisation in organisations %}
-              <li>
-                <a href="{{ url_for('base.sources', organisation=organisation['organisation']) }}" class="govuk-link">{{ organisation['name'] }}</a><span class="govuk-!govuk-!-font-size-19"> ({{ organisation['sources'] }})</span>
-              </li>
-              {% endfor %}
-            </ul>
+        {%- if by_dataset %}
+        <div class="govuk-form-group">
+          {% call dlFilterGroup({
+            "title": "Publisher",
+            "is_open": True if request.args['organisation'] else False,
+            "selected": request.args.getlist('organisation')|length if request.args['organisation'] else 0
+          }) %}
+          <div class="govuk-radios" data-module="filter-checkboxes">
+            {%- set randomID_input = random_int(5) %}
+            <div class="filter-group__auto-filter">
+              <label for="input-{{ randomID_input }}" class="govuk-label govuk-visually-hidden">
+              Filter Show only
+              </label>
+              <input id="input-{{ randomID_input }}" class="govuk-input filter-group__auto-filter__input" type="text" aria-describedby="checkbox-filter-{{ randomID_filter }}" aria-controls="checkboxes-{{ randomID_list }}">
+            </div>
+
+            <div role="group">
+              <span id="checkbox-filter-{{ randomID_filter }}" class="filter-group__auto-filter__desc govuk-visually-hidden" aria-live="polite" data-single="option found" data-multiple="options found" data-selected="selected">How many showing</span>
+            
+              <div id="checkboxes-{{ randomID_list }}" class="checkbox-list">
+                {% for organisation in organisations %}
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="organisation-{{loop.index}}" name="organisation" type="radio" value="{{ organisation['organisation'] }}"{% if organisation['organisation'] in request.args.getlist('organisation') %} checked="checked"{% endif %}>
+                  <label class="govuk-label govuk-radios__label" for="organisation-{{loop.index}}">
+                    {{ organisation['name'] }}
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
           </div>
-        </details>
+          {% endcall %}
+        </div>
+        {% endif -%}
 
         <!-- filter by no documentation url -->
-        <p class="govuk-body">
-          <a href="{{ url_for('base.sources', documentation_url='') }}" class="govuk-link">Sources with no documentation url</a>
-        </p>
+        <div class="filter-group govuk-!-margin-bottom-6">
+          <h3 class="filter-group__heading govuk-heading-s">Documentation URL</h3>
+          <div class="filter-group__body">
+            <div class="govuk-form-group">
+              <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="documentation_url" name="documentation_url" type="checkbox" value=''{{ ' checked=checked' if request.args.get('documentation_url') }}>
+                  <label class="govuk-label govuk-checkboxes__label" for="documentation_url">
+                    Missing documentation url
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- search form -->
         <h2 class="govuk-heading-m">Search</h2>
@@ -141,7 +171,7 @@
             }) }}
           </div>
           <div class="govuk-form-group">
-            <button class="govuk-button govuk-button--secondary">Search</button>
+            <button class="govuk-button govuk-button--secondary">Apply</button>
             <a href="{{ url_for('base.sources') }}" class="govuk-link">Clear</a>
           </div>
       </form>
