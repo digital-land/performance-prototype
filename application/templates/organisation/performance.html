@@ -54,7 +54,7 @@
             {{ "Yes" if enddate['used'] else "No" }}{% if enddate['used'] %} in
             <ul class="govuk-list">
               {% for d in enddate['datasets'] -%}
-              <li><a href="{{ url_for('base.dataset', dataset_name=d) }}">{{ d }}</a></li>
+              <li><a href="{{ url_for('base.dataset', dataset=d) }}">{{ d }}</a></li>
               {%- endfor %}
             </ul>
             {%- endif %}
