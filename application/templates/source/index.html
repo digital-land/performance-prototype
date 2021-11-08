@@ -2,6 +2,9 @@
 {% block page_title %}Sources | Operations dashboard | Digital Land{% endblock %}
 {%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
 {% from 'macro/data-item.html' import appDataItem %}
+{% from "digital-land-frontend/components/filter-group/macro.html" import dlFilterGroup %}
+{% from "digital-land-frontend/components/dl-helpers.html" import random_int %}
+{% from 'macro/remove-filter-button.html' import removeFilterButton %}
 
 {% block dl_breadcrumbs %}{% endblock %}
 
@@ -41,86 +44,106 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-heading-m">Filters</h2>
-      <!-- filter by dataset -->
-      <details class="govuk-details" data-module="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text">
-            By dataset
-          </span>
-        </summary>
-        <div class="govuk-details__text">
-          <ul class="govuk-list">
-            {% for dataset in by_dataset %}
-            <li>
-              <a href="{{ url_for('base.sources', pipeline=dataset.pipeline) }}" class="govuk-link">{{ dataset['pipeline']|replace("-", " ")|capitalize }}</a><span class="govuk-!govuk-!-font-size-19"> ({{ dataset['active_sources'] }})</span>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </details>
-
-      <!-- filter by organisation -->
-      <details class="govuk-details" data-module="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text">
-            By organisation
-          </span>
-        </summary>
-        <div class="govuk-details__text">
-          <ul class="govuk-list">
-            {% for organisation in organisations %}
-            <li>
-              <a href="{{ url_for('base.sources', organisation=organisation['organisation']) }}" class="govuk-link">{{ organisation['name'] }}</a><span class="govuk-!govuk-!-font-size-19"> ({{ organisation['sources'] }})</span>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </details>
-
-      <!-- filter by no documentation url -->
-      <p class="govuk-body">
-        <a href="{{ url_for('base.sources', documentation_url='') }}" class="govuk-link">Sources with no documentation url</a>
-      </p>
-
-      <!-- search form -->
-      <h2 class="govuk-heading-m">Search</h2>
       <form action="{{ url_for('base.sources') }}" class="govuk-form">
-        {% from "govuk-jinja-components/components/input/macro.jinja" import govukInput %}
+        <h2 class="govuk-heading-m">Filters</h2>
+        <!-- filter by dataset -->
+        {%- if by_dataset %}
         <div class="govuk-form-group">
-          {{ govukInput({
-            "label": {
-              "text": "By source"
-            },
-            "id": "source",
-            "name": "source",
-            "value": filters['source'] if filters['source'] else ""
-          }) }}
-        </div>
+          {% call dlFilterGroup({
+            "title": "Dataset",
+            "is_open": True if request.args['pipeline'] else False,
+            "selected": request.args.getlist('pipeline')|length if request.args['pipeline'] else 0
+          }) %}
+          <div class="govuk-radios" data-module="filter-checkboxes">
+            {%- set randomID_input = random_int(5) %}
+            <div class="filter-group__auto-filter">
+              <label for="input-{{ randomID_input }}" class="govuk-label govuk-visually-hidden">
+              Filter Show only
+              </label>
+              <input id="input-{{ randomID_input }}" class="govuk-input filter-group__auto-filter__input" type="text" aria-describedby="checkbox-filter-{{ randomID_filter }}" aria-controls="checkboxes-{{ randomID_list }}">
+            </div>
 
-        <div class="govuk-form-group">
-          {{ govukInput({
-            "label": {
-              "text": "By endpoint"
-            },
-            "id": "endpoint_",
-            "name": "endpoint_",
-            "value": filters['endpoint_'] if filters['endpoint_'] else ""
-          }) }}
+            <div role="group">
+              <span id="checkbox-filter-{{ randomID_filter }}" class="filter-group__auto-filter__desc govuk-visually-hidden" aria-live="polite" data-single="option found" data-multiple="options found" data-selected="selected">How many showing</span>
+            
+              <div id="checkboxes-{{ randomID_list }}" class="checkbox-list">
+                {% for dataset in by_dataset %}
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="pipeline-{{loop.index}}" name="pipeline" type="radio" value="{{ dataset.pipeline }}"{% if dataset.pipeline in request.args.getlist('pipeline') %} checked="checked"{% endif %}>
+                  <label class="govuk-label govuk-radios__label" for="pipeline-{{loop.index}}">
+                    {{ dataset['pipeline']|replace("-", " ")|capitalize }}
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          {% endcall %}
         </div>
-        <div class="govuk-form-group">
-          {{ govukInput({
-            "label": {
-              "text": "By URL"
-            },
-            "id": "endpoint_url",
-            "name": "endpoint_url",
-            "value": filters['endpoint_url'] if filters['endpoint_url'] else ""
-          }) }}
-        </div>
-        <div class="govuk-form-group">
-          <button class="govuk-button govuk-button--secondary">Search</button>
-        </div>
+        {% endif -%}
+
+        <!-- filter by organisation -->
+        <details class="govuk-details" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              By organisation
+            </span>
+          </summary>
+          <div class="govuk-details__text">
+            <ul class="govuk-list">
+              {% for organisation in organisations %}
+              <li>
+                <a href="{{ url_for('base.sources', organisation=organisation['organisation']) }}" class="govuk-link">{{ organisation['name'] }}</a><span class="govuk-!govuk-!-font-size-19"> ({{ organisation['sources'] }})</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </details>
+
+        <!-- filter by no documentation url -->
+        <p class="govuk-body">
+          <a href="{{ url_for('base.sources', documentation_url='') }}" class="govuk-link">Sources with no documentation url</a>
+        </p>
+
+        <!-- search form -->
+        <h2 class="govuk-heading-m">Search</h2>
+        
+          {% from "govuk-jinja-components/components/input/macro.jinja" import govukInput %}
+          <div class="govuk-form-group">
+            {{ govukInput({
+              "label": {
+                "text": "By source"
+              },
+              "id": "source",
+              "name": "source",
+              "value": filters['source'] if filters['source'] else ""
+            }) }}
+          </div>
+
+          <div class="govuk-form-group">
+            {{ govukInput({
+              "label": {
+                "text": "By endpoint"
+              },
+              "id": "endpoint_",
+              "name": "endpoint_",
+              "value": filters['endpoint_'] if filters['endpoint_'] else ""
+            }) }}
+          </div>
+          <div class="govuk-form-group">
+            {{ govukInput({
+              "label": {
+                "text": "By URL"
+              },
+              "id": "endpoint_url",
+              "name": "endpoint_url",
+              "value": filters['endpoint_url'] if filters['endpoint_url'] else ""
+            }) }}
+          </div>
+          <div class="govuk-form-group">
+            <button class="govuk-button govuk-button--secondary">Search</button>
+            <a href="{{ url_for('base.sources') }}" class="govuk-link">Clear</a>
+          </div>
       </form>
     </div>
     <div class="govuk-grid-column-two-thirds">
@@ -204,5 +227,19 @@
 </script>
 <script>
   console.log('filters object', {{ filters|tojson }})
+</script>
+<!-- get the filter groups working -->
+<script>
+  var $filters = document.querySelectorAll('[data-module="selected-counter"]')
+  $filters.forEach(filter => {
+    new window.DLFrontend.SelectedCounter(filter).init()
+  })
+
+  var $filterCheckboxes = document.querySelectorAll('[data-module="filter-checkboxes"]')
+  $filterCheckboxes.forEach(el => {
+    new window.DLFrontend.FilterCheckboxes(el).init({
+      listItemSelector: ".govuk-radios__item"
+    })
+  })
 </script>
 {% endblock bodyEndScripts %}
