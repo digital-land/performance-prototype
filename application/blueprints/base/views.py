@@ -354,7 +354,7 @@ def resource(resource):
         "resource/resource.html",
         resource=resource_data,
         info_page=url_for("base.resource_info", resource=resource),
-        entry_count=entry_count(dataset, resource)[0],
+        entry_count=entry_count(dataset, resource),
     )
 
 
