@@ -35,6 +35,7 @@ from application.datasette import (
     dataset_latest_logs,
     DLDatasette,
 )
+from application.data_access.entity_queries import fetch_organisation_entity_count
 from application.utils import (
     resources_per_publishers,
     index_by,
@@ -275,6 +276,15 @@ def organisation_performance(prefix, org_id):
             if source["endpoint"] == "":
                 erroneous_sources.append(source)
 
+    # add entity counts to dataset data
+    data["dataset_counts"] = index_by("pipeline", data["dataset_counts"])
+    entity_counts = fetch_organisation_entity_count(organisation=id)
+    for dn, count in entity_counts.items():
+        if dn in data["dataset_counts"].keys():
+            # do we want to add additional datasets here?
+            # data["dataset_counts"].setdefault(dn, {"pipeline": dn})
+            data["dataset_counts"][dn]["entity_count"] = count
+
     return render_template(
         "organisation/performance.html",
         organisation=organisation,
@@ -285,6 +295,7 @@ def organisation_performance(prefix, org_id):
         enddate={"used": used_enddate, "datasets": datasets_with_enddate},
         sources=sources,
         erroneous_sources=erroneous_sources,
+        entity_counts=entity_counts,
     )
 
 

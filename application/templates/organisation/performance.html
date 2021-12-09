@@ -83,13 +83,14 @@
   </div>
   {% endif %}
 
-  {% if data["dataset_counts"]|length %}
+  {% if data["dataset_counts"].keys()|length %}
     <h3 class="govuk-heading-m">Datasets with data</h3>
-    <p class="govuk-body">We have been able to collect resources and extract data from {{ organisation.name }} for {{data["dataset_counts"]|length}} dataset{{ "" if data["dataset_counts"]|length else "s" }}.</p>
+    <p class="govuk-body">We have been able to collect resources and extract data from {{ organisation.name }} for {{data["dataset_counts"].keys()|length}} dataset{{ "" if data["dataset_counts"].keys()|length else "s" }}.</p>
     {{ simplifiedDatasetTable({
       "datasets": data["dataset_counts"],
       "caption": "Table showing datasets we have collected data for",
-      "organisation": organisation['organisation']
+      "organisation": organisation['organisation'],
+      "entity_counts": entity_counts
       })
     }}
   {% endif %}
