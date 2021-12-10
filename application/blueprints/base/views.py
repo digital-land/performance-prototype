@@ -270,20 +270,26 @@ def organisation_performance(prefix, org_id):
         dataset for dataset in source_counts if dataset["sources_with_endpoint"] == 0
     ]
 
+    # TO FIX: I'm not sure this is working
     erroneous_sources = []
     for dataset in data["datasets_covered"]:
         for source in sources[dataset]:
             if source["endpoint"] == "":
                 erroneous_sources.append(source)
 
+    # setup dict to capture datasets with data from secondary sources
+    data["data_from_secondary"] = {}
+
     # add entity counts to dataset data
     data["dataset_counts"] = index_by("pipeline", data["dataset_counts"])
     entity_counts = fetch_organisation_entity_count(organisation=id)
     for dn, count in entity_counts.items():
         if dn in data["dataset_counts"].keys():
-            # do we want to add additional datasets here?
-            # data["dataset_counts"].setdefault(dn, {"pipeline": dn})
             data["dataset_counts"][dn]["entity_count"] = count
+        else:
+            # add dataset to list from secondary sources
+            data["data_from_secondary"].setdefault(dn, {"pipeline": dn})
+            data["data_from_secondary"][dn]["entity_count"] = count
 
     return render_template(
         "organisation/performance.html",
