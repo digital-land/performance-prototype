@@ -8,7 +8,7 @@ Flask==1.1.1
 Flask-Assets
 Flask-BasicAuth
 Flask-Script
--e git+https://github.com/digital-land/digital-land-python.git#egg=digital-land
+-e git+https://github.com/digital-land/frontend.git#egg=digital-land-frontend
 gunicorn
 itsdangerous
 Jinja2==2.11.3
