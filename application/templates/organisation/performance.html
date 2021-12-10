@@ -3,6 +3,8 @@
 {%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
 {%- from "tables/org-dataset-table.html" import datasetTable, simplifiedDatasetTable %}
 
+{% block pageTitle %}{{ organisation.name|default('Unknown') }} | Publisher | Operations dashboard{% endblock %}
+
 {% block dl_breadcrumbs %}
 {{ govukBreadcrumbs({
   "items": [
