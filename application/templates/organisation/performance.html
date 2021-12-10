@@ -95,6 +95,14 @@
       "entity_counts": entity_counts
       })
     }}
+    <p class="govuk-body">
+      {% set ns = namespace(dataset_params="") %}
+      {% for dataset in data["dataset_counts"].keys() %}
+        {% set ns.dataset_params = ns.dataset_params + "&dataset=" + dataset %}
+      {% endfor %}
+      {% set param_str = "?geometry_reference=" + organisation.statistical_geography + ns.dataset_params %}
+      <a href="https://www.digital-land.info/entity{{ param_str }}">See all data from {{ organisation.name }} on digital-land.info</a>.
+    </p>
   {% endif %}
 
   {% if erroneous_sources|length > 0 %}
