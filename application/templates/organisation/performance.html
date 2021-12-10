@@ -76,7 +76,7 @@
       <p class="govuk-body">We expected to collect data from {{organisation.name}} for the following datasets.</p>
       <ul class="govuk-list govuk-list--bullet">
         {% for dataset in missing_datasets %}
-        <li>{{ dataset['pipeline'] }}</li>
+        <li><a href="https://www.digital-land.info/dataset/{{ dataset['pipeline'] }}" class="govuk-link">{{ dataset['pipeline'] }}</a></li>
         {% endfor %}
       </ul>
     </div>
