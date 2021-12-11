@@ -91,12 +91,17 @@
   {% endif %}
 
   {% if data["data_from_secondary"].keys()|length %}
-  <h3 class="govuk-heading-m govuk-!-margin-top-9">Datasets from secondary sources</h3>
-  <p class="govuk-body">We have been able to collect relevant data for {{ organisation.name }} from alternative sources. The corresponding datasets are:</p>
+  <h3 class="govuk-heading-m govuk-!-margin-top-9">Datasets from other sources</h3>
+  <p class="govuk-body">We have also collected data relavent to {{ organisation.name }} from other sources, including:</p>
 
   <ul class="govuk-list">
     {% for dataset in data["data_from_secondary"].keys() %}
-      <li><a href="{{ url_for('base.dataset', dataset=dataset) }}">{{ dataset }}</a> - {{ data["data_from_secondary"][dataset]['entity_count'] }} entit{{ "y" if data["data_from_secondary"][dataset]['entity_count'] == 1 else "ies" }} </li>
+      <li>
+          <a href="{{ url_for('base.dataset', dataset=dataset) }}">{{ dataset }}</a> 
+          &mdash;
+          <a href="https://www.digital-land.info/entity/?dataset={{ dataset }}&organisation={{ organisation.organisation }}">
+          {{ data["data_from_secondary"][dataset]['entity_count'] }} entit{{ "y" if data["data_from_secondary"][dataset]['entity_count'] == 1 else "ies" }}</a>
+      </li>
     {% endfor %}
   </ul>
   {% endif %}

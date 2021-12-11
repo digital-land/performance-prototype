@@ -51,7 +51,7 @@
         <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['active_resources']|to_int if dataset['active_resources'] else 0 }}">{{ dataset['active_resources'] if 'active_resources' in dataset.keys() else "--" }}</td>
         <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ dataset['endpoints']|to_int if dataset['endpoints'] else 0 }}">{{ dataset['endpoints'] if 'endpoints' in dataset.keys() else "--" }}</td>
         {% set count = params.entity_counts[dataset['pipeline']] if dataset['pipeline'] in params.entity_counts.keys() else 0 %}
-        <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ count }}">{{ count if count else "--" }}</td>
+        <td class="govuk-table__cell govuk-table__cell--numeric" data-sort-value="{{ count }}"><a href="https://www.digital-land.info/entity/?dataset={{dataset['pipeline']}}&organisation={{params.organisation}}">{{ count if count else "0" }}</a></td>
       </tr>
       {% endfor %}
     </tbody>
