@@ -45,6 +45,7 @@ EAV_MODELS = [
     "developer-agreement",
 ]
 
+from datasette import DLDatasette
 
 class EndDateChecker:
     def __init__(self):
@@ -54,14 +55,14 @@ class EndDateChecker:
     def query_url(organisation=None):
         if organisation is not None:
             return (
-                "https://datasette.digital-land.info/{}.json?sql=select%0D%0A++o.value%0D%0Afrom%0D%0A++fact+AS+f%0D%0AJOIN+fact+AS+o+ON+o.slug+%3D+f.slug%0D%0AWHERE%0D%0A++f.attribute+%3D+%22end-date%22%0D%0A++AND+f.value+%21%3D+%22%22%0D%0A++AND+o.attribute+%3D+%22organisation%22%0D%0A++AND+o.value+%3D+%3Aorganisation%0D%0AGROUP+BY%0D%0Ao.value&organisation="
+                "{}/{}.json?sql=select%0D%0A++o.value%0D%0Afrom%0D%0A++fact+AS+f%0D%0AJOIN+fact+AS+o+ON+o.slug+%3D+f.slug%0D%0AWHERE%0D%0A++f.attribute+%3D+%22end-date%22%0D%0A++AND+f.value+%21%3D+%22%22%0D%0A++AND+o.attribute+%3D+%22organisation%22%0D%0A++AND+o.value+%3D+%3Aorganisation%0D%0AGROUP+BY%0D%0Ao.value&organisation="
                 + organisation
             )
-        return "http://datasette.digital-land.info/{}.json?sql=select%0D%0A++o.value%0D%0Afrom%0D%0A++fact+AS+f%0D%0AJOIN+fact+AS+o+ON+o.slug+%3D+f.slug%0D%0AWHERE%0D%0A++f.attribute+%3D+%22end-date%22%0D%0A++AND+f.value+%21%3D+%22%22%0D%0A++AND+o.attribute+%3D+%22organisation%22%0D%0AGROUP+BY%0D%0Ao.value"
+        return "{}/{}.json?sql=select%0D%0A++o.value%0D%0Afrom%0D%0A++fact+AS+f%0D%0AJOIN+fact+AS+o+ON+o.slug+%3D+f.slug%0D%0AWHERE%0D%0A++f.attribute+%3D+%22end-date%22%0D%0A++AND+f.value+%21%3D+%22%22%0D%0A++AND+o.attribute+%3D+%22organisation%22%0D%0AGROUP+BY%0D%0Ao.value"
 
     async def retrieve_orgs_with_end_dates(self, db, organisation):
         async with aiohttp.ClientSession() as session:
-            query = self.query_url(organisation).format(db)
+            query = self.query_url(organisation).format(DLDatasette.BASE_URL, db)
             # print(query)
             async with session.get(query) as response:
                 results = await response.json()
