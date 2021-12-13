@@ -16,7 +16,7 @@ from application.utils import (
 
 class DLDatasette:
 
-    BASE_URL = "http://awseb-awseb-sfpz2cyvurbh-164392685.eu-west-2.elb.amazonaws.com/digital-land/"
+    BASE_URL = "http://awseb-awseb-sfpz2cyvurbh-164392685.eu-west-2.elb.amazonaws.com"
 
     def __init__(self):
         pass
