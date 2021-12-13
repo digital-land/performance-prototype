@@ -25,7 +25,7 @@ class DLDatasette:
         param_str = ""
         if params.keys():
             param_str = "&".join([f"{k}={v}" for k, v in params.items()])
-        return "%s%s.%s?%s" % (self.BASE_URL, table, format, param_str)
+        return "%s/digital-land/%s.%s?%s" % (self.BASE_URL, table, format, param_str)
 
     def query(self, table, params, format="json"):
         query = self.generate_query(table, params, format)
