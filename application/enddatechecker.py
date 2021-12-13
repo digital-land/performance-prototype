@@ -45,7 +45,7 @@ EAV_MODELS = [
     "developer-agreement",
 ]
 
-from datasette import DLDatasette
+from application.datasette import DLDatasette
 
 class EndDateChecker:
     def __init__(self):
