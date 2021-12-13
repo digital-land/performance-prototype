@@ -5,7 +5,7 @@ from application.caching import get
 
 logger = logging.getLogger(__name__)
 
-DATASETTE_URL = "https://datasette.digital-land.info"
+DATASETTE_URL = "http://awseb-awseb-sfpz2cyvurbh-164392685.eu-west-2.elb.amazonaws.com"
 
 
 def fetch_organisation_entity_number(organisation):
