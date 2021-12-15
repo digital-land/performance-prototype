@@ -17,7 +17,6 @@ from application.datasette import (
     sources_by_dataset,
     resources_by_dataset,
     get_source,
-    get_datasets_info,
     get_organisation,
     get_datasets_summary,
     get_resource_count,
@@ -35,7 +34,12 @@ from application.datasette import (
     dataset_latest_logs,
     DLDatasette,
 )
-from application.data_access.entity_queries import fetch_organisation_entity_count
+from application.data_access.entity_queries import (
+    fetch_entity_count,
+    fetch_organisation_entity_count,
+)
+from application.data_access.digital_land_queries import fetch_datasets
+
 from application.utils import (
     resources_per_publishers,
     index_by,
@@ -76,6 +80,7 @@ def performance():
     ds = DLDatasette()
     gs_datasets = get_datasets_summary()
     checker = EndDateChecker()
+    entity_counts = fetch_entity_count()
 
     return render_template(
         "performance.html",
@@ -85,7 +90,7 @@ def performance():
         publisher_count=total_publisher_coverage(),
         sources=sources_with_endpoint(),
         entity_count=ds.get_entity_count(),
-        datasette_datasets=get_datasets_info(split=True),
+        datasets_with_data_count=len(entity_counts.keys()),
         resource_count=get_resource_count(),
         using_enddate=checker.get_count(),
         content_type_counts=content_type_counts(),
@@ -355,7 +360,7 @@ def resources():
         by_dataset=resources_per_dataset,
         resource_count=get_resource_count(),
         content_type_counts=content_type_counts(),
-        datasets=get_datasets_info(split=True),
+        datasets=fetch_entity_count(),
         resources=resource_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),

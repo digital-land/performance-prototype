@@ -13,6 +13,8 @@ from application.utils import (
     yesterday,
 )
 
+from application.data_access.digital_land_queries import fetch_datasets
+
 
 class DLDatasette:
 
@@ -466,6 +468,7 @@ def first_and_last_resource(pipeline=None):
 
 
 def get_datasets(filter=None):
+    # should this move to data_access.digital_land_queries
     ds = DLDatasette()
     where_clause = ""
     params = ""
@@ -477,26 +480,6 @@ def get_datasets(filter=None):
         ds.BASE_URL, where_clause, params
     )
     results = ds.sqlQuery(query)
-    return [create_dict(results["columns"], row) for row in results["rows"]]
-
-
-def get_datasets_info(split=False):
-    ds = DLDatasette()
-    query = f"{ds.BASE_URL}/digital-land.json?sql=SELECT%0D%0A++DISTINCT+dataset.dataset%2C%0D%0A++dataset.name%2C%0D%0A++dataset.plural%2C%0D%0A++dataset.typology%2C%0D%0A++%28%0D%0A++++CASE%0D%0A++++++WHEN+pipeline.pipeline+IS+NOT+NULL+THEN+1%0D%0A++++END%0D%0A++%29+AS+dataset_active%2C%0D%0A++GROUP_CONCAT%28dataset_theme.theme%2C+%22%3B%22%29+AS+themes%0D%0AFROM%0D%0A++dataset%0D%0A++LEFT+JOIN+pipeline+ON+dataset.dataset+%3D+pipeline.pipeline%0D%0A++INNER+JOIN+dataset_theme+ON+dataset.dataset+%3D+dataset_theme.dataset%0D%0Agroup+by%0D%0Adataset.dataset"
-    results = ds.sqlQuery(query)
-    if split:
-        return {
-            "active": [
-                create_dict(results["columns"], row)
-                for row in results["rows"]
-                if row[4] == 1
-            ],
-            "inactive": [
-                create_dict(results["columns"], row)
-                for row in results["rows"]
-                if row[4] != 1
-            ],
-        }
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
@@ -519,7 +502,7 @@ def get_resource_count():
 
 def get_datasets_summary():
     # get all the datasets listed with their active status
-    all_datasets = index_by("dataset", get_datasets_info())
+    all_datasets = index_by("dataset", fetch_datasets())
     missing = []
 
     # add the publisher coverage numbers
@@ -582,8 +565,7 @@ def resources_of_type(t):
 def entry_count(dataset, resource=None):
     ds = DLDatasette()
     query = "{}/{}.json?sql=select%0D%0A++resource%2C%0D%0A++count%28id%29+AS+entries%0D%0Afrom%0D%0A++entry%0D%0Agroup+by%0D%0Aresource".format(
-        ds.BASE_URL,
-        dataset
+        ds.BASE_URL, dataset
     )
     if resource is not None:
         query = "{}/{}.json?sql=select%0D%0A++resource%2C%0D%0A++count%28id%29+AS+entries%0D%0Afrom%0D%0A++entry%0D%0Awhere%0D%0A++resource+%3D+%3Aresource%0D%0Agroup+by%0D%0A++resource&resource={}".format(

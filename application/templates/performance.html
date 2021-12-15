@@ -31,7 +31,7 @@
                 <div class="govuk-grid-column-one-quarter">
                   <div class="app-data-item">
                     <p class="govuk-body app-data-item__label">Datasets</p>
-                    <span class="app-data-item__number app-!-font-size-60">{{ datasette_datasets['active']|length }}<span class="govuk-!-font-size-19">/{{ datasette_datasets['active']|length + datasette_datasets['inactive']|length }}</span></span>
+                    <span class="app-data-item__number app-!-font-size-60">{{ datasets_with_data_count }}<span class="govuk-!-font-size-19">/{{ datasets|length }}</span></span>
                   </div>
                 </div>
                 <div class="govuk-grid-column-one-quarter">
