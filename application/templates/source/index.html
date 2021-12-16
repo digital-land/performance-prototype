@@ -1,9 +1,10 @@
 {% extends "source/base.html" %}
 {% block page_title %}Sources | Operations dashboard | Digital Land{% endblock %}
-{%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+
 {% from 'macro/data-item.html' import appDataItem %}
-{% from "digital-land-frontend/components/filter-group/macro.html" import dlFilterGroup %}
-{% from "digital-land-frontend/components/dl-helpers.html" import random_int %}
+{% from "digital-land-frontend/components/filter-group/macro.jinja" import dlFilterGroup %}
+{% from "components/helpers.jinja" import random_int %}
+
 {% from 'macro/remove-filter-button.html' import removeFilterButton %}
 
 {% block dl_breadcrumbs %}{% endblock %}
@@ -138,7 +139,7 @@
         <!-- search form -->
         <h2 class="govuk-heading-m">Search</h2>
         
-          {% from "govuk-jinja-components/components/input/macro.jinja" import govukInput %}
+          {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
           <div class="govuk-form-group">
             {{ govukInput({
               "label": {

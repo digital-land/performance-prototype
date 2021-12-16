@@ -1,9 +1,8 @@
 {% extends "layouts/layout.html" %}
 {% block page_title %}Flask prototyping index{% endblock %}
-{%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
-{%- from "digital-land-frontend/components/hero/macro.html" import dlHero -%}
+{%- from "components/hero/macro.jinja" import appHero -%}
 
-{% block dl_breadcrumbs %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
 
 {% block header %}
 <header role="banner" id="global-header" class="govuk-header govuk-header--flush  with-proposition dl-header" data-module="govuk-header">
@@ -25,7 +24,7 @@
 <p class="govuk-body-l">Digital Land use the operations dashboard to monitor the performance of the planning data platform.</p>
 {% endset %}
 
-{{ dlHero({
+{{ appHero({
   "wrapper_classes": "govuk-!-margin-bottom-0",
   "classes": "govuk-width-container",
   "html": heroHTML

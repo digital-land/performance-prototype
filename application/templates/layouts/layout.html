@@ -1,36 +1,17 @@
-{% extends "govuk-jinja-components/template.html" %}
-{% from "govuk-jinja-components/components/header/macro.jinja" import govukHeader -%}
-{% from "govuk-jinja-components/components/breadcrumbs/macro.jinja" import govukBreadcrumbs -%}
+{% extends "digital-land-frontend/layouts/base.jinja" %}
 {% from 'macro/primary-nav.html' import primaryNavigation %}
 {% from 'macro/data-item.html' import appDataItem %}
 
-{% block head %}
-
+{% block stylesheets %}
+  {{ super() }}
   {# for bundle definitions, see assets.py #}
-
-  {% block dl_css %} {# use this block to overwrite to use a local version of the dl css #}
-  <link href="https://digital-land.github.io/stylesheets/dl-frontend.css" rel="stylesheet" />
-  {% endblock dl_css %}
-
   {% assets "css_govuk" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}">
   {% endassets %}
 
-  {% block headEnd %}{% endblock headEnd %}
-
 {% endblock %}
 
-{% block beforeContent %}
-	{% block dl_breadcrumbs %}
-  {% from "govuk-jinja-components/components/back-link/macro.jinja" import govukBackLink -%}
-    {{ govukBackLink({
-        "text": "Back to index",
-        "href": "/"
-    }) }}
-  {% endblock %}
-{% endblock %}
-
-{% block header %}
+{% block mastHead %}
 <header class="govuk-header app-light-header" role="banner" data-module="govuk-header">
   <div class="govuk-header__container govuk-width-container">
     <div class="app-header__content">
@@ -59,19 +40,7 @@
 {% endblock %}
 
 
-{% block footer %}
-	{% block feedbackPrompt %}{% endblock feedbackPrompt %}
-	{% include 'partials/footer.html' %}
-{% endblock %}
-
-
-{% block bodyEnd %}
-{{ super() }}
-<script src="{{ staticPath | default('https://digital-land.github.io') }}/javascripts/govuk/govuk-frontend.min.js"></script>
-<script>
-  // initiate all GOVUK components
-  window.GOVUKFrontend.initAll();
-</script>
+{% block pageScripts %}
 {% if info_page %}
   <script>
     document.addEventListener('keyup', function(e) {
@@ -85,13 +54,4 @@
     })
   </script>
 {% endif %}
-
-{% block bodyEndScripts %}
-	{# needs to come after govuk frontend #}
-	<script src="{{ staticPath | default('https://digital-land.github.io') }}/javascripts/dl-frontend.js"></script>
-	<script>
-		// adds any necessary polyfills
-		window.DLFrontend.polyfill();
-	</script>
-{% endblock %}
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends "resource/base.html" %}
 {% block page_title %}Flask prototyping index{% endblock %}
-{%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
+
 
 {% block dl_breadcrumbs %}{% endblock %}
 
@@ -129,7 +129,7 @@
       <!-- search form -->
       <h2 class="govuk-heading-m">Search</h2>
       <form action="{{ url_for('base.resources') }}" class="govuk-form">
-        {% from "govuk-jinja-components/components/input/macro.jinja" import govukInput %}
+        {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput %}
         <div class="govuk-form-group">
           {{ govukInput({
             "label": {

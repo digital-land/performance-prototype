@@ -1,8 +1,9 @@
 {% extends "dataset/base.html" %}
 {% block page_title %}Flask prototyping index{% endblock %}
-{%- from "digital-land-frontend/components/feedback-panel/macro.html" import dlFeedbackPanel %}
-{% from "digital-land-frontend/components/filter-group/macro.html" import dlFilterGroup %}
-{% from "digital-land-frontend/components/dl-helpers.html" import random_int %}
+
+{% from "digital-land-frontend/components/filter-group/macro.jinja" import dlFilterGroup %}
+{% from "components/helpers.jinja" import random_int %}
+
 {% from 'macro/remove-filter-button.html' import removeFilterButton %}
 
 {% block dl_breadcrumbs %}{% endblock %}
