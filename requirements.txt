@@ -13,6 +13,7 @@ gunicorn
 itsdangerous
 Jinja2==2.11.3
 libsass
+lockfile
 MarkupSafe
 packaging
 pyparsing
