@@ -67,7 +67,7 @@ def register_filters(app):
 
     from digital_land_frontend.filters import commanum_filter
 
-    app.add_template_filter("commanum", commanum_filter)
+    app.add_template_filter(commanum_filter, name="commanum")
 
 
 def register_extensions(app):
