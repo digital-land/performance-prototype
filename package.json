@@ -1,7 +1,7 @@
 {
-  "name": "govuk-flask-prototyping",
+  "name": "digital-land-operations-dashboard",
   "version": "1.0.0",
-  "description": "## Getting started",
+  "description": "A tool to help the digital land team operate the digital land platform",
   "main": "index.js",
   "directories": {
     "lib": "lib"
@@ -9,20 +9,20 @@
   "scripts": {
     "flask": "flask run",
     "bs": "browser-sync start --proxy http://localhost:5000 --files 'application/templates' 'application/static'",
-    "start": "run-p flask bs"
+    "start": "run-p flask bs",
+    "nps": "nps -c ./node_modules/digital-land-frontend/package-scripts.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/colmjude/govuk-flask-prototyping.git"
+    "url": "git+https://github.com/digital-land/maturity-model-prototype"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/colmjude/govuk-flask-prototyping/issues"
+    "url": "https://github.com/digital-land/maturity-model-prototype/issues"
   },
-  "homepage": "https://github.com/colmjude/govuk-flask-prototyping#readme",
   "dependencies": {
-    "govuk-frontend": "^3.13.0"
+    "digital-land-frontend": "https://gitpkg.now.sh/digital-land/digital-land-frontend/package?main"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5"
