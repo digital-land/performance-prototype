@@ -20,6 +20,7 @@ def create_app(config_filename):
 
     register_blueprints(app)
     register_context_processors(app)
+    register_templates(app)
     register_filters(app)
     register_extensions(app)
 
@@ -64,24 +65,35 @@ def register_filters(app):
     app.add_template_filter(urlencode_filter, name="urlencode")
     app.add_template_filter(remove_query_param_filter, name="remove_query_param")
 
-    from digital_land_frontend.filters import commanum
+    from digital_land_frontend.filters import commanum_filter
 
-    app.add_template_filter(commanum)
+    app.add_template_filter("commanum", commanum_filter)
 
 
 def register_extensions(app):
     """
     Import and register flask extensions and initialize with app object
     """
-
     from application.assets import assets
 
     assets.init_app(app)
 
-    from application.extensions import govuk_components
 
-    govuk_components.init_app(app)
+def register_templates(app):
+    """
+    Register templates from packages
+    """
+    from jinja2 import PackageLoader, PrefixLoader, ChoiceLoader
 
-    from application.extensions import dl_components
-
-    dl_components.init_app(app)
+    multi_loader = ChoiceLoader(
+        [
+            app.jinja_loader,
+            PrefixLoader(
+                {
+                    "govuk_frontend_jinja": PackageLoader("govuk_frontend_jinja"),
+                    "digital-land-frontend": PackageLoader("digital_land_frontend"),
+                }
+            ),
+        ]
+    )
+    app.jinja_loader = multi_loader
