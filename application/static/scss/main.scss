@@ -10,14 +10,15 @@
 
 // import components
 @import "components/applied-filter";
+@import "components/card";
 @import "components/data-item";
 @import "components/definition-lists";
+@import "components/filter-group";
+@import "components/govuk-details";
+@import "components/hero";
 @import "components/moj-primary-navigation";
 @import "components/moj-sortable-table";
-@import "components/card";
 @import "components/summary-banner";
-@import "components/govuk-details";
-@import "components/filter-group";
 
 .app-main-wrapper {
   @include moj-width-container;
