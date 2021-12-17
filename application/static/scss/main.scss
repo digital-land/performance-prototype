@@ -5,12 +5,15 @@
 @import "table";
 @import "forms";
 @import "header";
+@import "links";
 @import "typography";
 
 // import components
 @import "components/applied-filter";
 @import "components/data-item";
+@import "components/definition-lists";
 @import "components/moj-primary-navigation";
+@import "components/moj-sortable-table";
 @import "components/card";
 @import "components/summary-banner";
 @import "components/govuk-details";

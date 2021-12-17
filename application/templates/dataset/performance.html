@@ -184,8 +184,8 @@
       <h3 id="content-types" class="govuk-heading-m govuk-!-margin-top-9">Resource content-types</h3>
       <div class="govuk-grid-row govuk-!-margin-bottom-9">
         <div class="govuk-grid-column-one-half">
-          <div class="data-item govuk-!-margin-bottom-6">
-            <span class="data-item__number govuk-!-font-size-48">{{ content_type_counts|length }}</span>
+          <div class="app-data-item govuk-!-margin-bottom-6">
+            <span class="app-data-item__number govuk-!-font-size-48">{{ content_type_counts|length }}</span>
             <p class="govuk-body govuk-!-font-size-19">Content types</p>
           </div>
           <details class="govuk-details" data-module="govuk-details">
@@ -228,8 +228,8 @@
       {# only want to show 5 sources #}
       {% set items = sources_no_doc_url|length if sources_no_doc_url|length < 5 else 5 %}
       {% for n in range(items) %}
-        <li class="data-record app-card govuk-!-margin-bottom-3">
-          <div class="data-record__identifier">
+        <li class="dl-data-record app-card govuk-!-margin-bottom-3">
+          <div class="dl-data-record__identifier">
             <h4 class="govuk-heading-s govuk-!-margin-bottom-0">
             Source <a href="{{ url_for('base.source', source=sources_no_doc_url[n]['source']) }}">{{ sources_no_doc_url[n]['source'] }}</a></h4>
             {%- if sources_no_doc_url[n]['end_date'] or sources_no_doc_url[n]['documentation_url'] == "" -%}
@@ -239,7 +239,7 @@
             </div>
             {% endif -%}
           </div>
-          <dl class="govuk-summary-list data-record__properties app-card__properties govuk-!-margin-bottom-0">
+          <dl class="govuk-summary-list dl-data-record__properties app-card__properties govuk-!-margin-bottom-0">
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Organisation</dt>
               <dd class="govuk-summary-list__value">{{ sources_no_doc_url[n]['name'] }}</dd>

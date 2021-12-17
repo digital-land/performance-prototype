@@ -162,9 +162,9 @@
       {% endif %}
       <ul class="govuk-list">
       {% for resource in resources %}
-      <li class="data-record app-card govuk-!-margin-bottom-3">
-        <h4 class="govuk-heading-s data-record__identifier govuk-!-margin-bottom-0">Resource <a href="{{ url_for('base.resource', resource=resource['resource']) }}">{{ resource['resource']|truncate(15) }}</a></h4>
-        <dl class="govuk-summary-list data-record__properties app-card__properties govuk-!-margin-bottom-0">
+      <li class="dl-data-record app-card govuk-!-margin-bottom-3">
+        <h4 class="govuk-heading-s dl-data-record__identifier govuk-!-margin-bottom-0">Resource <a href="{{ url_for('base.resource', resource=resource['resource']) }}">{{ resource['resource']|truncate(15) }}</a></h4>
+        <dl class="govuk-summary-list dl-data-record__properties app-card__properties govuk-!-margin-bottom-0">
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Organisation</dt>
             <dd class="govuk-summary-list__value">{{ resource['name'] }}</dd>

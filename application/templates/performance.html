@@ -115,8 +115,8 @@
 
       <div class="govuk-grid-row govuk-!-margin-bottom-9">
         <div class="govuk-grid-column-one-half">
-          <div class="data-item govuk-!-margin-bottom-6">
-            <span class="data-item__number govuk-!-font-size-48">{{ sources['with_endpoint'] }}</span>
+          <div class="app-data-item govuk-!-margin-bottom-6">
+            <span class="app-data-item__number govuk-!-font-size-48">{{ sources['with_endpoint'] }}</span>
             <p class="govuk-body govuk-!-font-size-19">Total</p>
           </div>
           <details class="govuk-details" data-module="govuk-details">
@@ -131,8 +131,8 @@
           </details>
         </div>
         <div class="govuk-grid-column-one-half">
-          <div class="data-item govuk-!-margin-bottom-6">
-            <span class="data-item__number govuk-!-font-size-48">{{ sources['no_documentation']['count'] }}</span>
+          <div class="app-data-item govuk-!-margin-bottom-6">
+            <span class="app-data-item__number govuk-!-font-size-48">{{ sources['no_documentation']['count'] }}</span>
             <p class="govuk-body govuk-!-font-size-19">Without a documentation URL</p>
           </div>
           <details class="govuk-details" data-module="govuk-details">
@@ -176,14 +176,14 @@
       <h3 class="govuk-heading-m">Overview of resources</h3>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half">
-          <div class="data-item govuk-!-margin-bottom-6">
-            <span class="data-item__number govuk-!-font-size-48">{{ resource_count }}</span>
+          <div class="app-data-item govuk-!-margin-bottom-6">
+            <span class="app-data-item__number govuk-!-font-size-48">{{ resource_count }}</span>
             <p class="govuk-body govuk-!-font-size-19">Resources</p>
           </div>
         </div>
         <div class="govuk-grid-column-one-half">
-          <div class="data-item govuk-!-margin-bottom-6">
-            <span class="data-item__number govuk-!-font-size-48">{{ content_type_counts|length }}</span>
+          <div class="app-data-item govuk-!-margin-bottom-6">
+            <span class="app-data-item__number govuk-!-font-size-48">{{ content_type_counts|length }}</span>
             <p class="govuk-body govuk-!-font-size-19">Content types</p>
           </div>
       
@@ -218,14 +218,14 @@
       <h3 class="govuk-heading-m">Overview of publishers</h3>
       <div class="govuk-grid-row govuk-!-margin-bottom-9">
         <div class="govuk-grid-column-one-half">
-          <div class="data-item govuk-!-margin-bottom-6">
-            <span class="data-item__number govuk-!-font-size-48">{{ publisher_count['active'] }}<span class="govuk-!-font-size-19">/{{ publisher_count['total'] }}</span></span>
+          <div class="app-data-item govuk-!-margin-bottom-6">
+            <span class="app-data-item__number govuk-!-font-size-48">{{ publisher_count['active'] }}<span class="govuk-!-font-size-19">/{{ publisher_count['total'] }}</span></span>
             <p class="govuk-body govuk-!-font-size-19">Publisher coverage</code></p>
           </div>
         </div>
         <div class="govuk-grid-column-one-half">
-          <div class="data-item govuk-!-margin-bottom-6">
-            <span class="data-item__number govuk-!-font-size-48">{{ using_enddate }}</span>
+          <div class="app-data-item govuk-!-margin-bottom-6">
+            <span class="app-data-item__number govuk-!-font-size-48">{{ using_enddate }}</span>
             <p class="govuk-body govuk-!-font-size-19">Have used <code>end-date</code></p>
           </div>
           <details class="govuk-details" data-module="govuk-details">

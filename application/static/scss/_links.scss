@@ -1,0 +1,7 @@
+// ===========================
+// Links
+// ===========================
+// govuk link style as default
+a {
+  @extend %govuk-link;
+}

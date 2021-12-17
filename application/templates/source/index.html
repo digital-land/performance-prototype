@@ -57,15 +57,15 @@
           }) %}
           <div class="govuk-radios" data-module="filter-checkboxes">
             {%- set randomID_input = random_int(5) %}
-            <div class="filter-group__auto-filter">
+            <div class="dl-filter-group__auto-filter">
               <label for="input-{{ randomID_input }}" class="govuk-label govuk-visually-hidden">
               Filter Show only
               </label>
-              <input id="input-{{ randomID_input }}" class="govuk-input filter-group__auto-filter__input" type="text" aria-describedby="checkbox-filter-{{ randomID_filter }}" aria-controls="checkboxes-{{ randomID_list }}">
+              <input id="input-{{ randomID_input }}" class="govuk-input dl-filter-group__auto-filter__input" type="text" aria-describedby="checkbox-filter-{{ randomID_filter }}" aria-controls="checkboxes-{{ randomID_list }}">
             </div>
 
             <div role="group">
-              <span id="checkbox-filter-{{ randomID_filter }}" class="filter-group__auto-filter__desc govuk-visually-hidden" aria-live="polite" data-single="option found" data-multiple="options found" data-selected="selected">How many showing</span>
+              <span id="checkbox-filter-{{ randomID_filter }}" class="dl-filter-group__auto-filter__desc govuk-visually-hidden" aria-live="polite" data-single="option found" data-multiple="options found" data-selected="selected">How many showing</span>
             
               <div id="checkboxes-{{ randomID_list }}" class="checkbox-list">
                 {% for dataset in by_dataset %}
@@ -93,15 +93,15 @@
           }) %}
           <div class="govuk-radios" data-module="filter-checkboxes">
             {%- set randomID_input = random_int(5) %}
-            <div class="filter-group__auto-filter">
+            <div class="dl-filter-group__auto-filter">
               <label for="input-{{ randomID_input }}" class="govuk-label govuk-visually-hidden">
               Filter Show only
               </label>
-              <input id="input-{{ randomID_input }}" class="govuk-input filter-group__auto-filter__input" type="text" aria-describedby="checkbox-filter-{{ randomID_filter }}" aria-controls="checkboxes-{{ randomID_list }}">
+              <input id="input-{{ randomID_input }}" class="govuk-input dl-filter-group__auto-filter__input" type="text" aria-describedby="checkbox-filter-{{ randomID_filter }}" aria-controls="checkboxes-{{ randomID_list }}">
             </div>
 
             <div role="group">
-              <span id="checkbox-filter-{{ randomID_filter }}" class="filter-group__auto-filter__desc govuk-visually-hidden" aria-live="polite" data-single="option found" data-multiple="options found" data-selected="selected">How many showing</span>
+              <span id="checkbox-filter-{{ randomID_filter }}" class="dl-filter-group__auto-filter__desc govuk-visually-hidden" aria-live="polite" data-single="option found" data-multiple="options found" data-selected="selected">How many showing</span>
             
               <div id="checkboxes-{{ randomID_list }}" class="checkbox-list">
                 {% for organisation in organisations %}
@@ -120,9 +120,9 @@
         {% endif -%}
 
         <!-- filter by no documentation url -->
-        <div class="filter-group govuk-!-margin-bottom-6">
-          <h3 class="filter-group__heading govuk-heading-s">Documentation URL</h3>
-          <div class="filter-group__body">
+        <div class="dl-filter-group govuk-!-margin-bottom-6">
+          <h3 class="dl-filter-group__heading govuk-heading-s">Documentation URL</h3>
+          <div class="dl-filter-group__body">
             <div class="govuk-form-group">
               <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                 <div class="govuk-checkboxes__item">
@@ -197,8 +197,8 @@
       {% endif %}
       <ul class="govuk-list">
         {% for source in sources %}
-        <li class="data-record app-card govuk-!-margin-bottom-3">
-          <div class="data-record__identifier">
+        <li class="dl-data-record app-card govuk-!-margin-bottom-3">
+          <div class="dl-data-record__identifier">
             <h4 class="govuk-heading-s govuk-!-margin-bottom-0">
             Source <a href="{{ url_for('base.source', source=source['source']) }}">{{ source['source'] }}</a></h4>
             {%- if source['end_date'] or source['documentation_url'] == "" -%}
@@ -208,7 +208,7 @@
             </div>
             {% endif -%}
           </div>
-          <dl class="govuk-summary-list data-record__properties app-card__properties govuk-!-margin-bottom-0">
+          <dl class="govuk-summary-list dl-data-record__properties app-card__properties govuk-!-margin-bottom-0">
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">Organisation</dt>
               <dd class="govuk-summary-list__value">{{ source['name'] }}</dd>
