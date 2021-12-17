@@ -118,3 +118,4 @@ package-lock.json
 .vscode/
 
 application/static/gen/
+application/static/javascripts
