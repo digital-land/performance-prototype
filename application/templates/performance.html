@@ -78,24 +78,24 @@
 </div>
 <main class="app-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>
 {% block content %}
-  <div class="govuk-tabs" data-module="dlf-subnav">
+  <div class="govuk-tabs" data-module="dl-subnav">
     <h2 class="govuk-tabs__title">
       Contents
     </h2>
-    <nav class="dlf-subnav" aria-label="Sub navigation">
-        <ul class="dlf-subnav__list">
-            <li class="dlf-subnav__list-item dlf-subnav__list-item--selected">
-                <a class="dlf-subnav__list-item__link" href="#dataset" data-module-sub-nav="tab">
+    <nav class="dl-subnav" aria-label="Sub navigation">
+        <ul class="dl-subnav__list">
+            <li class="dl-subnav__list-item dl-subnav__list-item--selected">
+                <a class="dl-subnav__list-item__link" href="#dataset" data-module-sub-nav="tab">
                 Datasets
                 </a>
             </li>
-            <li class="dlf-subnav__list-item">
-                <a class="dlf-subnav__list-item__link" href="#sources" data-module-sub-nav="tab">
+            <li class="dl-subnav__list-item">
+                <a class="dl-subnav__list-item__link" href="#sources" data-module-sub-nav="tab">
                 Sources and resources
                 </a>
             </li>
-            <li class="dlf-subnav__list-item">
-              <a class="dlf-subnav__list-item__link" href="#publishers" data-module-sub-nav="tab">
+            <li class="dl-subnav__list-item">
+              <a class="dl-subnav__list-item__link" href="#publishers" data-module-sub-nav="tab">
               Publishers
               </a>
             </li>
@@ -251,7 +251,7 @@
 {{ super() }}
 
 <script>
-  const $subNavTabs = document.querySelector('[data-module="dlf-subnav"]')
+  const $subNavTabs = document.querySelector('[data-module="dl-subnav"]')
   const subNavTabsComponent = new DLFrontend.SubNavTabs($subNavTabs).init({})
 </script>
 

@@ -10,19 +10,19 @@
   <h1 class="govuk-heading-xl">Publishers</h1>
   <p id="btt-hook" class="govuk-body-l">A list of all the publishers we have collected data from and the expected publishers we have not yet collected from.</p>
 
-  <div class="govuk-tabs" data-module="dlf-subnav">
+  <div class="govuk-tabs" data-module="dl-subnav">
     <h2 class="govuk-tabs__title">
       Contents
     </h2>
-    <nav class="dlf-subnav" aria-label="Sub navigation">
-        <ul class="dlf-subnav__list">
-            <li class="dlf-subnav__list-item dlf-subnav__list-item--selected">
-                <a class="dlf-subnav__list-item__link" href="#publishers-with-data" data-module-sub-nav="tab">
+    <nav class="dl-subnav" aria-label="Sub navigation">
+        <ul class="dl-subnav__list">
+            <li class="dl-subnav__list-item dl-subnav__list-item--selected">
+                <a class="dl-subnav__list-item__link" href="#publishers-with-data" data-module-sub-nav="tab">
                 Publishers
                 </a>
             </li>
-            <li class="dlf-subnav__list-item">
-              <a class="dlf-subnav__list-item__link" href="#publishers-with-no-data" data-module-sub-nav="tab">
+            <li class="dl-subnav__list-item">
+              <a class="dl-subnav__list-item__link" href="#publishers-with-no-data" data-module-sub-nav="tab">
               Missing publishers
               </a>
             </li>
@@ -177,7 +177,7 @@
 </script>
 
 <script>
-  const $subNavTabs = document.querySelector('[data-module="dlf-subnav"]')
+  const $subNavTabs = document.querySelector('[data-module="dl-subnav"]')
   const subNavTabsComponent = new DLFrontend.SubNavTabs($subNavTabs).init({})
 </script>
 {% endblock bodyEndScripts %}
