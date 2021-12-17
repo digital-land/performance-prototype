@@ -1,5 +1,7 @@
-// import all GOVUK Frontend scss
-@import "node_modules/govuk-frontend/govuk/all";
+// import all digital land and GOVUK Frontend scss
+@import "digital-land-frontend/dl-frontend";
+
+// import app scss
 @import "table";
 @import "forms";
 @import "header";

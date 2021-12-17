@@ -12,7 +12,11 @@ def static(*path):
 
 
 libsass_output = LibSass(
-    include_paths=[static("scss"), static("node_modules/govuk-frontend/")]
+    include_paths=[
+        static("scss"),
+        "node_modules/govuk-frontend",
+        "node_modules/digital-land-frontend",
+    ]
 )
 
 css_govuk = Bundle(
