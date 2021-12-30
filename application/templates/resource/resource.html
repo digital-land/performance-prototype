@@ -80,12 +80,12 @@
 </main>
 {% endblock %}
 
-{% block bodyEnd %}
+{% block pageScripts %}
 {{ super() }}
 <script>
   console.log('resource object', {{ resource|tojson }})
 </script>
-{% endblock bodyEnd %}
+{% endblock pageScripts %}
 
 
 

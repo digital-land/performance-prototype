@@ -138,9 +138,9 @@
 </main>
 {% endblock %}
 
-{% block bodyEnd %}
+{% block pageScripts %}
 {{ super() }}
 <script>
   console.log('organisation obj', {{ organisation|tojson }})
 </script>
-{% endblock bodyEnd %}
+{% endblock pageScripts %}

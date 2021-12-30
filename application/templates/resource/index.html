@@ -206,7 +206,7 @@
 {{ super() }}
 {% endblock %}
 
-{% block bodyEndScripts %}
+{% block pageScripts %}
 {{ super() }}
 <script>
   const $bttBanner = document.querySelector('[data-module="sticky-banner"]')
@@ -216,4 +216,4 @@
       fixClass: 'dl-sticky-banner--fixed'
   })
 </script>
-{% endblock bodyEndScripts %}
+{% endblock pageScripts %}
