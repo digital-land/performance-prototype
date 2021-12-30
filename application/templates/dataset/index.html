@@ -86,7 +86,7 @@
       
     </div>
     <div class="govuk-grid-column-two-thirds">
-      <p class="govuk-body results-summary">Showing {{ datasets|length }} dataset{{ "" if datasets|length == 1 else "s" }}</p>
+      <p id="btt-hook" class="govuk-body results-summary">Showing {{ datasets|length }} dataset{{ "" if datasets|length == 1 else "s" }}</p>
       {% if filters -%}
       <div class="applied-filters">
         {% if request.args and request.args.get('typology') %}
@@ -206,15 +206,3 @@
 </div>
 {{ super() }}
 {% endblock %}
-
-{% block pageScripts %}
-{{ super() }}
-<script>
-  const $bttBanner = document.querySelector('[data-module="sticky-banner"]')
-  const bttComponent = new DLFrontend.BackToTop($bttBanner).init({
-      endElementSelector: '.govuk-footer',
-      startElementSelector: '#btt-hook',
-      fixClass: 'dl-sticky-banner--fixed'
-  })
-</script>
-{% endblock pageScripts %}

@@ -205,15 +205,3 @@
 </div>
 {{ super() }}
 {% endblock %}
-
-{% block pageScripts %}
-{{ super() }}
-<script>
-  const $bttBanner = document.querySelector('[data-module="sticky-banner"]')
-  const bttComponent = new DLFrontend.BackToTop($bttBanner).init({
-      endElementSelector: '.govuk-footer',
-      startElementSelector: '#btt-hook',
-      fixClass: 'dl-sticky-banner--fixed'
-  })
-</script>
-{% endblock pageScripts %}

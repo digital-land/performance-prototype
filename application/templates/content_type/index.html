@@ -21,7 +21,7 @@
 <main id="content" role="main">
   <h1 class="govuk-heading-xl">Content types</h1>
 
-  <p class="govuk-body results-summary">Showing {{ content_type_counts|length }} content-type{{ "" if content_type_counts|length == 1 else "s" }}</p>
+  <p id="btt-hook" class="govuk-body results-summary">Showing {{ content_type_counts|length }} content-type{{ "" if content_type_counts|length == 1 else "s" }}</p>
   {% if pipeline -%}
   <div class="applied-filters">
     <div class="applied-filter__group">
@@ -65,15 +65,3 @@
 </div>
 {{ super() }}
 {% endblock %}
-
-{% block pageScripts %}
-{{ super() }}
-<script>
-  const $bttBanner = document.querySelector('[data-module="sticky-banner"]')
-  const bttComponent = new DLFrontend.BackToTop($bttBanner).init({
-      endElementSelector: '.govuk-footer',
-      startElementSelector: '#btt-hook',
-      fixClass: 'dl-sticky-banner--fixed'
-  })
-</script>
-{% endblock pageScripts %}

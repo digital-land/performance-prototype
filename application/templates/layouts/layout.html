@@ -41,17 +41,30 @@
 
 
 {% block pageScripts %}
-{% if info_page %}
-  <script>
-    document.addEventListener('keyup', function(e) {
-      // are control and alt keys pressed
-      if (e.altKey && e.ctrlKey) {
-        // if i key is pressed
-        if (e.keyCode === 73) {
-          window.location.href = window.location.href + "/info"
-        }
-      }
+<script>
+  // look for single back to top element
+  const $bttBanner = document.querySelector('[data-module="sticky-banner"]')
+  console.log($bttBanner)
+  // instantiate if it exists
+  if ($bttBanner) {
+    const bttComponent = new DLFrontend.BackToTop($bttBanner).init({
+      endElementSelector: '.govuk-footer',
+      startElementSelector: '#btt-hook',
+      fixClass: 'dl-sticky-banner--fixed'
     })
-  </script>
+  }
+</script>
+{% if info_page %}
+<script>
+  document.addEventListener('keyup', function(e) {
+    // are control and alt keys pressed
+    if (e.altKey && e.ctrlKey) {
+      // if i key is pressed
+      if (e.keyCode === 73) {
+        window.location.href = window.location.href + "/info"
+      }
+    }
+  })
+</script>
 {% endif %}
 {% endblock %}

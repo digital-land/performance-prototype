@@ -249,14 +249,6 @@
 {% block pageScripts %}
 {{ super() }}
 <script>
-  const $bttBanner = document.querySelector('[data-module="sticky-banner"]')
-  const bttComponent = new DLFrontend.BackToTop($bttBanner).init({
-      endElementSelector: '.govuk-footer',
-      startElementSelector: '#btt-hook',
-      fixClass: 'dl-sticky-banner--fixed'
-  })
-</script>
-<script>
   console.log('filters object', {{ filters|tojson }})
 </script>
 <!-- get the filter groups working -->
