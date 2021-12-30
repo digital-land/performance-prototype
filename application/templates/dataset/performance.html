@@ -342,16 +342,11 @@
 </main>
 {% endblock main %}
 
-{% block bodyEnd %}
+{% block pageScripts %}
 {{ super() }}
 {% include 'partials/high-charts-scripts.html' %}
 <script>
   console.log({{ dataset|tojson }})
-</script>
-
-<script>
-  const $subNavTabs = document.querySelector('[data-module="dl-subnav"]')
-  const subNavTabsComponent = new DLFrontend.SubNavTabs($subNavTabs).init({})
 </script>
 
 <script src="/static/javascripts/vendor/jquery-3.4.1.min.js"></script>
@@ -449,5 +444,5 @@
 console.log("source_count", {{ source_count|tojson }})
 </script>
 {% endif %}
-{% endblock bodyEnd %}
+{% endblock pageScripts %}
 

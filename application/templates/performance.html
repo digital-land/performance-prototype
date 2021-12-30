@@ -247,14 +247,7 @@
 </main>
 {% endblock main %}
 
-{% block bodyEnd %}
-{{ super() }}
-
-<script>
-  const $subNavTabs = document.querySelector('[data-module="dl-subnav"]')
-  const subNavTabsComponent = new DLFrontend.SubNavTabs($subNavTabs).init({})
-</script>
-
+{% block pageScripts %}
 {% include 'partials/high-charts-scripts.html' %}
 <script src="/static/javascripts/vendor/jquery-3.4.1.min.js"></script>
 <script src="/static/javascripts/vendor/MOJFrontend.SortableTable.js"></script>
@@ -341,15 +334,11 @@ responsive: {
 </script>
 <script src="/static/javascripts/collapsible-section.js"></script>
 <script>
-  const collapsibles = document.querySelectorAll("[data-module='app-collapsible']")
-  collapsibles.forEach(function($el) {
+  const $collapsibles = document.querySelectorAll("[data-module='app-collapsible']")
+  $collapsibles.forEach(function($el) {
     const $section = $el.querySelector(".dl-collapsible")
     const $triggers = $el.querySelector(".expanding-line-break")
     const collapsibleComponent = new CollapsibleSection($section, $triggers).init()
   })
-  // console.log(collapsibles)
-  // const $section = document.querySelector('.no-doc-endpoints');
-  // const $triggers = document.querySelector('.expanding-line-break')
-  
 </script>
-{% endblock bodyEnd %}
+{% endblock pageScripts %}
