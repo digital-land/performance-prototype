@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from flask import render_template, Blueprint, current_app
+from flask import render_template, Blueprint, current_app, redirect
 from flask.helpers import url_for
 from flask import request
 
@@ -494,6 +494,14 @@ def content_type(content_type):
 @base.route("/logs")
 def logs():
     ds = DLDatasette()
+
+    if (
+        request.args.get("log-date-day")
+        and request.args.get("log-date-month")
+        and request.args.get("log-date-year")
+    ):
+        d = f"{request.args.get('log-date-year')}-{request.args.get('log-date-month')}-{request.args.get('log-date-day')}"
+        return redirect(url_for("base.log", date=d))
 
     summary = fetch_log_summary()
 

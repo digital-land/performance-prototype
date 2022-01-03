@@ -50,6 +50,53 @@
   </ul>
   {% endif %}
 
+  {% if not date %}
+  <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+  <form>
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset" role="group" aria-describedby="log-date-hint">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+          <h1 class="govuk-fieldset__heading">
+            What date do you want to see the logs for?
+          </h1>
+        </legend>
+        <div id="log-date-hint" class="govuk-hint">
+          For example, 27 3 2021
+        </div>
+        <div class="govuk-date-input" id="log-date">
+          <div class="govuk-date-input__item">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-date-input__label" for="log-date-day">
+                Day
+              </label>
+              <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="log-date-day" name="log-date-day" type="text" pattern="[0-9]*" inputmode="numeric"></div>
+          </div>
+          <div class="govuk-date-input__item">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-date-input__label" for="log-date-month">
+                Month
+              </label>
+              <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="log-date-month" name="log-date-month" type="text" pattern="[0-9]*" inputmode="numeric"></div>
+          </div>
+          <div class="govuk-date-input__item">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-date-input__label" for="log-date-year">
+                Year
+              </label>
+              <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="log-date-year" name="log-date-year" type="text" pattern="[0-9]*" inputmode="numeric"></div>
+          </div>
+        </div>
+    
+      </fieldset>
+    </div>
+
+    <button class="govuk-button" data-module="govuk-button" type="submit">
+      Find logs
+    </button>
+  </form>
+  {% endif %}
+
 </main>
 {% endblock %}
 
