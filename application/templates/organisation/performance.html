@@ -53,13 +53,14 @@
             Used end-dates
           </dt>
           <dd class="govuk-summary-list__value">
-            {{ "Yes" if enddate['used'] else "No" }}{% if enddate['used'] %} in
+            {#{{ "Yes" if enddate['used'] else "No" }}{% if enddate['used'] %} in
             <ul class="govuk-list">
               {% for d in enddate['datasets'] -%}
               <li><a href="{{ url_for('base.dataset', dataset=d) }}">{{ d }}</a></li>
               {%- endfor %}
             </ul>
-            {%- endif %}
+            {%- endif %}#}
+            <div class="govuk-tag govuk-tag--red">Currently unavailable</div>
           </dd>
         </div>
 
