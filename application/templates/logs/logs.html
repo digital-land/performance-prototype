@@ -24,11 +24,18 @@
   
   <h3 class="govuk-heading-m">Summary</h3>
 
+  <p class="govuk-body">On {{ date if date else yesterday }} digital land attempt to collect data from {{ endpoint_count }} endpoint{{ '' if endpoint_count == 1 else 's' }}. The following statuses were recorded.</p>
+
   {% if summary|length %}
   <ul class="govuk-list">
-  {% for status in summary %}
-    <li>Status: {{ status.status }} - {{ status.count }}</li>
-  {% endfor %}
+    <li><span class="dl-secondary-text govuk-!-margin-bottom-1">Key (status: count)</span></li>
+    {% for status in summary %}
+      {% if status.status == "" %}
+        <span class="dl-secondary-text">No status recorded</span>: {{ status.count }}
+      {% else %}
+      <li>{{ status.status }}: {{ status.count }}</li>
+      {% endif %}
+    {% endfor %}
   </ul>
   {% else %}
   <div class="govuk-inset-text app-inset-text--error">No log results for this date.</div>

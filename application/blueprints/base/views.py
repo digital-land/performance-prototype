@@ -49,6 +49,7 @@ from application.utils import (
     index_with_list,
     recent_dates,
     read_json_file,
+    yesterday,
 )
 from application.enddatechecker import EndDateChecker
 
@@ -494,10 +495,14 @@ def content_type(content_type):
 def logs():
     ds = DLDatasette()
 
+    summary = fetch_log_summary()
+
     return render_template(
         "logs/logs.html",
-        summary=fetch_log_summary(),
+        summary=summary,
         resources=ds.get_new_resources(),
+        yesterday=yesterday(string=True),
+        endpoint_count=sum([status["count"] for status in summary]),
     )
 
 
@@ -505,9 +510,12 @@ def logs():
 def log(date):
     ds = DLDatasette()
 
+    summary = fetch_log_summary(date=date)
+
     return render_template(
         "logs/logs.html",
-        summary=fetch_log_summary(date=date),
+        summary=summary,
         resources=ds.get_new_resources(dates=[date]),
         date=date,
+        endpoint_count=sum([status["count"] for status in summary]),
     )
