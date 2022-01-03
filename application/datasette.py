@@ -166,14 +166,6 @@ class DLDatasette:
             "organisation", self.sqlQuery(query, results="rows_with_column_names")
         )
 
-    # log related
-    def get_daily_log_summary(self, date=yesterday(string=True)):
-        query = (
-            "http://datasette.digital-land.info/digital-land.json?sql=select%0D%0A++entry_date%2C%0D%0A++status%2C%0D%0A++COUNT%28DISTINCT+endpoint%29+AS+count%0D%0Afrom%0D%0A++log%0D%0Awhere%0D%0A++%22entry_date%22+%3D+%3Adate%0D%0Agroup+by%0D%0A++status&date="
-            + date
-        )
-        return self.sqlQuery(query, results="rows_with_column_names")
-
 
 def sql_str_query(func):
     @functools.wraps(func)

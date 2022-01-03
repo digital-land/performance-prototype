@@ -38,7 +38,10 @@ from application.data_access.entity_queries import (
     fetch_entity_count,
     fetch_organisation_entity_count,
 )
-from application.data_access.digital_land_queries import fetch_datasets
+from application.data_access.digital_land_queries import (
+    fetch_datasets,
+    fetch_log_summary,
+)
 
 from application.utils import (
     resources_per_publishers,
@@ -493,7 +496,7 @@ def logs():
 
     return render_template(
         "logs/logs.html",
-        summary=ds.get_daily_log_summary(),
+        summary=fetch_log_summary(),
         resources=ds.get_new_resources(),
     )
 
@@ -504,7 +507,7 @@ def log(date):
 
     return render_template(
         "logs/logs.html",
-        summary=ds.get_daily_log_summary(date=date),
+        summary=fetch_log_summary(date=date),
         resources=ds.get_new_resources(dates=[date]),
         date=date,
     )
