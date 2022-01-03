@@ -24,11 +24,15 @@
   
   <h3 class="govuk-heading-m">Summary</h3>
 
+  {% if summary|length %}
   <ul class="govuk-list">
   {% for status in summary %}
     <li>Status: {{ status.status }} - {{ status.count }}</li>
   {% endfor %}
   </ul>
+  {% else %}
+  <div class="govuk-inset-text app-inset-text--error">No log results for this date.</div>
+  {% endif %}
 
   {% if resources|length %}
   <h3 class="govuk-heading-m">New resources</h3>
