@@ -117,5 +117,5 @@ node_modules
 package-lock.json
 .vscode/
 
-application/static/gen/
+application/static/stylesheets
 application/static/javascripts
