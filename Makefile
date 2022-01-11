@@ -18,3 +18,12 @@ lint: black-check flake8
 
 run::
 	flask run
+
+frontend-assets: javascripts stylesheets 
+
+javascripts:
+	npm run copyjs
+	npm run nps copy.javascripts
+
+stylesheets:
+	npm run nps build.stylesheets
