@@ -37,6 +37,7 @@ from application.datasette import (
 from application.data_access.entity_queries import (
     fetch_entity_count,
     fetch_organisation_entity_count,
+    fetch_organisation_entities_using_end_dates,
 )
 from application.data_access.digital_land_queries import (
     fetch_datasets,
@@ -83,7 +84,6 @@ def index():
 def performance():
     ds = DLDatasette()
     gs_datasets = get_datasets_summary()
-    checker = EndDateChecker()
     entity_counts = fetch_entity_count()
 
     return render_template(
@@ -96,7 +96,9 @@ def performance():
         entity_count=ds.get_entity_count(),
         datasets_with_data_count=len(entity_counts.keys()),
         resource_count=get_resource_count(),
-        using_enddate=checker.get_count(),
+        publisher_using_enddate_count=len(
+            fetch_organisation_entities_using_end_dates()
+        ),
         content_type_counts=content_type_counts(),
         new_resources=ds.get_new_resources(dates=recent_dates(7)),
     )

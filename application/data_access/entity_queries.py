@@ -68,3 +68,27 @@ def fetch_organisation_entity_count(organisation, dataset=None):
         dataset=dataset,
         organisation_entity=fetch_organisation_entity_number(organisation),
     )
+
+
+def fetch_organisation_entities_using_end_dates():
+    datasette_url = DATASETTE_URL
+    query_lines = [
+        "SELECT",
+        "entity.organisation_entity",
+        "FROM",
+        "entity",
+        "WHERE",
+        '("end_date" is not null and "end_date" != "")',
+        "AND",
+        '("organisation_entity" is not null and "organisation_entity" != "")',
+        "GROUP BY",
+        "organisation_entity",
+    ]
+    query_str = " ".join(query_lines)
+    query = urllib.parse.quote(query_str)
+    url = f"{datasette_url}/entity.json?sql={query}"
+    logger.info("get_organisation_entities_using_end_dates: %s", url)
+    result = get(url, format="json")
+    if len(result["rows"]):
+        return result["rows"]
+    return []
