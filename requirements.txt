@@ -11,7 +11,7 @@ Flask-Script
 -e git+https://github.com/digital-land/digital-land-frontend.git#egg=digital-land-frontend
 gunicorn
 itsdangerous
-Jinja2==2.11.3
+Jinja2
 libsass
 lockfile
 MarkupSafe
