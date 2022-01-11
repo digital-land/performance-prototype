@@ -12,7 +12,7 @@
     "start": "run-p flask bs",
     "nps": "nps -c ./node_modules/digital-land-frontend/package-scripts.js",
     "copyjs": "rsync -ar assets/javascripts/ application/static/javascripts",
-    "postinstall": "npm run copyjs && npm run nps copy.javascripts"
+    "postinstall": "npm run copyjs && npm run nps copy.javascripts && npm run nps build.stylesheets"
   },
   "repository": {
     "type": "git",

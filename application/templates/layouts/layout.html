@@ -3,12 +3,7 @@
 {% from 'macro/data-item.html' import appDataItem %}
 
 {% block stylesheets %}
-  {{ super() }}
-  {# for bundle definitions, see assets.py #}
-  {% assets "css_govuk" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}">
-  {% endassets %}
-
+  <link rel="stylesheet" href="/static/stylesheets/application.css">
 {% endblock %}
 
 {% block mastHead %}
