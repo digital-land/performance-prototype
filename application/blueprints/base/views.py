@@ -38,6 +38,7 @@ from application.data_access.entity_queries import (
     fetch_entity_count,
     fetch_organisation_entity_count,
     fetch_organisation_entities_using_end_dates,
+    fetch_datasets_organisation_has_used_enddates,
 )
 from application.data_access.digital_land_queries import (
     fetch_datasets,
@@ -52,7 +53,6 @@ from application.utils import (
     read_json_file,
     yesterday,
 )
-from application.enddatechecker import EndDateChecker
 
 
 base = Blueprint("base", __name__)
@@ -274,8 +274,6 @@ def organisation_performance(prefix, org_id):
     organisation = get_organisation(id)
     data = datasets_for_an_organisation(id)
     source_counts = ds.get_sources_per_dataset_for_organisation(id)
-    checker = EndDateChecker()
-    used_enddate, datasets_with_enddate = checker.has_used_enddate(id)
     sources = index_with_list("pipeline", ds.get_all_sources_for_organisation(id))
     missing_datasets = [
         dataset for dataset in source_counts if dataset["sources_with_endpoint"] == 0
@@ -309,7 +307,7 @@ def organisation_performance(prefix, org_id):
         data=data,
         sources_per_dataset=source_counts,
         missing_datasets=missing_datasets,
-        enddate={"used": used_enddate, "datasets": datasets_with_enddate},
+        enddates=fetch_datasets_organisation_has_used_enddates(id),
         sources=sources,
         erroneous_sources=erroneous_sources,
         entity_counts=entity_counts,

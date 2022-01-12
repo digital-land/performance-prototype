@@ -92,3 +92,30 @@ def fetch_organisation_entities_using_end_dates():
     if len(result["rows"]):
         return result["rows"]
     return []
+
+
+def fetch_datasets_organisation_has_used_enddates(organisation):
+    datasette_url = DATASETTE_URL
+    organisation_entity = fetch_organisation_entity_number(organisation)
+    if not organisation_entity:
+        return None
+    query_lines = [
+        "SELECT",
+        "entity.dataset",
+        "FROM",
+        "entity",
+        "WHERE",
+        '("end_date" is not null and "end_date" != "")',
+        "AND",
+        f'("organisation_entity" = {organisation_entity})',
+        "GROUP BY",
+        "entity.dataset",
+    ]
+    query_str = " ".join(query_lines)
+    query = urllib.parse.quote(query_str)
+    url = f"{datasette_url}/entity.json?sql={query}"
+    logger.info("get_datasets_organisation_has_used_enddatess: %s", url)
+    result = get(url, format="json")
+    if len(result["rows"]):
+        return [dataset[0] for dataset in result["rows"]]
+    return []
