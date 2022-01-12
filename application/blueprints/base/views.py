@@ -5,7 +5,6 @@ from flask import render_template, Blueprint, current_app, redirect
 from flask.helpers import url_for
 from flask import request
 
-from application.filters import clean_int_filter, days_since
 from application.datasette import (
     sources_with_endpoint,
     datasets_for_an_organisation,
@@ -41,7 +40,6 @@ from application.data_access.entity_queries import (
     fetch_datasets_organisation_has_used_enddates,
 )
 from application.data_access.digital_land_queries import (
-    fetch_datasets,
     fetch_log_summary,
 )
 
