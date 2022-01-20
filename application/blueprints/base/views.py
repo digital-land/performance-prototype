@@ -41,6 +41,7 @@ from application.data_access.entity_queries import (
 )
 from application.data_access.digital_land_queries import (
     fetch_log_summary,
+    fetch_sources,
 )
 
 from application.utils import (
@@ -423,14 +424,17 @@ def sources():
         filters["source"] = request.args.get("source")
     if request.args.get("documentation_url") is not None:
         filters["documentation_url"] = request.args.get("documentation_url")
+    include_blanks = False
+    if request.args.get("include_blanks") is not None:
+        include_blanks = request.args.get("include_blanks")
 
     datasets = sources_by_dataset()
     organisations = source_count_per_organisation()
 
     if len(filters.keys()):
-        source_records = get_sources(filter=filters)
+        source_records = fetch_sources(filter=filters, include_blanks=include_blanks)
     else:
-        source_records = get_sources()
+        source_records = fetch_sources(include_blanks=include_blanks)
 
     return render_template(
         "source/index.html",
