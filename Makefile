@@ -27,3 +27,6 @@ javascripts:
 
 stylesheets:
 	npm run nps build.stylesheets
+
+watch:
+	npm run watch

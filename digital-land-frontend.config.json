@@ -1,5 +1,6 @@
 {
   "scssPath": "./assets/scss",
   "jsOutputPath": "application/static/javascripts",
-  "stylesheetsOutputPath": "application/static/stylesheets"
+  "stylesheetsOutputPath": "application/static/stylesheets",
+  "watchPaths": "'./assets/scss/**/*.scss' './assets/javascripts/**/*.js'"
 }
