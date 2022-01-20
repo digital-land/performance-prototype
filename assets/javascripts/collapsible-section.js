@@ -85,3 +85,5 @@ CollapsibleSection.prototype.animationHandler = function(e) {
     }
   });
 }
+
+window.CollapsibleSection = CollapsibleSection;
