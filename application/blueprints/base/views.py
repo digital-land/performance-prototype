@@ -432,9 +432,11 @@ def sources():
     organisations = source_count_per_organisation()
 
     if len(filters.keys()):
-        source_records = fetch_sources(filter=filters, include_blanks=include_blanks)
+        source_records, query_url = fetch_sources(
+            filter=filters, include_blanks=include_blanks
+        )
     else:
-        source_records = fetch_sources(include_blanks=include_blanks)
+        source_records, query_url = fetch_sources(include_blanks=include_blanks)
 
     return render_template(
         "source/index.html",
@@ -444,6 +446,7 @@ def sources():
         filters=filters,
         filter_btns=filter_off_btns(filters),
         organisations=organisations,
+        query_url=query_url,
     )
 
 

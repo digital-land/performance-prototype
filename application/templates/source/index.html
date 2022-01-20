@@ -178,7 +178,12 @@
       </form>
     </div>
     <div class="govuk-grid-column-two-thirds">
-      <p class="govuk-body results-summary">Showing {{ sources|length }} source{{ "" if total_results == 1 else "s" }}{% if sources|length == 100 %} (limited to 100 most recently added){% endif %}</p>
+      <p class="govuk-body results-summary">
+        Showing {{ sources|length }} source{{ "" if total_results == 1 else "s" }}{% if sources|length == 100 %} (limited to 100 most recently added){% endif %}
+        {% if query_url %}
+         (<a href="{{ query_url }}" class="govuk-link">see results on datasette</a>)
+        {% endif %}
+      </p>
       <div class="govuk-inset-text">
         This list only shows sources that have an endpoint.
       </div>

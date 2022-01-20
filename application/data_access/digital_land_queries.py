@@ -109,4 +109,6 @@ def fetch_sources(limit=100, filter=None, include_blanks=False):
 
     print(url)
     result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    return [create_dict(result["columns"], row) for row in result["rows"]], url.replace(
+        "digital-land.json?sql", "digital-land?sql"
+    )
