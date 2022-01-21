@@ -136,6 +136,23 @@
           </div>
         </div>
 
+        <!-- filter, include blanks -->
+        <div class="dl-filter-group govuk-!-margin-bottom-6">
+          <h3 class="dl-filter-group__heading govuk-heading-s">Include blanks</h3>
+          <div class="dl-filter-group__body">
+            <div class="govuk-form-group">
+              <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="include_blanks" name="include_blanks" type="checkbox" value='True'{{ ' checked=checked' if request.args.get('include_blanks') == 'True' }}>
+                  <label class="govuk-label govuk-checkboxes__label" for="include_blanks">
+                    True
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- search form -->
         <h2 class="govuk-heading-m">Search</h2>
         
@@ -184,10 +201,12 @@
          (<a href="{{ query_url }}" class="govuk-link">see results on datasette</a>)
         {% endif %}
       </p>
+      {% if not include_blanks %}
       <div class="govuk-inset-text">
-        This list only shows sources that have an endpoint.
+        This list is only showing sources that have an endpoint. All blank sources have been hidden.
       </div>
-      {% if filters -%}
+      {% endif %}
+      {% if filters or include_blanks == 'True' -%}
       <div class="applied-filters">
         <div class="applied-filter__group">
           <span class="applied-filter__name govuk-!-font-weight-bold">Filter:</span>
@@ -198,6 +217,12 @@
           </span>
           {% endfor %}
         </div>
+        {% if include_blanks == 'True' %}
+        <div class="applied-filter__group">
+          <span class="applied-filter__name govuk-!-font-weight-bold">Include blanks:</span>
+          <span class="applied-filter__item">True</span>
+        </div>
+        {% endif %}
       </div>
       {% endif %}
       <ul class="govuk-list">
