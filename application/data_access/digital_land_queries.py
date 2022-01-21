@@ -54,7 +54,7 @@ def fetch_log_summary(date=yesterday(string=True)):
 def fetch_sources(limit=100, filter=None, include_blanks=False):
     params = ""
     limit_str = ""
-    where_clauses = ""
+    where_clause = ""
 
     # handle limit
     if limit:
@@ -95,7 +95,7 @@ def fetch_sources(limit=100, filter=None, include_blanks=False):
         "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
         "INNER JOIN organisation ON source.organisation = organisation.organisation",
         "INNER JOIN endpoint ON source.endpoint = endpoint.endpoint"
-        if "endpoint_" in filter.keys()
+        if filter and "endpoint_" in filter.keys()
         else "",
         where_clause,
         "GROUP BY",
