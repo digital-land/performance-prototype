@@ -235,6 +235,7 @@
             <div class="app-card__flags govuk-!-margin-top-1">
               {% if source['end_date'] %}<span class="govuk-tag govuk-tag--grey">Historical</span>{% endif %}
               {% if source['documentation_url'] == "" %}<span class="govuk-tag govuk-tag--yellow">No documentation url</span>{% endif %}
+              {% if source['endpoint'] == "" %}<span class="govuk-tag govuk-tag--red">No endpoint</span>{% endif %}
             </div>
             {% endif -%}
           </div>
