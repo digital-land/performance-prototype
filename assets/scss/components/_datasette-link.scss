@@ -1,0 +1,36 @@
+.app-datasette-link {
+  display: inline-block;
+  border: 3px solid govuk-colour('blue');
+  @include govuk-font($size: 16, $weight: bold);
+
+  a {
+    display: inline-block;
+    background: govuk-colour('white');
+    padding: 4px 6px;
+    color: govuk-colour('dark-grey');
+    text-decoration: none;
+
+    &:link,
+    &:visited,
+    &:hover {
+      color: govuk-colour('dark-grey');
+    }
+    
+    &:active {
+      color: $govuk-link-active-colour;
+    }
+    
+    // When focussed, the text colour needs to be darker to ensure that colour
+    // contrast is still acceptable
+    &:focus {
+      color: $govuk-focus-text-colour;
+      text-decoration: underline;
+    }
+
+    &:hover,
+    &:active {
+      background: govuk-colour('light-grey');
+      text-decoration: underline;
+    }
+  }
+}

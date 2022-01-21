@@ -20,6 +20,8 @@
 @import "components/moj-primary-navigation";
 @import "components/moj-sortable-table";
 @import "components/summary-banner";
+@import "components/result-count-summary";
+@import "components/datasette-link";
 
 .app-main-wrapper {
   @include moj-width-container;

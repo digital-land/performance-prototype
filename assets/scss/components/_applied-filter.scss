@@ -3,8 +3,9 @@
   @include govuk-typography-common;
   @include govuk-text-colour;
   @include govuk-font($size: 16);
-  margin-bottom: $govuk-gutter-half;
-  padding-bottom: 5px;
+  margin: $govuk-gutter-half 0;
+  padding: 5px 0;
+  border-top: 1px solid $govuk-text-colour;
   border-bottom: 1px solid $govuk-text-colour;
 }
 

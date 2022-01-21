@@ -1,0 +1,16 @@
+.app-result-count {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.app-result-count__summary {
+  @include govuk-font($size: 19);
+}
+
+.app-result-count__summary__extra {
+  display: block;
+  @include govuk-font($size: 16);
+  color: $govuk-secondary-text-colour;
+  padding-left: 1px;
+}
