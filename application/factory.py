@@ -36,6 +36,10 @@ def register_blueprints(app):
 
     app.register_blueprint(base)
 
+    from application.blueprints.publisher.views import publisher_pages
+
+    app.register_blueprint(publisher_pages)
+
 
 def register_context_processors(app):
     """

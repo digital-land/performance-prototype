@@ -73,7 +73,7 @@
             {% set prefix = publisher['organisation'].split(":")[0] %}
             {% set org_id = publisher['organisation'].split(":")[1] %}
             <li class="dl-list-filter__item govuk-grid-row" data-filter="item" data-org-id="{{ publisher['organisation'] }}">
-              <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link dl-list-filter__item-title">{{publisher["name"]}}</a>
+              <a href="{{ url_for('publisher.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link dl-list-filter__item-title">{{publisher["name"]}}</a>
               {% if publisher['organisation_end_date'] and publisher['organisation_end_date'] < today  %}
               <strong class="govuk-tag govuk-tag--grey">
                 Dissolved
@@ -133,7 +133,7 @@
             {% set prefix = publisher['organisation'].split(":")[0] %}
             {% set org_id = publisher['organisation'].split(":")[1] %}
             <li class="dl-list-filter__item govuk-grid-row" data-filter="item" data-org-id="{{ publisher['organisation'] }}">
-              <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link dl-list-filter__item-title">{{publisher["name"]}}</a>
+              <a href="{{ url_for('publisher.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link dl-list-filter__item-title">{{publisher["name"]}}</a>
               {% if publisher['organisation_end_date'] and publisher['organisation_end_date'] < today  %}
               <strong class="govuk-tag govuk-tag--grey">
                 Dissolved

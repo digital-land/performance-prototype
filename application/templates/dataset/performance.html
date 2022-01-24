@@ -326,7 +326,7 @@
               {%- set prefix = source['organisation'].split(":")[0] %}
               {%- set org_id = source['organisation'].split(":")[1] %}
               <li>
-                <a href="{{ url_for('base.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link">{{ source['name'] }}</a>
+                <a href="{{ url_for('publisher.organisation_performance', prefix=prefix, org_id=org_id) }}" class="govuk-link">{{ source['name'] }}</a>
               </li>
               {% endfor %}
             </ul>
