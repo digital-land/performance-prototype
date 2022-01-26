@@ -23,6 +23,8 @@
 @import "components/result-count-summary";
 @import "components/datasette-link";
 
+@import "spike/data-playback";
+
 .app-main-wrapper {
   @include moj-width-container;
 }

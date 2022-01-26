@@ -43,6 +43,8 @@ from application.data_access.digital_land_queries import (
     fetch_sources,
 )
 
+from application.data_access.api_queries import get_entities
+
 from application.utils import (
     resources_per_publishers,
     index_by,
@@ -172,4 +174,27 @@ def organisation_info(prefix, org_id):
             "publisher.organisation_performance", prefix=prefix, org_id=org_id
         ),
         data=data,
+    )
+
+
+@publisher_pages.route("/<prefix>/<org_id>/map")
+def map(prefix, org_id):
+    id = prefix + ":" + org_id
+    organisation = get_organisation(id)
+    dataset = "conservation-area"
+    stat_geog = "E09000022"
+    org_entity = "192"
+
+    entities = get_entities(
+        {"dataset": dataset, "geometry_reference": stat_geog, "limit": "1000"}
+    )
+
+    entities_not_by_publisher = [
+        e["entity"] for e in entities if e["organisation-entity"] != org_entity
+    ]
+
+    return render_template(
+        "organisation/map.html",
+        organisation=organisation,
+        entities_not_by_publisher=entities_not_by_publisher,
     )

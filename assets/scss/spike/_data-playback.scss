@@ -1,0 +1,22 @@
+.app-maps {
+  display: flex;
+  justify-content: space-between;
+
+  .app-side-by-side {
+    flex: 49%;
+
+    &:first-of-type .dl-map__wrapper {
+      border-right: 4px solid $govuk-border-colour;
+    }
+  }
+}
+
+.app-intersect-update-panel {
+  margin-top: 15px;
+}
+
+.app-entity-display__publisher {
+  display: block;
+  @include govuk-font($size: 19);
+  color: $govuk-secondary-text-colour;
+}
