@@ -10,6 +10,7 @@ AppMap.prototype.init = function (params) {
   this.layers = []
   this.datasetLayers = {}
   this.clickableLayers
+  this._highlightFeatures = false
 
   // create the maplibre map
   this.map = this.createMap();
@@ -23,6 +24,44 @@ AppMap.prototype.init = function (params) {
 AppMap.prototype.addClickListener = function (clickHandler) {
   var boundClickHandler = clickHandler.bind(this);
   this.map.on('click', boundClickHandler); 
+}
+
+AppMap.prototype.highlightFeaturesOn = function () {
+  this._highlightFeatures = true
+  var highlightLayers = []
+  // a filter to show zero features?
+  const initFilter = ['==', 'entity', ""]
+  for (var dataset in this.datasetLayers) {
+    console.log(dataset)
+    const layerId = dataset+"Highlight"+"Fill"
+    if (this.layers.indexOf(layerId) == -1) {
+      // create layer
+      this.createVectorLayer(layerId, this.sourceName, dataset, "fill", {
+        'fill-color': "#912b88",
+        'fill-opacity': 0.7
+      })
+      this.map.setFilter(layerId, initFilter)
+      console.log(this.layers)
+      highlightLayers.push(layerId)
+    }
+  }
+  const that = this
+  this.map.on('click', function (e) {
+    var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
+    console.log('clickable', that.clickableLayers)
+    const features = that.intersectBBox(bbox, that.clickableLayers) // here is not working!
+    const entities = features.map(function(f) { return f.properties['entity'] })
+    console.log("entities", entities, features)
+    if (entities.length) {
+      highlightLayers.forEach(function(hlLayer) {
+        that.map.setFilter(hlLayer, ['match', ['get', 'entity'], entities, true, false])
+      })
+    } else {
+      highlightLayers.forEach(function(hlLayer) {
+        that.map.setFilter(hlLayer, initFilter)
+      })
+    }
+  })
 }
 
 AppMap.prototype.addSource = function(name, tiles, minZoom, maxZoom) {
@@ -214,6 +253,8 @@ AppMap.prototype.hasMapLoaded = function () {
   return this.initialMapLoaded
 }
 
+// customise which layers are clickable
+// provide array of lyaer names (ids)
 AppMap.prototype.setClickableLayers = function (layers) {
   this.clickableLayers = layers
 }

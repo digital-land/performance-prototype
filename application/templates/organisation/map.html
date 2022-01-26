@@ -288,6 +288,9 @@
     // only want conservation areas to be clickable
     map.setClickableLayers(['conservation-areaFill'])
 
+    // enable highlights
+    map.highlightFeaturesOn()
+
     let flownTo = false
     map.map.on('sourcedata', function (e) {
       if (!flownTo) {
