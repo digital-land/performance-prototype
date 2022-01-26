@@ -69,9 +69,10 @@ def register_filters(app):
     app.add_template_filter(urlencode_filter, name="urlencode")
     app.add_template_filter(remove_query_param_filter, name="remove_query_param")
 
-    from digital_land_frontend.filters import commanum_filter
+    from digital_land_frontend.filters import commanum_filter, hex_to_rgb_string_filter
 
     app.add_template_filter(commanum_filter, name="commanum")
+    app.add_template_filter(hex_to_rgb_string_filter, name="hex_to_rgb")
 
 
 def register_extensions(app):
