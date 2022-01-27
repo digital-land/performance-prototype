@@ -196,7 +196,7 @@
 {{ super() }}
 <script src='https://unpkg.com/@turf/turf@6.3.0/turf.min.js'></script>
 <script src="{{ assetPath|default('/static') }}/javascripts/organisation-map-controller.js"></script>
-<script src="{{ assetPath|default('/static') }}/javascripts/app-map.js"></script>
+<script src="{{ assetPath|default('/static') }}/javascripts/spike-maps.js"></script>
 
 <script>
 
@@ -246,7 +246,7 @@
   const $zoomMods = Array.prototype.slice.call(document.querySelectorAll('[data-module="zoom-controls"]'))
   const $toggleBtn = document.querySelector('[data-module="lpa-boundary-toggle"]')
   
-  const toggleComponent = new LPABoundaryControl($toggleBtn).init({})
+  const toggleComponent = new SpikeMap.LPABoundaryControl($toggleBtn).init({})
 
   const organisationId = "local-authority-eng:LBH";
   const organisationEntity = '192';
@@ -298,7 +298,7 @@
 
   const $publisherDisplayPanel = document.querySelector("[data-module='publisher-display']")
 
-  const publisherMap = new AppMap('mapid', $zoomMods[0]).init({
+  const publisherMap = new SpikeMap.AppMap('mapid', $zoomMods[0]).init({
     baseTileStyleFilePath: "https://api.maptiler.com/maps/918166e5-9890-4e18-8f18-4ef96be1a2d4/style.json?key=kira3KM2jYGvDA4xNkYt",
     onLoadCallback: publisherMapOnLoad
   })
@@ -348,7 +348,7 @@
 
   const $nonPublisherDisplayPanel = document.querySelector("[data-module='non-publisher-display']")
 
-  const intersectMap = new AppMap('mapid2', $zoomMods[1]).init({
+  const intersectMap = new SpikeMap.AppMap('mapid2', $zoomMods[1]).init({
     baseTileStyleFilePath: "https://api.maptiler.com/maps/918166e5-9890-4e18-8f18-4ef96be1a2d4/style.json?key=kira3KM2jYGvDA4xNkYt",
     onLoadCallback: nonPublisherMapOnLoad,
     styleProperties: {

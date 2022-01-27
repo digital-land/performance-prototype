@@ -1,45 +1,47 @@
-function AppMap(mapId, $zoomControls) {
+/* global maplibregl, turf, DLMaps */
+
+function AppMap (mapId, $zoomControls) {
   this.mapId = mapId
   this.$zoomControls = $zoomControls
 }
 
 AppMap.prototype.init = function (params) {
-  this.setupOptions(params);
-  this.initialMapLoaded = false;
+  this.setupOptions(params)
+  this.initialMapLoaded = false
   this.sources = []
   this.layers = []
   this.datasetLayers = {}
-  this.clickableLayers
+  this.clickableLayers = undefined
   this._highlightFeatures = false
 
   // create the maplibre map
-  this.map = this.createMap();
+  this.map = this.createMap()
 
   this._container = this.map.getContainer().closest(this.mapContainerSelector)
 
-  var boundOnMapLoad = this.onMapLoad.bind(this);
-  this.map.on('load', boundOnMapLoad);
+  const boundOnMapLoad = this.onMapLoad.bind(this)
+  this.map.on('load', boundOnMapLoad)
 
-  return this;
+  return this
 }
 
 AppMap.prototype.addClickListener = function (clickHandler) {
-  var boundClickHandler = clickHandler.bind(this);
-  this.map.on('click', boundClickHandler); 
+  const boundClickHandler = clickHandler.bind(this)
+  this.map.on('click', boundClickHandler)
 }
 
 AppMap.prototype.highlightFeaturesOn = function () {
   this._highlightFeatures = true
-  var highlightLayers = []
+  const highlightLayers = []
   // a filter to show zero features?
-  const initFilter = ['==', 'entity', ""]
-  for (var dataset in this.datasetLayers) {
+  const initFilter = ['==', 'entity', '']
+  for (const dataset in this.datasetLayers) {
     console.log(dataset)
-    const layerId = dataset+"Highlight"+"Fill"
-    if (this.layers.indexOf(layerId) == -1) {
+    const layerId = dataset + 'Highlight' + 'Fill'
+    if (this.layers.indexOf(layerId) === -1) {
       // create layer
-      this.createVectorLayer(layerId, this.sourceName, dataset, "fill", {
-        'fill-color': "#912b88",
+      this.createVectorLayer(layerId, this.sourceName, dataset, 'fill', {
+        'fill-color': '#912b88',
         'fill-opacity': 0.7
       })
       this.map.setFilter(layerId, initFilter)
@@ -49,67 +51,67 @@ AppMap.prototype.highlightFeaturesOn = function () {
   }
   const that = this
   this.map.on('click', function (e) {
-    var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
+    const bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]]
     console.log('clickable', that.clickableLayers)
     const features = that.intersectBBox(bbox, that.clickableLayers) // here is not working!
-    const entities = features.map(function(f) { return f.properties['entity'] })
-    console.log("entities", entities, features)
+    const entities = features.map(function (f) { return f.properties.entity })
+    console.log('entities', entities, features)
     if (entities.length) {
-      highlightLayers.forEach(function(hlLayer) {
+      highlightLayers.forEach(function (hlLayer) {
         that.map.setFilter(hlLayer, ['match', ['get', 'entity'], entities, true, false])
       })
     } else {
-      highlightLayers.forEach(function(hlLayer) {
+      highlightLayers.forEach(function (hlLayer) {
         that.map.setFilter(hlLayer, initFilter)
       })
     }
   })
 }
 
-AppMap.prototype.addSource = function(name, tiles, minZoom, maxZoom) {
-  var sourceName = name || this.sourceName;
+AppMap.prototype.addSource = function (name, tiles, minZoom, maxZoom) {
+  const sourceName = name || this.sourceName
   if (!this.map.getSource(sourceName)) {
     this.map.addSource(sourceName, {
       type: 'vector',
       tiles: tiles || [this.vectorSource],
       minzoom: minZoom || this.minMapZoom,
       maxzoom: maxZoom || this.maxMapZoom
-    });
+    })
     this.sources.push(sourceName)
   }
 }
 
 AppMap.prototype.createMap = function () {
-  var map = new maplibregl.Map({
+  const map = new maplibregl.Map({
     container: this.mapId, // container id
     style: this.baseTileStyleFilePath, // open source tiles
     center: this.mapStartPos.center, // starting position [lng, lat]
     zoom: this.mapStartPos.zoom // starting zoom
-  });
+  })
 
   // add fullscreen control
   if (this.allowFullscreen) {
     map.addControl(new maplibregl.FullscreenControl({
       container: document.querySelector(this.mapContainerSelector)
-    }), 'bottom-left');
+    }), 'bottom-left')
   }
-  return map;
+  return map
 }
 
 // should this be part of component that extends AppMap?
 AppMap.prototype.createDatasetLayers = function (dataset, _type, filter, options) {
   const _options = Object.assign({
     style: this.styleProperties
-  }, options || {});
-  let layers;
+  }, options || {})
+  let layers
   // polygons need a fill and a line
-  if (_type === "polygon") {
-    layers = [this.createFillLayer(dataset, _options), this.createLineLayer(dataset, _options)];
+  if (_type === 'polygon') {
+    layers = [this.createFillLayer(dataset, _options), this.createLineLayer(dataset, _options)]
     if (filter) {
-      this.setFilter([dataset + "Fill", dataset + "Line"], filter)
+      this.setFilter([dataset + 'Fill', dataset + 'Line'], filter)
     }
   }
-  this.datasetLayers[dataset] = layers;
+  this.datasetLayers[dataset] = layers
 }
 
 AppMap.prototype.createFillLayer = function (layerId, options) {
@@ -121,7 +123,7 @@ AppMap.prototype.createFillLayer = function (layerId, options) {
       colour: this.styleProperties.colour,
       opacity: this.styleProperties.opacity
     }
-  }, options || {});
+  }, options || {})
   // create fill layer
   const layerName = layerId + 'Fill'
   this.createVectorLayer(layerName, layerOptions.source, layerOptions.sourceLayer, 'fill', {
@@ -140,7 +142,7 @@ AppMap.prototype.createLineLayer = function (layerId, options) {
       colour: this.styleProperties.colour,
       weight: this.styleProperties.weight
     }
-  }, options || {});
+  }, options || {})
   const layerName = layerId + 'Line'
   this.createVectorLayer(layerId + 'Line', layerOptions.source, layerOptions.sourceLayer, 'line', {
     'line-color': layerOptions.style.colour,
@@ -161,35 +163,35 @@ AppMap.prototype.createVectorLayer = function (layerId, source, sourceLayer, _ty
 }
 
 AppMap.prototype.defaultClickHandler = function (e) {
-  var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
+  const bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]]
   const clickableLayers = this.getClickableLayers()
   const features = this.intersectBBox(bbox, clickableLayers)
-  console.log("clicked features", features)
+  console.log('clicked features', features)
 }
 
 AppMap.prototype.flyToDataset = function (dataset, filter, options) {
   const _options = Object.assign({
     source: this.sourceName,
     returnFeatures: false
-  }, options || {});
+  }, options || {})
 
-  var matchedFeatures = this.map.querySourceFeatures(_options.source, {
+  const matchedFeatures = this.map.querySourceFeatures(_options.source, {
     filter: filter,
     sourceLayer: dataset
-  });
+  })
 
   if (matchedFeatures.length) {
-    var collection = turf.featureCollection(matchedFeatures);
-    var envelope = turf.envelope(collection);
-    var bbox = envelope.bbox;
-    this.map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]]);
+    const collection = turf.featureCollection(matchedFeatures)
+    const envelope = turf.envelope(collection)
+    const bbox = envelope.bbox
+    this.map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]])
   }
 
   if (_options.returnFeatures) {
     // will contain duplicates
-    return matchedFeatures;
+    return matchedFeatures
   }
-};
+}
 
 AppMap.prototype.getClickableLayers = function () {
   if (this.clickableLayers) {
@@ -199,14 +201,14 @@ AppMap.prototype.getClickableLayers = function () {
 }
 
 AppMap.prototype.getDefaultClickableLayers = function () {
-  var clickableLayers = []
-  for (var dataset in this.datasetLayers) {
+  const clickableLayers = []
+  for (const dataset in this.datasetLayers) {
     if (Object.prototype.hasOwnProperty.call(this.datasetLayers, dataset)) {
       console.log(dataset)
-      if (this.datasetLayers[dataset].length == 1) {
+      if (this.datasetLayers[dataset].length === 1) {
         clickableLayers.push(dataset)
       } else {
-        clickableLayers.push(dataset + "Fill")
+        clickableLayers.push(dataset + 'Fill')
       }
     }
   }
@@ -217,27 +219,27 @@ AppMap.prototype.getDatasetLayers = function () {
   return this.datasetLayers
 }
 
-AppMap.prototype.getSources = function() {
+AppMap.prototype.getSources = function () {
   return this.sources
 }
 
-AppMap.prototype.getMap = function() {
+AppMap.prototype.getMap = function () {
   return this.map
 }
 
 AppMap.prototype.intersectBBox = function (bbox, layers) {
   return this.map.queryRenderedFeatures(bbox, {
     layers: layers
-  });
+  })
 }
 
 AppMap.prototype.onMapLoad = function () {
-  console.log("map has loaded")
-  this.initialMapLoaded = true;
+  console.log('map has loaded')
+  this.initialMapLoaded = true
 
   // add source to map
-  this.addSource();
-  this.zoomControl = new DLMaps.ZoomControls(this.$zoomControls, this.map, this.map.getZoom()).init({});
+  this.addSource()
+  this.zoomControl = new DLMaps.ZoomControls(this.$zoomControls, this.map, this.map.getZoom()).init({})
 
   // do we want to be able to click on the features?
   if (this.clickableFeatures) {
@@ -246,7 +248,7 @@ AppMap.prototype.onMapLoad = function () {
 
   const that = this
   if (this.onLoadCallback) {
-    //const boundOnLoadCallback = this.onLoadCallback.bind(this);
+    // const boundOnLoadCallback = this.onLoadCallback.bind(this);
     this.onLoadCallback(that)
   }
 }
@@ -264,7 +266,7 @@ AppMap.prototype.setClickableLayers = function (layers) {
 AppMap.prototype.setFilter = function (layerName, filter) {
   const that = this
   if (Array.isArray(layerName)) {
-    layerName.forEach(function(l) {
+    layerName.forEach(function (l) {
       that.map.setFilter(l, filter)
     })
   } else {
@@ -274,18 +276,18 @@ AppMap.prototype.setFilter = function (layerName, filter) {
 }
 
 AppMap.prototype.setupOptions = function (params) {
-  params = params || {};
+  params = params || {}
   this.mapStartPos = params.mapStartPos || {
     center: [0, 52],
     zoom: 6
   }
-  this.baseTileStyleFilePath = params.baseTileStyleFilePath || './base-tile.json';
-  this.mapContainerSelector = params.mapContainerSelector || '.dl-map__wrapper';
-  this.allowFullscreen = params.allowFullscreen || true;
-  this.sourceName = params.sourceName || 'dl-vectors';
-  this.vectorSource = params.vectorSource || 'https://datasette-tiles.digital-land.info/-/tiles/dataset_tiles/{z}/{x}/{y}.vector.pbf';
-  this.minMapZoom = params.minMapZoom || 5;
-  this.maxMapZoom = params.maxMapZoom || 15;
+  this.baseTileStyleFilePath = params.baseTileStyleFilePath || './base-tile.json'
+  this.mapContainerSelector = params.mapContainerSelector || '.dl-map__wrapper'
+  this.allowFullscreen = params.allowFullscreen || true
+  this.sourceName = params.sourceName || 'dl-vectors'
+  this.vectorSource = params.vectorSource || 'https://datasette-tiles.digital-land.info/-/tiles/dataset_tiles/{z}/{x}/{y}.vector.pbf'
+  this.minMapZoom = params.minMapZoom || 5
+  this.maxMapZoom = params.maxMapZoom || 15
 
   // this will only work if all 3 are passed in
   this.styleProperties = params.styleProperties || {
@@ -293,17 +295,13 @@ AppMap.prototype.setupOptions = function (params) {
     opacity: 0.5,
     weight: 2
   }
-  this.clickableFeatures = params.clickableFeatures || true;
+  this.clickableFeatures = params.clickableFeatures || true
   this.onLoadCallback = params.onLoadCallback || undefined
 
-  this.baseURL = params.baseURL || 'https://digital-land.github.io';
-  //this.flyToDataset = params.flyToDataset || 'local-authority-district';
-  this.popupWidth = params.popupWidth || '260px';
-  this.popupMaxListLength = params.popupMaxListLength || 10;
-};
+  this.baseURL = params.baseURL || 'https://digital-land.github.io'
+  // this.flyToDataset = params.flyToDataset || 'local-authority-district';
+  this.popupWidth = params.popupWidth || '260px'
+  this.popupMaxListLength = params.popupMaxListLength || 10
+}
 
-
-
-
-window.AppMap = AppMap
-window.LPABoundaryControl = LPABoundaryControl
+export default AppMap
