@@ -182,27 +182,33 @@ def map(prefix, org_id):
     id = prefix + ":" + org_id
     organisation = get_organisation(id)
     dataset = "conservation-area"
-    stat_geog = "E09000022"
-    org_entity = "192"
 
     publisher_entities = get_entities(
-        {"dataset": dataset, "organisation_entity": org_entity, "limit": "1000"}
+        {
+            "dataset": dataset,
+            "organisation_entity": organisation["entity"],
+            "limit": "1000",
+        }
     )
 
     intersecting_entities = get_entities(
-        {"dataset": dataset, "geometry_reference": stat_geog, "limit": "1000"}
+        {
+            "dataset": dataset,
+            "geometry_reference": organisation["statistical_geography"],
+            "limit": "1000",
+        }
     )
 
     entities_not_by_publisher = [
         e["entity"]
         for e in intersecting_entities
-        if e["organisation-entity"] != org_entity
+        if e["organisation-entity"] != organisation["entity"]
     ]
 
     additional_publishers = [
         e["organisation-entity"]
         for e in intersecting_entities
-        if e["organisation-entity"] != org_entity
+        if e["organisation-entity"] != organisation["entity"]
     ]
 
     return render_template(

@@ -248,10 +248,8 @@
   
   const toggleComponent = new SpikeMap.LPABoundaryControl($toggleBtn).init({})
 
-  const organisationId = "local-authority-eng:LBH";
-  const organisationEntity = '192';
-  const organisationName = "London Borough of Lambeth"
-  const statGeography = "E09000022";
+  const organisationEntity = String({{ organisation["entity"]|tojson }});
+  const statGeography = {{ organisation["statistical_geography"]|tojson }};
   const datasets = [{'dataset': 'brownfield-land', 'type': 'point'}, {'dataset': 'conservation-area', 'type': 'polygon'}];
   const localAuthorityBoundaryStyle = {
     colour: "#5694ca",
