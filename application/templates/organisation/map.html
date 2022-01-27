@@ -115,8 +115,6 @@
         </div>
       </div>
     </div>
-
-    <div class="app-intersect-update-panel"></div>
   </div>
 
   <div class="app-side-by-side">
@@ -170,10 +168,13 @@
         </div>
       </div>
     </div>
-
-    <div class="app-intersect-update-panel"></div>
+    
   </div>
-
+  <div class="app-side-by-side__controls">
+    <button class="app-side-by-side__controls__boundary-toggle" data-module="lpa-boundary-toggle"></button>
+  </div>
+  <div class="app-side-by-side__details" data-module="publisher-display"></div>
+  <div class="app-side-by-side__details" data-module="non-publisher-display"></div>
 </div>
 
 {% endblock %}
@@ -222,6 +223,7 @@
   }
 
   function displayEntityDetails(features, $container) {
+    console.log("continer=", $container)
     $container.innerHTML = '';
     features.forEach(function(feature) {
       $entity = createElement("h5", ["govuk-heading-s", "govuk-!-margin-bottom-1"], feature.properties.entity)
@@ -239,24 +241,37 @@
     })
   }
 
-  const entityDisplayPanels = Array.prototype.slice.call(document.querySelectorAll(".app-intersect-update-panel"))
-
   // grab html elements
   const $controlsList = document.querySelector('[data-module="layer-controls"]')
   const $zoomMods = Array.prototype.slice.call(document.querySelectorAll('[data-module="zoom-controls"]'))
-  console.log($zoomMods)
+  const $toggleBtn = document.querySelector('[data-module="lpa-boundary-toggle"]')
+  
+  const toggleComponent = new LPABoundaryControl($toggleBtn).init({})
 
   const organisationId = "local-authority-eng:LBH";
   const organisationEntity = '192';
   const organisationName = "London Borough of Lambeth"
   const statGeography = "E09000022";
   const datasets = [{'dataset': 'brownfield-land', 'type': 'point'}, {'dataset': 'conservation-area', 'type': 'polygon'}];
+  const localAuthorityBoundaryStyle = {
+    colour: "#5694ca",
+    opacity: 0.3,
+    weight: 1
+  }
   // init national map
   // const mapController = new OrgMapController($controlsList, $zoomMods[0], datasets, organisationName, statGeography).init({
   //   baseTileStyleFilePath: "https://api.maptiler.com/maps/918166e5-9890-4e18-8f18-4ef96be1a2d4/style.json?key=kira3KM2jYGvDA4xNkYt"
   // })
 
   const publisherMapOnLoad = function (map) {
+    // display publisher boundary
+    map.createDatasetLayers('local-authority-district', "polygon", ['==', 'reference', statGeography], {
+      style: localAuthorityBoundaryStyle
+    })
+    // add this layer to toggle control
+    toggleComponent.addLayer({map: map.map, name: "local-authority-districtFill"})
+    toggleComponent.addLayer({map: map.map, name: "local-authority-districtLine"})
+  
     const filter = ['==', 'organisation-entity', organisationEntity]
     map.createDatasetLayers('conservation-area', "polygon", filter)
 
@@ -281,6 +296,8 @@
     });
   }
 
+  const $publisherDisplayPanel = document.querySelector("[data-module='publisher-display']")
+
   const publisherMap = new AppMap('mapid', $zoomMods[0]).init({
     baseTileStyleFilePath: "https://api.maptiler.com/maps/918166e5-9890-4e18-8f18-4ef96be1a2d4/style.json?key=kira3KM2jYGvDA4xNkYt",
     onLoadCallback: publisherMapOnLoad
@@ -289,7 +306,7 @@
   publisherMap.addClickListener(function (e) {
     var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
     const features = this.intersectBBox(bbox, ['conservation-areaFill'])
-    displayEntityDetails(features, entityDisplayPanels[0]);
+    displayEntityDetails(features, $publisherDisplayPanel);
   })
 
   // =============================
@@ -299,12 +316,11 @@
   const nonPublisherMapOnLoad = function(map) {
     // display publisher boundary
     map.createDatasetLayers('local-authority-district', "polygon", ['==', 'reference', statGeography], {
-      style: {
-        colour: "#5694ca",
-        opacity: 0.3,
-        weight: 1
-      }
+      style: localAuthorityBoundaryStyle
     })
+    // add this layer to toggle control
+    toggleComponent.addLayer({map: map.map, name: "local-authority-districtFill"})
+    toggleComponent.addLayer({map: map.map, name: "local-authority-districtLine"})
 
     // display conservation areas intersecting with boundary
     const filter = ['match', ['get', 'entity'], entities_not_by_publisher, true, false]
@@ -330,6 +346,8 @@
     });
   }
 
+  const $nonPublisherDisplayPanel = document.querySelector("[data-module='non-publisher-display']")
+
   const intersectMap = new AppMap('mapid2', $zoomMods[1]).init({
     baseTileStyleFilePath: "https://api.maptiler.com/maps/918166e5-9890-4e18-8f18-4ef96be1a2d4/style.json?key=kira3KM2jYGvDA4xNkYt",
     onLoadCallback: nonPublisherMapOnLoad,
@@ -343,7 +361,7 @@
   intersectMap.addClickListener(function (e) {
     var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
     const features = this.intersectBBox(bbox, ['conservation-areaFill'])
-    displayEntityDetails(features, entityDisplayPanels[1]);
+    displayEntityDetails(features, $nonPublisherDisplayPanel);
   })
 
   const $mapsContainer = document.querySelector('.app-maps')

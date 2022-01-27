@@ -1,13 +1,15 @@
 .app-maps {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 
-  .app-side-by-side {
+  .app-side-by-side,
+  .app-side-by-side__details {
     flex: 49%;
+  }
 
-    &:first-of-type .dl-map__wrapper {
-      border-right: 4px solid $govuk-border-colour;
-    }
+  .app-side-by-side:first-of-type .dl-map__wrapper {
+    border-right: 4px solid $govuk-border-colour;
   }
 }
 
@@ -29,4 +31,9 @@
   @include govuk-font($size: 19);
   //color: $govuk-secondary-text-colour;
   margin: 0 0 15px;
+}
+
+.app-side-by-side__controls {
+  flex-basis: 100%;
+  background: govuk-colour('light-grey');
 }
