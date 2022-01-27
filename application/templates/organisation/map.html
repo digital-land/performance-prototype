@@ -204,6 +204,21 @@
     return $el
   }
 
+  function createProptertyList(properties) {
+    const $dl = createElement('dl', ['govuk-summary-list', 'app-entity-display__properties'], "")
+    for (var p in properties) {
+      if (['entity', 'name', 'organisation-name'].indexOf(p) == -1) {
+        const $row = createElement("div", ["govuk-summary-list__row"], "")
+        const $p = createElement("dt", ["govuk-summary-list__key"], p)
+        const $v = createElement("dd", ["govuk-summary-list__value"], properties[p])
+        $row.appendChild($p)
+        $row.appendChild($v)
+        $dl.appendChild($row)
+      }
+    }
+    return $dl
+  }
+
   function displayEntityDetails(features, $container) {
     $container.innerHTML = '';
     features.forEach(function(feature) {
@@ -217,6 +232,8 @@
       $publisher = createElement("span", ["app-entity-display__publisher"], "from " + feature.properties['organisation-name'])
       $name.appendChild($publisher)
       $container.appendChild($name)
+
+      $container.appendChild(createProptertyList(feature.properties))
     })
   }
 
