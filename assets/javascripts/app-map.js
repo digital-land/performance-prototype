@@ -15,6 +15,8 @@ AppMap.prototype.init = function (params) {
   // create the maplibre map
   this.map = this.createMap();
 
+  this._container = this.map.getContainer().closest(this.mapContainerSelector)
+
   var boundOnMapLoad = this.onMapLoad.bind(this);
   this.map.on('load', boundOnMapLoad);
 

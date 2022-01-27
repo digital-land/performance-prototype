@@ -258,6 +258,12 @@
     const filter = ['==', 'organisation-entity', organisationEntity]
     map.createDatasetLayers('conservation-area', "polygon", filter)
 
+    // only want conservation areas to be clickable
+    map.setClickableLayers(['conservation-areaFill'])
+
+    // enable highlights
+    map.highlightFeaturesOn()
+
     let flownTo = false
     map.map.on('sourcedata', function (e) {
       console.log("publisher map source data")
@@ -336,6 +342,15 @@
     var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
     const features = this.intersectBBox(bbox, ['conservation-areaFill'])
     displayEntityDetails(features, entityDisplayPanels[1]);
+  })
+
+  const $mapsContainer = document.querySelector('.app-maps')
+  const eventAwesome = new CustomEvent('awesome', {
+    bubbles: true,
+    detail: { text: "a random test string" }
+  });
+  $mapsContainer.addEventListener('awesome', function(e) {
+    console.log('Container has caught the event', e);
   })
 
 
