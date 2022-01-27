@@ -66,7 +66,8 @@
 <div class="app-maps">
 
   <div class="app-side-by-side">
-    <h2 class="govuk-heading-m">Entities published by publisher</h2>
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Entities published by publisher</h2>
+    <p class="app-side-by-side__summary">{{ publisher_entities|length }} entities collected from {{ organisation['name'] }}</p>
   
     <div class="dl-map__wrapper" style="min-height: 700px;">
       {% include 'partials/zoom-controls.html' %}
@@ -119,7 +120,8 @@
   </div>
 
   <div class="app-side-by-side">
-    <h2 class="govuk-heading-m">Entities intersecting publisher boundary</h2>
+    <h2 class="govuk-heading-m  govuk-!-margin-bottom-1">Entities intersecting publisher boundary</h2>
+    <p class="app-side-by-side__summary">Additional entities has been collected from {{ additional_publishers|length }} publisher{{ "" if additional_publishers|length == 1 else "s" }}</p>
 
     <div class="dl-map__wrapper" style="min-height: 700px;">
 

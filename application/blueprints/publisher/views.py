@@ -185,16 +185,30 @@ def map(prefix, org_id):
     stat_geog = "E09000022"
     org_entity = "192"
 
-    entities = get_entities(
+    publisher_entities = get_entities(
+        {"dataset": dataset, "organisation_entity": org_entity, "limit": "1000"}
+    )
+
+    intersecting_entities = get_entities(
         {"dataset": dataset, "geometry_reference": stat_geog, "limit": "1000"}
     )
 
     entities_not_by_publisher = [
-        e["entity"] for e in entities if e["organisation-entity"] != org_entity
+        e["entity"]
+        for e in intersecting_entities
+        if e["organisation-entity"] != org_entity
+    ]
+
+    additional_publishers = [
+        e["organisation-entity"]
+        for e in intersecting_entities
+        if e["organisation-entity"] != org_entity
     ]
 
     return render_template(
         "organisation/map.html",
         organisation=organisation,
+        publisher_entities=publisher_entities,
         entities_not_by_publisher=entities_not_by_publisher,
+        additional_publishers=set(additional_publishers),
     )

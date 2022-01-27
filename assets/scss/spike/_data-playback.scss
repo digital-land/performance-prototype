@@ -24,3 +24,9 @@
 .app-entity-display__properties {
   font-size: 1em;
 }
+
+.app-side-by-side__summary {
+  @include govuk-font($size: 19);
+  //color: $govuk-secondary-text-colour;
+  margin: 0 0 15px;
+}
