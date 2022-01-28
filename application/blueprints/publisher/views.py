@@ -202,13 +202,13 @@ def map(prefix, org_id):
     entities_not_by_publisher = [
         e["entity"]
         for e in intersecting_entities
-        if e["organisation-entity"] != organisation["entity"]
+        if e["organisation-entity"] != str(organisation["entity"])
     ]
 
     additional_publishers = [
         e["organisation-entity"]
         for e in intersecting_entities
-        if e["organisation-entity"] != organisation["entity"]
+        if e["organisation-entity"] != str(organisation["entity"])
     ]
 
     return render_template(
