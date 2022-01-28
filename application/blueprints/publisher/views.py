@@ -15,6 +15,8 @@ from application.data_access.entity_queries import (
     fetch_datasets_organisation_has_used_enddates,
 )
 
+from application.data_access.digital_land_queries import fetch_datasets
+
 from application.data_access.api_queries import get_entities
 
 from application.utils import (
@@ -150,11 +152,15 @@ def organisation_info(prefix, org_id):
 def map(prefix, org_id):
     id = prefix + ":" + org_id
     organisation = get_organisation(id)
-    dataset = "conservation-area"
+
+    dataset_param = "conservation-area"
+    dataset = fetch_datasets(dataset=dataset_param)
+
+    # should fail if no dataset of that name
 
     publisher_entities = get_entities(
         {
-            "dataset": dataset,
+            "dataset": dataset["dataset"],
             "organisation_entity": organisation["entity"],
             "limit": "1000",
         }
@@ -162,7 +168,7 @@ def map(prefix, org_id):
 
     intersecting_entities = get_entities(
         {
-            "dataset": dataset,
+            "dataset": dataset["dataset"],
             "geometry_reference": organisation["statistical_geography"],
             "limit": "1000",
         }
@@ -186,4 +192,5 @@ def map(prefix, org_id):
         publisher_entities=publisher_entities,
         entities_not_by_publisher=entities_not_by_publisher,
         additional_publishers=set(additional_publishers),
+        dataset=dataset,
     )

@@ -20,13 +20,17 @@ def fetch_datasets(dataset=None):
         "INNER JOIN dataset_theme ON dataset.dataset = dataset_theme.dataset",
     ]
     if dataset:
-        query_lines.append("WHERE dataset.dataset = '{dataset}'")
+        query_lines.append("WHERE dataset.dataset = '{}'".format(dataset))
     query_lines.append("GROUP BY dataset.dataset")
     query_str = " ".join(query_lines)
     query = urllib.parse.quote(query_str)
     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    logger.info("get_datasets: %s", url)
+    # logger.info("get_datasets: %s", url)
+    print("get_datasets: {}".format(url))
     result = get(url, format="json")
+
+    if dataset:
+        return create_dict(result["columns"], result["rows"][0])
     return [create_dict(result["columns"], row) for row in result["rows"]]
 
 
