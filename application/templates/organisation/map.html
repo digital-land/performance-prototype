@@ -59,7 +59,7 @@
 
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-<p class="govuk-heading-l">Dataset: <a class="govuk-link govuk-link--no-visited-state" href="">conservation-area</a></p>
+<p class="govuk-heading-l">Dataset: <a class="govuk-link govuk-link--no-visited-state" href="">{{ dataset['name'] }}</a></p>
 
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
@@ -67,7 +67,7 @@
 
   <div class="app-side-by-side">
     <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Entities published by publisher</h2>
-    <p class="app-side-by-side__summary">{{ publisher_entities|length }} entities collected from {{ organisation['name'] }}</p>
+    <p class="app-side-by-side__summary{{ ' dl-error-text' if publisher_entities|length == 0 }}">{{ publisher_entities|length }} entit{{ "y" if publisher_entities|length == 1 else "ies" }} collected from {{ organisation['name'] }}</p>
   
     <div class="dl-map__wrapper" style="min-height: 700px;">
       {% include 'partials/zoom-controls.html' %}
@@ -119,7 +119,7 @@
 
   <div class="app-side-by-side">
     <h2 class="govuk-heading-m  govuk-!-margin-bottom-1">Entities intersecting publisher boundary</h2>
-    <p class="app-side-by-side__summary">Additional entities has been collected from {{ additional_publishers|length }} publisher{{ "" if additional_publishers|length == 1 else "s" }}</p>
+    <p class="app-side-by-side__summary">{{ entities_not_by_publisher|length }} additional entit{{ "y" if entities_not_by_publisher|length == 1 else "ies" }} have been collected from {{ additional_publishers|length }} publisher{{ "" if additional_publishers|length == 1 else "s" }}</p>
 
     <div class="dl-map__wrapper" style="min-height: 700px;">
 
