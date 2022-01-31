@@ -58,8 +58,25 @@
 <h1 class="govuk-heading-l">Publisher: <a class="govuk-link govuk-link--no-visited-state" href="/organisation/local-authority-eng/LBH">{{ organisation['name'] }}</a></h1>
 
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-
-<p class="govuk-heading-l">Dataset: <a class="govuk-link govuk-link--no-visited-state" href="">{{ dataset['name'] }}</a></p>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-half">
+    <p class="govuk-heading-l">Dataset: <a class="govuk-link govuk-link--no-visited-state" href="">{{ dataset['name'] }}</a></p>
+  </div>
+  <div class="govuk-grid-column-one-half">
+    <form action="">
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="sort">
+          Select dataset
+        </label>
+        <select class="govuk-select" id="sort" name="dataset" data-module="dataset-select">
+          {% for d in expected_datasets.keys() %}
+          <option value="{{ d }}"{{ " selected='selected'" if d == dataset['dataset'] }}>{{ d }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
 
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
@@ -200,6 +217,12 @@
 
 <script>
 
+  const $datasetSelect = document.querySelector("[data-module='dataset-select']")
+  $datasetSelect.addEventListener('change', function(e) {
+    const uri_parts = window.location.href.split("dataset=")
+    window.location.href = uri_parts[0] + "dataset=" + e.target.value
+  })
+
   function createElement(tag, classes, text) {
     var $el = document.createElement(tag);
     $el.classList.add(...classes);
@@ -223,9 +246,11 @@
   }
 
   function datasetGeometryType(dataset) {
-    const paint_options = JSON.parse(dataset['paint_options'])
-    if (paint_options['type'] && paint_options['type'] === "point") {
-      return "point"
+    if (dataset['paint_options']) {
+      const paint_options = JSON.parse(dataset['paint_options'])
+      if (paint_options['type'] && paint_options['type'] === "point") {
+        return "point"
+      }
     }
     return "polygon"
   }

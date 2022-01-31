@@ -11,11 +11,15 @@ from application.datasette import (
     DLDatasette,
 )
 from application.data_access.entity_queries import (
+    fetch_entity_count,
     fetch_organisation_entity_count,
     fetch_datasets_organisation_has_used_enddates,
 )
 
-from application.data_access.digital_land_queries import fetch_datasets
+from application.data_access.digital_land_queries import (
+    fetch_datasets,
+    fetch_sources_by_organisation,
+)
 
 from application.data_access.api_queries import get_entities
 
@@ -189,6 +193,10 @@ def map(prefix, org_id):
         if e["organisation-entity"] != str(organisation["entity"])
     ]
 
+    expected_datasets = index_with_list(
+        "pipeline", fetch_sources_by_organisation(organisation["organisation"])
+    )
+
     return render_template(
         "organisation/map.html",
         organisation=organisation,
@@ -196,4 +204,5 @@ def map(prefix, org_id):
         entities_not_by_publisher=entities_not_by_publisher,
         additional_publishers=set(additional_publishers),
         dataset=dataset,
+        expected_datasets=expected_datasets,
     )
