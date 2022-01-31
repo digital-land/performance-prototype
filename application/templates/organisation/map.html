@@ -222,6 +222,14 @@
     return $dl
   }
 
+  function datasetGeometryType(dataset) {
+    const paint_options = JSON.parse(dataset['paint_options'])
+    if (paint_options['type'] && paint_options['type'] === "point") {
+      return "point"
+    }
+    return "polygon"
+  }
+
   function displayEntityDetails(features, $container) {
     console.log("continer=", $container)
     $container.innerHTML = '';
@@ -250,7 +258,8 @@
 
   const organisationEntity = String({{ organisation["entity"]|tojson }});
   const statGeography = {{ organisation["statistical_geography"]|tojson }};
-  const datasets = [{'dataset': 'brownfield-land', 'type': 'point'}, {'dataset': 'conservation-area', 'type': 'polygon'}];
+  const dataset = {{ dataset|tojson }};
+  const datasetType = datasetGeometryType(dataset);
   const localAuthorityBoundaryStyle = {
     colour: "#5694ca",
     opacity: 0.3,
@@ -271,10 +280,17 @@
     toggleComponent.addLayer({map: map.map, name: "local-authority-districtLine"})
   
     const filter = ['==', 'organisation-entity', organisationEntity]
-    map.createDatasetLayers('conservation-area', "polygon", filter)
+    console.log("publisher map loaded", map)
+    map.createDatasetLayers(dataset['dataset'], datasetType, filter, {})
 
     // only want conservation areas to be clickable
-    map.setClickableLayers(['conservation-areaFill'])
+    if (datasetType === "point") {
+      map.setClickableLayers([dataset['dataset']])
+    } else {
+      map.setClickableLayers([dataset['dataset'] + 'Fill'])
+    }
+    
+    //map.setClickableLayers([dataset['dataset'] + 'Fill'])
 
     // enable highlights
     map.highlightFeaturesOn()
@@ -284,7 +300,7 @@
       console.log("publisher map source data")
       if (!flownTo) {
         if (map.map.getSource('dl-vectors') && map.map.isSourceLoaded('dl-vectors')) {
-          var features = map.flyToDataset('conservation-area', filter, {returnFeatures: true})
+          var features = map.flyToDataset(dataset['dataset'], filter, {returnFeatures: true})
 
           if (features.length) {
             flownTo = true;
@@ -303,7 +319,8 @@
 
   publisherMap.addClickListener(function (e) {
     var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
-    const features = this.intersectBBox(bbox, ['conservation-areaFill'])
+    const layerName = (datasetType === "point") ? dataset['dataset'] : dataset['dataset'] + "Fill"
+    const features = this.intersectBBox(bbox, [layerName])
     displayEntityDetails(features, $publisherDisplayPanel);
   })
 
@@ -311,6 +328,7 @@
   // Map for entities not by org
   // =============================
   const entities_not_by_publisher = {{entities_not_by_publisher|tojson }};
+  console.log("Extra entities", entities_not_by_publisher.length)
   const nonPublisherMapOnLoad = function(map) {
     // display publisher boundary
     map.createDatasetLayers('local-authority-district', "polygon", ['==', 'reference', statGeography], {
@@ -320,21 +338,32 @@
     toggleComponent.addLayer({map: map.map, name: "local-authority-districtFill"})
     toggleComponent.addLayer({map: map.map, name: "local-authority-districtLine"})
 
-    // display conservation areas intersecting with boundary
-    const filter = ['match', ['get', 'entity'], entities_not_by_publisher, true, false]
-    map.createDatasetLayers('conservation-area', "polygon", filter)
+    let filter = []
+    if (entities_not_by_publisher.length) {
+      // display conservation areas intersecting with boundary
+      filter = ['match', ['get', 'entity'], entities_not_by_publisher, true, false]
+      map.createDatasetLayers(dataset['dataset'], datasetType, filter)
 
-    // only want conservation areas to be clickable
-    map.setClickableLayers(['conservation-areaFill'])
+      // only want conservation areas to be clickable
+      if (datasetType === "point") {
+        map.setClickableLayers([dataset['dataset']])
+      } else {
+        map.setClickableLayers([dataset['dataset'] + 'Fill'])
+      }
 
-    // enable highlights
-    map.highlightFeaturesOn()
+      // enable highlights
+      map.highlightFeaturesOn()
+    }
 
     let flownTo = false
     map.map.on('sourcedata', function (e) {
       if (!flownTo) {
         if (map.map.getSource('dl-vectors') && map.map.isSourceLoaded('dl-vectors')) {
-          var features = map.flyToDataset('conservation-area', filter, {returnFeatures: true})
+          if (entities_not_by_publisher.length) {
+            var features = map.flyToDataset(dataset['dataset'], filter, {returnFeatures: true})
+          } else {
+            var features = map.flyToDataset('local-authority-district', ['==', 'reference', statGeography], {returnFeatures: true})
+          }
 
           if (features.length) {
             flownTo = true;
@@ -358,7 +387,8 @@
 
   intersectMap.addClickListener(function (e) {
     var bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
-    const features = this.intersectBBox(bbox, ['conservation-areaFill'])
+    const layerName = (datasetType === "point") ? dataset['dataset'] : dataset['dataset'] + "Fill"
+    const features = this.intersectBBox(bbox, [layerName])
     displayEntityDetails(features, $nonPublisherDisplayPanel);
   })
 

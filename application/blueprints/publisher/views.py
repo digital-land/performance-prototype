@@ -153,8 +153,11 @@ def map(prefix, org_id):
     id = prefix + ":" + org_id
     organisation = get_organisation(id)
 
-    dataset_param = "conservation-area"
-    dataset = fetch_datasets(dataset=dataset_param)
+    dataset_name = "conservation-area"
+    if request.args.get("dataset"):
+        dataset_name = request.args.get("dataset")
+
+    dataset = fetch_datasets(dataset=dataset_name)
 
     # should fail if no dataset of that name
 

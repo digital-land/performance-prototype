@@ -100,6 +100,7 @@ AppMap.prototype.createMap = function () {
 
 // should this be part of component that extends AppMap?
 AppMap.prototype.createDatasetLayers = function (dataset, _type, filter, options) {
+  console.log("firing")
   const _options = Object.assign({
     style: this.styleProperties
   }, options || {})
@@ -110,8 +111,39 @@ AppMap.prototype.createDatasetLayers = function (dataset, _type, filter, options
     if (filter) {
       this.setFilter([dataset + 'Fill', dataset + 'Line'], filter)
     }
+  } else if (_type === 'point') {
+    layers = [this.createCircleLayer(dataset, _options)]
+    if (filter) {
+      this.setFilter([dataset], filter)
+    }
   }
   this.datasetLayers[dataset] = layers
+}
+
+AppMap.prototype.createCircleLayer = function (layerId, options) {
+  const layerOptions = Object.assign({
+    source: this.sourceName,
+    sourceLayer: layerId,
+    style: {
+      colour: this.styleProperties.colour,
+      opacity: this.styleProperties.opacity,
+      weight: this.styleProperties.weight
+    }
+  }, options || {})
+  this.createVectorLayer(layerId, layerOptions.source, layerOptions.sourceLayer, 'circle', {
+    'circle-color': layerOptions.style.colour,
+    'circle-opacity': layerOptions.style.opacity,
+    'circle-radius': {
+      base: 1.5,
+      stops: [
+        [6, 1],
+        [22, 180]
+      ]
+    },
+    'circle-stroke-color': layerOptions.style.colour,
+    'circle-stroke-width': layerOptions.style.weight
+  })
+  return layerId
 }
 
 AppMap.prototype.createFillLayer = function (layerId, options) {
