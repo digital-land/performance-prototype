@@ -258,9 +258,12 @@
   function displayEntityDetails(features, $container) {
     console.log("continer=", $container)
     $container.innerHTML = '';
+    
     features.forEach(function(feature) {
-      $entity = createElement("h5", ["govuk-heading-s", "govuk-!-margin-bottom-1"], feature.properties.entity)
-      $container.appendChild($entity)
+      $entity = createElement('div', ['entity-item'], '')
+      $entity.dataset.entity = feature.properties.entity
+      $entityHeading = createElement("h5", ["govuk-heading-s", "govuk-!-margin-bottom-1"], feature.properties.entity)
+      $entity.appendChild($entityHeading)
       let entityName = "No name provided"
       if (feature.properties.hasOwnProperty('name')) {
         entityName = feature.properties['name']
@@ -268,13 +271,17 @@
       $name = createElement("p", ["govuk-body"], entityName)
       $publisher = createElement("span", ["app-entity-display__publisher"], "from " + feature.properties['organisation-name'])
       $name.appendChild($publisher)
-      $container.appendChild($name)
+      $entity.appendChild($name)
 
-      $container.appendChild(createProptertyList(feature.properties))
+      $entity.appendChild(createProptertyList(feature.properties))
+      $container.appendChild($entity)
     })
+    
   }
 
   // grab html elements
+  const $mapsContainer = document.querySelector('.app-maps')
+  const entityPanels = Array.prototype.slice.call(document.querySelectorAll('.app-side-by-side__details'))
   const $controlsList = document.querySelector('[data-module="layer-controls"]')
   const $zoomMods = Array.prototype.slice.call(document.querySelectorAll('[data-module="zoom-controls"]'))
   const $toggleBtn = document.querySelector('[data-module="lpa-boundary-toggle"]')
@@ -379,6 +386,12 @@
 
       // enable highlights
       map.highlightFeaturesOn()
+
+      // enable selecting entity from panel
+      // Feature request from Tony
+      const nonPubSelectEntity = new SpikeMap.SelectedEntity(intersectMap, entityPanels[1], $mapsContainer).init({
+        datasetName: dataset['dataset']
+      })
     }
 
     let flownTo = false
@@ -418,15 +431,15 @@
     displayEntityDetails(features, $nonPublisherDisplayPanel);
   })
 
-  const $mapsContainer = document.querySelector('.app-maps')
-  const eventAwesome = new CustomEvent('awesome', {
-    bubbles: true,
-    detail: { text: "a random test string" }
-  });
-  $mapsContainer.addEventListener('awesome', function(e) {
-    console.log('Container has caught the event', e);
-  })
-
+  
+  // const eventAwesome = new CustomEvent('awesome', {
+  //   bubbles: true,
+  //   detail: { text: "a random test string" }
+  // });
+  // $mapsContainer.addEventListener('select-entity', function(e) {
+  //   console.log('Container has caught the event', e.detail);
+  // })
+  
 
   // intersectMap.createDatasetLayers('conservation-area', "polygon", ['match', ['get', 'entity'], [3020793, 3032311], true, false])
 

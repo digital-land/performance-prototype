@@ -42,7 +42,7 @@ AppMap.prototype.highlightFeaturesOn = function () {
       // create layer
       this.createVectorLayer(layerId, this.sourceName, dataset, 'fill', {
         'fill-color': '#912b88',
-        'fill-opacity': 0.7
+        'fill-opacity': 0.5
       })
       this.map.setFilter(layerId, initFilter)
       console.log(this.layers)
