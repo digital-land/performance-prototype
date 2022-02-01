@@ -290,10 +290,7 @@
     opacity: 0.3,
     weight: 1
   }
-  // init national map
-  // const mapController = new OrgMapController($controlsList, $zoomMods[0], datasets, organisationName, statGeography).init({
-  //   baseTileStyleFilePath: "https://api.maptiler.com/maps/918166e5-9890-4e18-8f18-4ef96be1a2d4/style.json?key=kira3KM2jYGvDA4xNkYt"
-  // })
+  const publisher_entities = {{publisher_entities|tojson }};
 
   const publisherMapOnLoad = function (map) {
     // display publisher boundary
@@ -325,7 +322,11 @@
       console.log("publisher map source data")
       if (!flownTo) {
         if (map.map.getSource('dl-vectors') && map.map.isSourceLoaded('dl-vectors')) {
-          var features = map.flyToDataset(dataset['dataset'], filter, {returnFeatures: true})
+          if (publisher_entities.length) {
+            var features = map.flyToDataset(dataset['dataset'], filter, {returnFeatures: true})
+          } else {
+            var features = map.flyToDataset('local-authority-district', ['==', 'reference', statGeography], {returnFeatures: true})
+          }
 
           if (features.length) {
             flownTo = true;
