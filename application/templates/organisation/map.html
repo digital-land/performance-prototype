@@ -89,6 +89,10 @@
     <div class="dl-map__wrapper" style="min-height: 700px;">
       {% include 'partials/zoom-controls.html' %}
 
+      <div class="app-map__boundary-zoom">
+        <button>Zoom to LPA boundary</button>
+      </div>
+
       {% macro layerControlItem(layer) %}
       <li class="dl-map__layer-item govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" 
       {% if layer.type %}data-layer-data-type={{layer.type}}{% endif %} 
@@ -141,6 +145,10 @@
     <div class="dl-map__wrapper" style="min-height: 700px;">
 
       {% include 'partials/zoom-controls.html' %}
+
+      <div class="app-map__boundary-zoom">
+        <button>Zoom to LPA boundary</button>
+      </div>
 
       {% macro layerControlItem(layer) %}
       <li class="dl-map__layer-item govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" 
@@ -301,9 +309,13 @@
 
   const publisherMapOnLoad = function (map) {
     // display publisher boundary
-    map.createDatasetLayers('local-authority-district', "polygon", ['==', 'reference', statGeography], {
+    const boundaryFilter = ['==', 'reference', statGeography]
+    map.createDatasetLayers('local-authority-district', "polygon", boundaryFilter, {
       style: localAuthorityBoundaryStyle
     })
+    const $btn = map._container.querySelector('.app-map__boundary-zoom')
+    const flyToBoundaryBtn = new SpikeMap.FlyToBoundary($btn, map).init()
+
     // add this layer to toggle control
     toggleComponent.addLayer({map: map.map, name: "local-authority-districtFill"})
     toggleComponent.addLayer({map: map.map, name: "local-authority-districtLine"})
@@ -326,7 +338,9 @@
 
     let flownTo = false
     map.map.on('sourcedata', function (e) {
-      console.log("publisher map source data")
+      // only get boundary once source had loaded
+      flyToBoundaryBtn.setBoundary( map.getFeatures('dl-vectors', 'local-authority-district', boundaryFilter) )
+  
       if (!flownTo) {
         if (map.map.getSource('dl-vectors') && map.map.isSourceLoaded('dl-vectors')) {
           if (publisher_entities.length) {
@@ -364,9 +378,13 @@
   console.log("Extra entities", entities_not_by_publisher.length)
   const nonPublisherMapOnLoad = function(map) {
     // display publisher boundary
-    map.createDatasetLayers('local-authority-district', "polygon", ['==', 'reference', statGeography], {
+    const boundaryFilter = ['==', 'reference', statGeography]
+    map.createDatasetLayers('local-authority-district', "polygon", boundaryFilter, {
       style: localAuthorityBoundaryStyle
     })
+    const $btn = map._container.querySelector('.app-map__boundary-zoom')
+    const flyToBoundaryBtn = new SpikeMap.FlyToBoundary($btn, map).init()
+
     // add this layer to toggle control
     toggleComponent.addLayer({map: map.map, name: "local-authority-districtFill"})
     toggleComponent.addLayer({map: map.map, name: "local-authority-districtLine"})
@@ -396,6 +414,9 @@
 
     let flownTo = false
     map.map.on('sourcedata', function (e) {
+      // only get boundary once source had loaded
+      flyToBoundaryBtn.setBoundary( map.getFeatures('dl-vectors', 'local-authority-district', boundaryFilter) )
+
       if (!flownTo) {
         if (map.map.getSource('dl-vectors') && map.map.isSourceLoaded('dl-vectors')) {
           if (entities_not_by_publisher.length) {

@@ -44,3 +44,23 @@
   border-left: 2px solid $govuk-text-colour;
   padding-left: 10px;
 }
+
+.app-map__boundary-zoom {
+  z-index: 1002;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+
+  button {
+    padding: 5px;
+    background: govuk-colour("white");
+    border: 0;
+    box-shadow: 0 0 3px rgba(11, 12, 12, .8);
+
+    &:hover {
+      padding: 4px;
+      background: darken(govuk-colour("white"), 2);
+      border: 1px solid govuk-colour("dark-grey");
+    }
+  }
+}

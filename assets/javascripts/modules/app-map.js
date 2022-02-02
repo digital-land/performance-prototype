@@ -225,6 +225,33 @@ AppMap.prototype.flyToDataset = function (dataset, filter, options) {
   }
 }
 
+AppMap.prototype.getBBox = function (features) {
+  const collection = turf.featureCollection(features)
+  const envelope = turf.envelope(collection)
+  return envelope.bbox
+}
+
+AppMap.prototype.getFeatures = function (sourceName, sourceLayer, filter) {
+  return this.removeDuplicates(
+    this.map.querySourceFeatures(sourceName, {
+      filter: filter,
+      sourceLayer: sourceLayer
+    })
+  )
+}
+
+AppMap.prototype.removeDuplicates = function (features) {
+  const uniqueEntities = []
+  return features.filter(function (feature) {
+    if (uniqueEntities.indexOf(feature.properties.entity) === -1) {
+      uniqueEntities.push(feature.properties.entity)
+      return true
+    }
+
+    return false
+  })
+}
+
 AppMap.prototype.getClickableLayers = function () {
   if (this.clickableLayers) {
     return this.clickableLayers
