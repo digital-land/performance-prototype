@@ -253,6 +253,11 @@
     // enable highlights
     appMap.highlightFeaturesOn()
 
+    // enable selecting entity from panel
+    const pubSelectEntity = new SpikeMap.SelectedEntity(appMap, entityPanels[0], $mapsContainer).init({
+      datasetName: dataset['dataset']
+    })
+
     let flownTo = false
     appMap.map.on('sourcedata', function (e) {
       // only get boundary once source had loaded
