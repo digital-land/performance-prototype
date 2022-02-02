@@ -227,46 +227,43 @@
   }
   const publisher_entities = {{publisher_entities|tojson }};
 
-  const publisherMapOnLoad = function (map) {
+  const publisherMapOnLoad = function (appMap) {
     // display publisher boundary
     const boundaryFilter = ['==', 'reference', statGeography]
-    map.createDatasetLayers('local-authority-district', "polygon", boundaryFilter, {
+    appMap.createDatasetLayers('local-authority-district', "polygon", boundaryFilter, {
       style: localAuthorityBoundaryStyle
     })
-    const $btn = map._container.querySelector('.app-map__boundary-zoom')
-    const flyToBoundaryBtn = new SpikeMap.FlyToBoundary($btn, map).init()
+    const $btn = appMap._container.querySelector('.app-map__boundary-zoom')
+    const flyToBoundaryBtn = new SpikeMap.FlyToBoundary($btn, appMap).init()
 
     // add this layer to toggle control
-    toggleComponent.addLayer({map: map.map, name: "local-authority-districtFill"})
-    toggleComponent.addLayer({map: map.map, name: "local-authority-districtLine"})
+    toggleComponent.addLayer({map: appMap.map, name: "local-authority-districtFill"})
+    toggleComponent.addLayer({map: appMap.map, name: "local-authority-districtLine"})
   
     const filter = ['==', 'organisation-entity', organisationEntity]
-    console.log("publisher map loaded", map)
-    map.createDatasetLayers(dataset['dataset'], datasetType, filter, {})
+    appMap.createDatasetLayers(dataset['dataset'], datasetType, filter, {})
 
     // only want conservation areas to be clickable
     if (datasetType === "point") {
-      map.setClickableLayers([dataset['dataset']])
+      appMap.setClickableLayers([dataset['dataset']])
     } else {
-      map.setClickableLayers([dataset['dataset'] + 'Fill'])
+      appMap.setClickableLayers([dataset['dataset'] + 'Fill'])
     }
-    
-    //map.setClickableLayers([dataset['dataset'] + 'Fill'])
 
     // enable highlights
-    map.highlightFeaturesOn()
+    appMap.highlightFeaturesOn()
 
     let flownTo = false
-    map.map.on('sourcedata', function (e) {
+    appMap.map.on('sourcedata', function (e) {
       // only get boundary once source had loaded
-      flyToBoundaryBtn.setBoundary( map.getFeatures('dl-vectors', 'local-authority-district', boundaryFilter) )
+      flyToBoundaryBtn.setBoundary( appMap.getFeatures('dl-vectors', 'local-authority-district', boundaryFilter) )
   
       if (!flownTo) {
-        if (map.map.getSource('dl-vectors') && map.map.isSourceLoaded('dl-vectors')) {
+        if (appMap.map.getSource('dl-vectors') && appMap.map.isSourceLoaded('dl-vectors')) {
           if (publisher_entities.length) {
-            var features = map.flyToDataset(dataset['dataset'], filter, {returnFeatures: true})
+            var features = appMap.flyToDataset(dataset['dataset'], filter, {returnFeatures: true})
           } else {
-            var features = map.flyToDataset('local-authority-district', ['==', 'reference', statGeography], {returnFeatures: true})
+            var features = appMap.flyToDataset('local-authority-district', ['==', 'reference', statGeography], {returnFeatures: true})
           }
 
           if (features.length) {
@@ -296,53 +293,53 @@
   // =============================
   const entities_not_by_publisher = {{entities_not_by_publisher|tojson }};
   console.log("Extra entities", entities_not_by_publisher.length)
-  const nonPublisherMapOnLoad = function(map) {
+  const nonPublisherMapOnLoad = function(appMap) {
     // display publisher boundary
     const boundaryFilter = ['==', 'reference', statGeography]
-    map.createDatasetLayers('local-authority-district', "polygon", boundaryFilter, {
+    appMap.createDatasetLayers('local-authority-district', "polygon", boundaryFilter, {
       style: localAuthorityBoundaryStyle
     })
-    const $btn = map._container.querySelector('.app-map__boundary-zoom')
-    const flyToBoundaryBtn = new SpikeMap.FlyToBoundary($btn, map).init()
+    const $btn = appMap._container.querySelector('.app-map__boundary-zoom')
+    const flyToBoundaryBtn = new SpikeMap.FlyToBoundary($btn, appMap).init()
 
     // add this layer to toggle control
-    toggleComponent.addLayer({map: map.map, name: "local-authority-districtFill"})
-    toggleComponent.addLayer({map: map.map, name: "local-authority-districtLine"})
+    toggleComponent.addLayer({map: appMap.map, name: "local-authority-districtFill"})
+    toggleComponent.addLayer({map: appMap.map, name: "local-authority-districtLine"})
 
     let filter = []
     if (entities_not_by_publisher.length) {
       // display conservation areas intersecting with boundary
       filter = ['match', ['get', 'entity'], entities_not_by_publisher, true, false]
-      map.createDatasetLayers(dataset['dataset'], datasetType, filter)
+      appMap.createDatasetLayers(dataset['dataset'], datasetType, filter)
 
       // only want conservation areas to be clickable
       if (datasetType === "point") {
-        map.setClickableLayers([dataset['dataset']])
+        appMap.setClickableLayers([dataset['dataset']])
       } else {
-        map.setClickableLayers([dataset['dataset'] + 'Fill'])
+        appMap.setClickableLayers([dataset['dataset'] + 'Fill'])
       }
 
       // enable highlights
-      map.highlightFeaturesOn()
+      appMap.highlightFeaturesOn()
 
       // enable selecting entity from panel
       // Feature request from Tony
-      const nonPubSelectEntity = new SpikeMap.SelectedEntity(intersectMap, entityPanels[1], $mapsContainer).init({
+      const nonPubSelectEntity = new SpikeMap.SelectedEntity(appMap, entityPanels[1], $mapsContainer).init({
         datasetName: dataset['dataset']
       })
     }
 
     let flownTo = false
-    map.map.on('sourcedata', function (e) {
+    appMap.map.on('sourcedata', function (e) {
       // only get boundary once source had loaded
-      flyToBoundaryBtn.setBoundary( map.getFeatures('dl-vectors', 'local-authority-district', boundaryFilter) )
+      flyToBoundaryBtn.setBoundary( appMap.getFeatures('dl-vectors', 'local-authority-district', boundaryFilter) )
 
       if (!flownTo) {
-        if (map.map.getSource('dl-vectors') && map.map.isSourceLoaded('dl-vectors')) {
+        if (appMap.map.getSource('dl-vectors') && appMap.map.isSourceLoaded('dl-vectors')) {
           if (entities_not_by_publisher.length) {
-            var features = map.flyToDataset(dataset['dataset'], filter, {returnFeatures: true})
+            var features = appMap.flyToDataset(dataset['dataset'], filter, {returnFeatures: true})
           } else {
-            var features = map.flyToDataset('local-authority-district', ['==', 'reference', statGeography], {returnFeatures: true})
+            var features = appMap.flyToDataset('local-authority-district', ['==', 'reference', statGeography], {returnFeatures: true})
           }
 
           if (features.length) {
