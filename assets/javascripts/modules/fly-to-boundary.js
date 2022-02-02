@@ -23,9 +23,7 @@ FlyToBoundary.prototype.clickHandler = function (e) {
 }
 
 FlyToBoundary.prototype.fly = function () {
-  console.log("boundary", this.boundary)
   const bbox = this.appMap.getBBox(this.boundary)
-  console.log("bbox", bbox)
   this.appMap.map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]])
 }
 
