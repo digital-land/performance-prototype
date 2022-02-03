@@ -213,9 +213,7 @@ AppMap.prototype.flyToDataset = function (dataset, filter, options) {
   })
 
   if (matchedFeatures.length) {
-    const collection = turf.featureCollection(matchedFeatures)
-    const envelope = turf.envelope(collection)
-    const bbox = envelope.bbox
+    const bbox = this.getBBox(matchedFeatures)
     this.map.fitBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]])
   }
 
@@ -227,7 +225,8 @@ AppMap.prototype.flyToDataset = function (dataset, filter, options) {
 
 AppMap.prototype.getBBox = function (features) {
   const collection = turf.featureCollection(features)
-  const envelope = turf.envelope(collection)
+  const bufferedCollection = turf.buffer(collection, 1)
+  const envelope = turf.envelope(bufferedCollection)
   return envelope.bbox
 }
 
@@ -358,7 +357,6 @@ AppMap.prototype.setupOptions = function (params) {
   this.onLoadCallback = params.onLoadCallback || undefined
 
   this.baseURL = params.baseURL || 'https://digital-land.github.io'
-  // this.flyToDataset = params.flyToDataset || 'local-authority-district';
   this.popupWidth = params.popupWidth || '260px'
   this.popupMaxListLength = params.popupMaxListLength || 10
 }

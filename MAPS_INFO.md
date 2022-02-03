@@ -181,3 +181,17 @@ And to show it
 ```
 map.setLayoutProperty(layerName, 'visibility', 'visible')
 ```
+
+### Zooming to shapes
+
+Given a set off features you can use turfjs to add a buffer to the bounding box that encapsulates all the features.
+
+Here is how I generate the bounding box for a set of features with a 1 km buffer.
+```
+AppMap.prototype.getBBox = function (features) {
+  const collection = turf.featureCollection(features)
+  const bufferedCollection = turf.buffer(collection, 1)
+  const envelope = turf.envelope(bufferedCollection)
+  return envelope.bbox
+}
+```
