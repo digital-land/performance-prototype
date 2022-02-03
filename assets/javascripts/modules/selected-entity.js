@@ -7,6 +7,8 @@ function SelectedEntity (appMap, $panel, $container) {
 
 SelectedEntity.prototype.init = function (params) {
   this.datasetName = params.datasetName
+  this.datasetType = params.datasetType || 'polygon'
+
   const that = this
   this.$container.addEventListener('select-entity', function (e) {
     console.log('Container has caught the event', e.detail)
@@ -30,10 +32,26 @@ SelectedEntity.prototype.init = function (params) {
 
 SelectedEntity.prototype.createSelectedEntityLayer = function () {
   console.log(this.appMap)
-  this.appMap.createVectorLayer('selectedEntity', 'dl-vectors', this.datasetName, 'line', {
-    'line-color': '#000000',
-    'line-width': 2
-  })
+  if (this.datasetType === 'point') {
+    this.appMap.createVectorLayer('selectedEntity', 'dl-vectors', this.datasetName, 'circle', {
+      'circle-color': '#000000',
+      'circle-opacity': 0,
+      'circle-radius': {
+        base: 1.5,
+        stops: [
+          [6, 1],
+          [22, 180]
+        ]
+      },
+      'circle-stroke-color': '#000000',
+      'circle-stroke-width': 3
+    })
+  } else {
+    this.appMap.createVectorLayer('selectedEntity', 'dl-vectors', this.datasetName, 'line', {
+      'line-color': '#000000',
+      'line-width': 2
+    })
+  }
 }
 
 SelectedEntity.prototype.displayEntity = function (entityNum) {

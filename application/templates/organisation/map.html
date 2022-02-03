@@ -255,7 +255,8 @@
 
     // enable selecting entity from panel
     const pubSelectEntity = new SpikeMap.SelectedEntity(appMap, entityPanels[0], $mapsContainer).init({
-      datasetName: dataset['dataset']
+      datasetName: dataset['dataset'],
+      datasetType: datasetType
     })
 
     let flownTo = false
@@ -330,7 +331,8 @@
       // enable selecting entity from panel
       // Feature request from Tony
       const nonPubSelectEntity = new SpikeMap.SelectedEntity(appMap, entityPanels[1], $mapsContainer).init({
-        datasetName: dataset['dataset']
+        datasetName: dataset['dataset'],
+        datasetType: datasetType
       })
     }
 
