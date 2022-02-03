@@ -223,9 +223,10 @@ AppMap.prototype.flyToDataset = function (dataset, filter, options) {
   }
 }
 
-AppMap.prototype.getBBox = function (features) {
+AppMap.prototype.getBBox = function (features, units) {
+  const _units = units || 1
   const collection = turf.featureCollection(features)
-  const bufferedCollection = turf.buffer(collection, 1)
+  const bufferedCollection = turf.buffer(collection, _units)
   const envelope = turf.envelope(bufferedCollection)
   return envelope.bbox
 }
