@@ -37,13 +37,30 @@ AppMap.prototype.highlightFeaturesOn = function () {
   const initFilter = ['==', 'entity', '']
   for (const dataset in this.datasetLayers) {
     console.log(dataset)
-    const layerId = dataset + 'Highlight' + 'Fill'
+    const layerId = dataset + 'Highlight'
+    // only create once
     if (this.layers.indexOf(layerId) === -1) {
-      // create layer
-      this.createVectorLayer(layerId, this.sourceName, dataset, 'fill', {
-        'fill-color': '#912b88',
-        'fill-opacity': 0.5
-      })
+      if (this.datasetLayers[dataset].length > 1) {
+        // create layer
+        this.createVectorLayer(layerId, this.sourceName, dataset, 'fill', {
+          'fill-color': '#912b88',
+          'fill-opacity': 0.5
+        })
+      } else {
+        this.createVectorLayer(layerId, this.sourceName, dataset, 'circle', {
+          'circle-color': '#912b88',
+          'circle-opacity': 0.5,
+          'circle-radius': {
+            base: 1.5,
+            stops: [
+              [6, 1],
+              [22, 180]
+            ]
+          },
+          'circle-stroke-color': '#912b88',
+          'circle-stroke-width': 2
+        })
+      }
       this.map.setFilter(layerId, initFilter)
       console.log(this.layers)
       highlightLayers.push(layerId)
