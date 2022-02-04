@@ -261,9 +261,6 @@
 
     let flownTo = false
     appMap.map.on('sourcedata', function (e) {
-      // only get boundary once source had loaded
-      flyToBoundaryBtn.setBoundary( appMap.getFeatures('dl-vectors', 'local-authority-district', boundaryFilter) )
-  
       if (!flownTo) {
         if (appMap.map.getSource('dl-vectors') && appMap.map.isSourceLoaded('dl-vectors')) {
           if (publisher_entities.length) {
@@ -276,6 +273,9 @@
             flownTo = true;
           }
         }
+        // only get boundary once source has loaded
+        // and don't want to keep changing as the map moves
+        flyToBoundaryBtn.setBoundary( appMap.getFeatures('dl-vectors', 'local-authority-district', boundaryFilter) )
       }
     });
   }
@@ -338,9 +338,6 @@
 
     let flownTo = false
     appMap.map.on('sourcedata', function (e) {
-      // only get boundary once source had loaded
-      flyToBoundaryBtn.setBoundary( appMap.getFeatures('dl-vectors', 'local-authority-district', boundaryFilter) )
-
       if (!flownTo) {
         if (appMap.map.getSource('dl-vectors') && appMap.map.isSourceLoaded('dl-vectors')) {
           if (entities_not_by_publisher.length) {
@@ -353,6 +350,9 @@
             flownTo = true;
           }
         }
+        // only get boundary once source has loaded
+        // and don't want to keep changing as the map moves
+        flyToBoundaryBtn.setBoundary( appMap.getFeatures('dl-vectors', 'local-authority-district', boundaryFilter) )
       }
     });
   }
