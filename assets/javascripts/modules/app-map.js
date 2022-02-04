@@ -43,12 +43,12 @@ AppMap.prototype.highlightFeaturesOn = function () {
       if (this.datasetLayers[dataset].length > 1) {
         // create layer
         this.createVectorLayer(layerId, this.sourceName, dataset, 'fill', {
-          'fill-color': '#912b88',
+          'fill-color': this.highlightColour,
           'fill-opacity': 0.5
         })
       } else {
         this.createVectorLayer(layerId, this.sourceName, dataset, 'circle', {
-          'circle-color': '#912b88',
+          'circle-color': this.highlightColour,
           'circle-opacity': 0.5,
           'circle-radius': {
             base: 1.5,
@@ -57,7 +57,7 @@ AppMap.prototype.highlightFeaturesOn = function () {
               [22, 180]
             ]
           },
-          'circle-stroke-color': '#912b88',
+          'circle-stroke-color': this.highlightColour,
           'circle-stroke-width': 2
         })
       }
@@ -377,6 +377,8 @@ AppMap.prototype.setupOptions = function (params) {
   this.baseURL = params.baseURL || 'https://digital-land.github.io'
   this.popupWidth = params.popupWidth || '260px'
   this.popupMaxListLength = params.popupMaxListLength || 10
+
+  this.highlightColour = params.highlightColour || "#ffdd00"
 }
 
 export default AppMap
