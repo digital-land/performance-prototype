@@ -7,7 +7,6 @@ from flask import request
 
 from application.datasette import (
     sources_with_endpoint,
-    datasets_for_an_organisation,
     datasets_by_organistion,
     get_monthly_counts,
     publisher_counts,
@@ -16,7 +15,6 @@ from application.datasette import (
     sources_by_dataset,
     resources_by_dataset,
     get_source,
-    get_organisation,
     get_datasets_summary,
     get_resource_count,
     total_publisher_coverage,
@@ -35,9 +33,7 @@ from application.datasette import (
 )
 from application.data_access.entity_queries import (
     fetch_entity_count,
-    fetch_organisation_entity_count,
     fetch_organisation_entities_using_end_dates,
-    fetch_datasets_organisation_has_used_enddates,
 )
 from application.data_access.digital_land_queries import (
     fetch_log_summary,
@@ -47,7 +43,6 @@ from application.data_access.digital_land_queries import (
 from application.utils import (
     resources_per_publishers,
     index_by,
-    index_with_list,
     recent_dates,
     read_json_file,
     yesterday,

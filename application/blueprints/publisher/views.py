@@ -11,7 +11,6 @@ from application.datasette import (
     DLDatasette,
 )
 from application.data_access.entity_queries import (
-    fetch_entity_count,
     fetch_organisation_entity_count,
     fetch_datasets_organisation_has_used_enddates,
 )
