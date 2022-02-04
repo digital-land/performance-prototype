@@ -2,35 +2,15 @@ import logging
 import urllib.parse
 
 from application.caching import get
+from application.data_access.api_queries import get_organisation_entity_number
+from application.utils import split_organisation_id
 
 logger = logging.getLogger(__name__)
 
 DATASETTE_URL = "https://datasette.digital-land.info"
 
 
-def fetch_organisation_entity_number(organisation):
-    datasette_url = DATASETTE_URL
-    organisation_id = organisation.split(":")
-    query_lines = [
-        "SELECT",
-        "*",
-        "FROM",
-        "entity",
-        "WHERE",
-        f"prefix = '{organisation_id[0]}'",
-        f"AND reference = '{organisation_id[1]}'",
-    ]
-
-    query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{datasette_url}/entity.json?sql={query}"
-    # how do I get logging to work?
-    # logger.info("get_organisation_entity_number: %s", url)
-    print("get_organisation_entity_number: {}".format(url))
-    result = get(url, format="json")
-    if len(result["rows"]):
-        return result["rows"][0][2]
-    return None
+# def fetch_organisation_entity_number(organisation):
 
 
 def fetch_entity_count(dataset=None, organisation_entity=None):
@@ -67,9 +47,10 @@ def fetch_entity_count(dataset=None, organisation_entity=None):
 
 
 def fetch_organisation_entity_count(organisation, dataset=None):
+    prefix, ref = split_organisation_id(organisation)
     return fetch_entity_count(
         dataset=dataset,
-        organisation_entity=fetch_organisation_entity_number(organisation),
+        organisation_entity=get_organisation_entity_number(prefix, ref),
     )
 
 
@@ -99,8 +80,9 @@ def fetch_organisation_entities_using_end_dates():
 
 def fetch_datasets_organisation_has_used_enddates(organisation):
     datasette_url = DATASETTE_URL
-    organisation_entity = fetch_organisation_entity_number(organisation)
-    if not organisation_entity:
+    prefix, ref = split_organisation_id(organisation)
+    organisation_entity_num = get_organisation_entity_number(prefix, ref)
+    if not organisation_entity_num:
         return None
     query_lines = [
         "SELECT",
@@ -110,7 +92,7 @@ def fetch_datasets_organisation_has_used_enddates(organisation):
         "WHERE",
         '("end_date" is not null and "end_date" != "")',
         "AND",
-        f'("organisation_entity" = {organisation_entity})',
+        f'("organisation_entity" = {organisation_entity_num})',
         "GROUP BY",
         "entity.dataset",
     ]

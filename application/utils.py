@@ -72,3 +72,8 @@ def read_json_file(data_file_path):
     data = json.load(f)
     f.close()
     return data
+
+
+def split_organisation_id(organisation):
+    parts = organisation.split(":")
+    return parts[0], parts[1]
