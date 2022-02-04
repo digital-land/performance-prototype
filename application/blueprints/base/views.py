@@ -7,7 +7,6 @@ from flask import request
 
 from application.datasette import (
     sources_with_endpoint,
-    datasets_by_organistion,
     get_monthly_counts,
     publisher_counts,
     publisher_coverage,
@@ -38,6 +37,7 @@ from application.data_access.entity_queries import (
 from application.data_access.digital_land_queries import (
     fetch_log_summary,
     fetch_sources,
+    fetch_organisation_stats,
 )
 
 from application.utils import (
@@ -250,7 +250,7 @@ def resources():
         resources=resource_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),
-        organisations=datasets_by_organistion(),
+        organisations=fetch_organisation_stats(),
     )
 
 

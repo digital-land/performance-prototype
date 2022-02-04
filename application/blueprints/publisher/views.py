@@ -6,7 +6,6 @@ from flask import request
 
 from application.datasette import (
     datasets_for_an_organisation,
-    datasets_by_organistion,
     get_organisation,
     DLDatasette,
 )
@@ -18,6 +17,7 @@ from application.data_access.entity_queries import (
 from application.data_access.digital_land_queries import (
     fetch_datasets,
     fetch_sources_by_organisation,
+    fetch_organisation_stats,
 )
 
 from application.data_access.api_queries import get_entities
@@ -85,7 +85,7 @@ def organisation():
 
     return render_template(
         "organisation/index.html",
-        publishers=split_publishers(datasets_by_organistion()),
+        publishers=split_publishers(fetch_organisation_stats()),
         today=datetime.utcnow().isoformat()[:10],
         none_publishers=split_publishers(publishers_with_no_data),
     )

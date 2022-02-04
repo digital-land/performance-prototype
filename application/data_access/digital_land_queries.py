@@ -2,8 +2,11 @@ import logging
 import urllib.parse
 
 from application.caching import get
-from application.utils import create_dict, yesterday
-from application.data_access.sql_helpers import generate_sql_where_str
+from application.utils import create_dict, yesterday, index_by
+from application.data_access.sql_helpers import (
+    generate_sql_where_str,
+    prepare_query_str,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -145,3 +148,44 @@ def fetch_sources_by_organisation(organisation):
     print(f"get_sources_by_organisation: {url}")
     result = get(url, format="json")
     return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
+def fetch_organisation_stats():
+    """
+    Returns a list of organisations with:
+    - end_date if applicable
+    - number of resources
+    - number of resource without an end-date
+    - number of endpoints
+    - number of dataset resources are for
+    """
+    query_lines = [
+        "SELECT",
+        "organisation.name,",
+        "source.organisation,",
+        "organisation.end_date AS organisation_end_date,",
+        "COUNT(DISTINCT resource.resource) AS resources,",
+        "COUNT(",
+        "DISTINCT CASE",
+        "WHEN resource.end_date == '' THEN resource.resource",
+        "WHEN strftime('%Y%m%d', resource.end_date) >= strftime('%Y%m%d', 'now') THEN resource.resource",
+        "END",
+        ") AS active,",
+        "COUNT(DISTINCT resource_endpoint.endpoint) AS endpoints,",
+        "COUNT(DISTINCT source_pipeline.pipeline) AS pipelines",
+        "FROM",
+        "resource",
+        "INNER JOIN resource_endpoint ON resource.resource = resource_endpoint.resource",
+        "INNER JOIN endpoint ON resource_endpoint.endpoint = endpoint.endpoint",
+        "INNER JOIN source ON resource_endpoint.endpoint = source.endpoint",
+        "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
+        "INNER JOIN organisation ON source.organisation = organisation.organisation",
+        "GROUP BY",
+        "source.organisation",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_organisation_stats: {url}")
+    result = get(url, format="json")
+    organisations = [create_dict(result["columns"], row) for row in result["rows"]]
+    return index_by("organisation", organisations)
