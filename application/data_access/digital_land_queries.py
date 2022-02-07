@@ -129,35 +129,6 @@ def fetch_sources(limit=100, filter=None, include_blanks=False, concat_pipelines
     )
 
 
-# def fetch_sources_by_organisation(organisation):
-#     query_lines = [
-#         "SELECT",
-#         "source.source,",
-#         "source.organisation,",
-#         "organisation.name,",
-#         "source.endpoint,",
-#         "source.documentation_url,",
-#         "source.entry_date,",
-#         "source.start_date," "source.end_date,",
-#         "source_pipeline.pipeline",
-#         "FROM",
-#         "source",
-#         "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
-#         "INNER JOIN organisation ON source.organisation = organisation.organisation",
-#         "WHERE",
-#         f"source.organisation = '{organisation}'",
-#         "ORDER BY",
-#         "source.start_date DESC",
-#     ]
-#     query_str = " ".join(query_lines)
-#     query = urllib.parse.quote(query_str)
-#     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-#     logger.info(f"get_sources_by_organisation: {url}")
-#     print(f"get_sources_by_organisation: {url}")
-#     result = get(url, format="json")
-#     return [create_dict(result["columns"], row) for row in result["rows"]]
-
-
 def fetch_organisation_stats():
     """
     Returns a list of organisations with:
