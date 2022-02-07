@@ -27,13 +27,13 @@
   <div class="govuk-grid-row govuk-!-margin-bottom-9 govuk-!-margin-top-9">
     <div class="govuk-grid-column-one-quarter">
       <div class="app-data-item govuk-!-margin-bottom-6">
-        <span class="app-data-item__number govuk-!-font-size-80">{{ data['datasets_covered']|length }}<span class="govuk-!-font-size-19">/{{ sources_per_dataset|length }}</span></span>
+        <span class="app-data-item__number govuk-!-font-size-80">{{ data['datasets'].keys()|length }}<span class="govuk-!-font-size-19">/{{ sources_per_dataset|length }}</span></span>
         <p class="govuk-body govuk-!-font-size-36">Datasets</p>
       </div>
     </div>
     <div class="govuk-grid-column-one-quarter">
       <div class="app-data-item govuk-!-margin-bottom-6">
-        <span class="app-data-item__number govuk-!-font-size-80">{{ data['resources']|length }}</span>
+        <span class="app-data-item__number govuk-!-font-size-80">{{ data['total_resources'] }}</span>
         <p class="govuk-body govuk-!-font-size-36"><a class="govuk-link--text-colour" href="{{ url_for('base.resources', organisation=organisation['organisation']) }}">Resources</a></p>
       </div>
     </div>
@@ -44,7 +44,7 @@
             Identifier
           </dt>
           <dd class="govuk-summary-list__value">
-            {{ organisation['organisation'] }}
+            {{ organisation['prefix'] }}:{{ organisation['reference'] }}
           </dd>
         </div>
 
@@ -67,11 +67,11 @@
     </div>
   </div>
 
-  {% if data["dataset_counts"].keys()|length %}
+  {% if data["datasets"].keys()|length %}
     <h3 class="govuk-heading-m">Datasets with data</h3>
-    <p class="govuk-body">We have been able to collect resources and extract data from {{ organisation.name }} for {{data["dataset_counts"].keys()|length}} dataset{{ "" if data["dataset_counts"].keys()|length == 1 else "s" }}.</p>
+    <p class="govuk-body">We have been able to collect resources and extract data from {{ organisation.name }} for {{data["datasets"].keys()|length}} dataset{{ "" if data["datasets"].keys()|length == 1 else "s" }}.</p>
     {{ simplifiedDatasetTable({
-      "datasets": data["dataset_counts"],
+      "datasets": data["datasets"],
       "caption": "Table showing datasets we have collected data for",
       "organisation": organisation['organisation'],
       "entity_counts": entity_counts
@@ -79,7 +79,7 @@
     }}
     <p class="govuk-body">
       {% set ns = namespace(dataset_params="") %}
-      {% for dataset in data["dataset_counts"].keys() %}
+      {% for dataset in data["datasets"].keys() %}
         {% set ns.dataset_params = ns.dataset_params + "&dataset=" + dataset %}
       {% endfor %}
       Search for the data

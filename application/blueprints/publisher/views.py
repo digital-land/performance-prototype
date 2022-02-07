@@ -5,7 +5,6 @@ from flask.helpers import url_for
 from flask import request
 
 from application.datasette import (
-    datasets_for_an_organisation,
     get_organisation,
     DLDatasette,
 )
@@ -18,9 +17,10 @@ from application.data_access.digital_land_queries import (
     fetch_datasets,
     fetch_sources_by_organisation,
     fetch_organisation_stats,
+    fetch_resource_count_per_dataset,
 )
 
-from application.data_access.api_queries import get_entities
+from application.data_access.api_queries import get_entities, get_organisation_entity
 
 from application.utils import (
     index_by,
@@ -95,17 +95,23 @@ def organisation():
 def organisation_performance(prefix, org_id):
     ds = DLDatasette()
     id = prefix + ":" + org_id
-    organisation = get_organisation(id)
-    data = datasets_for_an_organisation(id)
+    organisation = get_organisation_entity(prefix, org_id)
+    resource_counts = fetch_resource_count_per_dataset(id)
+
     source_counts = ds.get_sources_per_dataset_for_organisation(id)
     sources = index_with_list("pipeline", ds.get_all_sources_for_organisation(id))
     missing_datasets = [
         dataset for dataset in source_counts if dataset["sources_with_endpoint"] == 0
     ]
 
+    data = {"datasets": index_by("pipeline", resource_counts)}
+    data["total_resources"] = sum(
+        [data["datasets"][d]["resources"] for d in data["datasets"].keys()]
+    )
+
     # TO FIX: I'm not sure this is working
     erroneous_sources = []
-    for dataset in data["datasets_covered"]:
+    for dataset in data["datasets"].keys():
         for source in sources[dataset]:
             if source["endpoint"] == "":
                 erroneous_sources.append(source)
@@ -114,11 +120,10 @@ def organisation_performance(prefix, org_id):
     data["data_from_secondary"] = {}
 
     # add entity counts to dataset data
-    data["dataset_counts"] = index_by("pipeline", data["dataset_counts"])
     entity_counts = fetch_organisation_entity_count(organisation=id)
     for dn, count in entity_counts.items():
-        if dn in data["dataset_counts"].keys():
-            data["dataset_counts"][dn]["entity_count"] = count
+        if dn in data["datasets"].keys():
+            data["datasets"][dn]["entity_count"] = count
         else:
             # add dataset to list from secondary sources
             data["data_from_secondary"].setdefault(dn, {"pipeline": dn})
@@ -126,7 +131,7 @@ def organisation_performance(prefix, org_id):
 
     return render_template(
         "organisation/performance.html",
-        organisation=organisation,
+        organisation=organisation[0],
         info_page=url_for("publisher.organisation_info", prefix=prefix, org_id=org_id),
         data=data,
         sources_per_dataset=source_counts,

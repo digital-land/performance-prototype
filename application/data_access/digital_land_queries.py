@@ -189,3 +189,58 @@ def fetch_organisation_stats():
     result = get(url, format="json")
     organisations = [create_dict(result["columns"], row) for row in result["rows"]]
     return index_by("organisation", organisations)
+
+
+def fetch_resources(organisation):
+    query_lines = [
+        "SELECT",
+        "resource.resource,",
+        "resource.end_date,",
+        "source.source,",
+        "resource_endpoint.endpoint,",
+        "endpoint.endpoint_url,",
+        "source.organisation,",
+        "source_pipeline.pipeline",
+        "FROM",
+        "resource",
+        "INNER JOIN resource_endpoint ON resource.resource = resource_endpoint.resource",
+        "INNER JOIN endpoint ON resource_endpoint.endpoint = endpoint.endpoint",
+        "INNER JOIN source ON resource_endpoint.endpoint = source.endpoint",
+        "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
+        "WHERE",
+        f"source.organisation = '{organisation}'",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_resources ({organisation}): {url}")
+    return get(url, format="json")
+
+
+def fetch_resource_count_per_dataset(organisation):
+    query_lines = [
+        "SELECT",
+        "COUNT(DISTINCT resource.resource) AS resources,",
+        "COUNT(DISTINCT CASE ",
+        "WHEN resource.end_date == '' THEN resource.resource",
+        "WHEN strftime('%Y%m%d', resource.end_date) >= strftime('%Y%m%d', 'now') THEN resource.resource",
+        "END) AS active_resources,",
+        "COUNT(DISTINCT resource_endpoint.endpoint) AS endpoints,",
+        "source_pipeline.pipeline AS pipeline",
+        "FROM",
+        "resource",
+        "INNER JOIN resource_endpoint ON resource.resource = resource_endpoint.resource",
+        "INNER JOIN endpoint ON resource_endpoint.endpoint = endpoint.endpoint",
+        "INNER JOIN source ON resource_endpoint.endpoint = source.endpoint",
+        "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
+        "INNER JOIN organisation ON source.organisation = organisation.organisation",
+        "WHERE",
+        f"organisation.organisation = '{organisation}'",
+        "GROUP BY",
+        "source.organisation,",
+        "source_pipeline.pipeline",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_resource_count_per_dataset ({organisation}): {url}")
+    result = get(url, format="json")
+    return [create_dict(result["columns"], row) for row in result["rows"]]
