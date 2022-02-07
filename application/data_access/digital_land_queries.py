@@ -58,7 +58,7 @@ def fetch_log_summary(date=yesterday(string=True)):
     return [create_dict(result["columns"], row) for row in result["rows"]]
 
 
-def fetch_sources(limit=100, filter=None, include_blanks=False):
+def fetch_sources(limit=100, filter=None, include_blanks=False, concat_pipelines=True):
     params = ""
     limit_str = ""
     where_clause = ""
@@ -86,6 +86,15 @@ def fetch_sources(limit=100, filter=None, include_blanks=False):
             + 'source.endpoint != ""'
         )
 
+    # handle concat of pipelines for each source
+    group_pipeline_strs = "source_pipeline.pipeline"
+    group_by = ""
+    if concat_pipelines:
+        group_pipeline_strs = (
+            "GROUP_CONCAT(DISTINCT source_pipeline.pipeline) AS pipeline"
+        )
+        group_by = ("GROUP BY source.source",)
+
     query_lines = [
         "SELECT",
         "source.source,",
@@ -96,7 +105,7 @@ def fetch_sources(limit=100, filter=None, include_blanks=False):
         "source.entry_date,",
         "source.start_date,",
         "source.end_date,",
-        "GROUP_CONCAT(DISTINCT source_pipeline.pipeline) AS pipeline",
+        group_pipeline_strs,
         "FROM",
         "source",
         "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
@@ -105,8 +114,7 @@ def fetch_sources(limit=100, filter=None, include_blanks=False):
         if filter and "endpoint_" in filter.keys()
         else "",
         where_clause,
-        "GROUP BY",
-        "source.source",
+        group_by,
         "ORDER BY source.start_date DESC",
         limit_str,
     ]
@@ -121,33 +129,33 @@ def fetch_sources(limit=100, filter=None, include_blanks=False):
     )
 
 
-def fetch_sources_by_organisation(organisation):
-    query_lines = [
-        "SELECT",
-        "source.source,",
-        "source.organisation,",
-        "organisation.name,",
-        "source.endpoint,",
-        "source.documentation_url,",
-        "source.entry_date,",
-        "source.start_date," "source.end_date,",
-        "source_pipeline.pipeline",
-        "FROM",
-        "source",
-        "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
-        "INNER JOIN organisation ON source.organisation = organisation.organisation",
-        "WHERE",
-        f"source.organisation = '{organisation}'",
-        "ORDER BY",
-        "source.start_date DESC",
-    ]
-    query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    logger.info(f"get_sources_by_organisation: {url}")
-    print(f"get_sources_by_organisation: {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+# def fetch_sources_by_organisation(organisation):
+#     query_lines = [
+#         "SELECT",
+#         "source.source,",
+#         "source.organisation,",
+#         "organisation.name,",
+#         "source.endpoint,",
+#         "source.documentation_url,",
+#         "source.entry_date,",
+#         "source.start_date," "source.end_date,",
+#         "source_pipeline.pipeline",
+#         "FROM",
+#         "source",
+#         "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
+#         "INNER JOIN organisation ON source.organisation = organisation.organisation",
+#         "WHERE",
+#         f"source.organisation = '{organisation}'",
+#         "ORDER BY",
+#         "source.start_date DESC",
+#     ]
+#     query_str = " ".join(query_lines)
+#     query = urllib.parse.quote(query_str)
+#     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+#     logger.info(f"get_sources_by_organisation: {url}")
+#     print(f"get_sources_by_organisation: {url}")
+#     result = get(url, format="json")
+#     return [create_dict(result["columns"], row) for row in result["rows"]]
 
 
 def fetch_organisation_stats():
@@ -244,6 +252,15 @@ def fetch_resource_count_per_dataset(organisation):
     print(f"get_resource_count_per_dataset ({organisation}): {url}")
     result = get(url, format="json")
     return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
+def fetch_organisation_sources(organisation):
+    sources, url = fetch_sources(
+        filter={"organisation": organisation},
+        include_blanks=True,
+        concat_pipelines=False,
+    )
+    return sources
 
 
 def fetch_source_counts(organisation):

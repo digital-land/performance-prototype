@@ -15,7 +15,7 @@ from application.data_access.entity_queries import (
 
 from application.data_access.digital_land_queries import (
     fetch_datasets,
-    fetch_sources_by_organisation,
+    fetch_organisation_sources,
     fetch_organisation_stats,
     fetch_resource_count_per_dataset,
     fetch_source_counts,
@@ -98,9 +98,9 @@ def organisation_performance(prefix, org_id):
     id = prefix + ":" + org_id
     organisation = get_organisation_entity(prefix, org_id)
     resource_counts = fetch_resource_count_per_dataset(id)
-
     source_counts = fetch_source_counts(id)
-    sources = index_with_list("pipeline", ds.get_all_sources_for_organisation(id))
+    sources = index_with_list("pipeline", fetch_organisation_sources(id))
+
     missing_datasets = [
         dataset for dataset in source_counts if dataset["sources_with_endpoint"] == 0
     ]
@@ -198,7 +198,7 @@ def map(prefix, org_id):
     ]
 
     expected_datasets = index_with_list(
-        "pipeline", fetch_sources_by_organisation(organisation["organisation"])
+        "pipeline", fetch_organisation_sources(organisation["organisation"])
     )
 
     return render_template(

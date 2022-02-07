@@ -9,7 +9,8 @@ def get_entities(parameters):
         prefix = "?" if params == "" else "&"
         params = params + prefix + f"{p}={v}"
     url = f"{API_URL}{params}"
-    return get(url, format="json")
+    result = get(url, format="json")
+    return result["entities"]
 
 
 def get_organisation_entity(prefix, reference):
