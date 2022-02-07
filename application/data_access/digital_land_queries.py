@@ -244,3 +244,25 @@ def fetch_resource_count_per_dataset(organisation):
     print(f"get_resource_count_per_dataset ({organisation}): {url}")
     result = get(url, format="json")
     return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
+def fetch_source_counts(organisation):
+    query_lines = [
+        "SELECT",
+        "source_pipeline.pipeline AS pipeline,",
+        "COUNT(DISTINCT source.source) AS sources,",
+        "SUM(CASE WHEN (source.endpoint) is not null and (source.endpoint) != ''",
+        " THEN 1 ELSE 0 END)  AS sources_with_endpoint",
+        "FROM",
+        "source",
+        "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
+        "WHERE",
+        f"source.organisation = '{organisation}'",
+        "GROUP BY",
+        "source_pipeline.pipeline",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_source_counts ({organisation}): {url}")
+    result = get(url, format="json")
+    return [create_dict(result["columns"], row) for row in result["rows"]]

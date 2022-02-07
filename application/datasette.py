@@ -75,14 +75,6 @@ class DLDatasette:
             param_str = param_str + param
         return where_str + "AND%0D%0A".join(clauses), param_str
 
-    def get_sources_per_dataset_for_organisation(self, organisation):
-        # returns number of sources with and without endpoint for each dataset for the provided organisation
-        query = (
-            f"{self.BASE_URL}/digital-land.json?sql=select%0D%0A++source_pipeline.pipeline+AS+pipeline%2C%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%2C%0D%0A++SUM%28CASE+WHEN+%28source.endpoint%29+is+not+null+and+%28source.endpoint%29+%21%3D+%22%22+THEN+1+ELSE+0+END%29++AS+sources_with_endpoint%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source.organisation+%3D+%3Aorganisation%0D%0Agroup+by%0D%0A++source_pipeline.pipeline&organisation="
-            + DLDatasette.urlencode(organisation)
-        )
-        return self.sqlQuery(query, results="rows_with_column_names")
-
     def get_all_sources_for_organisation(self, organisation):
         query = (
             f"{self.BASE_URL}/digital-land.json?sql=select%0D%0A++source.source%2C%0D%0A++source.organisation%2C%0D%0A++organisation.name%2C%0D%0A++source.endpoint%2C%0D%0A++source.documentation_url%2C%0D%0A++source.entry_date%2C%0D%0A++source.start_date%2C%0D%0A++source.end_date%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0Awhere%0D%0Asource.organisation+LIKE+%3Aorganisation%0D%0Aorder+by%0D%0A++source.start_date+DESC&organisation="
