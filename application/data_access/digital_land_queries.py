@@ -93,7 +93,7 @@ def fetch_sources(limit=100, filter=None, include_blanks=False, concat_pipelines
         group_pipeline_strs = (
             "GROUP_CONCAT(DISTINCT source_pipeline.pipeline) AS pipeline"
         )
-        group_by = ("GROUP BY source.source",)
+        group_by = "GROUP BY source.source"
 
     query_lines = [
         "SELECT",
