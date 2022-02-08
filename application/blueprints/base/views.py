@@ -22,7 +22,6 @@ from application.datasette import (
     get_resources,
     get_resource,
     entry_count,
-    get_sources,
     source_count_per_organisation,
     get_datasets,
     get_theme,
@@ -173,7 +172,9 @@ def dataset(dataset):
         else 0
     )
 
-    source_filters = {"documentation_url": "", "pipeline": dataset_name}
+    sources_no_doc_url, query_url = fetch_sources(
+        limit=500, filter={"documentation_url": "", "pipeline": dataset_name}
+    )
 
     return render_template(
         "dataset/performance.html",
@@ -188,7 +189,7 @@ def dataset(dataset):
         resource_count=resource_count,
         coverage=publisher_coverage(dataset_name)[0],
         resource_stats=resource_stats,
-        sources_no_doc_url=get_sources(filter=source_filters),
+        sources_no_doc_url=sources_no_doc_url,
         content_type_counts=content_type_counts(dataset_name),
         latest_logs=dataset_latest_logs(),
         blank_sources=ds.get_blank_sources(dataset_name),
