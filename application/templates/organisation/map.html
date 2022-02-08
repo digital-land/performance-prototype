@@ -148,7 +148,8 @@
   const $datasetSelect = document.querySelector("[data-module='dataset-select']")
   $datasetSelect.addEventListener('change', function(e) {
     const uri_parts = window.location.href.split("dataset=")
-    window.location.href = uri_parts[0] + "dataset=" + e.target.value
+    const param = "dataset=" + e.target.value
+    window.location.href = (uri_parts[0].endsWith("?")) ? uri_parts[0] + param : uri_parts[0] + "?" + param
   })
 
   function createElement(tag, classes, text) {
