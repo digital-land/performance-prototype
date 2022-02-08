@@ -216,8 +216,9 @@
   
   const toggleComponent = new SpikeMap.LPABoundaryControl($toggleBtn).init({})
 
+  const organisation = {{ organisation|tojson}};
   const organisationEntity = String({{ organisation["entity"]|tojson }});
-  const statGeography = {{ organisation["statistical_geography"]|tojson }};
+  const statGeography = organisation['json']['statistical-geography'];
   const dataset = {{ dataset|tojson }};
   const datasetType = datasetGeometryType(dataset);
   const localAuthorityBoundaryStyle = {

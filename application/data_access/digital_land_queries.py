@@ -129,6 +129,27 @@ def fetch_sources(limit=100, filter=None, include_blanks=False, concat_pipelines
     )
 
 
+def fetch_publishers():
+    query_lines = [
+        "SELECT",
+        "source.organisation,",
+        "organisation.name,",
+        "organisation.end_date AS organisation_end_date,",
+        "SUM(CASE WHEN (source.endpoint) is not null and (source.endpoint) != '' THEN 1 ELSE 0 END)  AS sources_with_endpoint",
+        "FROM",
+        "source",
+        "INNER JOIN organisation ON source.organisation = organisation.organisation",
+        "GROUP BY",
+        "source.organisation",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_publishers: {url}")
+    result = get(url, format="json")
+    organisations = [create_dict(result["columns"], row) for row in result["rows"]]
+    return index_by("organisation", organisations)
+
+
 def fetch_organisation_stats():
     """
     Returns a list of organisations with:

@@ -1,13 +1,9 @@
 from datetime import datetime
 
-from flask import render_template, Blueprint, current_app, redirect
+from flask import render_template, Blueprint
 from flask.helpers import url_for
 from flask import request
 
-from application.datasette import (
-    get_organisation,
-    DLDatasette,
-)
 from application.data_access.entity_queries import (
     fetch_organisation_entity_count,
     fetch_datasets_organisation_has_used_enddates,
@@ -19,6 +15,7 @@ from application.data_access.digital_land_queries import (
     fetch_organisation_stats,
     fetch_resource_count_per_dataset,
     fetch_source_counts,
+    fetch_publishers,
 )
 
 from application.data_access.api_queries import get_entities, get_organisation_entity
@@ -75,18 +72,38 @@ def split_publishers(organisations):
     }
 
 
+def publisher_info():
+    # returns all publishers, even empty
+    publisher_source_counts = fetch_publishers()
+    # return just the publishers we have data for
+    publisher_stats = fetch_organisation_stats()
+    empty_stats = {"resources": 0, "active": 0, "endpoints": 0, "pipelines": 0}
+    publishers = {}
+    for pub, stats in publisher_source_counts.items():
+        if pub in publisher_stats.keys():
+            publishers[pub] = {**stats, **publisher_stats[pub]}
+        else:
+            publishers[pub] = {**stats, **empty_stats}
+    return publishers
+
+
 @publisher_pages.route("/")
 def organisation():
-    ds = DLDatasette()
+    publishers = publisher_info()
+    active_publishers = {
+        k: publisher
+        for k, publisher in publishers.items()
+        if publisher["sources_with_endpoint"] > 0
+    }
     publishers_with_no_data = {
         k: publisher
-        for k, publisher in ds.get_expected_publishers().items()
-        if publisher["active"] == 0
+        for k, publisher in publishers.items()
+        if publisher["sources_with_endpoint"] == 0
     }
 
     return render_template(
         "organisation/index.html",
-        publishers=split_publishers(fetch_organisation_stats()),
+        publishers=split_publishers(active_publishers),
         today=datetime.utcnow().isoformat()[:10],
         none_publishers=split_publishers(publishers_with_no_data),
     )
@@ -94,7 +111,6 @@ def organisation():
 
 @publisher_pages.route("/<prefix>/<org_id>")
 def organisation_performance(prefix, org_id):
-    ds = DLDatasette()
     id = prefix + ":" + org_id
     organisation = get_organisation_entity(prefix, org_id)
     resource_counts = fetch_resource_count_per_dataset(id)
@@ -158,8 +174,8 @@ def organisation_info(prefix, org_id):
 
 @publisher_pages.route("/<prefix>/<org_id>/map")
 def map(prefix, org_id):
-    id = prefix + ":" + org_id
-    organisation = get_organisation(id)
+    organisation_results = get_organisation_entity(prefix, org_id)
+    organisation = organisation_results[0]
 
     dataset_name = "conservation-area"
     if request.args.get("dataset"):
@@ -173,15 +189,15 @@ def map(prefix, org_id):
         {
             "dataset": dataset["dataset"],
             "organisation_entity": organisation["entity"],
-            "limit": "1000",
+            "limit": "500",
         }
     )
 
     intersecting_entities = get_entities(
         {
             "dataset": dataset["dataset"],
-            "geometry_reference": organisation["statistical_geography"],
-            "limit": "1000",
+            "geometry_reference": organisation["json"]["statistical-geography"],
+            "limit": "500",
         }
     )
 
@@ -198,7 +214,7 @@ def map(prefix, org_id):
     ]
 
     expected_datasets = index_with_list(
-        "pipeline", fetch_organisation_sources(organisation["organisation"])
+        "pipeline", fetch_organisation_sources(prefix + ":" + org_id)
     )
 
     return render_template(
