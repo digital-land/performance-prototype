@@ -14,9 +14,13 @@ itsdangerous
 lockfile
 MarkupSafe
 packaging
+playwright
 pyparsing
+pytest
+pytest-playwright
 python-dateutil
 python-dotenv
 six
+uvicorn
 webassets
 Werkzeug
