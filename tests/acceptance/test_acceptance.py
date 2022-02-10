@@ -34,3 +34,22 @@ def test_acceptance(server_process, page):
     page.click("text=Datasets")
     assert page.url == f"{BASE_URL}/dataset"
     assert page.text_content("h1") == "Datasets"
+
+    page.click(".app-card__title a:text('Brownfield land')")
+    assert page.url == f"{BASE_URL}/dataset/brownfield-land"
+    assert page.text_content("h1") == "Brownfield land"
+
+    page.click("text=Publishers")
+    assert page.url == f"{BASE_URL}/organisation/"
+    assert page.text_content("h1") == "Publishers"
+
+    page.click("[data-org-id='local-authority-eng:LBH'] a")
+    assert page.url == f"{BASE_URL}/organisation/local-authority-eng/LBH"
+
+    page.click("text=Sources")
+    assert page.url == f"{BASE_URL}/source"
+    assert page.text_content("h1") == "Sources"
+
+    page.click("text=Resources")
+    assert page.url == f"{BASE_URL}/resource"
+    assert page.text_content("h1") == "Resources"
