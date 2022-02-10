@@ -36,7 +36,7 @@
                 <div class="govuk-grid-column-one-quarter">
                   <div class="app-data-item">
                     <p class="govuk-body app-data-item__label">Sources</p>
-                    <span class="app-data-item__number app-!-font-size-60">{{ sources['with_endpoint'] }}</span>
+                    <span class="app-data-item__number app-!-font-size-60">{{ source_counts | sum(attribute='sources_with_endpoint') }}</span>
                   </div>
                 </div>
                 <div class="govuk-grid-column-one-quarter">
@@ -116,7 +116,7 @@
       <div class="govuk-grid-row govuk-!-margin-bottom-9">
         <div class="govuk-grid-column-one-half">
           <div class="app-data-item govuk-!-margin-bottom-6">
-            <span class="app-data-item__number govuk-!-font-size-48">{{ sources['with_endpoint'] }}</span>
+            <span class="app-data-item__number govuk-!-font-size-48">{{ source_counts | sum(attribute='sources_with_endpoint') }}</span>
             <p class="govuk-body govuk-!-font-size-19">Total</p>
           </div>
           <details class="govuk-details" data-module="govuk-details">
@@ -132,7 +132,7 @@
         </div>
         <div class="govuk-grid-column-one-half">
           <div class="app-data-item govuk-!-margin-bottom-6">
-            <span class="app-data-item__number govuk-!-font-size-48">{{ sources['no_documentation']['count'] }}</span>
+            <span class="app-data-item__number govuk-!-font-size-48">{{ source_counts | sum(attribute='sources_missing_document_url') }}</span>
             <p class="govuk-body govuk-!-font-size-19">Without a documentation URL</p>
           </div>
           <details class="govuk-details" data-module="govuk-details">
@@ -148,10 +148,12 @@
           <div class="dl-collapsible__wrapper" data-module='app-collapsible'>
             <div class="dl-collapsible no-doc-endpoints" data-collapsible="open">
               <ul class="govuk-list">
-                {% for col in sources['no_documentation']['collection'] %}
+                {% for pipeline in source_counts %}
+                {%- if pipeline['sources_missing_document_url'] > 0 %}
                 <li>
-                  <a href="{{ url_for('base.dataset', dataset=col['value'], _anchor='sources-missing-documentation-url') }}">{{ col['label'] }}</a>: {{ col['count'] }}
+                  <a href="{{ url_for('base.dataset', dataset=pipeline['pipeline'], _anchor='sources-missing-documentation-url') }}">{{ pipeline['pipeline'] }}</a>: {{ pipeline['sources_missing_document_url'] }}
                 </li>
+                {% endif -%}
                 {% endfor %}
               </ul>
             </div>

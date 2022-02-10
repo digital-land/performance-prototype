@@ -170,36 +170,6 @@ def by_collection(data):
     return by_collection
 
 
-def sources_with_endpoint():
-    # query
-    # f"{self.BASE_URL}/digital-land/source.json?endpoint__notblank=1&_labels=on"
-    ds = DLDatasette()
-
-    endpoint_results = ds.query("source", {"endpoint__notblank": 1, "_labels": "on"})
-    print(endpoint_results)
-
-    # https://datasette.digital-land.info/digital-land/source?documentation_url__isblank=1&endpoint__notblank=1
-    no_documentation_url_results = ds.query(
-        "source",
-        {
-            "endpoint__notblank": 1,
-            "documentation_url__isblank": 1,
-            "_labels": "on",
-            "_facet": "collection",
-        },
-    )
-
-    return {
-        "with_endpoint": endpoint_results["filtered_table_rows_count"],
-        "no_documentation": {
-            "count": no_documentation_url_results["filtered_table_rows_count"],
-            "collection": no_documentation_url_results["facet_results"]["collection"][
-                "results"
-            ],
-        },
-    }
-
-
 def get_monthly_counts(pipeline=None):
     ds = DLDatasette()
     source_counts = ds.get_monthly_source_counts(pipeline)

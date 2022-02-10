@@ -6,7 +6,6 @@ from flask.helpers import url_for
 from flask import request
 
 from application.datasette import (
-    sources_with_endpoint,
     get_monthly_counts,
     publisher_counts,
     publisher_coverage,
@@ -37,6 +36,7 @@ from application.data_access.digital_land_queries import (
     fetch_log_summary,
     fetch_sources,
     fetch_organisation_stats,
+    fetch_source_counts,
 )
 
 from application.utils import (
@@ -85,7 +85,7 @@ def performance():
         datasets=gs_datasets,
         stats=get_monthly_counts(),
         publisher_count=total_publisher_coverage(),
-        sources=sources_with_endpoint(),
+        source_counts=fetch_source_counts(),
         entity_count=ds.get_entity_count(),
         datasets_with_data_count=len(entity_counts.keys()),
         resource_count=get_resource_count(),

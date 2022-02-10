@@ -5,8 +5,6 @@ from multiprocessing.context import Process
 
 from application.factory import create_app  # noqa: E402
 
-# app = create_app("config.DevelopmentConfig")
-
 HOST = "0.0.0.0"
 PORT = 9000
 BASE_URL = f"http://{HOST}:{PORT}"
@@ -30,5 +28,9 @@ def server_process():
 def test_acceptance(server_process, page):
 
     page.goto(BASE_URL)
-    page.click("text=Browse datasets")
+    page.click("text=Browse overview")
+    assert page.url == f"{BASE_URL}/performance/"
+
+    page.click("text=Datasets")
     assert page.url == f"{BASE_URL}/dataset"
+    assert page.text_content("h1") == "Datasets"

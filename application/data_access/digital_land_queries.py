@@ -255,7 +255,40 @@ def fetch_organisation_sources(organisation):
     return sources
 
 
-def fetch_source_counts(organisation):
+def fetch_overall_source_counts():
+    query_lines = [
+        "SELECT",
+        "source_pipeline.pipeline,",
+        "COUNT(DISTINCT source.source) AS sources,",
+        "SUM(",
+        "CASE",
+        "WHEN (source.endpoint) is not null",
+        "and (source.endpoint) != '' THEN 1",
+        "ELSE 0",
+        "END",
+        ") AS sources_with_endpoint,",
+        "SUM(",
+        "CASE",
+        "WHEN (source.endpoint) is not null",
+        "and (source.endpoint) != '' and ((source.documentation_url) is null",
+        "or (source.documentation_url) == '') THEN 1",
+        "ELSE 0",
+        "END",
+        ") AS sources_missing_document_url",
+        "FROM",
+        "source",
+        "INNER JOIN source_pipeline on source.source = source_pipeline.source",
+        "GROUP BY",
+        "source_pipeline.pipeline",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_source_counts (Overall): {url}")
+    result = get(url, format="json")
+    return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
+def fetch_organisation_source_counts(organisation):
     query_lines = [
         "SELECT",
         "source_pipeline.pipeline AS pipeline,",
@@ -275,3 +308,9 @@ def fetch_source_counts(organisation):
     print(f"get_source_counts ({organisation}): {url}")
     result = get(url, format="json")
     return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
+def fetch_source_counts(organisation=None):
+    if organisation:
+        return fetch_organisation_source_counts(organisation)
+    return fetch_overall_source_counts()
