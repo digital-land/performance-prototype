@@ -11,7 +11,7 @@ def generate_sql_where_str(filters, mappings={}):
         if filter in mappings.keys():
             column = mappings[filter]
         clauses.append("{} LIKE :{}".format(column, filter))
-        # can we get rid of params?
+        # To Do: can we get rid of params?
         # these are &param=value items
         param = "&{}={}".format(filter, value)
         param_str = param_str + param

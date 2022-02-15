@@ -37,6 +37,7 @@ from application.data_access.digital_land_queries import (
     fetch_sources,
     fetch_organisation_stats,
     fetch_source_counts,
+    fetch_latest_resource,
 )
 
 from application.utils import (
@@ -181,7 +182,7 @@ def dataset(dataset):
         name=dataset_name,
         info_page=url_for("base.dataset_info", dataset=dataset_name),
         dataset=dataset[0] if len(dataset) else "",
-        latest_resource=ds.get_latest_resource(dataset_name),
+        latest_resource=fetch_latest_resource(dataset_name),
         monthly_counts=get_monthly_counts(pipeline=dataset_name),
         publishers=publisher_splits,
         today=datetime.utcnow().isoformat()[:10],

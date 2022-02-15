@@ -191,10 +191,27 @@ def fetch_organisation_stats():
     return index_by("organisation", organisations)
 
 
-def fetch_resources(organisation):
+def fetch_resources(filters=None, limit=None):
+    limit_str = ""
+    if limit:
+        limit_str = f"LIMIT {limit}"
+
+    where_clause = ""
+    params = ""
+    if filters:
+        where_clause, params = generate_sql_where_str(
+            filters,
+            {
+                "organisation": "source.organisation",
+                "dataset": "source_pipeline.pipeline",
+            },
+        )
+
     query_lines = [
         "SELECT",
         "resource.resource,",
+        "resource.entry_date,",
+        "resource.start_date,",
         "resource.end_date,",
         "source.source,",
         "resource_endpoint.endpoint,",
@@ -207,13 +224,27 @@ def fetch_resources(organisation):
         "INNER JOIN endpoint ON resource_endpoint.endpoint = endpoint.endpoint",
         "INNER JOIN source ON resource_endpoint.endpoint = source.endpoint",
         "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
-        "WHERE",
-        f"source.organisation = '{organisation}'",
+        where_clause,
+        "ORDER BY",
+        "resource.start_date DESC",
+        limit_str,
     ]
     query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_resources ({organisation}): {url}")
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}{params}"
+    print(f"get_resources ({filters}): {url}")
     return get(url, format="json")
+
+
+def fetch_latest_resource(dataset=None):
+    if dataset:
+        results = fetch_resources(filters={"dataset": dataset}, limit=1)
+    else:
+        results = fetch_resources(limit=1)
+
+    if len(results["rows"]):
+        return create_dict(results["columns"], results["rows"][0])
+
+    return None
 
 
 def fetch_resource_count_per_dataset(organisation):
