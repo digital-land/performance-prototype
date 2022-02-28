@@ -14,25 +14,38 @@ DATASETTE_URL = "https://datasette.digital-land.info"
 DATABASE_NAME = "digital-land"
 
 
-def fetch_datasets(dataset=None):
+def fetch_datasets(filter=None):
+    params = ""
+    where_clause = ""
+    # handle any filters
+    if filter:
+        where_clause, params = generate_sql_where_str(
+            filter,
+            {
+                "active": "dataset_active",  # not currently available
+                "dataset": "dataset.dataset",
+                "theme": "dataset_theme.theme",
+            },
+        )
+
     query_lines = [
         "SELECT",
         "dataset.*,",
         "GROUP_CONCAT(dataset_theme.theme, ';') AS themes",
         "FROM dataset",
         "INNER JOIN dataset_theme ON dataset.dataset = dataset_theme.dataset",
+        where_clause,
     ]
-    if dataset:
-        query_lines.append("WHERE dataset.dataset = '{}'".format(dataset))
+
     query_lines.append("GROUP BY dataset.dataset")
     query_str = " ".join(query_lines)
     query = urllib.parse.quote(query_str)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}{params}"
     # logger.info("get_datasets: %s", url)
     print("get_datasets: {}".format(url))
     result = get(url, format="json")
 
-    if dataset:
+    if filter and "dataset" in filter.keys():
         return create_dict(result["columns"], result["rows"][0])
     return [create_dict(result["columns"], row) for row in result["rows"]]
 

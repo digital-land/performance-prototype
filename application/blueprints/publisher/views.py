@@ -181,7 +181,7 @@ def map(prefix, org_id):
     if request.args.get("dataset"):
         dataset_name = request.args.get("dataset")
 
-    dataset = fetch_datasets(dataset=dataset_name)
+    dataset = fetch_datasets(filter={"dataset": dataset_name})
 
     # should fail if no dataset of that name
 

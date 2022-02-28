@@ -22,7 +22,6 @@ from application.datasette import (
     get_resource,
     entry_count,
     source_count_per_organisation,
-    get_datasets,
     get_theme,
     get_typology,
     dataset_latest_logs,
@@ -33,6 +32,7 @@ from application.data_access.entity_queries import (
     fetch_organisation_entities_using_end_dates,
 )
 from application.data_access.digital_land_queries import (
+    fetch_datasets,
     fetch_log_summary,
     fetch_sources,
     fetch_organisation_stats,
@@ -117,17 +117,17 @@ def performance_info():
 @base.route("/dataset")
 def datasets():
     filters = {}
-    if request.args.get("active"):
-        filters["active"] = request.args.get("active")
+    # if request.args.get("active"):
+    #     filters["active"] = request.args.get("active")
     if request.args.get("theme"):
         filters["theme"] = request.args.get("theme")
     if request.args.get("typology"):
         filters["typology"] = request.args.get("typology")
 
     if len(filters.keys()):
-        dataset_records = get_datasets(filter=filters)
+        dataset_records = fetch_datasets(filter=filters)
     else:
-        dataset_records = get_datasets()
+        dataset_records = fetch_datasets()
 
     return render_template(
         "dataset/index.html",
