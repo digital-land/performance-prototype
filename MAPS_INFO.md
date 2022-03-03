@@ -18,11 +18,11 @@ $map.addSource(<sourceName>, {
 })
 ```
 
-**$map** - is your maplibre map
-**sourceName** - we usually call it `dl-vectors`
-**vectorSource** - uri to our tile server `https://datasette-tiles.digital-land.info/-/tiles/dataset_tiles/{z}/{x}/{y}.vector.pbf`
-**minZoom** - our tiles work up to zoom level 5
-**maxZoom** - our tiles work down to zoom level 15
+* **$map** - is your maplibre map
+* **sourceName** - we usually call it `dl-vectors`
+* **vectorSource** - uri to our tile server `https://datasette-tiles.digital-land.info/-/tiles/dataset_tiles/{z}/{x}/{y}.vector.pbf`
+* **minZoom** - our tiles work up to zoom level 5
+* **maxZoom** - our tiles work down to zoom level 15
 
 The max and min zoom levels can be changed via the [tiles builder](https://github.com/digital-land/tiles-builder).
 
