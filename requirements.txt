@@ -4,7 +4,7 @@ asyncio
 black
 CacheControl
 flake8
-Flask==1.1.1
+Flask
 Flask-Assets
 Flask-BasicAuth
 Flask-Script
