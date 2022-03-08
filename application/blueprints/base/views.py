@@ -20,7 +20,6 @@ from application.datasette import (
     resources_of_type,
     get_resources,
     get_resource,
-    entry_count,
     source_count_per_organisation,
     get_theme,
     get_typology,
@@ -39,6 +38,7 @@ from application.data_access.digital_land_queries import (
     fetch_source_counts,
     fetch_latest_resource,
 )
+from application.data_access.dataset_db_queries import fetch_resource_from_dataset
 
 from application.utils import (
     resources_per_publishers,
@@ -264,7 +264,7 @@ def resource(resource):
         "resource/resource.html",
         resource=resource_data,
         info_page=url_for("base.resource_info", resource=resource),
-        entry_count=entry_count(dataset, resource),
+        resource_counts=fetch_resource_from_dataset(dataset, resource),
     )
 
 
