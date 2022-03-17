@@ -21,8 +21,6 @@ from application.datasette import (
     get_resources,
     get_resource,
     source_count_per_organisation,
-    get_theme,
-    get_typology,
     dataset_latest_logs,
     DLDatasette,
 )
@@ -37,6 +35,8 @@ from application.data_access.digital_land_queries import (
     fetch_organisation_stats,
     fetch_source_counts,
     fetch_latest_resource,
+    fetch_themes,
+    fetch_typologies,
 )
 from application.data_access.dataset_db_queries import fetch_resource_from_dataset
 
@@ -134,8 +134,8 @@ def datasets():
         datasets=dataset_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),
-        themes=get_theme(),
-        typologies=get_typology(),
+        themes=fetch_themes(),
+        typologies=fetch_typologies(),
     )
 
 

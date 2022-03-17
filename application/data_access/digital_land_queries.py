@@ -163,6 +163,15 @@ def fetch_publishers():
     return index_by("organisation", organisations)
 
 
+def f_orgs():
+    query = urllib.parse.quote(
+        "select name, organisation from organisation order by organisation"
+    )
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    result = get(url, format="json")
+    return [{"text": o[0], "value": o[1]} for o in result["rows"]]
+
+
 def fetch_organisation_stats():
     """
     Returns a list of organisations with:
@@ -358,3 +367,18 @@ def fetch_source_counts(organisation=None):
     if organisation:
         return fetch_organisation_source_counts(organisation)
     return fetch_overall_source_counts()
+
+
+def fetch_table(tablename):
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}/{tablename}.json"
+    print(f"get {tablename}", url)
+    result = get(url, format="json")
+    return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
+def fetch_themes():
+    return fetch_table("theme")
+
+
+def fetch_typologies():
+    return fetch_table("typology")
