@@ -369,6 +369,31 @@ def fetch_source_counts(organisation=None):
     return fetch_overall_source_counts()
 
 
+def fetch_latest_collector_run_date(dataset=None):
+    where_clause = ""
+    if dataset:
+        where_clause = f"WHERE source_pipeline.pipeline = '{dataset}'"
+    query_lines = [
+        "SELECT",
+        "source_pipeline.pipeline,",
+        "MAX(log.entry_date) AS latest_attempt",
+        "FROM",
+        "source",
+        "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
+        "INNER JOIN log ON source.endpoint = log.endpoint",
+        where_clause,
+        "GROUP BY",
+        "source_pipeline.pipeline",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_latest_collector_run_date")
+    result = get(url, format="json")
+    return index_by(
+        "pipeline", [create_dict(result["columns"], row) for row in result["rows"]]
+    )
+
+
 def fetch_table(tablename):
     url = f"{DATASETTE_URL}/{DATABASE_NAME}/{tablename}.json"
     print(f"get {tablename}", url)

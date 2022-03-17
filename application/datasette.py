@@ -429,12 +429,3 @@ def resources_of_type(t):
     )
     results = ds.sqlQuery(query)
     return [create_dict(results["columns"], row) for row in results["rows"]]
-
-
-def dataset_latest_logs():
-    ds = DLDatasette()
-    query = f"{ds.BASE_URL}/digital-land.json?sql=select%0D%0A++source_pipeline.pipeline%2C%0D%0A++MAX%28log.entry_date%29+AS+latest_attempt%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+log+ON+source.endpoint+%3D+log.endpoint%0D%0Agroup+by%0D%0Asource_pipeline.pipeline%0D%0A%0D%0A"
-    results = ds.sqlQuery(query)
-    return index_by(
-        "pipeline", [create_dict(results["columns"], row) for row in results["rows"]]
-    )

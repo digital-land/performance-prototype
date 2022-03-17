@@ -21,7 +21,6 @@ from application.datasette import (
     get_resources,
     get_resource,
     source_count_per_organisation,
-    dataset_latest_logs,
     DLDatasette,
 )
 from application.data_access.entity_queries import (
@@ -35,6 +34,7 @@ from application.data_access.digital_land_queries import (
     fetch_organisation_stats,
     fetch_source_counts,
     fetch_latest_resource,
+    fetch_latest_collector_run_date,
     fetch_themes,
     fetch_typologies,
 )
@@ -192,7 +192,7 @@ def dataset(dataset):
         resource_stats=resource_stats,
         sources_no_doc_url=sources_no_doc_url,
         content_type_counts=content_type_counts(dataset_name),
-        latest_logs=dataset_latest_logs(),
+        latest_logs=fetch_latest_collector_run_date(dataset=dataset_name),
         blank_sources=ds.get_blank_sources(dataset_name),
         source_count=ds.source_counts(pipeline=dataset_name),
     )
