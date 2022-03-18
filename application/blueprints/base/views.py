@@ -30,6 +30,7 @@ from application.data_access.digital_land_queries import (
     fetch_source_counts,
     fetch_resource_count_per_dataset,
     fetch_resource,
+    fetch_resources,
     fetch_total_resource_count,
     fetch_latest_resource,
     fetch_latest_collector_run_date,
@@ -41,6 +42,7 @@ from application.data_access.digital_land_queries import (
 from application.data_access.dataset_db_queries import fetch_resource_from_dataset
 
 from application.utils import (
+    create_dict,
     resources_per_publishers,
     index_by,
     recent_dates,
@@ -244,7 +246,7 @@ def resources():
     if request.args.get("pipeline"):
         filters["pipeline"] = request.args.get("pipeline")
     if request.args.get("content_type"):
-        filters["content_type"] = request.args.get("content_type")
+        filters["content_type"] = unquote(request.args.get("content_type"))
     if request.args.get("organisation"):
         filters["organisation"] = request.args.get("organisation")
     if request.args.get("resource"):
@@ -253,9 +255,9 @@ def resources():
     resources_per_dataset = index_by("pipeline", fetch_resource_count_per_dataset())
 
     if len(filters.keys()):
-        resource_records = get_resources(filter=filters)
+        resource_records_results = fetch_resources(filters=filters)
     else:
-        resource_records = get_resources()
+        resource_records_results = fetch_resources()
 
     content_type_counts = sorted(
         fetch_content_type_counts(),
@@ -269,7 +271,10 @@ def resources():
         resource_count=fetch_total_resource_count(),
         content_type_counts=content_type_counts,
         datasets=fetch_entity_count(),
-        resources=resource_records,
+        resources=[
+            create_dict(resource_records_results["columns"], row)
+            for row in resource_records_results["rows"]
+        ],
         filters=filters,
         filter_btns=filter_off_btns(filters),
         organisations=fetch_organisation_stats(),
@@ -359,10 +364,15 @@ def sources():
 @base.route("/source/<source>")
 def source(source):
     source_data = get_source(source)
+    resource_result = fetch_resources(filters={"source": source})
+
     return render_template(
         "source/source.html",
         source=source_data[0],
-        resources=get_resources(filter={"source": source}),
+        resources=[
+            create_dict(resource_result["columns"], row)
+            for row in resource_result["rows"]
+        ],
     )
 
 
