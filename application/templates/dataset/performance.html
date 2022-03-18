@@ -46,7 +46,7 @@
           {% if resource_count is not none %}
           {{ appDataItem({
             "label": "Resources",
-            "value": resource_count['total']|default('0')
+            "value": resource_count|default('0')
           }) }}
           {%- endif %}
         </div>

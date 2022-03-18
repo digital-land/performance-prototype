@@ -83,7 +83,7 @@
           <ul class="govuk-list">
             {% for k, dataset in by_dataset.items() %}
             <li>
-              <a href="{{ url_for('base.resources', pipeline=dataset.pipeline) }}" class="govuk-link">{{ dataset['pipeline']|replace("-", " ")|capitalize }}</a><span class="govuk-!govuk-!-font-size-19"> ({{ dataset['total'] }})</span>
+              <a href="{{ url_for('base.resources', pipeline=dataset.pipeline) }}" class="govuk-link">{{ dataset['pipeline']|replace("-", " ")|capitalize }}</a><span class="govuk-!govuk-!-font-size-19"> ({{ dataset['resources'] }})</span>
             </li>
             {% endfor %}
           </ul>

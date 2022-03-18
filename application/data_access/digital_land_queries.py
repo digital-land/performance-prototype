@@ -236,7 +236,7 @@ def fetch_resources(filters=None, limit=None):
     return get(url, format="json")
 
 
-def fetch_resource_count():
+def fetch_total_resource_count():
     query_lines = ["select count(distinct resource) from resource"]
     query = prepare_query_str(query_lines)
     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
@@ -257,7 +257,7 @@ def fetch_latest_resource(dataset=None):
     return None
 
 
-def fetch_resource_count_per_dataset(organisation):
+def fetch_resource_count_per_dataset(organisation=None):
     query_lines = [
         "SELECT",
         "COUNT(DISTINCT resource.resource) AS resources,",
@@ -265,6 +265,11 @@ def fetch_resource_count_per_dataset(organisation):
         "WHEN resource.end_date == '' THEN resource.resource",
         "WHEN strftime('%Y%m%d', resource.end_date) >= strftime('%Y%m%d', 'now') THEN resource.resource",
         "END) AS active_resources,",
+        "COUNT(DISTINCT CASE",
+        "WHEN resource.end_date != ''",
+        "AND strftime('%Y%m%d', resource.end_date) <= strftime('%Y%m%d', 'now') THEN resource.resource",
+        "END",
+        ") AS ended_resources,",
         "COUNT(DISTINCT resource_endpoint.endpoint) AS endpoints,",
         "source_pipeline.pipeline AS pipeline",
         "FROM",
@@ -274,10 +279,9 @@ def fetch_resource_count_per_dataset(organisation):
         "INNER JOIN source ON resource_endpoint.endpoint = source.endpoint",
         "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
         "INNER JOIN organisation ON source.organisation = organisation.organisation",
-        "WHERE",
-        f"organisation.organisation = '{organisation}'",
+        f"WHERE organisation.organisation = '{organisation}'" if organisation else "",
         "GROUP BY",
-        "source.organisation,",
+        "source.organisation," if organisation else "",
         "source_pipeline.pipeline",
     ]
     query = prepare_query_str(query_lines)

@@ -11,7 +11,6 @@ from application.datasette import (
     publisher_coverage,
     active_resources,
     sources_by_dataset,
-    resources_by_dataset,
     get_source,
     get_datasets_summary,
     total_publisher_coverage,
@@ -30,7 +29,8 @@ from application.data_access.digital_land_queries import (
     fetch_sources,
     fetch_organisation_stats,
     fetch_source_counts,
-    fetch_resource_count,
+    fetch_resource_count_per_dataset,
+    fetch_total_resource_count,
     fetch_latest_resource,
     fetch_latest_collector_run_date,
     fetch_themes,
@@ -95,7 +95,7 @@ def performance():
         source_counts=fetch_source_counts(),
         entity_count=ds.get_entity_count(),
         datasets_with_data_count=len(entity_counts.keys()),
-        resource_count=fetch_resource_count(),
+        resource_count=fetch_total_resource_count(),
         publisher_using_enddate_count=len(
             fetch_organisation_entities_using_end_dates()
         ),
@@ -173,9 +173,10 @@ def dataset(dataset):
         "zero": len(publisher_splits["noactive"]),
     }
 
+    resource_counts = index_by("pipeline", fetch_resource_count_per_dataset())
     resource_count = (
-        resources_by_dataset(dataset_name)[0]
-        if resources_by_dataset(dataset_name)
+        resource_counts[dataset_name]["resources"]
+        if resource_counts.get(dataset_name)
         else 0
     )
 
@@ -248,7 +249,7 @@ def resources():
     if request.args.get("resource"):
         filters["resource"] = request.args.get("resource")
 
-    resources_per_dataset = index_by("pipeline", resources_by_dataset())
+    resources_per_dataset = index_by("pipeline", fetch_resource_count_per_dataset())
 
     if len(filters.keys()):
         resource_records = get_resources(filter=filters)
@@ -264,7 +265,7 @@ def resources():
     return render_template(
         "resource/index.html",
         by_dataset=resources_per_dataset,
-        resource_count=fetch_resource_count(),
+        resource_count=fetch_total_resource_count(),
         content_type_counts=content_type_counts,
         datasets=fetch_entity_count(),
         resources=resource_records,
