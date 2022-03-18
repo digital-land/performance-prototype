@@ -15,7 +15,6 @@ from application.datasette import (
     get_datasets_summary,
     total_publisher_coverage,
     get_resources,
-    get_resource,
     source_count_per_organisation,
     DLDatasette,
 )
@@ -30,6 +29,7 @@ from application.data_access.digital_land_queries import (
     fetch_organisation_stats,
     fetch_source_counts,
     fetch_resource_count_per_dataset,
+    fetch_resource,
     fetch_total_resource_count,
     fetch_latest_resource,
     fetch_latest_collector_run_date,
@@ -46,6 +46,7 @@ from application.utils import (
     recent_dates,
     read_json_file,
     yesterday,
+    convert_field_str_to_list,
 )
 
 
@@ -277,7 +278,7 @@ def resources():
 
 @base.route("/resource/<resource>")
 def resource(resource):
-    resource_data = get_resource(resource)
+    resource_data = convert_field_str_to_list(fetch_resource(resource), "content_type")
     dataset = resource_data[0]["pipeline"].split(";")[0]
     return render_template(
         "resource/resource.html",

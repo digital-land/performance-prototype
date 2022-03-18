@@ -290,13 +290,6 @@ def get_source(source):
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
-def clean_content_type_field(rows):
-    for row in rows:
-        if row.get("content_type"):
-            row["content_type"] = list(set(row["content_type"].split(";")))
-    return rows
-
-
 def get_resources(limit=100, filter=None):
     ds = DLDatasette()
     where_clause = ""
@@ -318,19 +311,6 @@ def get_resources(limit=100, filter=None):
     )
     results = ds.sqlQuery(query)
     return [create_dict(results["columns"], row) for row in results["rows"]]
-
-
-def get_resource(resource):
-    ds = DLDatasette()
-    # e.g https://datasette.digital-land.info/digital-land?sql=select%0D%0A++DISTINCT+resource.resource%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++resource.end_date%2C%0D%0A++resource_organisation.organisation%2C%0D%0A++organisation.name%2C%0D%0A++endpoint.endpoint%2C%0D%0A++endpoint.endpoint_url%2C%0D%0A++REPLACE%28GROUP_CONCAT%28DISTINCT+log.content_type%29%2C+%22%2C%22%2C+%22%3B%22%29+AS+content_type%2C%0D%0A++REPLACE%28GROUP_CONCAT%28DISTINCT+source_pipeline.pipeline%29%2C+%22%2C%22%2C+%22%3B%22%29+AS+pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_organisation+ON+resource.resource+%3D+resource_organisation.resource%0D%0A++INNER+JOIN+organisation+ON+resource_organisation.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+log+ON+resource.resource+%3D+log.resource%0D%0A++INNER+JOIN+source+ON+source.endpoint+%3D+resource_endpoint.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++resource.resource+%3D+%3Aresource%0D%0Agroup+by%0D%0A++endpoint.endpoint&resource=0001a1baf9ddd7505cfef2e671292122de73a44299e5f5e584e9ec1514c0181c
-    query = (
-        f"{ds.BASE_URL}/digital-land.json?sql=select%0D%0A++DISTINCT+resource.resource%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++resource.end_date%2C%0D%0A++resource_organisation.organisation%2C%0D%0A++organisation.name%2C%0D%0A++endpoint.endpoint%2C%0D%0A++endpoint.endpoint_url%2C%0D%0A++REPLACE%28GROUP_CONCAT%28DISTINCT+log.content_type%29%2C+%22%2C%22%2C+%22%3B%22%29+AS+content_type%2C%0D%0A++REPLACE%28GROUP_CONCAT%28DISTINCT+source_pipeline.pipeline%29%2C+%22%2C%22%2C+%22%3B%22%29+AS+pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_organisation+ON+resource.resource+%3D+resource_organisation.resource%0D%0A++INNER+JOIN+organisation+ON+resource_organisation.organisation+%3D+organisation.organisation%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+log+ON+resource.resource+%3D+log.resource%0D%0A++INNER+JOIN+source+ON+source.endpoint+%3D+resource_endpoint.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++resource.resource+%3D+%3Aresource%0D%0Agroup+by%0D%0A++endpoint.endpoint&resource="
-        + resource
-    )
-    results = ds.sqlQuery(query)
-    return clean_content_type_field(
-        [create_dict(results["columns"], row) for row in results["rows"]]
-    )
 
 
 def resources_by_dataset(pipeline=None):

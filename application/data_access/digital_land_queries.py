@@ -236,6 +236,40 @@ def fetch_resources(filters=None, limit=None):
     return get(url, format="json")
 
 
+def fetch_resource(resource_hash):
+    # seems like overkill...
+    query_lines = [
+        "SELECT",
+        "DISTINCT resource.resource,",
+        "resource.entry_date,",
+        "resource.start_date,",
+        "resource.end_date,",
+        "resource_organisation.organisation,",
+        "organisation.name,",
+        "endpoint.endpoint,",
+        "endpoint.endpoint_url,",
+        "REPLACE(GROUP_CONCAT(DISTINCT log.content_type), ',', ';') AS content_type,",
+        "REPLACE(GROUP_CONCAT(DISTINCT source_pipeline.pipeline), ',', ';') AS pipeline",
+        "FROM",
+        "resource",
+        "INNER JOIN resource_organisation ON resource.resource = resource_organisation.resource",
+        "INNER JOIN organisation ON resource_organisation.organisation = organisation.organisation",
+        "INNER JOIN resource_endpoint ON resource.resource = resource_endpoint.resource",
+        "INNER JOIN endpoint ON resource_endpoint.endpoint = endpoint.endpoint",
+        "INNER JOIN log ON resource.resource = log.resource",
+        "INNER JOIN source ON source.endpoint = resource_endpoint.endpoint",
+        "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
+        f"WHERE resource.resource = '{resource_hash}'",
+        "GROUP BY",
+        "endpoint.endpoint",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_resource {url}")
+    result = get(url, format="json")
+    return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
 def fetch_total_resource_count():
     query_lines = ["select count(distinct resource) from resource"]
     query = prepare_query_str(query_lines)

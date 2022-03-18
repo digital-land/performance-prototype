@@ -77,3 +77,10 @@ def read_json_file(data_file_path):
 def split_organisation_id(organisation):
     parts = organisation.split(":")
     return parts[0], parts[1]
+
+
+def convert_field_str_to_list(rows, field, separator=";"):
+    for row in rows:
+        if row.get(field):
+            row[field] = list(set(row[field].split(separator)))
+    return rows
