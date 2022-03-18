@@ -407,3 +407,52 @@ def fetch_themes():
 
 def fetch_typologies():
     return fetch_table("typology")
+
+
+def fetch_logs(filters=None, group_by=None):
+    where_str = ""
+    if filters:
+        where_str = "WHERE " + " AND ".join(
+            [f"log.{fil} = '{val}'" for fil, val in filters.items()]
+        )
+
+    group_by_str = ""
+    if group_by:
+        group_by_str = f"GROUP BY log.{group_by}"
+
+    query_lines = ["SELECT", "log.*", "FROM", "log", where_str, group_by_str]
+
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_logs", query)
+    result = get(url, format="json")
+    return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
+def fetch_content_type_counts(dataset=None):
+    joins = []
+    where_str = None
+    if dataset:
+        joins = [
+            "INNER JOIN source ON log.endpoint = source.endpoint",
+            "INNER JOIN source_pipeline on source.source = source_pipeline.source",
+        ]
+        where_str = f"source_pipeline.pipeline = '{dataset}'"
+
+    query_lines = [
+        "SELECT",
+        "log.content_type,",
+        "count(DISTINCT log.resource) AS resource_count",
+        "FROM",
+        "log",
+        *joins,
+        "WHERE " + where_str if where_str is not None else "",
+        "GROUP BY",
+        "log.content_type",
+    ]
+
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_content_type_counts", query)
+    result = get(url, format="json")
+    return [create_dict(result["columns"], row) for row in result["rows"]]

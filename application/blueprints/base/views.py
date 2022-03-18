@@ -1,4 +1,4 @@
-import json
+from urllib.parse import unquote
 from datetime import datetime
 
 from flask import render_template, Blueprint, current_app, redirect
@@ -16,8 +16,6 @@ from application.datasette import (
     get_datasets_summary,
     get_resource_count,
     total_publisher_coverage,
-    content_type_counts,
-    resources_of_type,
     get_resources,
     get_resource,
     source_count_per_organisation,
@@ -37,6 +35,8 @@ from application.data_access.digital_land_queries import (
     fetch_latest_collector_run_date,
     fetch_themes,
     fetch_typologies,
+    fetch_logs,
+    fetch_content_type_counts,
 )
 from application.data_access.dataset_db_queries import fetch_resource_from_dataset
 
@@ -80,6 +80,12 @@ def performance():
     gs_datasets = get_datasets_summary()
     entity_counts = fetch_entity_count()
 
+    content_type_counts = sorted(
+        fetch_content_type_counts(),
+        key=lambda x: x["resource_count"],
+        reverse=True,
+    )
+
     return render_template(
         "performance.html",
         info_page=url_for("base.performance_info"),
@@ -93,7 +99,7 @@ def performance():
         publisher_using_enddate_count=len(
             fetch_organisation_entities_using_end_dates()
         ),
-        content_type_counts=content_type_counts(),
+        content_type_counts=content_type_counts,
         new_resources=ds.get_new_resources(dates=recent_dates(7)),
     )
 
@@ -177,6 +183,12 @@ def dataset(dataset):
         limit=500, filter={"documentation_url": "", "pipeline": dataset_name}
     )
 
+    content_type_counts = sorted(
+        fetch_content_type_counts(dataset=dataset_name),
+        key=lambda x: x["resource_count"],
+        reverse=True,
+    )
+
     return render_template(
         "dataset/performance.html",
         name=dataset_name,
@@ -191,7 +203,7 @@ def dataset(dataset):
         coverage=publisher_coverage(dataset_name)[0],
         resource_stats=resource_stats,
         sources_no_doc_url=sources_no_doc_url,
-        content_type_counts=content_type_counts(dataset_name),
+        content_type_counts=content_type_counts,
         latest_logs=fetch_latest_collector_run_date(dataset=dataset_name),
         blank_sources=ds.get_blank_sources(dataset_name),
         source_count=ds.source_counts(pipeline=dataset_name),
@@ -243,11 +255,17 @@ def resources():
     else:
         resource_records = get_resources()
 
+    content_type_counts = sorted(
+        fetch_content_type_counts(),
+        key=lambda x: x["resource_count"],
+        reverse=True,
+    )
+
     return render_template(
         "resource/index.html",
         by_dataset=resources_per_dataset,
         resource_count=get_resource_count(),
-        content_type_counts=content_type_counts(),
+        content_type_counts=content_type_counts,
         datasets=fetch_entity_count(),
         resources=resource_records,
         filters=filters,
@@ -355,25 +373,37 @@ def source(source):
 def content_types():
     pipeline = request.args.get("pipeline")
 
+    content_type_counts = sorted(
+        fetch_content_type_counts(dataset=pipeline)
+        if pipeline
+        else fetch_content_type_counts(),
+        key=lambda x: x["resource_count"],
+        reverse=True,
+    )
+
     if pipeline:
         return render_template(
             "content_type/index.html",
-            content_type_counts=content_type_counts(pipeline),
+            content_type_counts=content_type_counts,
             pipeline=pipeline,
         )
 
     return render_template(
-        "content_type/index.html", content_type_counts=content_type_counts()
+        "content_type/index.html", content_type_counts=content_type_counts
     )
 
 
 @base.route("/content-type/<content_type>")
 def content_type(content_type):
 
+    unquoted_content_type = unquote(content_type)
+
     return render_template(
         "content_type/type.html",
-        content_type=content_type,
-        resources=resources_of_type(content_type),
+        content_type=unquoted_content_type,
+        resources=fetch_logs(
+            filters={"content_type": unquoted_content_type}, group_by="resource"
+        ),
     )
 
 
