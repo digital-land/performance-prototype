@@ -362,13 +362,6 @@ def get_organisation(id):
     return create_dict(results["columns"], results["rows"][0])
 
 
-def get_resource_count():
-    ds = DLDatasette()
-    query = f"{ds.BASE_URL}/digital-land.json?sql=select+count%28distinct+resource%29+from+resource"
-    results = ds.sqlQuery(query)
-    return results["rows"][0][0]
-
-
 def get_datasets_summary():
     # get all the datasets listed with their active status
     all_datasets = index_by("dataset", fetch_datasets())

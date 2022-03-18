@@ -50,27 +50,6 @@ def fetch_datasets(filter=None):
     return [create_dict(result["columns"], row) for row in result["rows"]]
 
 
-def fetch_log_summary(date=yesterday(string=True)):
-    query_lines = [
-        "SELECT",
-        "entry_date,",
-        "status,",
-        "COUNT(DISTINCT endpoint) AS count",
-        "FROM",
-        "log",
-        "WHERE",
-        f"entry_date = '{date}'",
-        "GROUP BY",
-        "status",
-    ]
-    query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    logger.info("get_log_summary: %s", url)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
-
-
 def fetch_sources(limit=100, filter=None, include_blanks=False, concat_pipelines=True):
     params = ""
     limit_str = ""
@@ -257,6 +236,15 @@ def fetch_resources(filters=None, limit=None):
     return get(url, format="json")
 
 
+def fetch_resource_count():
+    query_lines = ["select count(distinct resource) from resource"]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_resource_count {url}")
+    result = get(url, format="json")
+    return result["rows"][0][0]
+
+
 def fetch_latest_resource(dataset=None):
     if dataset:
         results = fetch_resources(filters={"dataset": dataset}, limit=1)
@@ -409,6 +397,11 @@ def fetch_typologies():
     return fetch_table("typology")
 
 
+##########################################
+# Queries using log table as primary table
+##########################################
+
+
 def fetch_logs(filters=None, group_by=None):
     where_str = ""
     if filters:
@@ -425,6 +418,26 @@ def fetch_logs(filters=None, group_by=None):
     query = prepare_query_str(query_lines)
     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
     print(f"get_logs", query)
+    result = get(url, format="json")
+    return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
+def fetch_log_summary(date=yesterday(string=True)):
+    query_lines = [
+        "SELECT",
+        "entry_date,",
+        "status,",
+        "COUNT(DISTINCT endpoint) AS count",
+        "FROM",
+        "log",
+        "WHERE",
+        f"entry_date = '{date}'",
+        "GROUP BY",
+        "status",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    logger.info("get_log_summary: %s", url)
     result = get(url, format="json")
     return [create_dict(result["columns"], row) for row in result["rows"]]
 

@@ -14,7 +14,6 @@ from application.datasette import (
     resources_by_dataset,
     get_source,
     get_datasets_summary,
-    get_resource_count,
     total_publisher_coverage,
     get_resources,
     get_resource,
@@ -31,6 +30,7 @@ from application.data_access.digital_land_queries import (
     fetch_sources,
     fetch_organisation_stats,
     fetch_source_counts,
+    fetch_resource_count,
     fetch_latest_resource,
     fetch_latest_collector_run_date,
     fetch_themes,
@@ -95,7 +95,7 @@ def performance():
         source_counts=fetch_source_counts(),
         entity_count=ds.get_entity_count(),
         datasets_with_data_count=len(entity_counts.keys()),
-        resource_count=get_resource_count(),
+        resource_count=fetch_resource_count(),
         publisher_using_enddate_count=len(
             fetch_organisation_entities_using_end_dates()
         ),
@@ -264,7 +264,7 @@ def resources():
     return render_template(
         "resource/index.html",
         by_dataset=resources_per_dataset,
-        resource_count=get_resource_count(),
+        resource_count=fetch_resource_count(),
         content_type_counts=content_type_counts,
         datasets=fetch_entity_count(),
         resources=resource_records,
