@@ -156,6 +156,29 @@ def fetch_publishers():
     return index_by("organisation", organisations)
 
 
+def fetch_publisher_coverage():
+    query_lines = [
+        "SELECT",
+        "count(DISTINCT source.organisation) AS total,",
+        "COUNT(",
+        "DISTINCT CASE",
+        "WHEN source.endpoint != '' THEN source.organisation",
+        "END",
+        ") AS active",
+        "FROM",
+        "source",
+        "WHERE",
+        "source.organisation != ''",
+        "ORDER BY",
+        "source.source",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_publisher_coverage: {url}")
+    result = get(url, format="json")
+    return create_dict(result["columns"], result["rows"][0])
+
+
 def f_orgs():
     query = urllib.parse.quote(
         "select name, organisation from organisation order by organisation"

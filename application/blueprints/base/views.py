@@ -11,7 +11,6 @@ from application.datasette import (
     publisher_counts,
     publisher_coverage,
     get_datasets_summary,
-    total_publisher_coverage,
     DLDatasette,
 )
 from application.data_access.entity_queries import (
@@ -23,6 +22,7 @@ from application.data_access.digital_land_queries import (
     fetch_log_summary,
     fetch_sources,
     fetch_organisation_stats,
+    fetch_publisher_coverage,
     fetch_source_counts,
     fetch_resource_count_per_dataset,
     fetch_resource,
@@ -91,7 +91,7 @@ def performance():
         info_page=url_for("base.performance_info"),
         datasets=gs_datasets,
         stats=get_monthly_counts(),
-        publisher_count=total_publisher_coverage(),
+        publisher_count=fetch_publisher_coverage(),
         source_counts=fetch_source_counts(groupby="dataset"),
         entity_count=ds.get_entity_count(),
         datasets_with_data_count=len(entity_counts.keys()),
