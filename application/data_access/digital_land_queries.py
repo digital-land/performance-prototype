@@ -156,7 +156,7 @@ def fetch_publishers():
     return index_by("organisation", organisations)
 
 
-def fetch_publisher_coverage():
+def fetch_publisher_coverage(dataset=None):
     query_lines = [
         "SELECT",
         "count(DISTINCT source.organisation) AS total,",
@@ -167,8 +167,10 @@ def fetch_publisher_coverage():
         ") AS active",
         "FROM",
         "source",
+        "INNER JOIN source_pipeline on source.source = source_pipeline.source",
         "WHERE",
         "source.organisation != ''",
+        f" AND source_pipeline.pipeline = '{dataset}'" if dataset else "",
         "ORDER BY",
         "source.source",
     ]

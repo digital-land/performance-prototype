@@ -9,7 +9,6 @@ from flask import request
 from application.datasette import (
     get_monthly_counts,
     publisher_counts,
-    publisher_coverage,
     get_datasets_summary,
     DLDatasette,
 )
@@ -207,7 +206,7 @@ def dataset(dataset):
         today=datetime.utcnow().isoformat()[:10],
         entity_count=ds.get_entity_count(pipeline=dataset_name),
         resource_count=resource_count,
-        coverage=publisher_coverage(dataset_name)[0],
+        coverage=fetch_publisher_coverage(dataset_name),
         resource_stats=resource_stats,
         sources_no_doc_url=sources_no_doc_url,
         content_type_counts=content_type_counts,
