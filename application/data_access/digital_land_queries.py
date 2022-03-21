@@ -106,6 +106,7 @@ def fetch_sources(
         "source.organisation,",
         "organisation.name,",
         "source.endpoint,",
+        "" if only_blanks or include_blanks else "endpoint.endpoint_url,",
         "source.documentation_url,",
         "source.entry_date,",
         "source.start_date,",
@@ -115,9 +116,9 @@ def fetch_sources(
         "source",
         "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
         "INNER JOIN organisation ON source.organisation = organisation.organisation",
-        "INNER JOIN endpoint ON source.endpoint = endpoint.endpoint"
-        if filter and "endpoint_" in filter.keys()
-        else "",
+        ""
+        if only_blanks or include_blanks
+        else "INNER JOIN endpoint ON source.endpoint = endpoint.endpoint",
         where_clause,
         group_by,
         "ORDER BY source.start_date DESC",
@@ -127,7 +128,7 @@ def fetch_sources(
     query = urllib.parse.quote(query_str)
     url = f"{DATASETTE_URL}/digital-land.json?sql={query}{params}"
 
-    print(url)
+    print("GET MY SOURCE", url)
     result = get(url, format="json")
     return [create_dict(result["columns"], row) for row in result["rows"]], url.replace(
         "digital-land.json?sql", "digital-land?sql"

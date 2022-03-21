@@ -261,28 +261,6 @@ def source_count_per_organisation():
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
-def get_blank_source(source):
-    ds = DLDatasette()
-    query = (
-        f"{ds.BASE_URL}/digital-land.json?sql=select%0D%0A++source.attribution%2C%0D%0A++source.collection%2C%0D%0A++source.documentation_url%2C%0D%0A++source.end_date%2C%0D%0A++source.endpoint%2C%0D%0A++source.entry_date%2C%0D%0A++source.licence%2C%0D%0A++source.organisation%2C%0D%0A++source.source%2C%0D%0A++source.start_date%0D%0Afrom%0D%0A++source%0D%0Awhere%0D%0A++source.source+%3D+%3Asource%0D%0Aorder+by%0D%0A++source.source&source="
-        + source
-    )
-    results = ds.sqlQuery(query)
-    return [create_dict(results["columns"], row) for row in results["rows"]]
-
-
-def get_source(source):
-    ds = DLDatasette()
-    query = (
-        f"{ds.BASE_URL}/digital-land.json?sql=select%0D%0A++source.attribution%2C%0D%0A++source.collection%2C%0D%0A++source.documentation_url%2C%0D%0A++source.end_date%2C%0D%0A++source.endpoint%2C%0D%0A++endpoint.endpoint_url%2C%0D%0A++source.entry_date%2C%0D%0A++source.licence%2C%0D%0A++source.organisation%2C%0D%0A++source.source%2C%0D%0A++source.start_date%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+endpoint+ON+source.endpoint+%3D+endpoint.endpoint%0D%0Awhere%0D%0A++source.source+%3D+%3Asource%0D%0Aorder+by%0D%0A++source.source&source="
-        + source
-    )
-    results = ds.sqlQuery(query)
-    if len(results["rows"]) == 0:
-        return get_blank_source(source)
-    return [create_dict(results["columns"], row) for row in results["rows"]]
-
-
 def resources_by_dataset(pipeline=None):
     # used by get_datasets_summary
     ds = DLDatasette()

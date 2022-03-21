@@ -33,8 +33,10 @@
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Endpoint</dt>
             <dd class="govuk-summary-list__value">
+              {%- if source['endpoint_url'] %}
               <a class="govuk-link" href="{{ source['endpoint_url'] }}">{{ source['endpoint_url'] }}</a>
               <span title="Organisation identifier: local-authority-eng:BAB" class="govuk-!-font-size-16 secondary-text data-reference">(<span class="govuk-visually-hidden">Endpoint identifier is </span>{{ source['endpoint']|truncate(15) }})</span></dd>
+              {% endif -%}
           </div>
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Documentation url</dt>

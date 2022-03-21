@@ -11,7 +11,6 @@ from application.datasette import (
     publisher_coverage,
     active_resources,
     sources_by_dataset,
-    get_source,
     get_datasets_summary,
     total_publisher_coverage,
     source_count_per_organisation,
@@ -368,7 +367,10 @@ def sources():
 
 @base.route("/source/<source>")
 def source(source):
-    source_data = get_source(source)
+    source_data, q = fetch_sources(filter={"source": source})
+    if len(source_data) == 0:
+        # if no source record return check if blank one exists
+        source_data, q = fetch_sources(filter={"source": source}, include_blanks=True)
     resource_result = fetch_resources(filters={"source": source})
 
     return render_template(
