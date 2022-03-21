@@ -10,7 +10,6 @@ from application.datasette import (
     get_monthly_counts,
     publisher_counts,
     publisher_coverage,
-    active_resources,
     get_datasets_summary,
     total_publisher_coverage,
     DLDatasette,
@@ -29,6 +28,7 @@ from application.data_access.digital_land_queries import (
     fetch_resource,
     fetch_resources,
     fetch_total_resource_count,
+    fetch_active_resources,
     fetch_latest_resource,
     fetch_latest_collector_run_date,
     fetch_themes,
@@ -152,7 +152,7 @@ def dataset(dataset):
     dataset_name = dataset
     dataset = [v for k, v in datasets.items() if v.get("pipeline") == dataset]
 
-    resources_by_publisher = resources_per_publishers(active_resources(dataset_name))
+    resources_by_publisher = resources_per_publishers(fetch_active_resources())
 
     publishers = publisher_counts(dataset_name)
     publisher_splits = {"active": [], "noactive": []}

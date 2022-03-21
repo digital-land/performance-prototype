@@ -294,6 +294,35 @@ def fetch_resource(resource_hash):
     return [create_dict(result["columns"], row) for row in result["rows"]]
 
 
+def fetch_active_resources():
+    # probably doesn't need to be it's own query but it was causing a headache
+    query_lines = [
+        "SELECT",
+        "resource.resource,",
+        "resource_organisation.organisation,",
+        "resource.end_date,",
+        "resource.entry_date,",
+        "resource.start_date,",
+        "source_pipeline.pipeline",
+        "FROM",
+        "resource",
+        "INNER JOIN resource_endpoint ON resource.resource = resource_endpoint.resource",
+        "INNER JOIN resource_organisation ON resource.resource = resource_organisation.resource",
+        "INNER JOIN source ON resource_endpoint.endpoint = source.endpoint",
+        "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
+        "WHERE",
+        "source_pipeline.pipeline = :pipeline",
+        "AND (resource.end_date == '' OR strftime('%Y%m%d', resource.end_date) >= strftime('%Y%m%d', 'now'))",
+        "ORDER BY",
+        "resource.end_date ASC",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_active_resources {url}")
+    result = get(url, format="json")
+    return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
 def fetch_total_resource_count():
     query_lines = ["select count(distinct resource) from resource"]
     query = prepare_query_str(query_lines)

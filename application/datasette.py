@@ -232,16 +232,6 @@ def publisher_coverage(pipeline=None):
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
-def active_resources(pipeline):
-    ds = DLDatasette()
-    query = (
-        f"{ds.BASE_URL}/digital-land.json?sql=select%0D%0A++resource.resource%2C%0D%0A++resource_organisation.organisation%2C%0D%0A++resource.end_date%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+resource_organisation+ON+resource.resource+%3D+resource_organisation.resource%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source_pipeline.pipeline+%3D+%3Apipeline%0D%0A++AND+%28resource.end_date+%3D%3D+%27%27+OR+strftime%28%27%25Y%25m%25d%27%2C+resource.end_date%29+%3E%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29%29%0D%0Aorder+by%0D%0A++resource.end_date+ASC%0D%0A&pipeline="
-        + pipeline
-    )
-    results = ds.sqlQuery(query)
-    return [create_dict(results["columns"], row) for row in results["rows"]]
-
-
 def resources_by_dataset(pipeline=None):
     # used by get_datasets_summary
     ds = DLDatasette()
