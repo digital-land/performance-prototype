@@ -1,3 +1,4 @@
+from itertools import groupby
 from urllib.parse import unquote
 from datetime import datetime
 
@@ -10,10 +11,8 @@ from application.datasette import (
     publisher_counts,
     publisher_coverage,
     active_resources,
-    sources_by_dataset,
     get_datasets_summary,
     total_publisher_coverage,
-    source_count_per_organisation,
     DLDatasette,
 )
 from application.data_access.entity_queries import (
@@ -93,7 +92,7 @@ def performance():
         datasets=gs_datasets,
         stats=get_monthly_counts(),
         publisher_count=total_publisher_coverage(),
-        source_counts=fetch_source_counts(),
+        source_counts=fetch_source_counts(groupby="dataset"),
         entity_count=ds.get_entity_count(),
         datasets_with_data_count=len(entity_counts.keys()),
         resource_count=fetch_total_resource_count(),
@@ -342,9 +341,6 @@ def sources():
     if request.args.get("include_blanks") is not None:
         include_blanks = request.args.get("include_blanks")
 
-    datasets = sources_by_dataset()
-    organisations = source_count_per_organisation()
-
     if len(filters.keys()):
         source_records, query_url = fetch_sources(
             filter=filters, include_blanks=include_blanks
@@ -354,12 +350,12 @@ def sources():
 
     return render_template(
         "source/index.html",
-        by_dataset=datasets,
+        datasets=fetch_source_counts(groupby="dataset"),
         counts=ds.source_counts()[0],
         sources=source_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),
-        organisations=organisations,
+        organisations=fetch_source_counts(groupby="organisation"),
         query_url=query_url,
         include_blanks=include_blanks,
     )

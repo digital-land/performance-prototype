@@ -358,10 +358,17 @@ def fetch_organisation_sources(organisation):
     return sources
 
 
-def fetch_overall_source_counts():
+def fetch_overall_source_counts(groupby=None):
+    groupby_options = {
+        "organisation": "organisation.organisation",
+        "dataset": "source_pipeline.pipeline",
+    }
     query_lines = [
         "SELECT",
         "source_pipeline.pipeline,",
+        "organisation.organisation, organisation.name, organisation.end_date,"
+        if groupby == "organisation"
+        else "",
         "COUNT(DISTINCT source.source) AS sources,",
         "SUM(",
         "CASE",
@@ -381,8 +388,10 @@ def fetch_overall_source_counts():
         "FROM",
         "source",
         "INNER JOIN source_pipeline on source.source = source_pipeline.source",
-        "GROUP BY",
-        "source_pipeline.pipeline",
+        "INNER JOIN organisation on source.organisation = organisation.organisation",
+        f"GROUP BY {groupby_options.get(groupby)}"
+        if groupby and groupby_options.get(groupby)
+        else "",
     ]
     query = prepare_query_str(query_lines)
     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
@@ -391,20 +400,22 @@ def fetch_overall_source_counts():
     return [create_dict(result["columns"], row) for row in result["rows"]]
 
 
-def fetch_organisation_source_counts(organisation):
+def fetch_organisation_source_counts(organisation, by_dataset=True):
     query_lines = [
         "SELECT",
         "source_pipeline.pipeline AS pipeline,",
+        "organisation.organisation,",
+        "organisation.name,",
         "COUNT(DISTINCT source.source) AS sources,",
         "SUM(CASE WHEN (source.endpoint) is not null and (source.endpoint) != ''",
         " THEN 1 ELSE 0 END)  AS sources_with_endpoint",
         "FROM",
         "source",
         "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
+        "INNER JOIN organisation ON source.organisation = organisation.organisation",
         "WHERE",
         f"source.organisation = '{organisation}'",
-        "GROUP BY",
-        "source_pipeline.pipeline",
+        "GROUP BY source_pipeline.pipeline" if by_dataset else "",
     ]
     query = prepare_query_str(query_lines)
     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
@@ -413,10 +424,10 @@ def fetch_organisation_source_counts(organisation):
     return [create_dict(result["columns"], row) for row in result["rows"]]
 
 
-def fetch_source_counts(organisation=None):
+def fetch_source_counts(organisation=None, **kwargs):
     if organisation:
-        return fetch_organisation_source_counts(organisation)
-    return fetch_overall_source_counts()
+        return fetch_organisation_source_counts(organisation, **kwargs)
+    return fetch_overall_source_counts(**kwargs)
 
 
 def fetch_latest_collector_run_date(dataset=None):

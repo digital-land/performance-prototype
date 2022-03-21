@@ -242,25 +242,6 @@ def active_resources(pipeline):
     return [create_dict(results["columns"], row) for row in results["rows"]]
 
 
-def sources_by_dataset(pipeline=None):
-    ds = DLDatasette()
-    query = f"{ds.BASE_URL}/digital-land.json?sql=select%0D%0A++count%28DISTINCT+source.source%29+as+total%2C%0D%0A++COUNT%28DISTINCT+CASE+%0D%0A++++WHEN+source.end_date+%3D%3D+%27%27+AND+source.endpoint+%21%3D+%27%27+THEN+source.source%0D%0A++++WHEN+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3E%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29+AND+source.endpoint+%21%3D+%27%27+THEN+source.source%0D%0A++END%29+AS+active_sources%2C%0D%0A++COUNT%28DISTINCT+CASE+%0D%0A++++WHEN+source.endpoint+%3D%3D+%27%27+THEN+source.source%0D%0A++END%29+AS+blank_sources%2C%0D%0A++COUNT%28DISTINCT+CASE+%0D%0A++++WHEN+source.end_date+%21%3D+%27%27+AND+strftime%28%27%25Y%25m%25d%27%2C+source.end_date%29+%3C%3D+strftime%28%27%25Y%25m%25d%27%2C+%27now%27%29++THEN+source.source%0D%0A++END%29+AS+ended_sources%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Agroup+by%0D%0Asource_pipeline.pipeline%0D%0A"
-    if pipeline:
-        query = (
-            f"{ds.BASE_URL}/digital-land.json?sql=select%0D%0A++source.source%2C%0D%0A++source.organisation%2C%0D%0A++organisation.name%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++source%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+on+source.organisation+%3D+organisation.organisation%0D%0Awhere%0D%0A++source_pipeline.pipeline+%3D+%3Apipeline%0D%0A++AND+source.end_date+%3D%3D+%27%27%0D%0A++AND+source.endpoint+%21%3D+%27%27%0D%0Aorder+by%0D%0A++organisation.name%0D%0A&pipeline="
-            + pipeline
-        )
-    results = ds.sqlQuery(query)
-    return [create_dict(results["columns"], row) for row in results["rows"]]
-
-
-def source_count_per_organisation():
-    ds = DLDatasette()
-    query = f"{ds.BASE_URL}/digital-land.json?sql=select%0D%0A++organisation.name%2C%0D%0A++source.organisation%2C%0D%0A++organisation.end_date+AS+organisation_end_date%2C%0D%0A++COUNT%28DISTINCT+source_pipeline.pipeline%29+AS+pipelines%2C%0D%0A++COUNT%28DISTINCT+source.source%29+AS+sources%0D%0Afrom%0D%0Asource%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0A++INNER+JOIN+organisation+ON+source.organisation+%3D+organisation.organisation%0D%0Awhere%0D%0Asource.endpoint+%21%3D+%27%27%0D%0AGROUP+BY%0D%0A++source.organisation"
-    results = ds.sqlQuery(query)
-    return [create_dict(results["columns"], row) for row in results["rows"]]
-
-
 def resources_by_dataset(pipeline=None):
     # used by get_datasets_summary
     ds = DLDatasette()

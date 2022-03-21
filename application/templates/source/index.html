@@ -48,7 +48,7 @@
       <form action="{{ url_for('base.sources') }}" class="govuk-form">
         <h2 class="govuk-heading-m">Filters</h2>
         <!-- filter by dataset -->
-        {%- if by_dataset %}
+        {%- if datasets %}
         <div class="govuk-form-group">
           {% call dlFilterGroup({
             "title": "Dataset",
@@ -68,7 +68,7 @@
               <span id="checkbox-filter-{{ randomID_filter }}" class="dl-filter-group__auto-filter__desc govuk-visually-hidden" aria-live="polite" data-single="option found" data-multiple="options found" data-selected="selected">How many showing</span>
             
               <div id="checkboxes-{{ randomID_list }}" class="checkbox-list">
-                {% for dataset in by_dataset %}
+                {% for dataset in datasets %}
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="pipeline-{{loop.index}}" name="pipeline" type="radio" value="{{ dataset.pipeline }}"{% if dataset.pipeline in request.args.getlist('pipeline') %} checked="checked"{% endif %}>
                   <label class="govuk-label govuk-radios__label" for="pipeline-{{loop.index}}">
@@ -84,7 +84,7 @@
         {% endif -%}
 
         <!-- filter by organisation -->
-        {%- if by_dataset %}
+        {%- if organisations %}
         <div class="govuk-form-group">
           {% call dlFilterGroup({
             "title": "Publisher",
