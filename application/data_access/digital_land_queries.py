@@ -50,7 +50,13 @@ def fetch_datasets(filter=None):
     return [create_dict(result["columns"], row) for row in result["rows"]]
 
 
-def fetch_sources(limit=100, filter=None, include_blanks=False, concat_pipelines=True):
+def fetch_sources(
+    limit=100,
+    filter=None,
+    include_blanks=False,
+    only_blanks=False,
+    concat_pipelines=True,
+):
     params = ""
     limit_str = ""
     where_clause = ""
@@ -70,13 +76,20 @@ def fetch_sources(limit=100, filter=None, include_blanks=False, concat_pipelines
             },
         )
 
-    # handle case where blanks also included
-    if not include_blanks:
+    if only_blanks:
         where_clause = (
             where_clause
             + ("WHERE " if where_clause == "" else " AND ")
-            + 'source.endpoint != ""'
+            + 'source.endpoint == ""'
         )
+    else:
+        # handle case where blanks also included
+        if not include_blanks:
+            where_clause = (
+                where_clause
+                + ("WHERE " if where_clause == "" else " AND ")
+                + 'source.endpoint != ""'
+            )
 
     # handle concat of pipelines for each source
     group_pipeline_strs = "source_pipeline.pipeline"

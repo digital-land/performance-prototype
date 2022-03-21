@@ -14,7 +14,6 @@ from application.datasette import (
     get_source,
     get_datasets_summary,
     total_publisher_coverage,
-    get_resources,
     source_count_per_organisation,
     DLDatasette,
 )
@@ -193,6 +192,12 @@ def dataset(dataset):
         reverse=True,
     )
 
+    blank_sources, bls_query = fetch_sources(
+        limit=500,
+        filter={"pipeline": dataset_name},
+        only_blanks=True,
+    )
+
     return render_template(
         "dataset/performance.html",
         name=dataset_name,
@@ -209,7 +214,7 @@ def dataset(dataset):
         sources_no_doc_url=sources_no_doc_url,
         content_type_counts=content_type_counts,
         latest_logs=fetch_latest_collector_run_date(dataset=dataset_name),
-        blank_sources=ds.get_blank_sources(dataset_name),
+        blank_sources=blank_sources,
         source_count=ds.source_counts(pipeline=dataset_name),
     )
 
