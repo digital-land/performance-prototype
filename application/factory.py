@@ -36,6 +36,10 @@ def register_blueprints(app):
 
     app.register_blueprint(base)
 
+    from application.blueprints.dataset.views import dataset_bp
+
+    app.register_blueprint(dataset_bp)
+
     from application.blueprints.publisher.views import publisher_pages
 
     app.register_blueprint(publisher_pages)

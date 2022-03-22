@@ -17,7 +17,6 @@ from application.data_access.entity_queries import (
     fetch_organisation_entities_using_end_dates,
 )
 from application.data_access.digital_land_queries import (
-    fetch_datasets,
     fetch_log_summary,
     fetch_sources,
     fetch_organisation_stats,
@@ -28,11 +27,6 @@ from application.data_access.digital_land_queries import (
     fetch_resource,
     fetch_resources,
     fetch_total_resource_count,
-    fetch_active_resources,
-    fetch_latest_resource,
-    fetch_latest_collector_run_date,
-    fetch_themes,
-    fetch_typologies,
     fetch_logs,
     fetch_content_type_counts,
 )
@@ -46,6 +40,7 @@ from application.utils import (
     read_json_file,
     yesterday,
     convert_field_str_to_list,
+    filter_off_btns,
 )
 
 
@@ -115,133 +110,9 @@ def performance_info():
 ##########
 
 
-@base.route("/dataset")
-def datasets():
-    filters = {}
-    # if request.args.get("active"):
-    #     filters["active"] = request.args.get("active")
-    if request.args.get("theme"):
-        filters["theme"] = request.args.get("theme")
-    if request.args.get("typology"):
-        filters["typology"] = request.args.get("typology")
-
-    if len(filters.keys()):
-        dataset_records = fetch_datasets(filter=filters)
-    else:
-        dataset_records = fetch_datasets()
-
-    return render_template(
-        "dataset/index.html",
-        datasets=dataset_records,
-        filters=filters,
-        filter_btns=filter_off_btns(filters),
-        themes=fetch_themes(),
-        typologies=fetch_typologies(),
-    )
-
-
-@base.route("/dataset/<dataset>")
-def dataset(dataset):
-    ds = DLDatasette()
-    datasets = get_datasets_summary()
-    dataset_name = dataset
-    dataset = [v for k, v in datasets.items() if v.get("pipeline") == dataset]
-
-    resources_by_publisher = resources_per_publishers(fetch_active_resources())
-
-    # publishers = fetch_publisher_stats(dataset_name)
-    publishers = publisher_counts(dataset_name)
-    publisher_splits = {"active": [], "noactive": []}
-    for k, publisher in publishers.items():
-        if publisher["active_resources"] == 0:
-            publisher_splits["noactive"].append(publisher)
-        else:
-            publisher_splits["active"].append(publisher)
-
-    # for the active resource charts
-    resource_stats = {
-        "over_one": len(
-            [p for p in resources_by_publisher if len(resources_by_publisher[p]) > 1]
-        ),
-        "one": len(
-            [p for p in resources_by_publisher if len(resources_by_publisher[p]) == 1]
-        ),
-        "zero": len(publisher_splits["noactive"]),
-    }
-
-    resource_counts = index_by("pipeline", fetch_resource_count_per_dataset())
-    resource_count = (
-        resource_counts[dataset_name]["resources"]
-        if resource_counts.get(dataset_name)
-        else 0
-    )
-
-    sources_no_doc_url, query_url = fetch_sources(
-        limit=500, filter={"documentation_url": "", "pipeline": dataset_name}
-    )
-
-    try:
-        # wrapping in try/except because datasette occasionally timesout
-        content_type_counts = sorted(
-            fetch_content_type_counts(dataset=dataset_name),
-            key=lambda x: x["resource_count"],
-            reverse=True,
-        )
-    except:
-        content_type_counts = []
-        print("Query to extract content type counts is failing")
-
-    blank_sources, bls_query = fetch_sources(
-        limit=500,
-        filter={"pipeline": dataset_name},
-        only_blanks=True,
-    )
-
-    return render_template(
-        "dataset/performance.html",
-        name=dataset_name,
-        info_page=url_for("base.dataset_info", dataset=dataset_name),
-        dataset=dataset[0] if len(dataset) else "",
-        latest_resource=fetch_latest_resource(dataset_name),
-        monthly_counts=get_monthly_counts(pipeline=dataset_name),
-        publishers=publisher_splits,
-        today=datetime.utcnow().isoformat()[:10],
-        entity_count=ds.get_entity_count(pipeline=dataset_name),
-        resource_count=resource_count,
-        coverage=fetch_publisher_coverage(dataset_name),
-        resource_stats=resource_stats,
-        sources_no_doc_url=sources_no_doc_url,
-        content_type_counts=content_type_counts,
-        latest_logs=fetch_latest_collector_run_date(dataset=dataset_name),
-        blank_sources=blank_sources,
-        source_count=ds.source_counts(pipeline=dataset_name),
-    )
-
-
-@base.route("/dataset/<dataset>/info")
-def dataset_info(dataset):
-    data = read_json_file("application/data/info/dataset.json")
-    return render_template(
-        "info.html",
-        page_title=dataset + " performance",
-        page_url=url_for("base.dataset_performance", dataset_name=dataset),
-        data=data,
-    )
-
-
 ###########
 # Resources
 ###########
-
-
-def filter_off_btns(filters):
-    # used by all index pages with filter options
-    btns = []
-    for filter, value in filters.items():
-        filters_copy = filters.copy()
-        del filters_copy[filter]
-        btns.append({"filter": filter, "value": value, "url_params": filters_copy})
-    return btns
 
 
 @base.route("/resource")

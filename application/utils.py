@@ -84,3 +84,13 @@ def convert_field_str_to_list(rows, field, separator=";"):
         if row.get(field):
             row[field] = list(set(row[field].split(separator)))
     return rows
+
+
+def filter_off_btns(filters):
+    # used by all index pages with filter options
+    btns = []
+    for filter, value in filters.items():
+        filters_copy = filters.copy()
+        del filters_copy[filter]
+        btns.append({"filter": filter, "value": value, "url_params": filters_copy})
+    return btns

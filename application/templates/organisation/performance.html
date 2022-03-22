@@ -56,7 +56,7 @@
             {{ "Yes" if enddates|length else "No" }}{% if enddates|length %} in
             <ul class="govuk-list">
               {% for d in enddates -%}
-              <li><a href="{{ url_for('base.dataset', dataset=d) }}">{{ d }}</a></li>
+              <li><a href="{{ url_for('dataset.dataset', dataset=d) }}">{{ d }}</a></li>
               {%- endfor %}
             </ul>
             {%- endif %}
@@ -97,7 +97,7 @@
   <ul class="govuk-list">
     {% for dataset in data["data_from_secondary"].keys() %}
       <li>
-          <a href="{{ url_for('base.dataset', dataset=dataset) }}">{{ dataset }}</a> 
+          <a href="{{ url_for('dataset.dataset', dataset=dataset) }}">{{ dataset }}</a> 
           &mdash;
           <a href="https://www.digital-land.info/entity/?dataset={{ dataset }}&organisation={{ organisation.organisation }}">
           {{ data["data_from_secondary"][dataset]['entity_count'] }} entit{{ "y" if data["data_from_secondary"][dataset]['entity_count'] == 1 else "ies" }}</a>
