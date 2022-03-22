@@ -52,11 +52,6 @@ from application.utils import (
 base = Blueprint("base", __name__)
 
 
-@base.context_processor
-def set_globals():
-    return {"staticPath": "https://digital-land.github.io"}
-
-
 ###################
 # Service homepage
 ###################

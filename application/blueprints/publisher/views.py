@@ -30,11 +30,6 @@ from application.utils import (
 publisher_pages = Blueprint("publisher", __name__, url_prefix="/organisation")
 
 
-@publisher_pages.context_processor
-def set_globals():
-    return {"staticPath": "https://digital-land.github.io"}
-
-
 ############
 # Publishers
 ############

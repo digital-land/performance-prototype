@@ -46,10 +46,10 @@ def register_context_processors(app):
     Add template context variables and functions
     """
 
-    def base_context_processor():
-        return {"assetPath": "/static"}
+    def globals_context_processor():
+        return {"assetPath": "/static", "staticPath": "https://digital-land.github.io"}
 
-    app.context_processor(base_context_processor)
+    app.context_processor(globals_context_processor)
 
 
 def register_filters(app):
