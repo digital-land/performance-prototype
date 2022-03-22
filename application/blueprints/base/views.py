@@ -22,6 +22,7 @@ from application.data_access.digital_land_queries import (
     fetch_sources,
     fetch_organisation_stats,
     fetch_publisher_coverage,
+    fetch_publisher_stats,
     fetch_source_counts,
     fetch_resource_count_per_dataset,
     fetch_resource,
@@ -153,6 +154,7 @@ def dataset(dataset):
 
     resources_by_publisher = resources_per_publishers(fetch_active_resources())
 
+    # publishers = fetch_publisher_stats(dataset_name)
     publishers = publisher_counts(dataset_name)
     publisher_splits = {"active": [], "noactive": []}
     for k, publisher in publishers.items():
@@ -183,11 +185,16 @@ def dataset(dataset):
         limit=500, filter={"documentation_url": "", "pipeline": dataset_name}
     )
 
-    content_type_counts = sorted(
-        fetch_content_type_counts(dataset=dataset_name),
-        key=lambda x: x["resource_count"],
-        reverse=True,
-    )
+    try:
+        # wrapping in try/except because datasette occasionally timesout
+        content_type_counts = sorted(
+            fetch_content_type_counts(dataset=dataset_name),
+            key=lambda x: x["resource_count"],
+            reverse=True,
+        )
+    except:
+        content_type_counts = []
+        print("Query to extract content type counts is failing")
 
     blank_sources, bls_query = fetch_sources(
         limit=500,

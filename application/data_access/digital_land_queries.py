@@ -231,6 +231,54 @@ def fetch_organisation_stats():
     return index_by("organisation", organisations)
 
 
+# should replace fetch_organisation_stats
+def fetch_publisher_stats(dataset):
+    query_lines = [
+        "SELECT",
+        "organisation.name,",
+        "source.organisation,",
+        "organisation.end_date AS organisation_end_date,",
+        "COUNT(DISTINCT resource.resource) AS resources,",
+        "COUNT(",
+        "DISTINCT CASE",
+        "WHEN resource.end_date == '' THEN resource.resource",
+        "WHEN strftime('%Y%m%d', resource.end_date) >= strftime('%Y%m%d', 'now') THEN resource.resource",
+        "END",
+        ") AS active_resources,",
+        "COUNT(DISTINCT resource_endpoint.endpoint) AS endpoints,",
+        "COUNT(DISTINCT source.source) AS sources,",
+        "COUNT(",
+        "DISTINCT CASE",
+        "WHEN source.end_date == '' THEN source.source",
+        "WHEN strftime('%Y%m%d', source.end_date) >= strftime('%Y%m%d', 'now') THEN source.source",
+        "END",
+        ") AS active_sources,",
+        "MAX(resource.start_date),",
+        "Cast (",
+        "(",
+        "julianday('now') - julianday(MAX(resource.start_date))",
+        ") AS INTEGER",
+        ") as days_since_update",
+        "FROM",
+        "resource",
+        "INNER JOIN resource_endpoint ON resource.resource = resource_endpoint.resource",
+        "INNER JOIN endpoint ON resource_endpoint.endpoint = endpoint.endpoint",
+        "INNER JOIN source ON resource_endpoint.endpoint = source.endpoint",
+        "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
+        "INNER JOIN organisation ON source.organisation = organisation.organisation",
+        "WHERE",
+        f"source_pipeline.pipeline = '{dataset}'",
+        "GROUP BY",
+        "source.organisation",
+    ]
+    query = prepare_query_str(query_lines)
+    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+    print(f"get_publisher_stats: {url}")
+    result = get(url, format="json")
+    organisations = [create_dict(result["columns"], row) for row in result["rows"]]
+    return index_by("organisation", organisations)
+
+
 def fetch_resources(filters=None, limit=None):
     limit_str = ""
     if limit:
@@ -358,15 +406,18 @@ def fetch_total_resource_count():
 
 
 def fetch_latest_resource(dataset=None):
-    if dataset:
-        results = fetch_resources(filters={"dataset": dataset}, limit=1)
-    else:
-        results = fetch_resources(limit=1)
+    try:
+        if dataset:
+            results = fetch_resources(filters={"dataset": dataset}, limit=1)
+        else:
+            results = fetch_resources(limit=1)
 
-    if len(results["rows"]):
-        return create_dict(results["columns"], results["rows"][0])
+        if len(results["rows"]):
+            return create_dict(results["columns"], results["rows"][0])
 
-    return None
+        return None
+    except:
+        return {"error": "Problem retrieving data from datasette"}
 
 
 def fetch_resource_count_per_dataset(organisation=None):

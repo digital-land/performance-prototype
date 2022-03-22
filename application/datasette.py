@@ -208,6 +208,7 @@ def publisher_counts(pipeline):
     )
     results = ds.sqlQuery(query)
     organisations = [create_dict(results["columns"], row) for row in results["rows"]]
+    print("Publihser ===COUNTS====", query)
     return index_by("organisation", organisations)
 
 
@@ -277,7 +278,6 @@ def get_datasets_summary():
         else:
             missing.append(d["pipeline"])
 
-    print(all_datasets)
     print("MISSING")
     print(set(missing))
 
