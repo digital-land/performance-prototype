@@ -241,13 +241,12 @@ def source(source):
         source_data, q = fetch_sources(filter={"source": source}, include_blanks=True)
     resource_result = fetch_resources(filters={"source": source})
 
+    columns = resource_result[0].keys() if resource_result else []
+
     return render_template(
         "source/source.html",
         source=source_data[0],
-        resources=[
-            create_dict(resource_result["columns"], row)
-            for row in resource_result["rows"]
-        ],
+        resources=[create_dict(columns, row) for row in resource_result],
     )
 
 

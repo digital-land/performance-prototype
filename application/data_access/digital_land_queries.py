@@ -132,7 +132,10 @@ def fetch_sources(
     query_str = " ".join(query_lines)
 
     with Database(sqlite_db_path) as db:
-        rows = db.execute(query_str).fetchall()
+        if filter:
+            rows = db.execute(query_str, filter).fetchall()
+        else:
+            rows = db.execute(query_str).fetchall()
 
     columns = rows[0].keys() if rows else []
 
@@ -342,10 +345,18 @@ def fetch_resources(filters=None, limit=None):
         "resource.start_date DESC",
         limit_str,
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}{params}"
-    print(f"get_resources ({filters}): {url}")
-    return get(url, format="json")
+    # query = prepare_query_str(query_lines)
+    # url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}{params}"
+    # print(f"get_resources ({filters}): {url}")
+    # return get(url, format="json")
+
+    query_str = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        if filter:
+            rows = db.execute(query_str, filters).fetchall()
+        else:
+            rows = db.execute(query_str).fetchall()
+    return rows
 
 
 def fetch_resource(resource_hash):
