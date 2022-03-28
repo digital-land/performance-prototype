@@ -3,11 +3,15 @@
 Flask app factory class
 """
 import os
+import pathlib
 
 from flask import Flask, render_template, session
 from flask.cli import load_dotenv
 
 load_dotenv()
+
+parent_dir = pathlib.Path(__file__).parent.parent.absolute()
+sqlite_db_path = os.path.join(parent_dir, "digital-land.sqlite3")
 
 
 def create_app(config_filename):

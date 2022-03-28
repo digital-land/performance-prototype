@@ -2,6 +2,8 @@ import logging
 import urllib.parse
 
 from application.caching import get
+from application.data_access.db import Database
+from application.factory import sqlite_db_path
 from application.utils import create_dict, yesterday, index_by
 from application.data_access.sql_helpers import (
     generate_sql_where_str,
@@ -15,6 +17,7 @@ DATABASE_NAME = "digital-land"
 
 
 def fetch_datasets(filter=None):
+
     params = ""
     where_clause = ""
     # handle any filters
@@ -39,15 +42,17 @@ def fetch_datasets(filter=None):
 
     query_lines.append("GROUP BY dataset.dataset")
     query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}{params}"
-    # logger.info("get_datasets: %s", url)
-    print("get_datasets: {}".format(url))
-    result = get(url, format="json")
 
-    if filter and "dataset" in filter.keys():
-        return create_dict(result["columns"], result["rows"][0])
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(query_str).fetchall()
+
+    columns = rows[0].keys() if rows else []
+
+    # TODO what happens here?
+    # if filter and "dataset" in filter.keys():
+    #     return create_dict(result["columns"], result["rows"][0])
+
+    return [create_dict(columns, row) for row in rows]
 
 
 def fetch_sources(
