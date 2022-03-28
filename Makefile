@@ -3,6 +3,7 @@ init::
 	pip install --upgrade pip setuptools
 	pip install -r requirements.txt
 	npm install
+	curl -qsfL -o digital-land.sqlite3 https://collection-dataset.s3.eu-west-2.amazonaws.com/digital-land-builder/dataset/digital-land.sqlite3
 
 
 black:
