@@ -130,14 +130,24 @@ def fetch_sources(
         limit_str,
     ]
     query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{DATASETTE_URL}/digital-land.json?sql={query}{params}"
 
-    print("GET MY SOURCE", url)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]], url.replace(
-        "digital-land.json?sql", "digital-land?sql"
-    )
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(query_str).fetchall()
+
+    columns = rows[0].keys() if rows else []
+
+    # TODO not sure yet what query_url does in the template this gets returned to
+    # so for now just return empty str
+    return [create_dict(columns, row) for row in rows], ""
+
+    # query = urllib.parse.quote(query_str)
+    # url = f"{DATASETTE_URL}/digital-land.json?sql={query}{params}"
+    #
+    # print("GET MY SOURCE", url)
+    # result = get(url, format="json")
+    # return [create_dict(result["columns"], row) for row in result["rows"]], url.replace(
+    #     "digital-land.json?sql", "digital-land?sql"
+    # )
 
 
 def fetch_publishers():
