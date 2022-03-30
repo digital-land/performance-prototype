@@ -7,6 +7,9 @@ from application.utils import create_dict
 DATASETTE_URL = "https://datasette.digital-land.info"
 
 
+# TODO - this data is not in digital land db but each dataset has own
+# database so unless we download every sqlite db for each dataset
+# this will have to carry on using datasette for the moment
 def fetch_resource_from_dataset(database_name, resource):
     query_lines = [
         "SELECT",

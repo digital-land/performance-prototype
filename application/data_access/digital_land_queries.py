@@ -143,15 +143,6 @@ def fetch_sources(
     # so for now just return empty str
     return [create_dict(columns, row) for row in rows], ""
 
-    # query = urllib.parse.quote(query_str)
-    # url = f"{DATASETTE_URL}/digital-land.json?sql={query}{params}"
-    #
-    # print("GET MY SOURCE", url)
-    # result = get(url, format="json")
-    # return [create_dict(result["columns"], row) for row in result["rows"]], url.replace(
-    #     "digital-land.json?sql", "digital-land?sql"
-    # )
-
 
 def fetch_publishers():
     query_lines = [
@@ -159,13 +150,14 @@ def fetch_publishers():
         "source.organisation,",
         "organisation.name,",
         "organisation.end_date AS organisation_end_date,",
-        "SUM(CASE WHEN (source.endpoint) is not null and (source.endpoint) != '' THEN 1 ELSE 0 END)  AS sources_with_endpoint",
+        "SUM(CASE WHEN (source.endpoint) is not null and (source.endpoint) != '' THEN 1 ELSE 0 END)  AS sources_with_endpoint",  # noqa
         "FROM",
         "source",
         "INNER JOIN organisation ON source.organisation = organisation.organisation",
         "GROUP BY",
         "source.organisation",
     ]
+
     query = prepare_query_str(query_lines)
     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
     print(f"get_publishers: {url}")
@@ -345,14 +337,10 @@ def fetch_resources(filters=None, limit=None):
         "resource.start_date DESC",
         limit_str,
     ]
-    # query = prepare_query_str(query_lines)
-    # url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}{params}"
-    # print(f"get_resources ({filters}): {url}")
-    # return get(url, format="json")
 
     query_str = " ".join(query_lines)
     with Database(sqlite_db_path) as db:
-        if filter:
+        if filters:
             rows = db.execute(query_str, filters).fetchall()
         else:
             rows = db.execute(query_str).fetchall()
@@ -382,15 +370,18 @@ def fetch_resource(resource_hash):
         "INNER JOIN log ON resource.resource = log.resource",
         "INNER JOIN source ON source.endpoint = resource_endpoint.endpoint",
         "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
-        f"WHERE resource.resource = '{resource_hash}'",
+        "WHERE resource.resource = :resource_hash",
         "GROUP BY",
         "endpoint.endpoint",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_resource {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql, {"resource_hash": resource_hash}).fetchall()
+
+    columns = rows[0].keys() if rows else []
+
+    return [create_dict(columns, row) for row in rows]
 
 
 def fetch_active_resources():
@@ -442,7 +433,8 @@ def fetch_latest_resource(dataset=None):
             return create_dict(results["columns"], results["rows"][0])
 
         return None
-    except:
+    except Exception as e:
+        print(e)
         return {"error": "Problem retrieving data from datasette"}
 
 
@@ -579,7 +571,7 @@ def fetch_latest_collector_run_date(dataset=None):
     ]
     query = prepare_query_str(query_lines)
     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_latest_collector_run_date")
+    print("get_latest_collector_run_date")
     result = get(url, format="json")
     return index_by(
         "pipeline", [create_dict(result["columns"], row) for row in result["rows"]]
@@ -621,7 +613,7 @@ def fetch_logs(filters=None, group_by=None):
 
     query = prepare_query_str(query_lines)
     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_logs", query)
+    print("get_logs", query)
     result = get(url, format="json")
     return [create_dict(result["columns"], row) for row in result["rows"]]
 
@@ -670,6 +662,6 @@ def fetch_content_type_counts(dataset=None):
 
     query = prepare_query_str(query_lines)
     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_content_type_counts", query)
+    print("get_content_type_counts", query)
     result = get(url, format="json")
     return [create_dict(result["columns"], row) for row in result["rows"]]

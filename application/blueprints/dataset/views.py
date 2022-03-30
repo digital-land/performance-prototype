@@ -105,7 +105,8 @@ def dataset(dataset):
             key=lambda x: x["resource_count"],
             reverse=True,
         )
-    except:
+    except Exception as e:
+        print(e)
         content_type_counts = []
         print("Query to extract content type counts is failing")
 

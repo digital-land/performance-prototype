@@ -65,10 +65,10 @@ def get_esk_datasets():
     return [d for d in datasets if d["expected-to-publish"] == "yes"]
 
 
-def remove_item(l, item):
-    if item in l:
-        l.remove(item)
-    return l
+def remove_item(lst, item):
+    if item in lst:
+        lst.remove(item)
+    return lst
 
 
 def get_resource_source_stats():
@@ -78,7 +78,7 @@ def get_resource_source_stats():
     months = data[0].keys()
 
     for month in months:
-        if not month in ["pipeline", "name", ""]:
+        if month not in ["pipeline", "name", ""]:
             count = sum([int(d[month]) for d in data if d[month] != ""])
             stats["sources"].append((month, count))
 
@@ -87,7 +87,7 @@ def get_resource_source_stats():
     months = d2[0].keys()
 
     for month in months:
-        if not month in ["pipeline", "name", ""]:
+        if month not in ["pipeline", "name", ""]:
             count = sum([int(d[month]) for d in d2 if d[month] != ""])
             stats["resources"].append((month, count))
 

@@ -1,14 +1,11 @@
-from itertools import groupby
 from urllib.parse import unquote
-from datetime import datetime
 
-from flask import render_template, Blueprint, current_app, redirect
+from flask import render_template, Blueprint, redirect
 from flask.helpers import url_for
 from flask import request
 
 from application.datasette import (
     get_monthly_counts,
-    publisher_counts,
     get_datasets_summary,
     DLDatasette,
 )
@@ -21,7 +18,6 @@ from application.data_access.digital_land_queries import (
     fetch_sources,
     fetch_organisation_stats,
     fetch_publisher_coverage,
-    fetch_publisher_stats,
     fetch_source_counts,
     fetch_resource_count_per_dataset,
     fetch_resource,
@@ -34,7 +30,6 @@ from application.data_access.dataset_db_queries import fetch_resource_from_datas
 
 from application.utils import (
     create_dict,
-    resources_per_publishers,
     index_by,
     recent_dates,
     read_json_file,
@@ -140,16 +135,16 @@ def resources():
         reverse=True,
     )
 
+    columns = resource_records_results[0].keys() if resource_records_results else []
+    resource_results = [create_dict(columns, row) for row in resource_records_results]
+
     return render_template(
         "resource/index.html",
         by_dataset=resources_per_dataset,
         resource_count=fetch_total_resource_count(),
         content_type_counts=content_type_counts,
         datasets=fetch_entity_count(),
-        resources=[
-            create_dict(resource_records_results["columns"], row)
-            for row in resource_records_results["rows"]
-        ],
+        resources=resource_results,
         filters=filters,
         filter_btns=filter_off_btns(filters),
         organisations=fetch_organisation_stats(),
@@ -307,7 +302,11 @@ def logs():
         and request.args.get("log-date-month")
         and request.args.get("log-date-year")
     ):
-        d = f"{request.args.get('log-date-year')}-{request.args.get('log-date-month')}-{request.args.get('log-date-day')}"
+
+        log_year = request.args.get("log-date-year")
+        log_month = request.args.get("log-date-month")
+        log_day = request.args.get("log-date-day")
+        d = f"{log_year}-{log_month}-{log_day}"
         return redirect(url_for("base.log", date=d))
 
     summary = fetch_log_summary()
