@@ -120,3 +120,4 @@ package-lock.json
 application/static/stylesheets
 application/static/javascripts
 /digital-land.sqlite3
+*.sqlite3

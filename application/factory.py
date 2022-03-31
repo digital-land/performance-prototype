@@ -11,7 +11,10 @@ from flask.cli import load_dotenv
 load_dotenv()
 
 parent_dir = pathlib.Path(__file__).parent.parent.absolute()
-sqlite_db_path = os.path.join(parent_dir, "digital-land.sqlite3")
+digital_land_db_path = (
+    f"file:{os.path.join(parent_dir, 'digital-land.sqlite3?mode=ro')}"
+)
+entity_db_path = f"file:{os.path.join(parent_dir, 'entity.sqlite3?mode=ro')}"
 
 
 def create_app(config_filename):

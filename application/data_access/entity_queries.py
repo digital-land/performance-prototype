@@ -3,6 +3,8 @@ import urllib.parse
 
 from application.caching import get
 from application.data_access.api_queries import get_organisation_entity_number
+from application.data_access.db import Database
+from application.factory import entity_db_path
 from application.utils import split_organisation_id
 
 logger = logging.getLogger(__name__)
@@ -10,11 +12,7 @@ logger = logging.getLogger(__name__)
 DATASETTE_URL = "https://datasette.digital-land.info"
 
 
-# def fetch_organisation_entity_number(organisation):
-
-
 def fetch_entity_count(dataset=None, organisation_entity=None):
-    datasette_url = DATASETTE_URL
     query_lines = [
         "SELECT",
         "dataset,",
@@ -36,13 +34,11 @@ def fetch_entity_count(dataset=None, organisation_entity=None):
         query_lines.append("dataset")
 
     query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{datasette_url}/entity.json?sql={query}"
-    # logger.info("get_entity_count: %s", url)
-    print("get_entity_count: %s", url)
-    result = get(url, format="json")
-    if len(result["rows"]):
-        return {dataset[0]: dataset[1] for dataset in result["rows"]}
+
+    with Database(entity_db_path) as db:
+        rows = db.execute(query_str).fetchall()
+    if rows:
+        return {dataset[0]: dataset[1] for dataset in rows}
     return {}
 
 
@@ -55,7 +51,6 @@ def fetch_organisation_entity_count(organisation, dataset=None):
 
 
 def fetch_organisation_entities_using_end_dates():
-    datasette_url = DATASETTE_URL
     query_lines = [
         "SELECT",
         "entity.organisation_entity",
@@ -69,13 +64,10 @@ def fetch_organisation_entities_using_end_dates():
         "organisation_entity",
     ]
     query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{datasette_url}/entity.json?sql={query}"
-    logger.info("get_organisation_entities_using_end_dates: %s", url)
-    result = get(url, format="json")
-    if len(result["rows"]):
-        return result["rows"]
-    return []
+
+    with Database(entity_db_path) as db:
+        rows = db.execute(query_str).fetchall()
+    return rows
 
 
 def fetch_datasets_organisation_has_used_enddates(organisation):

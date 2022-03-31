@@ -1,6 +1,6 @@
 import logging
 from application.data_access.db import Database
-from application.factory import sqlite_db_path
+from application.factory import digital_land_db_path
 from application.utils import create_dict, yesterday, index_by
 from application.data_access.sql_helpers import (
     generate_sql_where_str,
@@ -36,7 +36,7 @@ def fetch_datasets(filter=None):
 
     query_str = " ".join(query_lines)
 
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         if filter:
             rows = db.execute(query_str, filter).fetchall()
         else:
@@ -121,7 +121,7 @@ def fetch_sources(
     ]
     query_str = " ".join(query_lines)
 
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         if filter:
             rows = db.execute(query_str, filter).fetchall()
         else:
@@ -149,7 +149,7 @@ def fetch_publishers():
         "source.organisation",
     ]
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     organisations = [create_dict(columns, row) for row in rows]
@@ -175,7 +175,7 @@ def fetch_publisher_coverage(dataset=None):
         "source.source",
     ]
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     return [create_dict(columns, row) for row in rows]
@@ -229,7 +229,7 @@ def fetch_organisation_stats():
         "source.organisation",
     ]
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     organisations = [create_dict(columns, row) for row in rows]
@@ -277,7 +277,7 @@ def fetch_publisher_stats(dataset):
         "source.organisation",
     ]
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     organisations = [create_dict(columns, row) for row in rows]
@@ -333,7 +333,7 @@ def fetch_resources(filters=None, limit=None):
     ]
 
     query_str = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         if filters:
             rows = db.execute(query_str, filters).fetchall()
         else:
@@ -370,7 +370,7 @@ def fetch_resource(resource_hash):
     ]
 
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql, {"resource_hash": resource_hash}).fetchall()
 
     columns = rows[0].keys() if rows else []
@@ -401,7 +401,7 @@ def fetch_active_resources(pipeline):
         "resource.end_date ASC",
     ]
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
 
     columns = rows[0].keys() if rows else []
@@ -410,7 +410,7 @@ def fetch_active_resources(pipeline):
 
 def fetch_total_resource_count():
     sql = "select count(distinct resource) from resource"
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         result = db.execute(sql).fetchone()
     return result[0] if result else 0
 
@@ -459,7 +459,7 @@ def fetch_resource_count_per_dataset(organisation=None):
         "source_pipeline.pipeline",
     ]
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     return [create_dict(columns, row) for row in rows]
@@ -510,7 +510,7 @@ def fetch_overall_source_counts(groupby=None):
         else "",
     ]
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     return [create_dict(columns, row) for row in rows]
@@ -534,7 +534,7 @@ def fetch_organisation_source_counts(organisation, by_dataset=True):
         "GROUP BY source_pipeline.pipeline" if by_dataset else "",
     ]
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     return [create_dict(columns, row) for row in rows]
@@ -563,7 +563,7 @@ def fetch_latest_collector_run_date(dataset=None):
         "source_pipeline.pipeline",
     ]
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     return index_by("pipeline", [create_dict(columns, row) for row in rows])
@@ -571,7 +571,7 @@ def fetch_latest_collector_run_date(dataset=None):
 
 def fetch_table(tablename):
     sql = f"SELECT * FROM {tablename}"
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     return [create_dict(columns, row) for row in rows]
@@ -604,7 +604,7 @@ def fetch_logs(filters=None, group_by=None):
     query_lines = ["SELECT", "log.*", "FROM", "log", where_str, group_by_str]
 
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     return [create_dict(columns, row) for row in rows]
@@ -624,7 +624,7 @@ def fetch_log_summary(date=yesterday(string=True)):
         "status",
     ]
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql, {"date": date}).fetchall()
     columns = rows[0].keys() if rows else []
     return [create_dict(columns, row) for row in rows]
@@ -653,7 +653,7 @@ def fetch_content_type_counts(dataset=None):
     ]
 
     sql = " ".join(query_lines)
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     return [create_dict(columns, row) for row in rows]
@@ -685,7 +685,7 @@ def get_source_counts(pipeline=None):
     if pipeline:
         sql += " AND source_pipeline.pipeline = :pipeline"
 
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         if pipeline:
             rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
         else:
@@ -697,13 +697,13 @@ def get_source_counts(pipeline=None):
 
 def get_monthly_source_counts(pipeline=None):
 
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
 
         if pipeline:
             sql = """SELECT
                   strftime('%Y-%m', source.start_date) AS yyyy_mm,
-                  count(distinct source.source)
-                from
+                  count(distinct source.source) AS count
+                FROM
                   source
                   INNER JOIN source_pipeline ON source.source = source_pipeline.source
                 WHERE

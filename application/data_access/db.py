@@ -7,7 +7,7 @@ class Database:
         self.connection = None
 
     def __enter__(self):
-        self.connection = sqlite3.connect(self.db_path)
+        self.connection = sqlite3.connect(self.db_path, uri=True)
         self.connection.row_factory = sqlite3.Row
         return self.connection
 

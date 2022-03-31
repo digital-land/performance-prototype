@@ -5,7 +5,7 @@ from datetime import datetime
 
 from application.caching import get
 from application.data_access.db import Database
-from application.factory import sqlite_db_path
+from application.factory import digital_land_db_path
 from application.utils import (
     create_dict,
     index_by,
@@ -96,11 +96,12 @@ class DLDatasette:
         return self.get_total_entity_count()
 
     def get_monthly_resource_counts(self, pipeline=None):
+
         if not pipeline:
 
             sql = """SELECT
-                  strftime('%Y-%m', resource.start_date) as yyyy_mm,
-                  count(distinct resource.resource) as count
+                  strftime('%Y-%m', resource.start_date) AS yyyy_mm,
+                  count(distinct resource.resource) AS count
                 FROM
                   resource
                 WHERE
@@ -112,23 +113,28 @@ class DLDatasette:
 
         else:
             sql = """
-                    select
-              source_pipeline.pipeline,
-              count(DISTINCT source.organisation) as expected_publishers,
-              COUNT(
-                DISTINCT CASE
-                  WHEN source.endpoint != '' THEN source.organisation
-                END
-              ) AS publishers
-            from
-              source
-              INNER JOIN source_pipeline ON source.source = source_pipeline.source
-            group by
-            source_pipeline.pipeline
-    """
+                SELECT
+                  strftime('%Y-%m', resource.start_date) AS yyyy_mm,
+                  count(distinct resource.resource) AS count
+                FROM
+                  resource
+                  INNER JOIN resource_endpoint ON resource.resource = resource_endpoint.resource
+                  INNER JOIN endpoint ON resource_endpoint.endpoint = endpoint.endpoint
+                  INNER JOIN source ON resource_endpoint.endpoint = source.endpoint
+                  INNER JOIN source_pipeline ON source.source = source_pipeline.source
+                WHERE
+                  resource.start_date != ""
+                  AND source_pipeline.pipeline = :pipeline
+                GROUP BY
+                  yyyy_mm
+                ORDER BY
+                  yyyy_mm"""
 
-        with Database(sqlite_db_path) as db:
-            rows = db.execute(sql).fetchall()
+        with Database(digital_land_db_path) as db:
+            if pipeline:
+                rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
+            else:
+                rows = db.execute(sql).fetchall()
 
         columns = rows[0].keys() if rows else []
         return [create_dict(columns, row) for row in rows]
@@ -144,6 +150,7 @@ class DLDatasette:
             return create_dict(results["columns"], results["rows"][0])
         return []
 
+    # TODO query local db not datasette
     def get_new_resources(self, dates=[yesterday(string=True)]):
         params = [f"d{i}" for i in range(0, len(dates))]
         date_params = dict(zip(params, dates))
@@ -252,7 +259,7 @@ def publisher_counts(pipeline):
         GROUP BY
           source.organisation"""
 
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
 
     columns = rows[0].keys() if rows else []
@@ -282,7 +289,7 @@ def publisher_coverage(pipeline=None):
             source_pipeline.pipeline
     """
 
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
 
     columns = rows[0].keys() if rows else []
@@ -315,7 +322,7 @@ def resources_by_dataset(pipeline=None):
     GROUP BY
       source_pipeline.pipeline
     """
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
 
     columns = rows[0].keys() if rows else []
@@ -340,7 +347,7 @@ def first_and_last_resource(pipeline=None):
         ORDER BY
           resource.start_date DESC"""
 
-    with Database(sqlite_db_path) as db:
+    with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
 
     columns = rows[0].keys() if rows else []
