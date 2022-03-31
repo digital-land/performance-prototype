@@ -17,6 +17,7 @@ from application.utils import (
 
 from application.data_access.digital_land_queries import (
     fetch_datasets,
+    get_monthly_source_counts,
 )
 
 
@@ -166,7 +167,7 @@ def by_collection(data):
 
 def get_monthly_counts(pipeline=None):
     ds = DLDatasette()
-    source_counts = ds.get_monthly_source_counts(pipeline)
+    source_counts = get_monthly_source_counts(pipeline)
     resource_counts = ds.get_monthly_resource_counts(pipeline)
 
     # handle if either are empty
