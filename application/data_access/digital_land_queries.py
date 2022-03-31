@@ -1,19 +1,16 @@
 import logging
-import urllib.parse
-
-from application.caching import get
 from application.data_access.db import Database
 from application.factory import sqlite_db_path
 from application.utils import create_dict, yesterday, index_by
 from application.data_access.sql_helpers import (
     generate_sql_where_str,
-    prepare_query_str,
 )
 
 logger = logging.getLogger(__name__)
 
-DATASETTE_URL = "https://datasette.digital-land.info"
-DATABASE_NAME = "digital-land"
+#
+# DATASETTE_URL = "https://datasette.digital-land.info"
+# DATABASE_NAME = "digital-land"
 
 
 def fetch_datasets(filter=None):
@@ -184,18 +181,18 @@ def fetch_publisher_coverage(dataset=None):
     return [create_dict(columns, row) for row in rows]
 
 
-def f_orgs():
-    query = urllib.parse.quote(
-        "select name, organisation from organisation order by organisation"
-    )
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    result = get(url, format="json")
-    sql = "SELECT name, organisation FROM organisation ORDER BY organisation"
-    with Database(sqlite_db_path) as db:
-        rows = db.execute(sql).fetchall()
-    columns = rows[0].keys() if rows else []
-    # return [create_dict(columns, row) for row in rows]
-    return [{"text": o[0], "value": o[1]} for o in result["rows"]]
+# def f_orgs():
+#     query = urllib.parse.quote(
+#         "select name, organisation from organisation order by organisation"
+#     )
+#     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
+#     result = get(url, format="json")
+#     sql = "SELECT name, organisation FROM organisation ORDER BY organisation"
+#     with Database(sqlite_db_path) as db:
+#         rows = db.execute(sql).fetchall()
+#     columns = rows[0].keys() if rows else []
+#     # return [create_dict(columns, row) for row in rows]
+#     return [{"text": o[0], "value": o[1]} for o in result["rows"]]
 
 
 def fetch_organisation_stats():
