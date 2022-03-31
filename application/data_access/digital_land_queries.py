@@ -381,7 +381,7 @@ def fetch_resource(resource_hash):
     return [create_dict(columns, row) for row in rows]
 
 
-def fetch_active_resources():
+def fetch_active_resources(pipeline):
     # probably doesn't need to be it's own query but it was causing a headache
     query_lines = [
         "SELECT",
@@ -405,7 +405,7 @@ def fetch_active_resources():
     ]
     sql = " ".join(query_lines)
     with Database(sqlite_db_path) as db:
-        rows = db.execute(sql).fetchall()
+        rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
 
     columns = rows[0].keys() if rows else []
     return [create_dict(columns, row) for row in rows]

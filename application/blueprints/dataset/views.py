@@ -65,7 +65,9 @@ def dataset(dataset):
     dataset_name = dataset
     dataset = [v for k, v in datasets.items() if v.get("pipeline") == dataset]
 
-    resources_by_publisher = resources_per_publishers(fetch_active_resources())
+    resources_by_publisher = resources_per_publishers(
+        fetch_active_resources(dataset_name)
+    )
 
     # publishers = fetch_publisher_stats(dataset_name)
     publishers = publisher_counts(dataset_name)

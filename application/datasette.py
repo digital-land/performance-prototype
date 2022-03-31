@@ -96,25 +96,36 @@ class DLDatasette:
         return self.get_total_entity_count()
 
     def get_monthly_resource_counts(self, pipeline=None):
-        query = f"{self.BASE_URL}/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+resource.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+resource.resource%29%0D%0Afrom%0D%0A++resource%0D%0Awhere%0D%0A++resource.start_date+%21%3D+%22%22%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm"  # noqa
-        if pipeline:
-            query = (  # noqa
-                f"{self.BASE_URL}/digital-land.json?sql=select%0D%0A++strftime%28%27%25Y-%25m%27%2C+resource.start_date%29+as+yyyy_mm%2C%0D%0A++count%28distinct+resource.resource%29%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+endpoint+ON+resource_endpoint.endpoint+%3D+endpoint.endpoint%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++resource.start_date+%21%3D+%22%22%0D%0A++AND+source_pipeline.pipeline+%3D+%3Apipeline%0D%0Agroup+by%0D%0A++yyyy_mm%0D%0Aorder+by%0D%0A++yyyy_mm&pipeline="  # noqa
-                + pipeline
-            )  # noqa
+        if not pipeline:
 
-        # TODO sort out pipeline version as well
-        sql = """SELECT
-              strftime('%Y-%m', resource.start_date) as yyyy_mm,
-              count(distinct resource.resource) as count
-            FROM
-              resource
-            WHERE
-              resource.start_date != ""
-            GROUP BY
-              yyyy_mm
-            ORDER BY
-              yyyy_mm"""
+            sql = """SELECT
+                  strftime('%Y-%m', resource.start_date) as yyyy_mm,
+                  count(distinct resource.resource) as count
+                FROM
+                  resource
+                WHERE
+                  resource.start_date != ""
+                GROUP BY
+                  yyyy_mm
+                ORDER BY
+                  yyyy_mm"""
+
+        else:
+            sql = """
+                    select
+              source_pipeline.pipeline,
+              count(DISTINCT source.organisation) as expected_publishers,
+              COUNT(
+                DISTINCT CASE
+                  WHEN source.endpoint != '' THEN source.organisation
+                END
+              ) AS publishers
+            from
+              source
+              INNER JOIN source_pipeline ON source.source = source_pipeline.source
+            group by
+            source_pipeline.pipeline
+    """
 
         with Database(sqlite_db_path) as db:
             rows = db.execute(sql).fetchall()
