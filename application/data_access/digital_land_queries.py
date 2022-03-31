@@ -151,12 +151,11 @@ def fetch_publishers():
         "GROUP BY",
         "source.organisation",
     ]
-
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_publishers: {url}")
-    result = get(url, format="json")
-    organisations = [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    organisations = [create_dict(columns, row) for row in rows]
     return index_by("organisation", organisations)
 
 
@@ -178,11 +177,11 @@ def fetch_publisher_coverage(dataset=None):
         "ORDER BY",
         "source.source",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_publisher_coverage: {url}")
-    result = get(url, format="json")
-    return create_dict(result["columns"], result["rows"][0])
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
 def f_orgs():
@@ -191,6 +190,11 @@ def f_orgs():
     )
     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
     result = get(url, format="json")
+    sql = "SELECT name, organisation FROM organisation ORDER BY organisation"
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    # return [create_dict(columns, row) for row in rows]
     return [{"text": o[0], "value": o[1]} for o in result["rows"]]
 
 
@@ -227,11 +231,11 @@ def fetch_organisation_stats():
         "GROUP BY",
         "source.organisation",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_organisation_stats: {url}")
-    result = get(url, format="json")
-    organisations = [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    organisations = [create_dict(columns, row) for row in rows]
     return index_by("organisation", organisations)
 
 
@@ -275,11 +279,11 @@ def fetch_publisher_stats(dataset):
         "GROUP BY",
         "source.organisation",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_publisher_stats: {url}")
-    result = get(url, format="json")
-    organisations = [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    organisations = [create_dict(columns, row) for row in rows]
     return index_by("organisation", organisations)
 
 
@@ -289,7 +293,6 @@ def fetch_resources(filters=None, limit=None):
         limit_str = f"LIMIT {limit}"
 
     where_clause = ""
-    params = ""
     if filters:
         where_clause, params = generate_sql_where_str(
             filters,
@@ -400,20 +403,19 @@ def fetch_active_resources():
         "ORDER BY",
         "resource.end_date ASC",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_active_resources {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
 def fetch_total_resource_count():
-    query_lines = ["select count(distinct resource) from resource"]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_resource_count {url}")
-    result = get(url, format="json")
-    return result["rows"][0][0]
+    sql = "select count(distinct resource) from resource"
+    with Database(sqlite_db_path) as db:
+        result = db.execute(sql).fetchone()
+    return result[0] if result else 0
 
 
 def fetch_latest_resource(dataset=None):
@@ -459,11 +461,11 @@ def fetch_resource_count_per_dataset(organisation=None):
         "source.organisation," if organisation else "",
         "source_pipeline.pipeline",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_resource_count_per_dataset ({organisation}): {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
 def fetch_organisation_sources(organisation):
@@ -563,20 +565,19 @@ def fetch_latest_collector_run_date(dataset=None):
         "GROUP BY",
         "source_pipeline.pipeline",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print("get_latest_collector_run_date")
-    result = get(url, format="json")
-    return index_by(
-        "pipeline", [create_dict(result["columns"], row) for row in result["rows"]]
-    )
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return index_by("pipeline", [create_dict(columns, row) for row in rows])
 
 
 def fetch_table(tablename):
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}/{tablename}.json"
-    print(f"get {tablename}", url)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = f"SELECT * FROM {tablename}"
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
 def fetch_themes():
@@ -605,11 +606,11 @@ def fetch_logs(filters=None, group_by=None):
 
     query_lines = ["SELECT", "log.*", "FROM", "log", where_str, group_by_str]
 
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print("get_logs", query)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
 def fetch_log_summary(date=yesterday(string=True)):
@@ -621,15 +622,15 @@ def fetch_log_summary(date=yesterday(string=True)):
         "FROM",
         "log",
         "WHERE",
-        f"entry_date = '{date}'",
+        "entry_date = :date",
         "GROUP BY",
         "status",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    logger.info("get_log_summary: %s", url)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql, {"date": date}).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
 def fetch_content_type_counts(dataset=None):
@@ -654,11 +655,11 @@ def fetch_content_type_counts(dataset=None):
         "log.content_type",
     ]
 
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print("get_content_type_counts", query)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
 def get_source_counts(pipeline=None):
