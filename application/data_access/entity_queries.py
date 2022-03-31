@@ -1,7 +1,5 @@
 import logging
-import urllib.parse
 
-from application.caching import get
 from application.data_access.api_queries import get_organisation_entity_number
 from application.data_access.db import Database
 from application.factory import entity_db_path
@@ -9,7 +7,8 @@ from application.utils import split_organisation_id
 
 logger = logging.getLogger(__name__)
 
-DATASETTE_URL = "https://datasette.digital-land.info"
+
+# DATASETTE_URL = "https://datasette.digital-land.info"
 
 
 def fetch_entity_count(dataset=None, organisation_entity=None):
@@ -71,7 +70,6 @@ def fetch_organisation_entities_using_end_dates():
 
 
 def fetch_datasets_organisation_has_used_enddates(organisation):
-    datasette_url = DATASETTE_URL
     prefix, ref = split_organisation_id(organisation)
     organisation_entity_num = get_organisation_entity_number(prefix, ref)
     if not organisation_entity_num:
@@ -89,10 +87,9 @@ def fetch_datasets_organisation_has_used_enddates(organisation):
         "entity.dataset",
     ]
     query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{datasette_url}/entity.json?sql={query}"
-    logger.info("get_datasets_organisation_has_used_enddatess: %s", url)
-    result = get(url, format="json")
-    if len(result["rows"]):
-        return [dataset[0] for dataset in result["rows"]]
+    with Database(entity_db_path) as db:
+        rows = db.execute(query_str).fetchall()
+    if rows:
+        return [dataset[0] for dataset in rows]
+
     return []
