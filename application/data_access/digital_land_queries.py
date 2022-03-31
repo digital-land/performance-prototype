@@ -291,7 +291,7 @@ def fetch_resources(filters=None, limit=None):
 
     where_clause = ""
     if filters:
-        where_clause, params = generate_sql_where_str(
+        where_clause = generate_sql_where_str(
             filters,
             {
                 "organisation": "source.organisation",
