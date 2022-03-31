@@ -25,6 +25,7 @@ from application.data_access.digital_land_queries import (
     fetch_total_resource_count,
     fetch_logs,
     fetch_content_type_counts,
+    get_source_counts,
 )
 from application.data_access.dataset_db_queries import fetch_resource_from_dataset
 
@@ -190,7 +191,6 @@ def paramify(url):
 
 @base.route("/source")
 def sources():
-    ds = DLDatasette()
     filters = {}
     if request.args.get("pipeline"):
         filters["pipeline"] = request.args.get("pipeline")
@@ -218,7 +218,7 @@ def sources():
     return render_template(
         "source/index.html",
         datasets=fetch_source_counts(groupby="dataset"),
-        counts=ds.source_counts()[0],
+        counts=get_source_counts()[0],
         sources=source_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),

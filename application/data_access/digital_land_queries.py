@@ -34,7 +34,7 @@ def fetch_datasets(filter=None):
         "FROM dataset",
         "INNER JOIN dataset_theme ON dataset.dataset = dataset_theme.dataset",
         where_clause,
-        "GROUP BY dataset.dataset"
+        "GROUP BY dataset.dataset",
     ]
 
     query_str = " ".join(query_lines)
@@ -56,7 +56,6 @@ def fetch_sources(
     only_blanks=False,
     concat_pipelines=True,
 ):
-    params = ""
     limit_str = ""
     where_clause = ""
 
@@ -66,7 +65,7 @@ def fetch_sources(
 
     # handle any filters
     if filter:
-        where_clause, params = generate_sql_where_str(
+        where_clause = generate_sql_where_str(
             filter,
             {
                 "organisation": "source.organisation",
@@ -133,9 +132,10 @@ def fetch_sources(
 
     columns = rows[0].keys() if rows else []
 
-    # TODO not sure yet what query_url does in the template this gets returned to
-    # so for now just return empty str
-    return [create_dict(columns, row) for row in rows], ""
+    # return empty query_url - not sure where used?
+    query_url = ""
+
+    return [create_dict(columns, row) for row in rows], query_url
 
 
 def fetch_publishers():
@@ -510,11 +510,11 @@ def fetch_overall_source_counts(groupby=None):
         if groupby and groupby_options.get(groupby)
         else "",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_source_counts (Overall): {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
 def fetch_organisation_source_counts(organisation, by_dataset=True):
@@ -534,11 +534,11 @@ def fetch_organisation_source_counts(organisation, by_dataset=True):
         f"source.organisation = '{organisation}'",
         "GROUP BY source_pipeline.pipeline" if by_dataset else "",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_source_counts ({organisation}): {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(sqlite_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
 def fetch_source_counts(organisation=None, **kwargs):
@@ -659,3 +659,75 @@ def fetch_content_type_counts(dataset=None):
     print("get_content_type_counts", query)
     result = get(url, format="json")
     return [create_dict(result["columns"], row) for row in result["rows"]]
+
+
+def get_source_counts(pipeline=None):
+    # returns high level source counts
+    sql = """
+            SELECT
+              COUNT(DISTINCT source.source) AS sources,
+              COUNT(
+                DISTINCT CASE
+                  WHEN source.end_date == '' THEN source.source
+                  WHEN strftime('%Y%m%d', source.end_date) >= strftime('%Y%m%d', 'now') THEN source.source
+                END
+              ) AS active,
+              COUNT(
+                DISTINCT CASE
+                  WHEN end_date != '' THEN source.source
+                  WHEN strftime('%Y%m%d', source.end_date) <= strftime('%Y%m%d', 'now') THEN source.source
+                END
+              ) AS inactive,
+              COUNT(DISTINCT source_pipeline.pipeline) AS pipelines
+            FROM
+              source
+              INNER JOIN source_pipeline ON source.source = source_pipeline.source
+            WHERE source.endpoint != '' """
+
+    if pipeline:
+        sql += " AND source_pipeline.pipeline = :pipeline"
+
+    with Database(sqlite_db_path) as db:
+        if pipeline:
+            rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
+        else:
+            rows = db.execute(sql).fetchall()
+
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
+
+
+def get_monthly_source_counts(pipeline=None):
+
+    with Database(sqlite_db_path) as db:
+
+        if pipeline:
+            sql = """SELECT
+                  strftime('%Y-%m', source.start_date) AS yyyy_mm,
+                  count(distinct source.source)
+                from
+                  source
+                  INNER JOIN source_pipeline ON source.source = source_pipeline.source
+                WHERE
+                  source.start_date != ""
+                  AND source_pipeline.pipeline = :pipeline
+                GROUP BY
+                  yyyy_mm
+                ORDER BY
+                  yyyy_mm"""
+
+            rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
+
+        else:
+            sql = """SELECT
+                    strftime('%Y-%m', source.start_date) as yyyy_mm, 
+                    count(distinct source.source) as count
+                FROM source
+                WHERE source.start_date != ""
+                GROUP BY yyyy_mm
+                ORDER BY yyyy_mm"""
+
+            rows = db.execute(sql).fetchall()
+
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
