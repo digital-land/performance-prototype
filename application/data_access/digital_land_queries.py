@@ -17,12 +17,9 @@ DATABASE_NAME = "digital-land"
 
 
 def fetch_datasets(filter=None):
-
-    params = ""
     where_clause = ""
-    # handle any filters
     if filter:
-        where_clause, params = generate_sql_where_str(
+        where_clause = generate_sql_where_str(
             filter,
             {
                 "active": "dataset_active",  # not currently available
@@ -30,7 +27,6 @@ def fetch_datasets(filter=None):
                 "theme": "dataset_theme.theme",
             },
         )
-
     query_lines = [
         "SELECT",
         "dataset.*,",
@@ -38,20 +34,18 @@ def fetch_datasets(filter=None):
         "FROM dataset",
         "INNER JOIN dataset_theme ON dataset.dataset = dataset_theme.dataset",
         where_clause,
+        "GROUP BY dataset.dataset"
     ]
 
-    query_lines.append("GROUP BY dataset.dataset")
     query_str = " ".join(query_lines)
 
     with Database(sqlite_db_path) as db:
-        rows = db.execute(query_str).fetchall()
+        if filter:
+            rows = db.execute(query_str, filter).fetchall()
+        else:
+            rows = db.execute(query_str).fetchall()
 
     columns = rows[0].keys() if rows else []
-
-    # TODO what happens here?
-    # if filter and "dataset" in filter.keys():
-    #     return create_dict(result["columns"], result["rows"][0])
-
     return [create_dict(columns, row) for row in rows]
 
 
