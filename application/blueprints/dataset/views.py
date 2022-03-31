@@ -13,7 +13,8 @@ from application.data_access.digital_land_queries import (
     fetch_typologies,
     fetch_resource_count_per_dataset,
     fetch_publisher_coverage,
-    fetch_content_type_counts, get_source_counts,
+    fetch_content_type_counts,
+    get_source_counts,
 )
 from application.utils import (
     filter_off_btns,
