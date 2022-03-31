@@ -1,6 +1,6 @@
 from urllib.parse import unquote
 
-from flask import render_template, Blueprint, redirect
+from flask import render_template, Blueprint, redirect, abort
 from flask.helpers import url_for
 from flask import request
 
@@ -154,7 +154,9 @@ def resources():
 
 @base.route("/resource/<resource>")
 def resource(resource):
-    resource_data = convert_field_str_to_list(fetch_resource(resource), "content_type")
+    resource_data = fetch_resource(resource)
+    if not resource_data:
+        return abort(404)
     dataset = resource_data[0]["pipeline"].split(";")[0]
     return render_template(
         "resource/resource.html",
