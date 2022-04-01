@@ -5,7 +5,7 @@ from datetime import datetime
 
 from application.caching import get
 from application.data_access.db import Database
-from application.factory import digital_land_db_path
+from application.factory import digital_land_db_path, entity_db_path
 from application.utils import (
     create_dict,
     index_by,
@@ -16,157 +16,141 @@ from application.utils import (
 )
 
 from application.data_access.digital_land_queries import (
-    fetch_datasets,
+    get_datasets,
     get_monthly_source_counts,
 )
 
 
-class DLDatasette:
+BASE_URL = "https://datasette.digital-land.info"
 
-    BASE_URL = "https://datasette.digital-land.info"
 
-    def __init__(self):
-        pass
+def generate_query(table, params, format="json"):
+    param_str = ""
+    if params.keys():
+        param_str = "&".join([f"{k}={v}" for k, v in params.items()])
+    return "%s/digital-land/%s.%s?%s" % (BASE_URL, table, format, param_str)
 
-    def generate_query(self, table, params, format="json"):
-        param_str = ""
-        if params.keys():
-            param_str = "&".join([f"{k}={v}" for k, v in params.items()])
-        return "%s/digital-land/%s.%s?%s" % (self.BASE_URL, table, format, param_str)
 
-    def query(self, table, params, format="json"):
-        query = self.generate_query(table, params, format)
-        print("Running: ", query)
+def query(table, params, format="json"):
+    query = generate_query(table, params, format)
+    print("Running: ", query)
 
-        # only returns 100
-        r = get(query)
-        if r is None:
-            return None
-        return json.loads(r)
+    # only returns 100
+    r = get(query)
+    if r is None:
+        return None
+    return json.loads(r)
 
-    def sqlQuery(self, query, results="complete"):
-        r = get(query)
-        if r is None:
-            return None
-        response = json.loads(r)
-        if results == "rows":
-            return response["rows"]
-        if results == "rows_with_column_names":
-            return [create_dict(response["columns"], row) for row in response["rows"]]
-        return response
 
-    @staticmethod
-    def urlencode(s):
-        s.replace(":", "%3A")
-        return s
+def sqlQuery(query, results="complete"):
+    r = get(query)
+    if r is None:
+        return None
+    response = json.loads(r)
+    if results == "rows":
+        return response["rows"]
+    if results == "rows_with_column_names":
+        return [create_dict(response["columns"], row) for row in response["rows"]]
+    return response
 
-    @staticmethod
-    def sql_for_filter(filters, mappings={}):
-        if len(filters.keys()) == 0:
-            return "", ""
-        where_str = "where%0D%0A"
-        clauses = []
-        param_str = ""
-        for filter, value in filters.items():
-            column = filter
-            if filter in mappings.keys():
-                column = mappings[filter]
-            clauses.append("{}+LIKE+%3A{}%0D%0A".format(column, filter))
-            param = "&{}={}".format(filter, value)
-            param_str = param_str + param
-        return where_str + "AND%0D%0A".join(clauses), param_str
 
-    def get_total_entity_count(self):
-        query = f"{self.BASE_URL}/entity.json?sql=select%0D%0A++COUNT%28DISTINCT+entity%29+AS+count%0D%0Afrom%0D%0A++entity%0D%0A"  # noqa
-        results = self.sqlQuery(query, results="rows")
-        return results[0][0] if bool(results) else 0
+def urlencode(s):
+    s.replace(":", "%3A")
+    return s
 
-    def get_entity_count(self, pipeline=None):
-        if pipeline is not None:
-            query = f"{self.BASE_URL}/entity.json?sql=select%0D%0Adataset%2C%0D%0A++COUNT%28DISTINCT+entity%29+AS+count%0D%0Afrom%0D%0A++entity%0D%0Agroup+by%0D%0Adataset%0D%0A"  # noqa
-            results = index_by(
-                "dataset", self.sqlQuery(query, results="rows_with_column_names")
-            )
-            return (
-                results.get(pipeline)["count"]
-                if results.get(pipeline) is not None
-                else 0
-            )
 
-        return self.get_total_entity_count()
+def sql_for_filter(filters, mappings={}):
+    if len(filters.keys()) == 0:
+        return "", ""
+    where_str = "where%0D%0A"
+    clauses = []
+    param_str = ""
+    for filter, value in filters.items():
+        column = filter
+        if filter in mappings.keys():
+            column = mappings[filter]
+        clauses.append("{}+LIKE+%3A{}%0D%0A".format(column, filter))
+        param = "&{}={}".format(filter, value)
+        param_str = param_str + param
+    return where_str + "AND%0D%0A".join(clauses), param_str
 
-    def get_monthly_resource_counts(self, pipeline=None):
 
-        if not pipeline:
+def get_monthly_resource_counts(pipeline=None):
 
-            sql = """SELECT
-                  strftime('%Y-%m', resource.start_date) AS yyyy_mm,
-                  count(distinct resource.resource) AS count
-                FROM
-                  resource
-                WHERE
-                  resource.start_date != ""
-                GROUP BY
-                  yyyy_mm
-                ORDER BY
-                  yyyy_mm"""
+    if not pipeline:
 
+        sql = """SELECT
+              strftime('%Y-%m', resource.start_date) AS yyyy_mm,
+              count(distinct resource.resource) AS count
+            FROM
+              resource
+            WHERE
+              resource.start_date != ""
+            GROUP BY
+              yyyy_mm
+            ORDER BY
+              yyyy_mm"""
+
+    else:
+        sql = """
+            SELECT
+              strftime('%Y-%m', resource.start_date) AS yyyy_mm,
+              count(distinct resource.resource) AS count
+            FROM
+              resource
+              INNER JOIN resource_endpoint ON resource.resource = resource_endpoint.resource
+              INNER JOIN endpoint ON resource_endpoint.endpoint = endpoint.endpoint
+              INNER JOIN source ON resource_endpoint.endpoint = source.endpoint
+              INNER JOIN source_pipeline ON source.source = source_pipeline.source
+            WHERE
+              resource.start_date != ""
+              AND source_pipeline.pipeline = :pipeline
+            GROUP BY
+              yyyy_mm
+            ORDER BY
+              yyyy_mm"""
+
+    with Database(digital_land_db_path) as db:
+        if pipeline:
+            rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
         else:
-            sql = """
-                SELECT
-                  strftime('%Y-%m', resource.start_date) AS yyyy_mm,
-                  count(distinct resource.resource) AS count
-                FROM
-                  resource
-                  INNER JOIN resource_endpoint ON resource.resource = resource_endpoint.resource
-                  INNER JOIN endpoint ON resource_endpoint.endpoint = endpoint.endpoint
-                  INNER JOIN source ON resource_endpoint.endpoint = source.endpoint
-                  INNER JOIN source_pipeline ON source.source = source_pipeline.source
-                WHERE
-                  resource.start_date != ""
-                  AND source_pipeline.pipeline = :pipeline
-                GROUP BY
-                  yyyy_mm
-                ORDER BY
-                  yyyy_mm"""
+            rows = db.execute(sql).fetchall()
 
-        with Database(digital_land_db_path) as db:
-            if pipeline:
-                rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
-            else:
-                rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
-        columns = rows[0].keys() if rows else []
-        return [create_dict(columns, row) for row in rows]
 
-    def get_latest_resource(self, dataset):
-        query = (
-            f"{self.BASE_URL}/digital-land.json?sql=select%0D%0A++resource.resource%2C%0D%0A++resource.end_date%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source_pipeline.pipeline+%3D+%3Apipeline%0D%0Aorder+by%0D%0A++resource.start_date+DESC%0D%0Alimit+1&pipeline="  # noqa
-            + dataset
-        )
-        print("GET LATEST RESOURCE: ", query)
-        results = self.sqlQuery(query)
-        if len(results["rows"]):
-            return create_dict(results["columns"], results["rows"][0])
-        return []
+def get_latest_resource(dataset):
+    query = (
+        f"{self.BASE_URL}/digital-land.json?sql=select%0D%0A++resource.resource%2C%0D%0A++resource.end_date%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source_pipeline.pipeline+%3D+%3Apipeline%0D%0Aorder+by%0D%0A++resource.start_date+DESC%0D%0Alimit+1&pipeline="  # noqa
+        + dataset
+    )
+    results = sqlQuery(query)
+    if len(results["rows"]):
+        return create_dict(results["columns"], results["rows"][0])
+    return []
 
-    # TODO query local db not datasette
-    def get_new_resources(self, dates=[yesterday(string=True)]):
-        params = [f"d{i}" for i in range(0, len(dates))]
-        date_params = dict(zip(params, dates))
-        datasette_param_str = "%2C+".join([f"%3A{p}" for p in params])
-        query = "{}/digital-land.json?sql=select%0D%0A++DISTINCT+resource%2C%0D%0A++start_date%0D%0Afrom%0D%0A++resource%0D%0Awhere%0D%0A++start_date+in+%28{}%29%0D%0Aorder+by%0D%0A++start_date%0D%0A&{}".format(  # noqa
-            self.BASE_URL, datasette_param_str, urllib.parse.urlencode(date_params)
-        )  # noqa
-        return self.sqlQuery(query, results="rows_with_column_names")
+
+def get_new_resources(dates=[yesterday(string=True)]):
+    sql = """SELECT
+            DISTINCT resource, start_date
+            FROM resource
+            WHERE start_date IN %(dates)s
+            ORDER BY start_date
+            """ % {
+        "dates": tuple(dates)
+    }
+
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    return rows
 
 
 def sql_str_query(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        ds = DLDatasette()
         query = func(*args, **kwargs)
-        result = ds.sqlQuery(query)
+        result = sqlQuery(query)
         return [create_dict(result["columns"], row) for row in result["rows"]]
 
     return wrapper
@@ -184,9 +168,8 @@ def by_collection(data):
 
 
 def get_monthly_counts(pipeline=None):
-    ds = DLDatasette()
     source_counts = get_monthly_source_counts(pipeline)
-    resource_counts = ds.get_monthly_resource_counts(pipeline)
+    resource_counts = get_monthly_resource_counts(pipeline)
 
     # handle if either are empty
     if not bool(source_counts):
@@ -356,7 +339,7 @@ def first_and_last_resource(pipeline=None):
 
 def get_datasets_summary():
     # get all the datasets listed with their active status
-    all_datasets = index_by("dataset", fetch_datasets())
+    all_datasets = index_by("dataset", get_datasets())
     missing = []
 
     # add the publisher coverage numbers

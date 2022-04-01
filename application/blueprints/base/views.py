@@ -4,27 +4,28 @@ from flask import render_template, Blueprint, redirect, abort
 from flask.helpers import url_for
 from flask import request
 
-from application.datasette import (
+from application.data_access.datasette import (
     get_monthly_counts,
     get_datasets_summary,
-    DLDatasette,
+    get_new_resources,
 )
 from application.data_access.entity_queries import (
-    fetch_entity_count,
-    fetch_organisation_entities_using_end_dates,
+    get_grouped_entity_count,
+    get_organisation_entities_using_end_dates,
+    get_entity_count,
 )
 from application.data_access.digital_land_queries import (
-    fetch_log_summary,
-    fetch_sources,
-    fetch_organisation_stats,
-    fetch_publisher_coverage,
-    fetch_source_counts,
-    fetch_resource_count_per_dataset,
-    fetch_resource,
-    fetch_resources,
+    get_log_summary,
+    get_sources,
+    get_organisation_stats,
+    get_publisher_coverage,
+    get_grouped_source_counts,
+    get_resource_count_per_dataset,
+    get_resource,
+    get_resources,
     fetch_total_resource_count,
-    fetch_logs,
-    fetch_content_type_counts,
+    get_logs,
+    get_content_type_counts,
     get_source_counts,
 )
 from application.data_access.dataset_db_queries import fetch_resource_from_dataset
@@ -35,7 +36,6 @@ from application.utils import (
     recent_dates,
     read_json_file,
     yesterday,
-    convert_field_str_to_list,
     filter_off_btns,
 )
 
@@ -62,12 +62,11 @@ def index():
 @base.route("/performance")
 @base.route("/performance/")
 def performance():
-    ds = DLDatasette()
     gs_datasets = get_datasets_summary()
-    entity_counts = fetch_entity_count()
+    entity_counts = get_grouped_entity_count()
 
     content_type_counts = sorted(
-        fetch_content_type_counts(),
+        get_content_type_counts(),
         key=lambda x: x["resource_count"],
         reverse=True,
     )
@@ -77,16 +76,14 @@ def performance():
         info_page=url_for("base.performance_info"),
         datasets=gs_datasets,
         stats=get_monthly_counts(),
-        publisher_count=fetch_publisher_coverage(),
-        source_counts=fetch_source_counts(groupby="dataset"),
-        entity_count=ds.get_entity_count(),
+        publisher_count=get_publisher_coverage(),
+        source_counts=get_grouped_source_counts(groupby="dataset"),
+        entity_count=get_entity_count(),
         datasets_with_data_count=len(entity_counts.keys()),
         resource_count=fetch_total_resource_count(),
-        publisher_using_enddate_count=len(
-            fetch_organisation_entities_using_end_dates()
-        ),
+        publisher_using_enddate_count=len(get_organisation_entities_using_end_dates()),
         content_type_counts=content_type_counts,
-        new_resources=ds.get_new_resources(dates=recent_dates(7)),
+        new_resources=get_new_resources(dates=recent_dates(7)),
     )
 
 
@@ -123,15 +120,15 @@ def resources():
     if request.args.get("resource"):
         filters["resource"] = request.args.get("resource")
 
-    resources_per_dataset = index_by("pipeline", fetch_resource_count_per_dataset())
+    resources_per_dataset = index_by("pipeline", get_resource_count_per_dataset())
 
     if len(filters.keys()):
-        resource_records_results = fetch_resources(filters=filters)
+        resource_records_results = get_resources(filters=filters)
     else:
-        resource_records_results = fetch_resources()
+        resource_records_results = get_resources()
 
     content_type_counts = sorted(
-        fetch_content_type_counts(),
+        get_content_type_counts(),
         key=lambda x: x["resource_count"],
         reverse=True,
     )
@@ -144,17 +141,17 @@ def resources():
         by_dataset=resources_per_dataset,
         resource_count=fetch_total_resource_count(),
         content_type_counts=content_type_counts,
-        datasets=fetch_entity_count(),
+        datasets=get_grouped_entity_count(),
         resources=resource_results,
         filters=filters,
         filter_btns=filter_off_btns(filters),
-        organisations=fetch_organisation_stats(),
+        organisations=get_organisation_stats(),
     )
 
 
 @base.route("/resource/<resource>")
 def resource(resource):
-    resource_data = fetch_resource(resource)
+    resource_data = get_resource(resource)
     if not resource_data:
         return abort(404)
     dataset = resource_data[0]["pipeline"].split(";")[0]
@@ -211,20 +208,20 @@ def sources():
         include_blanks = request.args.get("include_blanks")
 
     if len(filters.keys()):
-        source_records, query_url = fetch_sources(
+        source_records, query_url = get_sources(
             filter=filters, include_blanks=include_blanks
         )
     else:
-        source_records, query_url = fetch_sources(include_blanks=include_blanks)
+        source_records, query_url = get_sources(include_blanks=include_blanks)
 
     return render_template(
         "source/index.html",
-        datasets=fetch_source_counts(groupby="dataset"),
+        datasets=get_grouped_source_counts(groupby="dataset"),
         counts=get_source_counts()[0],
         sources=source_records,
         filters=filters,
         filter_btns=filter_off_btns(filters),
-        organisations=fetch_source_counts(groupby="organisation"),
+        organisations=get_grouped_source_counts(groupby="organisation"),
         query_url=query_url,
         include_blanks=include_blanks,
     )
@@ -232,11 +229,11 @@ def sources():
 
 @base.route("/source/<source>")
 def source(source):
-    source_data, q = fetch_sources(filter={"source": source})
+    source_data, q = get_sources(filter={"source": source})
     if len(source_data) == 0:
         # if no source record return check if blank one exists
-        source_data, q = fetch_sources(filter={"source": source}, include_blanks=True)
-    resource_result = fetch_resources(filters={"source": source})
+        source_data, q = get_sources(filter={"source": source}, include_blanks=True)
+    resource_result = get_resources(filters={"source": source})
 
     columns = resource_result[0].keys() if resource_result else []
 
@@ -257,9 +254,9 @@ def content_types():
     pipeline = request.args.get("pipeline")
 
     content_type_counts = sorted(
-        fetch_content_type_counts(dataset=pipeline)
+        get_content_type_counts(dataset=pipeline)
         if pipeline
-        else fetch_content_type_counts(),
+        else get_content_type_counts(),
         key=lambda x: x["resource_count"],
         reverse=True,
     )
@@ -284,7 +281,7 @@ def content_type(content_type):
     return render_template(
         "content_type/type.html",
         content_type=unquoted_content_type,
-        resources=fetch_logs(
+        resources=get_logs(
             filters={"content_type": unquoted_content_type}, group_by="resource"
         ),
     )
@@ -297,7 +294,6 @@ def content_type(content_type):
 
 @base.route("/logs")
 def logs():
-    ds = DLDatasette()
 
     if (
         request.args.get("log-date-day")
@@ -311,12 +307,12 @@ def logs():
         d = f"{log_year}-{log_month}-{log_day}"
         return redirect(url_for("base.log", date=d))
 
-    summary = fetch_log_summary()
+    summary = get_log_summary()
 
     return render_template(
         "logs/logs.html",
         summary=summary,
-        resources=ds.get_new_resources(),
+        resources=get_new_resources(),
         yesterday=yesterday(string=True),
         endpoint_count=sum([status["count"] for status in summary]),
     )
@@ -324,14 +320,13 @@ def logs():
 
 @base.route("/logs/<date>")
 def log(date):
-    ds = DLDatasette()
 
-    summary = fetch_log_summary(date=date)
+    summary = get_log_summary(date=date)
 
     return render_template(
         "logs/logs.html",
         summary=summary,
-        resources=ds.get_new_resources(dates=[date]),
+        resources=get_new_resources(dates=[date]),
         date=date,
         endpoint_count=sum([status["count"] for status in summary]),
     )

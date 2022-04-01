@@ -1,17 +1,32 @@
 import logging
 
 from application.data_access.api_queries import get_organisation_entity_number
+from application.data_access.datasette import sqlQuery
 from application.data_access.db import Database
 from application.factory import entity_db_path
-from application.utils import split_organisation_id
+from application.utils import split_organisation_id, index_by
 
 logger = logging.getLogger(__name__)
 
 
-# DATASETTE_URL = "https://datasette.digital-land.info"
+def get_total_entity_count():
+    sql = "SELECT COUNT(DISTINCT entity) AS count FROM entity"
+    with Database(entity_db_path) as db:
+        row = db.execute(sql).fetchone()
+    return row["count"]
 
 
-def fetch_entity_count(dataset=None, organisation_entity=None):
+def get_entity_count(pipeline=None):
+    if pipeline is not None:
+        sql = "SELECT COUNT(DISTINCT entity) AS count FROM entity e WHERE e.dataset = :pipeline"
+        with Database(entity_db_path) as db:
+            row = db.execute(sql, {"pipeline": pipeline}).fetchone()
+        return row["count"]
+
+    return get_total_entity_count()
+
+
+def get_grouped_entity_count(dataset=None, organisation_entity=None):
     query_lines = [
         "SELECT",
         "dataset,",
@@ -41,15 +56,15 @@ def fetch_entity_count(dataset=None, organisation_entity=None):
     return {}
 
 
-def fetch_organisation_entity_count(organisation, dataset=None):
+def get_organisation_entity_count(organisation, dataset=None):
     prefix, ref = split_organisation_id(organisation)
-    return fetch_entity_count(
+    return get_grouped_entity_count(
         dataset=dataset,
         organisation_entity=get_organisation_entity_number(prefix, ref),
     )
 
 
-def fetch_organisation_entities_using_end_dates():
+def get_organisation_entities_using_end_dates():
     query_lines = [
         "SELECT",
         "entity.organisation_entity",
@@ -69,7 +84,7 @@ def fetch_organisation_entities_using_end_dates():
     return rows
 
 
-def fetch_datasets_organisation_has_used_enddates(organisation):
+def get_datasets_organisation_has_used_enddates(organisation):
     prefix, ref = split_organisation_id(organisation)
     organisation_entity_num = get_organisation_entity_number(prefix, ref)
     if not organisation_entity_num:

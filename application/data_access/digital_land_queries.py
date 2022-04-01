@@ -8,12 +8,8 @@ from application.data_access.sql_helpers import (
 
 logger = logging.getLogger(__name__)
 
-#
-# DATASETTE_URL = "https://datasette.digital-land.info"
-# DATABASE_NAME = "digital-land"
 
-
-def fetch_datasets(filter=None):
+def get_datasets(filter=None):
     where_clause = ""
     if filter:
         where_clause = generate_sql_where_str(
@@ -46,7 +42,7 @@ def fetch_datasets(filter=None):
     return [create_dict(columns, row) for row in rows]
 
 
-def fetch_sources(
+def get_sources(
     limit=100,
     filter=None,
     include_blanks=False,
@@ -135,7 +131,7 @@ def fetch_sources(
     return [create_dict(columns, row) for row in rows], query_url
 
 
-def fetch_publishers():
+def get_publishers():
     query_lines = [
         "SELECT",
         "source.organisation,",
@@ -156,7 +152,7 @@ def fetch_publishers():
     return index_by("organisation", organisations)
 
 
-def fetch_publisher_coverage(dataset=None):
+def get_publisher_coverage(dataset=None):
     query_lines = [
         "SELECT",
         "count(DISTINCT source.organisation) AS total,",
@@ -176,26 +172,12 @@ def fetch_publisher_coverage(dataset=None):
     ]
     sql = " ".join(query_lines)
     with Database(digital_land_db_path) as db:
-        rows = db.execute(sql).fetchall()
-    columns = rows[0].keys() if rows else []
-    return [create_dict(columns, row) for row in rows]
+        row = db.execute(sql).fetchone()
+    columns = row.keys() if row else []
+    return create_dict(columns, row)
 
 
-# def f_orgs():
-#     query = urllib.parse.quote(
-#         "select name, organisation from organisation order by organisation"
-#     )
-#     url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-#     result = get(url, format="json")
-#     sql = "SELECT name, organisation FROM organisation ORDER BY organisation"
-#     with Database(sqlite_db_path) as db:
-#         rows = db.execute(sql).fetchall()
-#     columns = rows[0].keys() if rows else []
-#     # return [create_dict(columns, row) for row in rows]
-#     return [{"text": o[0], "value": o[1]} for o in result["rows"]]
-
-
-def fetch_organisation_stats():
+def get_organisation_stats():
     """
     Returns a list of organisations with:
     - end_date if applicable
@@ -237,7 +219,7 @@ def fetch_organisation_stats():
 
 
 # should replace fetch_organisation_stats
-def fetch_publisher_stats(dataset):
+def get_publisher_stats(dataset):
     query_lines = [
         "SELECT",
         "organisation.name,",
@@ -284,7 +266,7 @@ def fetch_publisher_stats(dataset):
     return index_by("organisation", organisations)
 
 
-def fetch_resources(filters=None, limit=None):
+def get_resources(filters=None, limit=None):
     limit_str = ""
     if limit:
         limit_str = f"LIMIT {limit}"
@@ -341,7 +323,7 @@ def fetch_resources(filters=None, limit=None):
     return rows
 
 
-def fetch_resource(resource_hash):
+def get_resource(resource_hash):
     # seems like overkill...
     query_lines = [
         "SELECT",
@@ -378,7 +360,7 @@ def fetch_resource(resource_hash):
     return [create_dict(columns, row) for row in rows]
 
 
-def fetch_active_resources(pipeline):
+def get_active_resources(pipeline):
     # probably doesn't need to be it's own query but it was causing a headache
     query_lines = [
         "SELECT",
@@ -415,12 +397,12 @@ def fetch_total_resource_count():
     return result[0] if result else 0
 
 
-def fetch_latest_resource(dataset=None):
+def get_latest_resource(dataset=None):
     try:
         if dataset:
-            results = fetch_resources(filters={"dataset": dataset}, limit=1)
+            results = get_resources(filters={"dataset": dataset}, limit=1)
         else:
-            results = fetch_resources(limit=1)
+            results = get_resources(limit=1)
 
         if len(results["rows"]):
             return create_dict(results["columns"], results["rows"][0])
@@ -431,7 +413,7 @@ def fetch_latest_resource(dataset=None):
         return {"error": "Problem retrieving data from datasette"}
 
 
-def fetch_resource_count_per_dataset(organisation=None):
+def get_resource_count_per_dataset(organisation=None):
     query_lines = [
         "SELECT",
         "COUNT(DISTINCT resource.resource) AS resources,",
@@ -465,8 +447,8 @@ def fetch_resource_count_per_dataset(organisation=None):
     return [create_dict(columns, row) for row in rows]
 
 
-def fetch_organisation_sources(organisation):
-    sources, url = fetch_sources(
+def get_organisation_sources(organisation):
+    sources, url = get_sources(
         filter={"organisation": organisation},
         include_blanks=True,
         concat_pipelines=False,
@@ -474,7 +456,7 @@ def fetch_organisation_sources(organisation):
     return sources
 
 
-def fetch_overall_source_counts(groupby=None):
+def get_overall_source_counts(groupby=None):
     groupby_options = {
         "organisation": "organisation.organisation",
         "dataset": "source_pipeline.pipeline",
@@ -516,7 +498,7 @@ def fetch_overall_source_counts(groupby=None):
     return [create_dict(columns, row) for row in rows]
 
 
-def fetch_organisation_source_counts(organisation, by_dataset=True):
+def get_organisation_source_counts(organisation, by_dataset=True):
     query_lines = [
         "SELECT",
         "source_pipeline.pipeline AS pipeline,",
@@ -540,13 +522,13 @@ def fetch_organisation_source_counts(organisation, by_dataset=True):
     return [create_dict(columns, row) for row in rows]
 
 
-def fetch_source_counts(organisation=None, **kwargs):
+def get_grouped_source_counts(organisation=None, **kwargs):
     if organisation:
-        return fetch_organisation_source_counts(organisation, **kwargs)
-    return fetch_overall_source_counts(**kwargs)
+        return get_organisation_source_counts(organisation, **kwargs)
+    return get_overall_source_counts(**kwargs)
 
 
-def fetch_latest_collector_run_date(dataset=None):
+def get_latest_collector_run_date(dataset=None):
     where_clause = ""
     if dataset:
         where_clause = f"WHERE source_pipeline.pipeline = '{dataset}'"
@@ -569,7 +551,7 @@ def fetch_latest_collector_run_date(dataset=None):
     return index_by("pipeline", [create_dict(columns, row) for row in rows])
 
 
-def fetch_table(tablename):
+def get_table(tablename):
     sql = f"SELECT * FROM {tablename}"
     with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
@@ -577,12 +559,12 @@ def fetch_table(tablename):
     return [create_dict(columns, row) for row in rows]
 
 
-def fetch_themes():
-    return fetch_table("theme")
+def get_themes():
+    return get_table("theme")
 
 
-def fetch_typologies():
-    return fetch_table("typology")
+def get_typologies():
+    return get_table("typology")
 
 
 ##########################################
@@ -590,7 +572,7 @@ def fetch_typologies():
 ##########################################
 
 
-def fetch_logs(filters=None, group_by=None):
+def get_logs(filters=None, group_by=None):
     where_str = ""
     if filters:
         where_str = "WHERE " + " AND ".join(
@@ -610,7 +592,7 @@ def fetch_logs(filters=None, group_by=None):
     return [create_dict(columns, row) for row in rows]
 
 
-def fetch_log_summary(date=yesterday(string=True)):
+def get_log_summary(date=yesterday(string=True)):
     query_lines = [
         "SELECT",
         "entry_date,",
@@ -630,7 +612,7 @@ def fetch_log_summary(date=yesterday(string=True)):
     return [create_dict(columns, row) for row in rows]
 
 
-def fetch_content_type_counts(dataset=None):
+def get_content_type_counts(dataset=None):
     joins = []
     where_str = None
     if dataset:

@@ -2,6 +2,7 @@ import urllib.parse
 
 from application.caching import get
 from application.utils import create_dict
+from flask import abort
 
 
 DATASETTE_URL = "https://datasette.digital-land.info"
@@ -24,6 +25,8 @@ def fetch_resource_from_dataset(database_name, resource):
     url = f"{DATASETTE_URL}/{database_name}.json?sql={query}"
     print("get_resource_from_dataset: {}".format(url))
     result = get(url, format="json")
+    if not result:
+        return abort(404)
     return create_dict(result["columns"], result["rows"][0])
 
 
