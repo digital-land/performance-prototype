@@ -20,18 +20,16 @@ from application.data_access.entity_queries import (
     get_grouped_entity_count,
     get_entity_count,
 )
+from application.data_access.source_and_resource_queries import (
+    publisher_counts,
+    get_datasets_summary,
+    get_monthly_counts,
+)
 from application.utils import (
     filter_off_btns,
     resources_per_publishers,
     index_by,
     read_json_file,
-)
-
-# trying to replace these
-from application.data_access.datasette import (
-    get_monthly_counts,
-    publisher_counts,
-    get_datasets_summary,
 )
 
 dataset_bp = Blueprint("dataset", __name__, url_prefix="/dataset")

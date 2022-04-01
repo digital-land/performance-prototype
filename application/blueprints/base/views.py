@@ -4,11 +4,6 @@ from flask import render_template, Blueprint, redirect, abort
 from flask.helpers import url_for
 from flask import request
 
-from application.data_access.datasette import (
-    get_monthly_counts,
-    get_datasets_summary,
-    get_new_resources,
-)
 from application.data_access.entity_queries import (
     get_grouped_entity_count,
     get_organisation_entities_using_end_dates,
@@ -28,7 +23,12 @@ from application.data_access.digital_land_queries import (
     get_content_type_counts,
     get_source_counts,
 )
-from application.data_access.dataset_db_queries import fetch_resource_from_dataset
+from application.data_access.datasette_queries import fetch_resource_from_dataset
+from application.data_access.source_and_resource_queries import (
+    get_datasets_summary,
+    get_new_resources,
+    get_monthly_counts,
+)
 
 from application.utils import (
     create_dict,

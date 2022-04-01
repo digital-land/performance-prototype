@@ -78,14 +78,22 @@ def get_monthly_resource_counts(pipeline=None):
 
 
 def get_new_resources(dates=[yesterday(string=True)]):
-    sql = """SELECT
+
+    if len(dates) == 1:
+        sql = f"""SELECT
             DISTINCT resource, start_date
             FROM resource
-            WHERE start_date IN %(dates)s
-            ORDER BY start_date
-            """ % {
-        "dates": tuple(dates)
-    }
+            WHERE start_date = '{dates[0]}'
+            ORDER BY start_date"""
+    else:
+        sql = """SELECT
+                DISTINCT resource, start_date
+                FROM resource
+                WHERE start_date IN %(dates)s
+                ORDER BY start_date
+                """ % {
+            "dates": tuple(dates)
+        }
 
     with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
