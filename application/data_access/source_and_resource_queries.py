@@ -1,11 +1,6 @@
-import json
-import urllib.parse
-import functools
 from datetime import datetime
-
-from application.caching import get
 from application.data_access.db import Database
-from application.factory import digital_land_db_path, entity_db_path
+from application.factory import digital_land_db_path
 from application.utils import (
     create_dict,
     index_by,
@@ -19,44 +14,6 @@ from application.data_access.digital_land_queries import (
     get_datasets,
     get_monthly_source_counts,
 )
-
-
-BASE_URL = "https://datasette.digital-land.info"
-
-
-def generate_query(table, params, format="json"):
-    param_str = ""
-    if params.keys():
-        param_str = "&".join([f"{k}={v}" for k, v in params.items()])
-    return "%s/digital-land/%s.%s?%s" % (BASE_URL, table, format, param_str)
-
-
-def query(table, params, format="json"):
-    query = generate_query(table, params, format)
-    print("Running: ", query)
-
-    # only returns 100
-    r = get(query)
-    if r is None:
-        return None
-    return json.loads(r)
-
-
-def sqlQuery(query, results="complete"):
-    r = get(query)
-    if r is None:
-        return None
-    response = json.loads(r)
-    if results == "rows":
-        return response["rows"]
-    if results == "rows_with_column_names":
-        return [create_dict(response["columns"], row) for row in response["rows"]]
-    return response
-
-
-def urlencode(s):
-    s.replace(":", "%3A")
-    return s
 
 
 def sql_for_filter(filters, mappings={}):
@@ -120,17 +77,6 @@ def get_monthly_resource_counts(pipeline=None):
     return [create_dict(columns, row) for row in rows]
 
 
-def get_latest_resource(dataset):
-    query = (
-        f"{self.BASE_URL}/digital-land.json?sql=select%0D%0A++resource.resource%2C%0D%0A++resource.end_date%2C%0D%0A++resource.entry_date%2C%0D%0A++resource.start_date%2C%0D%0A++source_pipeline.pipeline%0D%0Afrom%0D%0A++resource%0D%0A++INNER+JOIN+resource_endpoint+ON+resource.resource+%3D+resource_endpoint.resource%0D%0A++INNER+JOIN+source+ON+resource_endpoint.endpoint+%3D+source.endpoint%0D%0A++INNER+JOIN+source_pipeline+ON+source.source+%3D+source_pipeline.source%0D%0Awhere%0D%0A++source_pipeline.pipeline+%3D+%3Apipeline%0D%0Aorder+by%0D%0A++resource.start_date+DESC%0D%0Alimit+1&pipeline="  # noqa
-        + dataset
-    )
-    results = sqlQuery(query)
-    if len(results["rows"]):
-        return create_dict(results["columns"], results["rows"][0])
-    return []
-
-
 def get_new_resources(dates=[yesterday(string=True)]):
     sql = """SELECT
             DISTINCT resource, start_date
@@ -144,16 +90,6 @@ def get_new_resources(dates=[yesterday(string=True)]):
     with Database(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     return rows
-
-
-def sql_str_query(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        query = func(*args, **kwargs)
-        result = sqlQuery(query)
-        return [create_dict(result["columns"], row) for row in result["rows"]]
-
-    return wrapper
 
 
 def by_collection(data):

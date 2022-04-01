@@ -1,10 +1,9 @@
 import logging
 
 from application.data_access.api_queries import get_organisation_entity_number
-from application.data_access.datasette import sqlQuery
 from application.data_access.db import Database
 from application.factory import entity_db_path
-from application.utils import split_organisation_id, index_by
+from application.utils import split_organisation_id
 
 logger = logging.getLogger(__name__)
 
