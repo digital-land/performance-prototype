@@ -404,8 +404,9 @@ def get_latest_resource(dataset=None):
         else:
             results = get_resources(limit=1)
 
-        if len(results["rows"]):
-            return create_dict(results["columns"], results["rows"][0])
+        if results:
+            columns = results[0].keys() if results else []
+            return [create_dict(columns, row) for row in results]
 
         return None
     except Exception as e:

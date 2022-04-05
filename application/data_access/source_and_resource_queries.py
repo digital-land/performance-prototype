@@ -310,7 +310,4 @@ def get_datasets_summary():
         else:
             missing.append(d["pipeline"])
 
-    print("MISSING")
-    print(set(missing))
-
     return all_datasets

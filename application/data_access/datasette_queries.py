@@ -23,9 +23,8 @@ def fetch_resource_from_dataset(database_name, resource):
     query_str = " ".join(query_lines)
     query = urllib.parse.quote(query_str)
     url = f"{DATASETTE_URL}/{database_name}.json?sql={query}"
-    print("get_resource_from_dataset: {}".format(url))
     result = get(url, format="json")
-    if not result:
+    if not result or not result["rows"]  :
         return abort(404)
     return create_dict(result["columns"], result["rows"][0])
 

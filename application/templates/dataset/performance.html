@@ -138,10 +138,10 @@
         Date collected newest resource
       </dt>
       <dd class="govuk-summary-list__value">
-        {% if "error" in latest_resource.keys() %}
-        <div class="govuk-error-message">Unable to get data from datasette</div>
+        {% if latest_resource | count == 0 %}
+        <div class="govuk-error-message">Unable to get latest resource data</div>
         {% else %}
-        {{ latest_resource['start_date'] }}
+        {{ latest_resource[0]['start_date'] }}
         <div class="dl-secondary-text dl-small-text govuk-!-margin-top-1">(<a href="{{ url_for('base.resource', resource=latest_resource['resource']) }}" class="govuk-link">{{ latest_resource['resource']|truncate(15) }}</a> was the resource collected)</div>
         {% endif %}
       </dd>

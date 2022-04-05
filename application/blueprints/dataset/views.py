@@ -111,7 +111,6 @@ def dataset(dataset):
     except Exception as e:
         print(e)
         content_type_counts = []
-        print("Query to extract content type counts is failing")
 
     blank_sources, bls_query = get_sources(
         limit=500,
