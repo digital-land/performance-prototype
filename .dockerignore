@@ -17,3 +17,5 @@ tf
 .idea
 .git
 *.in
+entity.sqlite3
+.flaskenv

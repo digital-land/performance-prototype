@@ -192,7 +192,6 @@ def publisher_counts(pipeline):
     columns = rows[0].keys() if rows else []
     organisations = [create_dict(columns, row) for row in rows]
 
-    print("Publihser ===COUNTS====", sql)
     return index_by("organisation", organisations)
 
 

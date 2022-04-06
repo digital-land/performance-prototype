@@ -2,36 +2,35 @@ import logging
 
 from application.data_access.api_queries import get_organisation_entity_number
 from application.data_access.db import Database
-from application.factory import entity_db_path
+from application.factory import entity_stats_db_path
 from application.utils import split_organisation_id
 
 logger = logging.getLogger(__name__)
 
 
 def get_total_entity_count():
-    sql = "SELECT COUNT(DISTINCT entity) AS count FROM entity"
-    with Database(entity_db_path) as db:
+    sql = "SELECT * FROM entity_count"
+    with Database(entity_stats_db_path) as db:
         row = db.execute(sql).fetchone()
-    return row["count"]
+    return row["count"] if row is not None else 0
 
 
 def get_entity_count(pipeline=None):
     if pipeline is not None:
-        sql = "SELECT COUNT(DISTINCT entity) AS count FROM entity e WHERE e.dataset = :pipeline"
-        with Database(entity_db_path) as db:
+        sql = "SELECT * FROM entity_counts WHERE dataset = :pipeline"
+        with Database(entity_stats_db_path) as db:
             row = db.execute(sql, {"pipeline": pipeline}).fetchone()
-        return row["count"]
+        return row["count"] if row is not None else 0
 
     return get_total_entity_count()
 
 
 def get_grouped_entity_count(dataset=None, organisation_entity=None):
     query_lines = [
-        "SELECT",
-        "dataset,",
-        "COUNT(DISTINCT entity) AS count",
+        "SELECT SUM(count) AS count,",
+        "dataset",
         "FROM",
-        "entity",
+        "entity_counts",
     ]
     if organisation_entity:
         query_lines.append("WHERE")
@@ -48,10 +47,10 @@ def get_grouped_entity_count(dataset=None, organisation_entity=None):
 
     query_str = " ".join(query_lines)
 
-    with Database(entity_db_path) as db:
+    with Database(entity_stats_db_path) as db:
         rows = db.execute(query_str).fetchall()
     if rows:
-        return {dataset[0]: dataset[1] for dataset in rows}
+        return {row["dataset"]: row["count"] for row in rows}
     return {}
 
 
@@ -66,9 +65,9 @@ def get_organisation_entity_count(organisation, dataset=None):
 def get_organisation_entities_using_end_dates():
     query_lines = [
         "SELECT",
-        "entity.organisation_entity",
+        "organisation_entity",
         "FROM",
-        "entity",
+        "entity_end_date_counts",
         "WHERE",
         '("end_date" is not null and "end_date" != "")',
         "AND",
@@ -78,7 +77,7 @@ def get_organisation_entities_using_end_dates():
     ]
     query_str = " ".join(query_lines)
 
-    with Database(entity_db_path) as db:
+    with Database(entity_stats_db_path) as db:
         rows = db.execute(query_str).fetchall()
     return rows
 
@@ -90,18 +89,18 @@ def get_datasets_organisation_has_used_enddates(organisation):
         return None
     query_lines = [
         "SELECT",
-        "entity.dataset",
+        "dataset",
         "FROM",
-        "entity",
+        "entity_end_date_counts",
         "WHERE",
         '("end_date" is not null and "end_date" != "")',
         "AND",
         f'("organisation_entity" = {organisation_entity_num})',
         "GROUP BY",
-        "entity.dataset",
+        "dataset",
     ]
     query_str = " ".join(query_lines)
-    with Database(entity_db_path) as db:
+    with Database(entity_stats_db_path) as db:
         rows = db.execute(query_str).fetchall()
     if rows:
         return [dataset[0] for dataset in rows]
