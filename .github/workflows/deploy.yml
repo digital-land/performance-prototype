@@ -13,8 +13,10 @@ jobs:
         with:
           python-version: 3.9
       - name: Make databases
-        run: make databases
-      - name: Heroku container registry logi
+        run: |
+          make init
+          make databases
+      - name: Heroku container registry login
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:login
