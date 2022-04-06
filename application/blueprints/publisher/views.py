@@ -5,17 +5,17 @@ from flask.helpers import url_for
 from flask import request
 
 from application.data_access.entity_queries import (
-    fetch_organisation_entity_count,
-    fetch_datasets_organisation_has_used_enddates,
+    get_organisation_entity_count,
+    get_datasets_organisation_has_used_enddates,
 )
 
 from application.data_access.digital_land_queries import (
-    fetch_datasets,
-    fetch_organisation_sources,
-    fetch_organisation_stats,
-    fetch_resource_count_per_dataset,
-    fetch_source_counts,
-    fetch_publishers,
+    get_datasets,
+    get_organisation_sources,
+    get_organisation_stats,
+    get_resource_count_per_dataset,
+    get_grouped_source_counts,
+    get_publishers,
 )
 
 from application.data_access.api_queries import get_entities, get_organisation_entity
@@ -69,9 +69,9 @@ def split_publishers(organisations):
 
 def publisher_info():
     # returns all publishers, even empty
-    publisher_source_counts = fetch_publishers()
+    publisher_source_counts = get_publishers()
     # return just the publishers we have data for
-    publisher_stats = fetch_organisation_stats()
+    publisher_stats = get_organisation_stats()
     empty_stats = {"resources": 0, "active": 0, "endpoints": 0, "pipelines": 0}
     publishers = {}
     for pub, stats in publisher_source_counts.items():
@@ -108,9 +108,9 @@ def organisation():
 def organisation_performance(prefix, org_id):
     id = prefix + ":" + org_id
     organisation = get_organisation_entity(prefix, org_id)
-    resource_counts = fetch_resource_count_per_dataset(id)
-    source_counts = fetch_source_counts(id)
-    sources = index_with_list("pipeline", fetch_organisation_sources(id))
+    resource_counts = get_resource_count_per_dataset(id)
+    source_counts = get_grouped_source_counts(id)
+    sources = index_with_list("pipeline", get_organisation_sources(id))
 
     missing_datasets = [
         dataset for dataset in source_counts if dataset["sources_with_endpoint"] == 0
@@ -132,7 +132,7 @@ def organisation_performance(prefix, org_id):
     data["data_from_secondary"] = {}
 
     # add entity counts to dataset data
-    entity_counts = fetch_organisation_entity_count(organisation=id)
+    entity_counts = get_organisation_entity_count(organisation=id)
     for dn, count in entity_counts.items():
         if dn in data["datasets"].keys():
             data["datasets"][dn]["entity_count"] = count
@@ -148,7 +148,7 @@ def organisation_performance(prefix, org_id):
         data=data,
         sources_per_dataset=source_counts,
         missing_datasets=missing_datasets,
-        enddates=fetch_datasets_organisation_has_used_enddates(id),
+        enddates=get_datasets_organisation_has_used_enddates(id),
         erroneous_sources=erroneous_sources,
         entity_counts=entity_counts,
     )
@@ -176,7 +176,7 @@ def map(prefix, org_id):
     if request.args.get("dataset"):
         dataset_name = request.args.get("dataset")
 
-    dataset = fetch_datasets(filter={"dataset": dataset_name})
+    dataset = get_datasets(filter={"dataset": dataset_name})
 
     # should fail if no dataset of that name
 
@@ -209,7 +209,7 @@ def map(prefix, org_id):
     ]
 
     expected_datasets = index_with_list(
-        "pipeline", fetch_organisation_sources(prefix + ":" + org_id)
+        "pipeline", get_organisation_sources(prefix + ":" + org_id)
     )
 
     return render_template(

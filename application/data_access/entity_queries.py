@@ -1,26 +1,36 @@
 import logging
-import urllib.parse
 
-from application.caching import get
 from application.data_access.api_queries import get_organisation_entity_number
+from application.data_access.db import Database
+from application.factory import entity_stats_db_path
 from application.utils import split_organisation_id
 
 logger = logging.getLogger(__name__)
 
-DATASETTE_URL = "https://datasette.digital-land.info"
+
+def get_total_entity_count():
+    sql = "SELECT * FROM entity_count"
+    with Database(entity_stats_db_path) as db:
+        row = db.execute(sql).fetchone()
+    return row["count"] if row is not None else 0
 
 
-# def fetch_organisation_entity_number(organisation):
+def get_entity_count(pipeline=None):
+    if pipeline is not None:
+        sql = "SELECT * FROM entity_counts WHERE dataset = :pipeline"
+        with Database(entity_stats_db_path) as db:
+            row = db.execute(sql, {"pipeline": pipeline}).fetchone()
+        return row["count"] if row is not None else 0
+
+    return get_total_entity_count()
 
 
-def fetch_entity_count(dataset=None, organisation_entity=None):
-    datasette_url = DATASETTE_URL
+def get_grouped_entity_count(dataset=None, organisation_entity=None):
     query_lines = [
-        "SELECT",
-        "dataset,",
-        "COUNT(DISTINCT entity) AS count",
+        "SELECT SUM(count) AS count,",
+        "dataset",
         "FROM",
-        "entity",
+        "entity_counts",
     ]
     if organisation_entity:
         query_lines.append("WHERE")
@@ -36,31 +46,28 @@ def fetch_entity_count(dataset=None, organisation_entity=None):
         query_lines.append("dataset")
 
     query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{datasette_url}/entity.json?sql={query}"
-    # logger.info("get_entity_count: %s", url)
-    print("get_entity_count: %s", url)
-    result = get(url, format="json")
-    if len(result["rows"]):
-        return {dataset[0]: dataset[1] for dataset in result["rows"]}
+
+    with Database(entity_stats_db_path) as db:
+        rows = db.execute(query_str).fetchall()
+    if rows:
+        return {row["dataset"]: row["count"] for row in rows}
     return {}
 
 
-def fetch_organisation_entity_count(organisation, dataset=None):
+def get_organisation_entity_count(organisation, dataset=None):
     prefix, ref = split_organisation_id(organisation)
-    return fetch_entity_count(
+    return get_grouped_entity_count(
         dataset=dataset,
         organisation_entity=get_organisation_entity_number(prefix, ref),
     )
 
 
-def fetch_organisation_entities_using_end_dates():
-    datasette_url = DATASETTE_URL
+def get_organisation_entities_using_end_dates():
     query_lines = [
         "SELECT",
-        "entity.organisation_entity",
+        "organisation_entity",
         "FROM",
-        "entity",
+        "entity_end_date_counts",
         "WHERE",
         '("end_date" is not null and "end_date" != "")',
         "AND",
@@ -69,38 +76,33 @@ def fetch_organisation_entities_using_end_dates():
         "organisation_entity",
     ]
     query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{datasette_url}/entity.json?sql={query}"
-    logger.info("get_organisation_entities_using_end_dates: %s", url)
-    result = get(url, format="json")
-    if len(result["rows"]):
-        return result["rows"]
-    return []
+
+    with Database(entity_stats_db_path) as db:
+        rows = db.execute(query_str).fetchall()
+    return rows
 
 
-def fetch_datasets_organisation_has_used_enddates(organisation):
-    datasette_url = DATASETTE_URL
+def get_datasets_organisation_has_used_enddates(organisation):
     prefix, ref = split_organisation_id(organisation)
     organisation_entity_num = get_organisation_entity_number(prefix, ref)
     if not organisation_entity_num:
         return None
     query_lines = [
         "SELECT",
-        "entity.dataset",
+        "dataset",
         "FROM",
-        "entity",
+        "entity_end_date_counts",
         "WHERE",
         '("end_date" is not null and "end_date" != "")',
         "AND",
         f'("organisation_entity" = {organisation_entity_num})',
         "GROUP BY",
-        "entity.dataset",
+        "dataset",
     ]
     query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{datasette_url}/entity.json?sql={query}"
-    logger.info("get_datasets_organisation_has_used_enddatess: %s", url)
-    result = get(url, format="json")
-    if len(result["rows"]):
-        return [dataset[0] for dataset in result["rows"]]
+    with Database(entity_stats_db_path) as db:
+        rows = db.execute(query_str).fetchall()
+    if rows:
+        return [dataset[0] for dataset in rows]
+
     return []

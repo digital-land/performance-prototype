@@ -1,25 +1,18 @@
 import logging
-import urllib.parse
-
-from application.caching import get
+from application.data_access.db import Database
+from application.factory import digital_land_db_path
 from application.utils import create_dict, yesterday, index_by
 from application.data_access.sql_helpers import (
     generate_sql_where_str,
-    prepare_query_str,
 )
 
 logger = logging.getLogger(__name__)
 
-DATASETTE_URL = "https://datasette.digital-land.info"
-DATABASE_NAME = "digital-land"
 
-
-def fetch_datasets(filter=None):
-    params = ""
+def get_datasets(filter=None):
     where_clause = ""
-    # handle any filters
     if filter:
-        where_clause, params = generate_sql_where_str(
+        where_clause = generate_sql_where_str(
             filter,
             {
                 "active": "dataset_active",  # not currently available
@@ -27,7 +20,6 @@ def fetch_datasets(filter=None):
                 "theme": "dataset_theme.theme",
             },
         )
-
     query_lines = [
         "SELECT",
         "dataset.*,",
@@ -35,29 +27,28 @@ def fetch_datasets(filter=None):
         "FROM dataset",
         "INNER JOIN dataset_theme ON dataset.dataset = dataset_theme.dataset",
         where_clause,
+        "GROUP BY dataset.dataset",
     ]
 
-    query_lines.append("GROUP BY dataset.dataset")
     query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}{params}"
-    # logger.info("get_datasets: %s", url)
-    print("get_datasets: {}".format(url))
-    result = get(url, format="json")
 
-    if filter and "dataset" in filter.keys():
-        return create_dict(result["columns"], result["rows"][0])
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    with Database(digital_land_db_path) as db:
+        if filter:
+            rows = db.execute(query_str, filter).fetchall()
+        else:
+            rows = db.execute(query_str).fetchall()
+
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
-def fetch_sources(
+def get_sources(
     limit=100,
     filter=None,
     include_blanks=False,
     only_blanks=False,
     concat_pipelines=True,
 ):
-    params = ""
     limit_str = ""
     where_clause = ""
 
@@ -67,7 +58,7 @@ def fetch_sources(
 
     # handle any filters
     if filter:
-        where_clause, params = generate_sql_where_str(
+        where_clause = generate_sql_where_str(
             filter,
             {
                 "organisation": "source.organisation",
@@ -125,38 +116,43 @@ def fetch_sources(
         limit_str,
     ]
     query_str = " ".join(query_lines)
-    query = urllib.parse.quote(query_str)
-    url = f"{DATASETTE_URL}/digital-land.json?sql={query}{params}"
 
-    print("GET MY SOURCE", url)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]], url.replace(
-        "digital-land.json?sql", "digital-land?sql"
-    )
+    with Database(digital_land_db_path) as db:
+        if filter:
+            rows = db.execute(query_str, filter).fetchall()
+        else:
+            rows = db.execute(query_str).fetchall()
+
+    columns = rows[0].keys() if rows else []
+
+    # return empty query_url - not sure where used?
+    query_url = ""
+
+    return [create_dict(columns, row) for row in rows], query_url
 
 
-def fetch_publishers():
+def get_publishers():
     query_lines = [
         "SELECT",
         "source.organisation,",
         "organisation.name,",
         "organisation.end_date AS organisation_end_date,",
-        "SUM(CASE WHEN (source.endpoint) is not null and (source.endpoint) != '' THEN 1 ELSE 0 END)  AS sources_with_endpoint",
+        "SUM(CASE WHEN (source.endpoint) is not null and (source.endpoint) != '' THEN 1 ELSE 0 END)  AS sources_with_endpoint",  # noqa
         "FROM",
         "source",
         "INNER JOIN organisation ON source.organisation = organisation.organisation",
         "GROUP BY",
         "source.organisation",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_publishers: {url}")
-    result = get(url, format="json")
-    organisations = [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    organisations = [create_dict(columns, row) for row in rows]
     return index_by("organisation", organisations)
 
 
-def fetch_publisher_coverage(dataset=None):
+def get_publisher_coverage(dataset=None):
     query_lines = [
         "SELECT",
         "count(DISTINCT source.organisation) AS total,",
@@ -174,23 +170,14 @@ def fetch_publisher_coverage(dataset=None):
         "ORDER BY",
         "source.source",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_publisher_coverage: {url}")
-    result = get(url, format="json")
-    return create_dict(result["columns"], result["rows"][0])
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        row = db.execute(sql).fetchone()
+    columns = row.keys() if row else []
+    return create_dict(columns, row)
 
 
-def f_orgs():
-    query = urllib.parse.quote(
-        "select name, organisation from organisation order by organisation"
-    )
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    result = get(url, format="json")
-    return [{"text": o[0], "value": o[1]} for o in result["rows"]]
-
-
-def fetch_organisation_stats():
+def get_organisation_stats():
     """
     Returns a list of organisations with:
     - end_date if applicable
@@ -223,16 +210,16 @@ def fetch_organisation_stats():
         "GROUP BY",
         "source.organisation",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_organisation_stats: {url}")
-    result = get(url, format="json")
-    organisations = [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    organisations = [create_dict(columns, row) for row in rows]
     return index_by("organisation", organisations)
 
 
 # should replace fetch_organisation_stats
-def fetch_publisher_stats(dataset):
+def get_publisher_stats(dataset):
     query_lines = [
         "SELECT",
         "organisation.name,",
@@ -271,23 +258,22 @@ def fetch_publisher_stats(dataset):
         "GROUP BY",
         "source.organisation",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_publisher_stats: {url}")
-    result = get(url, format="json")
-    organisations = [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    organisations = [create_dict(columns, row) for row in rows]
     return index_by("organisation", organisations)
 
 
-def fetch_resources(filters=None, limit=None):
+def get_resources(filters=None, limit=None):
     limit_str = ""
     if limit:
         limit_str = f"LIMIT {limit}"
 
     where_clause = ""
-    params = ""
     if filters:
-        where_clause, params = generate_sql_where_str(
+        where_clause = generate_sql_where_str(
             filters,
             {
                 "organisation": "source.organisation",
@@ -327,13 +313,17 @@ def fetch_resources(filters=None, limit=None):
         "resource.start_date DESC",
         limit_str,
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}{params}"
-    print(f"get_resources ({filters}): {url}")
-    return get(url, format="json")
+
+    query_str = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        if filters:
+            rows = db.execute(query_str, filters).fetchall()
+        else:
+            rows = db.execute(query_str).fetchall()
+    return rows
 
 
-def fetch_resource(resource_hash):
+def get_resource(resource_hash):
     # seems like overkill...
     query_lines = [
         "SELECT",
@@ -356,18 +346,21 @@ def fetch_resource(resource_hash):
         "INNER JOIN log ON resource.resource = log.resource",
         "INNER JOIN source ON source.endpoint = resource_endpoint.endpoint",
         "INNER JOIN source_pipeline ON source.source = source_pipeline.source",
-        f"WHERE resource.resource = '{resource_hash}'",
+        "WHERE resource.resource = :resource_hash",
         "GROUP BY",
         "endpoint.endpoint",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_resource {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql, {"resource_hash": resource_hash}).fetchall()
+
+    columns = rows[0].keys() if rows else []
+
+    return [create_dict(columns, row) for row in rows]
 
 
-def fetch_active_resources():
+def get_active_resources(pipeline):
     # probably doesn't need to be it's own query but it was causing a headache
     query_lines = [
         "SELECT",
@@ -389,38 +382,39 @@ def fetch_active_resources():
         "ORDER BY",
         "resource.end_date ASC",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_active_resources {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
+
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
 def fetch_total_resource_count():
-    query_lines = ["select count(distinct resource) from resource"]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_resource_count {url}")
-    result = get(url, format="json")
-    return result["rows"][0][0]
+    sql = "select count(distinct resource) from resource"
+    with Database(digital_land_db_path) as db:
+        result = db.execute(sql).fetchone()
+    return result[0] if result else 0
 
 
-def fetch_latest_resource(dataset=None):
+def get_latest_resource(dataset=None):
     try:
         if dataset:
-            results = fetch_resources(filters={"dataset": dataset}, limit=1)
+            results = get_resources(filters={"dataset": dataset}, limit=1)
         else:
-            results = fetch_resources(limit=1)
+            results = get_resources(limit=1)
 
-        if len(results["rows"]):
-            return create_dict(results["columns"], results["rows"][0])
+        if results:
+            columns = results[0].keys() if results else []
+            return [create_dict(columns, row) for row in results]
 
         return None
-    except:
+    except Exception as e:
+        print(e)
         return {"error": "Problem retrieving data from datasette"}
 
 
-def fetch_resource_count_per_dataset(organisation=None):
+def get_resource_count_per_dataset(organisation=None):
     query_lines = [
         "SELECT",
         "COUNT(DISTINCT resource.resource) AS resources,",
@@ -447,15 +441,15 @@ def fetch_resource_count_per_dataset(organisation=None):
         "source.organisation," if organisation else "",
         "source_pipeline.pipeline",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_resource_count_per_dataset ({organisation}): {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
-def fetch_organisation_sources(organisation):
-    sources, url = fetch_sources(
+def get_organisation_sources(organisation):
+    sources, url = get_sources(
         filter={"organisation": organisation},
         include_blanks=True,
         concat_pipelines=False,
@@ -463,7 +457,7 @@ def fetch_organisation_sources(organisation):
     return sources
 
 
-def fetch_overall_source_counts(groupby=None):
+def get_overall_source_counts(groupby=None):
     groupby_options = {
         "organisation": "organisation.organisation",
         "dataset": "source_pipeline.pipeline",
@@ -498,14 +492,14 @@ def fetch_overall_source_counts(groupby=None):
         if groupby and groupby_options.get(groupby)
         else "",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_source_counts (Overall): {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
-def fetch_organisation_source_counts(organisation, by_dataset=True):
+def get_organisation_source_counts(organisation, by_dataset=True):
     query_lines = [
         "SELECT",
         "source_pipeline.pipeline AS pipeline,",
@@ -522,20 +516,20 @@ def fetch_organisation_source_counts(organisation, by_dataset=True):
         f"source.organisation = '{organisation}'",
         "GROUP BY source_pipeline.pipeline" if by_dataset else "",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_source_counts ({organisation}): {url}")
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
-def fetch_source_counts(organisation=None, **kwargs):
+def get_grouped_source_counts(organisation=None, **kwargs):
     if organisation:
-        return fetch_organisation_source_counts(organisation, **kwargs)
-    return fetch_overall_source_counts(**kwargs)
+        return get_organisation_source_counts(organisation, **kwargs)
+    return get_overall_source_counts(**kwargs)
 
 
-def fetch_latest_collector_run_date(dataset=None):
+def get_latest_collector_run_date(dataset=None):
     where_clause = ""
     if dataset:
         where_clause = f"WHERE source_pipeline.pipeline = '{dataset}'"
@@ -551,28 +545,27 @@ def fetch_latest_collector_run_date(dataset=None):
         "GROUP BY",
         "source_pipeline.pipeline",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_latest_collector_run_date")
-    result = get(url, format="json")
-    return index_by(
-        "pipeline", [create_dict(result["columns"], row) for row in result["rows"]]
-    )
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return index_by("pipeline", [create_dict(columns, row) for row in rows])
 
 
-def fetch_table(tablename):
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}/{tablename}.json"
-    print(f"get {tablename}", url)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+def get_table(tablename):
+    sql = f"SELECT * FROM {tablename}"
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
-def fetch_themes():
-    return fetch_table("theme")
+def get_themes():
+    return get_table("theme")
 
 
-def fetch_typologies():
-    return fetch_table("typology")
+def get_typologies():
+    return get_table("typology")
 
 
 ##########################################
@@ -580,7 +573,7 @@ def fetch_typologies():
 ##########################################
 
 
-def fetch_logs(filters=None, group_by=None):
+def get_logs(filters=None, group_by=None):
     where_str = ""
     if filters:
         where_str = "WHERE " + " AND ".join(
@@ -593,14 +586,14 @@ def fetch_logs(filters=None, group_by=None):
 
     query_lines = ["SELECT", "log.*", "FROM", "log", where_str, group_by_str]
 
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_logs", query)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
-def fetch_log_summary(date=yesterday(string=True)):
+def get_log_summary(date=yesterday(string=True)):
     query_lines = [
         "SELECT",
         "entry_date,",
@@ -609,18 +602,18 @@ def fetch_log_summary(date=yesterday(string=True)):
         "FROM",
         "log",
         "WHERE",
-        f"entry_date = '{date}'",
+        "entry_date = :date",
         "GROUP BY",
         "status",
     ]
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    logger.info("get_log_summary: %s", url)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql, {"date": date}).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
 
 
-def fetch_content_type_counts(dataset=None):
+def get_content_type_counts(dataset=None):
     joins = []
     where_str = None
     if dataset:
@@ -642,8 +635,80 @@ def fetch_content_type_counts(dataset=None):
         "log.content_type",
     ]
 
-    query = prepare_query_str(query_lines)
-    url = f"{DATASETTE_URL}/{DATABASE_NAME}.json?sql={query}"
-    print(f"get_content_type_counts", query)
-    result = get(url, format="json")
-    return [create_dict(result["columns"], row) for row in result["rows"]]
+    sql = " ".join(query_lines)
+    with Database(digital_land_db_path) as db:
+        rows = db.execute(sql).fetchall()
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
+
+
+def get_source_counts(pipeline=None):
+    # returns high level source counts
+    sql = """
+            SELECT
+              COUNT(DISTINCT source.source) AS sources,
+              COUNT(
+                DISTINCT CASE
+                  WHEN source.end_date == '' THEN source.source
+                  WHEN strftime('%Y%m%d', source.end_date) >= strftime('%Y%m%d', 'now') THEN source.source
+                END
+              ) AS active,
+              COUNT(
+                DISTINCT CASE
+                  WHEN end_date != '' THEN source.source
+                  WHEN strftime('%Y%m%d', source.end_date) <= strftime('%Y%m%d', 'now') THEN source.source
+                END
+              ) AS inactive,
+              COUNT(DISTINCT source_pipeline.pipeline) AS pipelines
+            FROM
+              source
+              INNER JOIN source_pipeline ON source.source = source_pipeline.source
+            WHERE source.endpoint != '' """
+
+    if pipeline:
+        sql += " AND source_pipeline.pipeline = :pipeline"
+
+    with Database(digital_land_db_path) as db:
+        if pipeline:
+            rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
+        else:
+            rows = db.execute(sql).fetchall()
+
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]
+
+
+def get_monthly_source_counts(pipeline=None):
+
+    with Database(digital_land_db_path) as db:
+
+        if pipeline:
+            sql = """SELECT
+                  strftime('%Y-%m', source.start_date) AS yyyy_mm,
+                  count(distinct source.source) AS count
+                FROM
+                  source
+                  INNER JOIN source_pipeline ON source.source = source_pipeline.source
+                WHERE
+                  source.start_date != ""
+                  AND source_pipeline.pipeline = :pipeline
+                GROUP BY
+                  yyyy_mm
+                ORDER BY
+                  yyyy_mm"""
+
+            rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
+
+        else:
+            sql = """SELECT
+                    strftime('%Y-%m', source.start_date) as yyyy_mm, 
+                    count(distinct source.source) as count
+                FROM source
+                WHERE source.start_date != ""
+                GROUP BY yyyy_mm
+                ORDER BY yyyy_mm"""
+
+            rows = db.execute(sql).fetchall()
+
+    columns = rows[0].keys() if rows else []
+    return [create_dict(columns, row) for row in rows]

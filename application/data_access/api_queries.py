@@ -2,7 +2,7 @@ from application.caching import get
 
 API_URL = "https://www.digital-land.info/entity.json"
 
-
+# TODO move to local db
 def get_entities(parameters):
     params = ""
     for p, v in parameters.items():

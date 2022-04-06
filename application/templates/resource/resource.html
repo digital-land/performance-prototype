@@ -39,7 +39,7 @@
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">Content type</dt>
             <dd class="govuk-summary-list__value">
-                {%- for typ in resource[0]['content_type'] %}
+                {%- for typ in resource[0]['content_type'].split(";") %}
                 {% if typ == "" %}
                 <span class="dl-secondary-text">no content-type</span>
                 {%- else -%}

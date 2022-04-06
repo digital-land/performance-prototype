@@ -3,11 +3,18 @@
 Flask app factory class
 """
 import os
+import pathlib
 
 from flask import Flask, render_template, session
 from flask.cli import load_dotenv
 
 load_dotenv()
+
+parent_dir = pathlib.Path(__file__).parent.parent.absolute()
+digital_land_db_path = (
+    f"file:{os.path.join(parent_dir, 'digital-land.sqlite3?mode=ro')}"
+)
+entity_stats_db_path = f"file:{os.path.join(parent_dir, 'entity-stats.sqlite3?mode=ro')}"
 
 
 def create_app(config_filename):
@@ -23,6 +30,7 @@ def create_app(config_filename):
     register_templates(app)
     register_filters(app)
     register_extensions(app)
+    register_commands(app)
 
     return app
 
@@ -104,3 +112,7 @@ def register_templates(app):
         ]
     )
     app.jinja_loader = multi_loader
+
+
+def register_commands(app):
+    pass

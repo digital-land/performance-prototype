@@ -1,6 +1,5 @@
 import time
 import pytest
-import uvicorn
 from multiprocessing.context import Process
 
 from application.factory import create_app  # noqa: E402
