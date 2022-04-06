@@ -1,8 +1,15 @@
 
 init::
-	pip install --upgrade pip setuptools
-	pip install -r requirements.txt
+	python -m pip install --upgrade pip
+	python -m pip install pip-tools
 	npm install
+	pip install -r requirements.txt
+
+reqs::
+	python -m piptools compile requirements/requirements.in
+
+sync:
+	python -m piptools sync requirements/requirements.txt
 
 deploy: databases push release
 
