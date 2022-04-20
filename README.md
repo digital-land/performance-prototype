@@ -10,6 +10,10 @@ Install dependencies
 
   make init
 
+Get local copy of all the data (can take a while but then you'll have local sqlite dbs for this app)
+
+  make databases
+
 Run flask application
 
   flask run
