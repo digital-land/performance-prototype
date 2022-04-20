@@ -52,6 +52,9 @@ def register_blueprints(app):
 
     app.register_blueprint(publisher_pages)
 
+    from application.blueprints.ripa_test.views import ripa_test
+    app.register_blueprint(ripa_test)
+
 
 def register_context_processors(app):
     """
