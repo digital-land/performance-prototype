@@ -1,0 +1,62 @@
+{% extends "ripa_test/base.html" %}
+{% block page_title %}RIPA tests | Operations dashboard | Digital Land{% endblock %}
+
+
+{% block dl_breadcrumbs %}{% endblock %}
+
+{% block main %}
+  <main class="app-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>
+  {% block content %}
+    <h1 class="govuk-heading-l govuk-!-margin-top-6">Data tests</h1>
+
+    {% for la in local_authorities %}
+      <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">{{ la }}</caption>
+      <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Dataset</th>
+        <th scope="col" class="govuk-table__header">Test</th>
+        <th scope="col" class="govuk-table__header">Expected</th>
+        <th scope="col" class="govuk-table__header">Actual</th>
+      </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+      {% for result in results[la] %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">{{ result["test"]["params"]["dataset"] }}</td>
+            <td class="govuk-table__cell">{{ result["test"]["params"] }}</td>
+            <td class="govuk-table__cell">{{ result["test"]["expected"] }}</td>
+            <td class="govuk-table__cell">{% for r in  result["result"] %} {{ r }} {% endfor %}</td>
+          </tr>
+      {% endfor %}
+      </tbody>
+      </table>
+    {% endfor %}
+
+  {% endblock content %}
+  </main>
+
+{% endblock main %}
+
+
+{% block footer %}
+<div class="dl-sticky-banner__container" data-module="sticky-banner">
+    <div class="dl-sticky-banner">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+              {# need a macro for this bit, param would set the href #}
+              <a href="#btt-hook" class="govuk-link govuk-link--no-visited-state back-to-top__link">
+                <svg role="presentation" focusable="false" class="dl-back-to-top__icon" xmlns="http://www.w3.org/2000/svg" width="13" height="17" viewBox="0 0 13 17">
+                    <path fill="currentColor" d="M6.5 0L0 6.5 1.4 8l4-4v12.7h2V4l4.3 4L13 6.4z"></path>
+                </svg>Back to top
+              </a>
+            </div>
+        </div>
+    </div>
+</div>
+{{ super() }}
+{% endblock %}
+
+{% block pageScripts %}
+{{ super() }}
+{% endblock pageScripts %}
