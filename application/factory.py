@@ -14,7 +14,9 @@ parent_dir = pathlib.Path(__file__).parent.parent.absolute()
 digital_land_db_path = (
     f"file:{os.path.join(parent_dir, 'digital-land.sqlite3?mode=ro')}"
 )
-entity_stats_db_path = f"file:{os.path.join(parent_dir, 'entity-stats.sqlite3?mode=ro')}"
+entity_stats_db_path = (
+    f"file:{os.path.join(parent_dir, 'entity-stats.sqlite3?mode=ro')}"
+)
 
 
 def create_app(config_filename):
@@ -53,6 +55,7 @@ def register_blueprints(app):
     app.register_blueprint(publisher_pages)
 
     from application.blueprints.ripa_test.views import ripa_test
+
     app.register_blueprint(ripa_test)
 
 
