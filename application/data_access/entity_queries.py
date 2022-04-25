@@ -1,7 +1,7 @@
 import logging
 
 from application.data_access.api_queries import get_organisation_entity_number
-from application.data_access.db import Database
+from application.data_access.sqlite_db import SqliteDatabase
 from application.factory import entity_stats_db_path
 from application.utils import split_organisation_id
 
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 def get_total_entity_count():
     sql = "SELECT * FROM entity_count"
-    with Database(entity_stats_db_path) as db:
+    with SqliteDatabase(entity_stats_db_path) as db:
         row = db.execute(sql).fetchone()
     return row["count"] if row is not None else 0
 
@@ -18,7 +18,7 @@ def get_total_entity_count():
 def get_entity_count(pipeline=None):
     if pipeline is not None:
         sql = "SELECT * FROM entity_counts WHERE dataset = :pipeline"
-        with Database(entity_stats_db_path) as db:
+        with SqliteDatabase(entity_stats_db_path) as db:
             row = db.execute(sql, {"pipeline": pipeline}).fetchone()
         return row["count"] if row is not None else 0
 
@@ -47,7 +47,7 @@ def get_grouped_entity_count(dataset=None, organisation_entity=None):
 
     query_str = " ".join(query_lines)
 
-    with Database(entity_stats_db_path) as db:
+    with SqliteDatabase(entity_stats_db_path) as db:
         rows = db.execute(query_str).fetchall()
     if rows:
         return {row["dataset"]: row["count"] for row in rows}
@@ -77,7 +77,7 @@ def get_organisation_entities_using_end_dates():
     ]
     query_str = " ".join(query_lines)
 
-    with Database(entity_stats_db_path) as db:
+    with SqliteDatabase(entity_stats_db_path) as db:
         rows = db.execute(query_str).fetchall()
     return rows
 
@@ -100,7 +100,7 @@ def get_datasets_organisation_has_used_enddates(organisation):
         "dataset",
     ]
     query_str = " ".join(query_lines)
-    with Database(entity_stats_db_path) as db:
+    with SqliteDatabase(entity_stats_db_path) as db:
         rows = db.execute(query_str).fetchall()
     if rows:
         return [dataset[0] for dataset in rows]

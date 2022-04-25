@@ -7,3 +7,7 @@ CacheControl
 lockfile
 python-dateutil
 sqlitebiter
+Flask-SQLAlchemy
+Flask-Migrate
+psycopg2-binary
+jsonpath-python

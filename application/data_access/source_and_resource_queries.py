@@ -1,5 +1,5 @@
 from datetime import datetime
-from application.data_access.db import Database
+from application.data_access.sqlite_db import SqliteDatabase
 from application.factory import digital_land_db_path
 from application.utils import (
     create_dict,
@@ -67,7 +67,7 @@ def get_monthly_resource_counts(pipeline=None):
             ORDER BY
               yyyy_mm"""
 
-    with Database(digital_land_db_path) as db:
+    with SqliteDatabase(digital_land_db_path) as db:
         if pipeline:
             rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
         else:
@@ -95,7 +95,7 @@ def get_new_resources(dates=[yesterday(string=True)]):
             "dates": tuple(dates)
         }
 
-    with Database(digital_land_db_path) as db:
+    with SqliteDatabase(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     return rows
 
@@ -186,7 +186,7 @@ def publisher_counts(pipeline):
         GROUP BY
           source.organisation"""
 
-    with Database(digital_land_db_path) as db:
+    with SqliteDatabase(digital_land_db_path) as db:
         rows = db.execute(sql, {"pipeline": pipeline}).fetchall()
 
     columns = rows[0].keys() if rows else []
@@ -215,7 +215,7 @@ def publisher_coverage(pipeline=None):
             source_pipeline.pipeline
     """
 
-    with Database(digital_land_db_path) as db:
+    with SqliteDatabase(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
 
     columns = rows[0].keys() if rows else []
@@ -248,7 +248,7 @@ def resources_by_dataset(pipeline=None):
     GROUP BY
       source_pipeline.pipeline
     """
-    with Database(digital_land_db_path) as db:
+    with SqliteDatabase(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
 
     columns = rows[0].keys() if rows else []
@@ -273,7 +273,7 @@ def first_and_last_resource(pipeline=None):
         ORDER BY
           resource.start_date DESC"""
 
-    with Database(digital_land_db_path) as db:
+    with SqliteDatabase(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
 
     columns = rows[0].keys() if rows else []

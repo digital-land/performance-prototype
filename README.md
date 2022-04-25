@@ -2,7 +2,7 @@
 
 Based on the govuk-flask-prototype-kit
 
-### Getting staerted
+### Getting started
 
 We recommend using a virtual env.
 

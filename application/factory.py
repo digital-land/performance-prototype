@@ -5,8 +5,11 @@ Flask app factory class
 import os
 import pathlib
 
-from flask import Flask, render_template, session
+from flask import Flask
 from flask.cli import load_dotenv
+
+# this lets alembic know about our models
+from application.models import *
 
 load_dotenv()
 
@@ -97,7 +100,11 @@ def register_extensions(app):
     """
     Import and register flask extensions and initialize with app object
     """
-    pass
+
+    from application.extensions import db, migrate
+
+    db.init_app(app)
+    migrate.init_app(app)
 
 
 def register_templates(app):
@@ -121,4 +128,7 @@ def register_templates(app):
 
 
 def register_commands(app):
-    pass
+
+    from application.commands import data_test_cli
+
+    app.cli.add_command(data_test_cli)

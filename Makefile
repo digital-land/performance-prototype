@@ -3,7 +3,7 @@ init::
 	python -m pip install --upgrade pip
 	python -m pip install pip-tools
 	npm install
-	pip install -r requirements.txt
+	python -m piptools sync requirements/requirements.txt
 
 reqs::
 	python -m piptools compile requirements/requirements.in
@@ -42,3 +42,9 @@ stylesheets:
 
 watch:
 	npm run watch
+
+upgrade-db:
+	flask db upgrade
+
+downgrade-db:
+	flask db downgrade
