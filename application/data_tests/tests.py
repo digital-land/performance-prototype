@@ -1,5 +1,17 @@
 tests = {
     "local-authority-eng:LBH": {
+        "Lambeth Southbank House listed building": {
+            "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "13",
+                "$.entities[0].name": "South Bank House and Newport Street",
+                "$.entities[0].organisation-entity": "192",
+                "$.entities[0].notes": "KIBA",
+                "$.entities[0].listed-building-grade": "II",
+            },
+        },
         "Lambeth central activities zone": {
             "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=central-activities-zone",
             "dataset": "central-activities-zone",
@@ -31,20 +43,7 @@ tests = {
                 "$.entities[0].notes": "KIBA",
             },
         },
-        "Lambeth Southbank House listed building": {
-            "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=listed-building-outline",
-            "dataset": "listed-building-outline",
-            "assertions": {
-                "$.count": 1,
-                "$.entities[0].reference": "13",
-                "$.entities[0].name": "South Bank House and Newport Street",
-                "$.entities[0].organisation-entity": "192",
-                "$.entities[0].notes": "KIBA",
-                "$.entities[0].listed-building-grade": "II",
-            },
-        },
     },
-    "local-authority-eng:CAT": {},
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
             "query": "?geometry=POINT(-0.8463452%2051.6682134)&geometry_relation=intersects&dataset=area-of-outstanding-natural-beauty",
@@ -71,4 +70,5 @@ tests = {
         },
     },
     "local-authority-eng:SWK": {},
+    "local-authority-eng:CAT": {},
 }

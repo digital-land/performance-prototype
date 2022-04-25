@@ -11,34 +11,57 @@ data_test_cli = AppGroup("data-test")
 
 BASE_API_URL = "https://www.digital-land.info/entity.json"
 
+local_authorities = [
+    "local-authority-eng:LBH",
+    "local-authority-eng:CAT",
+    "local-authority-eng:BUC",
+    "local-authority-eng:SWK",
+]
+
 
 @data_test_cli.command("run")
 def run():
     from application.extensions import db
 
     print(f"Running tests at {datetime.datetime.utcnow()}")
-    tests = db.session.query(Test).all()
-    for test in tests:
-        test_run = TestRun(test=test)
-        test_url = f"{BASE_API_URL}{test.query}"
-        resp = requests.get(test_url)
-        resp.raise_for_status()
-        data = resp.json()
-        # TODO - perhaps sort entities on something predictable so
-        # that assertions can rely on some ordering?
-        for a in test.assertions:
-            parsed = JSONPath(a.json_path).parse(data)
-            if parsed:
-                actual = parsed[0]
-                match = True if re.match(a.regex, str(actual)) else False
-                result = Result(
-                    path=a.json_path, expected=a.regex, actual=actual, match=match
-                )
-            else:
-                result = Result(path=a.json_path, expected=a.regex, actual=None)
-            test_run.results.append(result)
+    for la in local_authorities:
+        tests = db.session.query(Test).filter(Test.organisation == la).all()
+        if tests is None:
+            continue
+        test_run = TestRun()
+        for test in tests:
+            test_run.tests.append(test)
+            test_url = f"{BASE_API_URL}{test.query}"
+            resp = requests.get(test_url)
+            resp.raise_for_status()
+            data = resp.json()
+            # TODO - perhaps sort entities on something predictable so
+            # that assertions can rely on some ordering?
+            for a in test.assertions:
+                parsed = JSONPath(a.json_path).parse(data)
+                if parsed:
+                    actual = parsed[0]
+                    match = True if re.match(a.regex, str(actual)) else False
+                    result = Result(
+                        path=a.json_path,
+                        expected=a.regex,
+                        actual=actual,
+                        match=match,
+                        test_id=test.test,
+                    )
+                else:
+                    result = Result(
+                        path=a.json_path,
+                        expected=a.regex,
+                        actual=None,
+                        test_id=test.test,
+                    )
+
+                test_run.results.append(result)
+
         db.session.add(test_run)
         db.session.commit()
+
     print(f"Finished running tests at {datetime.datetime.utcnow()}")
 
 
@@ -53,15 +76,8 @@ def load():
 
     print(f"Loading tests at {datetime.datetime.utcnow()}")
 
-    local_authorities = [
-        "local-authority-eng:LBH",
-        "local-authority-eng:CAT",
-        "local-authority-eng:BUC",
-        "local-authority-eng:SWK",
-    ]
-
     for la in local_authorities:
-        la_tests = tests[la]
+        la_tests = tests.get(la, {})
         for name, test in la_tests.items():
             db_test = db.session.query(Test).get(name)
             if db_test is None:
