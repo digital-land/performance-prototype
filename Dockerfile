@@ -11,5 +11,7 @@ ENV FLASK_ENV=production
 ENV FLASK_CONFIG=config.Config
 ENV FLASK_APP=application.wsgi:app
 
+RUN flask db upgrade
+
 EXPOSE $PORT
 CMD gunicorn -b 0.0.0.0:$PORT application.wsgi:app --timeout 120 --workers=2 --threads=4 --worker-class=gthread
