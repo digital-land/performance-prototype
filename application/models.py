@@ -13,6 +13,13 @@ test_runs = db.Table(
 )
 
 
+class TestRun(db.Model):
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    created_timestamp = db.Column(db.TIMESTAMP, server_default=func.now())
+    results = db.relationship("Result", backref="test_run")
+    tests = db.relationship("Test", secondary=test_runs, lazy=True)
+
+
 class Test(db.Model):
     test = db.Column(db.Text, primary_key=True, nullable=False)
     dataset = db.Column(db.Text, nullable=False)
@@ -31,13 +38,6 @@ class Assertion(db.Model):
     json_path = db.Column(db.Text, nullable=False)
     regex = db.Column(db.Text, nullable=False)
     test_id = db.Column(db.Text, db.ForeignKey("test.test"))
-
-
-class TestRun(db.Model):
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    created_timestamp = db.Column(db.TIMESTAMP, server_default=func.now())
-    results = db.relationship("Result", backref="test_run")
-    tests = db.relationship("Test", secondary=test_runs, lazy=True)
 
 
 class Result(db.Model):
