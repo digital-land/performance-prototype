@@ -24,6 +24,8 @@ def run():
         resp = requests.get(test_url)
         resp.raise_for_status()
         data = resp.json()
+        # TODO - perhaps sort entities on something predictable so
+        # that assertions can rely on some ordering?
         for a in test.assertions:
             parsed = JSONPath(a.json_path).parse(data)
             if parsed:
