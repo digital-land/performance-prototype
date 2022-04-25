@@ -8,36 +8,18 @@ ripa_test = Blueprint("ripa", __name__, url_prefix="/ripa")
 
 BASE_API_URL = "https://www.digital-land.info/entity.json"
 
-
-# TODO this is a quick hack to get something into page. The model is wrong and this is not the way we'll specify
-# test cases or expectations longer term. I reckon move to a db and then we can also offer way to author/modify tests.
-
-params = {"longitude": -0.14650, "latitude": 51.459335, "dataset": "conservation-area"}
-expected = {
-    "reference": "CA01",
-    "name": "Clapham",
-    "organisation": "local-authority-eng:LBH",
-}
-
-tests_by_local_authority = {
-    "local-authority-eng:LBH": [
-        {
-            "dataset": "conservation-area",
-            "tests": [{"params": params, "expected": expected}],
-        }
-    ]
-}
-
-local_authorities = ["local-authority-eng:LBH"]
+local_authorities = [
+    "local-authority-eng:LBH",
+    "local-authority-eng:SWK",
+    "local-authority-eng:BUC",
+    "local-authority-eng:CAT",
+]
 datasets = ["conservation-area"]
-
-from application.extensions import db
-
-q = "?longitude=-0.14650&latitude=51.459335&dataset=conservation-area"
 
 
 @ripa_test.route("/")
 def index():
+    from application.extensions import db
 
     results = (
         db.session.query(
@@ -84,10 +66,25 @@ def index():
         else:
             results_by_local_authority[result.local_authority].append(result)
 
+    # maybe another way of looking at it
+    results_grid = {}
+    for la in local_authorities:
+        results = results_by_local_authority[la]
+        dataset_results = {}
+        for result in results:
+            if result.dataset not in dataset_results:
+                dataset_results[result.dataset] = [result.match]
+            else:
+                dataset_results[result.dataset].append(result.match)
+
+        for key, val in dataset_results.items():
+            dataset_results[key] = all(val)
+
+        results_grid[la] = dataset_results
+
     return render_template(
         "ripa_test/index.html",
-        result_by_dataset=result_by_dataset,
-        results_by_local_authority=results_by_local_authority,
+        results_grid=results_grid,
         datasets=datasets,
         local_authorities=local_authorities,
         run_date_time=run_date_time,

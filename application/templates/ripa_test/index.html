@@ -11,35 +11,34 @@
 
     <p class="govuk-body-l">Tests run on {{ run_date_time }}</p>
     {% for la in local_authorities %}
-        {%  set results = results_by_local_authority[la] %}
+        {%  set grid_row = results_grid[la] %}
         <table class="govuk-table">
-          <caption class="govuk-table__caption govuk-table__caption--s">Test for {{ la }}</caption>
+          <caption class="govuk-table__caption govuk-table__caption--s">Tests passed</caption>
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              {% for header in headers %}
-                <th class="govuk-table__header">{{ header }}</th>
+              <th scope="col" class="govuk-table__header">Local authority</th>
+              {% for key in grid_row.keys() %}
+                <th scope="col" class="govuk-table__header">{{ key}}</th>
               {% endfor %}
             </tr>
           </thead>
-          <tbody class="govuk-table__body">
-            {% for result in results %}
-              <tr class="govuk-table__row">
-              <td class="govuk-table__cell">{{ result.test_name }}</td>
-              <td class="govuk-table__cell">{{ result.local_authority }}</td>
-              <td class="govuk-table__cell">{{ result.dataset }}</td>
-              <td class="govuk-table__cell">{{ result.path }}</td>
-              <td class="govuk-table__cell">{{ result.expected }}</td>
-              <td class="govuk-table__cell">{{ result.actual }}</td>
-              <td class="govuk-table__cell">{{ result.match }}</td>
-              </tr>
-            {% endfor %}
+          <tbody>
+            <tr>
+              <td class="govuk-table__cell">{{ la }}</td>
+              {% for key in grid_row.keys() %}
+                <td class="govuk-table__cell" style="font-weight: bold; color: #fff; background-color:{% if grid_row[key] %}#00703c{% else %}#d4351c{% endif %}">
+                  {% if grid_row[key] %}
+                    Pass
+                  {% else %}
+                    Fail
+                  {%  endif %}
+                </td>
+              {% endfor %}
+            </tr>
           </tbody>
-          </table>
+        </table>
     {% endfor %}
 
-{#    {% for ds in datasets %}#}
-{#      {{ result_by_dataset[ds] }}#}
-{#    {% endfor %}#}
 
   {% endblock content %}
   </main>
