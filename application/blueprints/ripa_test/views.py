@@ -39,14 +39,6 @@ q = "?longitude=-0.14650&latitude=51.459335&dataset=conservation-area"
 @ripa_test.route("/")
 def index():
 
-    #  select t.test, t.organisation, t.dataset, r.path, r.expected, r.actual, r.match, max(tr.created_timestamp) as last_run
-    # from test t, test_run tr, test_runs trs, result r
-    # where t.test = trs.test_id
-    # and tr.id = trs.test_run_id
-    # and trs.test_run_id = r.test_run_id
-    # and t.test = r.test_id
-    # group by t.test, t.organisation, t.dataset, r.path, r.expected, r.actual, r.match;
-
     results = (
         db.session.query(
             Test.test.label("test_name"),
