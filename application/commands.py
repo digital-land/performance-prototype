@@ -1,3 +1,4 @@
+import datetime
 import re
 
 import requests
@@ -15,6 +16,7 @@ BASE_API_URL = "https://www.digital-land.info/entity.json"
 def run():
     from application.extensions import db
 
+    print(f"Running tests at {datetime.datetime.utcnow()}")
     tests = db.session.query(Test).all()
     for test in tests:
         test_run = TestRun(test=test)
@@ -35,6 +37,7 @@ def run():
             test_run.results.append(result)
         db.session.add(test_run)
         db.session.commit()
+    print(f"Finished running tests at {datetime.datetime.utcnow()}")
 
 
 def _get_result(data, field, expect):
@@ -45,6 +48,8 @@ def _get_result(data, field, expect):
 def load():
     from application.extensions import db
     from application.data_tests.tests import tests
+
+    print(f"Loading tests at {datetime.datetime.utcnow()}")
 
     local_authorities = [
         "local-authority-eng:LBH",
@@ -76,3 +81,5 @@ def load():
                 db.session.commit()
             else:
                 print(f"Test '{name}' already loaded")
+
+    print(f"Finished loading tests at {datetime.datetime.utcnow()}")
