@@ -13,6 +13,7 @@ data_test_cli = AppGroup("data-test")
 
 BASE_API_URL = "https://www.digital-land.info/entity.json"
 
+
 @data_test_cli.command("run")
 def run():
     from application.extensions import db
@@ -85,7 +86,7 @@ def load():
                     query=test["query"],
                     dataset=test["dataset"],
                     organisation=la,
-                    ticket=test.get("ticket", None)
+                    ticket=test.get("ticket", None),
                 )
                 for json_path, regex in test["assertions"].items():
                     a = Assertion(json_path=json_path, regex=regex)
@@ -100,6 +101,7 @@ def load():
                 db_test.ticket = test.get("ticket", None)
                 for a in db_test.assertions:
                     db.session.delete(a)
+                    db.session.commit()
                 for json_path, regex in test["assertions"].items():
                     a = Assertion(json_path=json_path, regex=regex)
                     db_test.assertions.append(a)
