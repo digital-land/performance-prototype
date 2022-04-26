@@ -1,3 +1,21 @@
+local_authorities = [
+    "local-authority-eng:LBH",
+    "local-authority-eng:SWK",
+    "local-authority-eng:BUC",
+    "local-authority-eng:CAT",
+]
+
+datasets = [
+    "area-of-outstanding-natural-beauty",
+    "article-4-direction-area",
+    "conservation-area",
+    "listed-building",
+    "national-park",
+    "scheduled-monuments",
+    "site-of-special-scientific-interest",
+    "tree-preservation-order",
+]
+
 tests = {
     "local-authority-eng:LBH": {
         "Lambeth Southbank House listed building": {
@@ -70,18 +88,6 @@ tests = {
         },
     },
     "local-authority-eng:SWK": {
-        "Southwark central activities zone": {
-            "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=central-activities-zone",
-            "dataset": "central-activities-zone",
-            "assertions": {
-                "$.count": 1,
-                "$.entities[0].reference": "CAZ00000002",
-                "$.entities[0].name": "",
-                "$.entities[0].organisation-entity": "329",
-                "$.entities[0].prefix": "central-activities-zone",
-                "$.entities[0].notes": "P2 New family homes; P29 Office and business development; P30 Affordable workspace",
-            },
-        },
         "Southwark conservation area": {
             "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=conservation-area",
             "dataset": "conservation-area",

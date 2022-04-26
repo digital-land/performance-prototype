@@ -2,32 +2,12 @@ import requests
 from flask import Blueprint, jsonify, render_template
 from sqlalchemy import func, text, and_
 
+from application.data_tests.tests import local_authorities, datasets
 from application.models import Test, TestRun, Result, test_runs
 
 ripa_test = Blueprint("ripa", __name__, url_prefix="/ripa")
 
 BASE_API_URL = "https://www.digital-land.info/entity.json"
-
-local_authorities = [
-    "local-authority-eng:LBH",
-    "local-authority-eng:SWK",
-    "local-authority-eng:BUC",
-    "local-authority-eng:CAT",
-]
-
-datasets = [
-    "areas-of-outstanding-natural-beauty",
-    "article-4-direction",
-    "broads",
-    "central-activities-zone",
-    "conservation-area",
-    "listed-building",
-    "national-park",
-    "scheduled-monuments",
-    "sites-of-special-scientific-interest",
-    "tree-preservation-orders",
-    "world-heritage-sites",
-]
 
 
 @ripa_test.route("/")
@@ -60,6 +40,9 @@ def index():
         )
         .all()
     )
+
+    if not results:
+        return jsonify({})
 
     result_by_dataset = {}
     results_by_local_authority = {}
