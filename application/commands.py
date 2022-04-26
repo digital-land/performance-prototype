@@ -43,6 +43,7 @@ def run():
                         actual=actual,
                         match=match,
                         test_id=test.test,
+                        data=data
                     )
                 else:
                     result = Result(
@@ -50,6 +51,7 @@ def run():
                         expected=a.regex,
                         actual=None,
                         test_id=test.test,
+                        data=data
                     )
 
                 test_run.results.append(result)
