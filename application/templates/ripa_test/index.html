@@ -8,42 +8,14 @@
   <main class="app-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>
   {% block content %}
     <h1 class="govuk-heading-l govuk-!-margin-top-6">Data tests</h1>
-
-    <p class="govuk-body-l">Tests run on {{ run_date_time }}</p>
-    {% for la in local_authorities %}
-        {%  set grid_row = results_grid[la] %}
-        <table class="govuk-table">
-          <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-              <th scope="col" class="govuk-table__header">Local authority</th>
-              {% for key in grid_row.keys() %}
-                <th scope="col" class="govuk-table__header">{{ key}}</th>
-              {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="govuk-table__cell">{{ la }}</td>
-              {% for key in grid_row.keys() %}
-                <td class="govuk-table__cell" style="font-weight: bold; color: #fff; background-color:{% if grid_row[key] %}#00703c{% else %}#d4351c{% endif %}">
-                  {% if grid_row[key] %}
-                    Pass
-                  {% else %}
-                    Fail
-                  {%  endif %}
-                </td>
-              {% endfor %}
-            </tr>
-          </tbody>
-        </table>
-    {% endfor %}
-
-
   {% endblock content %}
   </main>
 
-{% endblock main %}
+    <pre>
+      {{ results_grid | pprint_json }}
+    </pre>
 
+{% endblock main %}
 
 {% block footer %}
 <div class="dl-sticky-banner__container" data-module="sticky-banner">

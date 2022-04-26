@@ -14,7 +14,20 @@ local_authorities = [
     "local-authority-eng:BUC",
     "local-authority-eng:CAT",
 ]
-datasets = ["conservation-area"]
+
+datasets = [
+    "areas-of-outstanding-natural-beauty",
+    "article-4-direction",
+    "broads",
+    "central-activities-zone",
+    "conservation-area",
+    "listed-building",
+    "national-park",
+    "scheduled-monuments",
+    "sites-of-special-scientific-interest",
+    "tree-preservation-orders",
+    "world-heritage-sites",
+]
 
 
 @ripa_test.route("/")
@@ -50,13 +63,10 @@ def index():
 
     result_by_dataset = {}
     results_by_local_authority = {}
-    datasets = set([])
-    local_authorities = set([])
+
     run_date_time = results[0].last_run.strftime("%b %d %Y %H:%M")
 
     for result in results:
-        datasets.add(result.dataset)
-        local_authorities.add(result.local_authority)
         if result.dataset not in result_by_dataset:
             result_by_dataset[result.dataset] = [result]
         else:
@@ -69,7 +79,7 @@ def index():
     # maybe another way of looking at it
     results_grid = {}
     for la in local_authorities:
-        results = results_by_local_authority[la]
+        results = results_by_local_authority.get(la, [])
         dataset_results = {}
         for result in results:
             if result.dataset not in dataset_results:
@@ -80,12 +90,18 @@ def index():
         for key, val in dataset_results.items():
             dataset_results[key] = all(val)
 
+        for dataset in datasets:
+            if dataset not in dataset_results:
+                dataset_results[dataset] = None
+
         results_grid[la] = dataset_results
 
-    return render_template(
-        "ripa_test/index.html",
-        results_grid=results_grid,
-        datasets=datasets,
-        local_authorities=local_authorities,
-        run_date_time=run_date_time,
-    )
+    # return render_template(
+    #     "ripa_test/index.html",
+    #     results_grid=results_grid,
+    #     datasets=datasets,
+    #     local_authorities=local_authorities,
+    #     run_date_time=run_date_time,
+    # )
+
+    return jsonify(results_grid)

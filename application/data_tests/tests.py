@@ -79,7 +79,7 @@ tests = {
                 "$.entities[0].name": "",
                 "$.entities[0].organisation-entity": "329",
                 "$.entities[0].prefix": "central-activities-zone",
-                "$.entities[0].notes": "P2 New family homes; P29 Office and business development; P30 Affordable workspace"
+                "$.entities[0].notes": "P2 New family homes; P29 Office and business development; P30 Affordable workspace",
             },
         },
         "Southwark conservation area": {
@@ -89,7 +89,7 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "COA00000759",
                 "$.entities[0].name": "",
-                "$.entities[0].organisation-entity": "329"
+                "$.entities[0].organisation-entity": "329",
             },
         },
         "Southwark  scheduled monument": {
@@ -99,16 +99,14 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "1002054",
                 "$.entities[0].name": "Remains of Winchester Palace, Clink Street and waterfront",
-                "$.entities[0].organisation-entity": "329"
+                "$.entities[0].organisation-entity": "329",
             },
         },
         "Southwark article 4 direction": {
             "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=article-4-direction",
             "dataset": "article-4-direction",
-            "assertions": {
-                "$.count": 3
-            },
-        }
+            "assertions": {"$.count": 3},
+        },
     },
     "local-authority-eng:CAT": {},
 }
