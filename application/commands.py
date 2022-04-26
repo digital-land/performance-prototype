@@ -1,23 +1,17 @@
 import datetime
 import re
+import uuid
 
 import requests
 from flask.cli import AppGroup
 from jsonpath import JSONPath
 
+from application.data_tests.tests import local_authorities
 from application.models import Test, Assertion, TestRun, Result
 
 data_test_cli = AppGroup("data-test")
 
 BASE_API_URL = "https://www.digital-land.info/entity.json"
-
-local_authorities = [
-    "local-authority-eng:LBH",
-    "local-authority-eng:CAT",
-    "local-authority-eng:BUC",
-    "local-authority-eng:SWK",
-]
-
 
 @data_test_cli.command("run")
 def run():
@@ -85,11 +79,13 @@ def load():
                 print(f"query = {test['query']}")
                 print(f"dataset = {test['dataset']}")
                 print(f"assertions = {test['assertions']}")
+                print(f"ticket = {test.get('ticket', None)}")
                 db_test = Test(
                     test=name,
                     query=test["query"],
                     dataset=test["dataset"],
                     organisation=la,
+                    ticket=test.get("ticket", None)
                 )
                 for json_path, regex in test["assertions"].items():
                     a = Assertion(json_path=json_path, regex=regex)
@@ -98,6 +94,15 @@ def load():
                 db.session.add(db_test)
                 db.session.commit()
             else:
-                print(f"Test '{name}' already loaded")
+                db_test.query = test["query"]
+                db_test.dataset = test["dataset"]
+                db_test.organisation = la
+                db_test.ticket = test.get("ticket", None)
+                for a in db_test.assertions:
+                    db.session.delete(a)
+                for json_path, regex in test["assertions"].items():
+                    a = Assertion(json_path=json_path, regex=regex)
+                    db_test.assertions.append(a)
+                print(f"Test '{name}' already loaded. Updating with {test}")
 
     print(f"Finished loading tests at {datetime.datetime.utcnow()}")

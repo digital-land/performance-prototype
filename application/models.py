@@ -24,6 +24,7 @@ class Test(db.Model):
     test = db.Column(db.Text, primary_key=True, nullable=False)
     dataset = db.Column(db.Text, nullable=False)
     organisation = db.Column(db.Text, nullable=False)
+    ticket = db.Column(db.Text, nullable=True)
     query = db.Column(db.Text, nullable=False)
     created_timestamp = db.Column(db.TIMESTAMP, server_default=func.now())
     updated_date = db.Column(db.TIMESTAMP, server_default=func.now())
