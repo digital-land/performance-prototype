@@ -41,6 +41,7 @@ tests = {
             },
         },
         "Albert Embankment conservation area": {
+            "ticket": "https://trello.com/c/CXgfYGUR/19-lambeth-conservation-areas",
             "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=conservation-area",
             "dataset": "conservation-area",
             "assertions": {
@@ -88,6 +89,18 @@ tests = {
         },
     },
     "local-authority-eng:SWK": {
+        "Southwark central activities zone": {
+            "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=central-activities-zone",
+            "dataset": "central-activities-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "CAZ00000002",
+                "$.entities[0].name": "",
+                "$.entities[0].organisation-entity": "329",
+                "$.entities[0].prefix": "central-activities-zone",
+                "$.entities[0].notes": "P2 New family homes; P29 Office and business development; P30 Affordable workspace",
+            },
+        },
         "Southwark conservation area": {
             "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=conservation-area",
             "dataset": "conservation-area",
@@ -98,7 +111,7 @@ tests = {
                 "$.entities[0].organisation-entity": "329",
             },
         },
-        "Southwark  scheduled monument": {
+        "Southwark scheduled monument": {
             "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=scheduled-monument",
             "dataset": "scheduled-monument",
             "assertions": {
@@ -112,6 +125,43 @@ tests = {
             "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=article-4-direction",
             "dataset": "article-4-direction",
             "assertions": {"$.count": 3},
+        },
+        "Southwark article 4 direction (The Lord Nelson, Union Street)": {
+            "ticket": "https://trello.com/c/6G0Vv44y/22-southwark-article-4-directions",
+            "query": "?dataset=article-4-direction-area&longitude=-0.102682&latitude=51.503432",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 4,
+                "$.entities[0].name": "The Lord Nelson",
+                "$.entities[0].description": "Change of use, demolition or alteration of pubs is restricted",
+                "$.entities[0].organisation-entity": "329",
+                "$.entities[1].name": "Central Activities Zone",
+                "$.entities[1].description": "Change of use from offices to dwelling houses is restricted",
+                "$.entities[1].organisation-entity": "329",
+                "$.entities[2].name": "Central Activities Zone",
+                "$.entities[2].description": "Change of use from Class E to residential is restricted",
+                "$.entities[2].organisation-entity": "329",
+                "$.entities[3].name": "Bankside and Borough District Town Centre",
+                "$.entities[3].description": "Change of use from Class E to residential is restricted",
+                "$.entities[3].organisation-entity": "329",
+            },
+        },
+        "Southwark article 4 direction (The Lord Nelson, Old Kent Road)": {
+            "ticket": "https://trello.com/c/6G0Vv44y/22-southwark-article-4-directions",
+            "query": "?dataset=article-4-direction-area&longitude=-0.074274&latitude=51.486724",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 3,
+                "$.entities[0].name": "THE LORD NELSON",
+                "$.entities[0].description": "Change of use, demolition or alteration of pubs is restricted",
+                "$.entities[0].organisation-entity": "329",
+                "$.entities[1].name": "Old Kent Road North District Town Centre",
+                "$.entities[1].description": "Change of use from Class E to residential is restricted",
+                "$.entities[1].organisation-entity": "329",
+                "$.entities[2].name": "Protected shopping frontage SF24: Old Kent Road, East Street and Dunton Road",
+                "$.entities[2].description": "Change of use from Class E to residential is restricted",
+                "$.entities[2].organisation-entity": "329",
+            },
         },
     },
     "local-authority-eng:CAT": {},
