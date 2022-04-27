@@ -42,7 +42,20 @@ tests = {
                 "$.entities[0].organisation-entity": "192",
             },
         },
-        "Lambeth article 4 direction": {
+        "Lambeth article 4 direction Brixton": {
+            "ticket": "https://trello.com/c/JQuyFI3t/18-lambeth-article-4-directions",
+            "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "7",
+                "$.entities[0].name": "Brixton Town Centre",
+                "$.entities[0].organisation-entity": "192",
+                "$.entities[0].notes": "Brixton",
+            },
+        },
+        "Lambeth article 4 direction South Bank House and Newport Street": {
+            "ticket": "https://trello.com/c/JQuyFI3t/18-lambeth-article-4-directions",
             "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
