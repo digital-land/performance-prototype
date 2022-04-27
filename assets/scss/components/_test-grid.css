@@ -15,7 +15,7 @@
   }
 
   &__label {
-    margin: 0 0 1em 0;
+    margin: 1em 0 0 0;
     padding-right: 1em;
     width: 20%;
     @include govuk-font($size: 19, $weight: bold);
