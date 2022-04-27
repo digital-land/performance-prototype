@@ -1,6 +1,5 @@
 import datetime
 import re
-import uuid
 
 import requests
 from flask.cli import AppGroup
@@ -36,6 +35,10 @@ def run():
             resp.raise_for_status()
             data = resp.json()
 
+            # sort by entity id to give tests a predicable ordering
+            if data["count"] > 1 and data.get("entities"):
+                data["entities"].sort(key=lambda e: e["entity"])
+
             response_data = ResponseData(query=query, test_name=test, data=data)
 
             for path, expected in assertions.items():
@@ -60,7 +63,6 @@ def run():
                         query=query,
                         path=path,
                         expected=expected,
-                        actual=actual,
                         match=None,
                         organisation=la,
                         dataset=dataset,
@@ -71,7 +73,6 @@ def run():
                 results.append(result)
                 response_data.results.append(result)
 
-            # response_data.results = results
             db.session.add(response_data)
 
     test_run = TestRun(results=results)

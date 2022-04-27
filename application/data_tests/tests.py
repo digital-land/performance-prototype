@@ -5,8 +5,6 @@ local_authorities = [
     "local-authority-eng:CAT",
 ]
 
-test_keys = ["query", "dataset", "assertions", "ticket"]
-
 tests = {
     "local-authority-eng:LBH": {
         "Lambeth Southbank House listed building": {
