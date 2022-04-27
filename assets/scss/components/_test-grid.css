@@ -8,9 +8,6 @@
     align-items: flex-start;
     padding: 1em 0;
     border-bottom: 1px solid $govuk-border-colour;
-    // &:nth-child(even) {
-    //   background: rgba(#000, 0.05);
-    // }
     flex-direction: row;
   }
 
@@ -43,18 +40,14 @@
     @include govuk-font($size: 16, $weight: bold);
     border: 1px solid $govuk-border-colour;
     background: govuk-colour("light-grey");
-    // background-size: 100% 100%;
-    // text-shadow: 0 3px 3px rgba(govuk-colour("light-grey"), 1);
     line-height: 1.1 !important;
     padding: 0.5em;
     box-sizing: border-box;
     &--pass {
-      // text-shadow: 0 1px 1px rgba(#000, 0.5);
       background: govuk-colour("green");
       color: white;
     }
     &--fail {
-      // text-shadow: 0 1px 1px rgba(#000, 0.5);
       background: govuk-colour("red");
       color: white;
     }
