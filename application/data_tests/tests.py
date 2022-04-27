@@ -5,16 +5,7 @@ local_authorities = [
     "local-authority-eng:CAT",
 ]
 
-datasets = [
-    "area-of-outstanding-natural-beauty",
-    "article-4-direction-area",
-    "conservation-area",
-    "listed-building",
-    "national-park",
-    "scheduled-monuments",
-    "site-of-special-scientific-interest",
-    "tree-preservation-order",
-]
+test_keys = ["query", "dataset", "assertions", "ticket"]
 
 tests = {
     "local-authority-eng:LBH": {
