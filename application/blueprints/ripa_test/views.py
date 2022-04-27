@@ -17,9 +17,6 @@ def index():
     query = db.session.query(TestRun).filter(TestRun.id.in_(subquery))
     latest_test_run = query.one()
 
-    if not latest_test_run:
-        return jsonify({})
-
     datasets_tested = set([])
     result_by_dataset = {}
     results_by_local_authority = {}
@@ -36,7 +33,7 @@ def index():
             results_by_local_authority[result.organisation].append(result)
 
     results_grid = {}
-    for la in local_authorities:
+    for la in local_authorities.keys():
         results = results_by_local_authority.get(la, [])
         dataset_results = {}
         for result in results:
@@ -54,17 +51,10 @@ def index():
 
         results_grid[la] = dataset_results
 
-    # return render_template(
-    #     "ripa_test/index.html",
-    #     results_grid=results_grid,
-    #     datasets=datasets,
-    #     local_authorities=local_authorities,
-    #     run_date_time=run_date_time,
-    # )
-
-    return jsonify(
-        {
-            "results-grid": results_grid,
-            "test_date_time": (latest_test_run.created_timestamp.isoformat()),
-        }
+    return render_template(
+        "ripa_test/index.html",
+        results_grid=results_grid,
+        local_authorities=local_authorities,
+        date_of_test_run=latest_test_run.created_timestamp.strftime('%A %d-%m-%Y, %H:%M:%S')
     )
+

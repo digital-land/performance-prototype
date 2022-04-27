@@ -1,40 +1,60 @@
 {% extends "ripa_test/base.html" %}
 {% block page_title %}RIPA tests | Operations dashboard | Digital Land{% endblock %}
-
-
 {% block dl_breadcrumbs %}{% endblock %}
-
 {% block main %}
-  <main class="app-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %} lang="{{ mainLang }}"{% endif %}>
-  {% block content %}
-    <h1 class="govuk-heading-l govuk-!-margin-top-6">Data tests</h1>
-  {% endblock content %}
+  <main class="app-main-wrapper govuk-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %}
+        lang="{{ mainLang }}"{% endif %}>
+    <div>
+      <h1 class="govuk-heading-m">Data test results - {{ date_of_test_run }}</h1>
+    </div>
+    {% block content %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <div class="app-c-test-grid">
+            {% for la in local_authorities.keys() %}
+              <div class="app-c-test-grid__row">
+                <div class="app-c-test-grid__items">
+                  <div class="app-c-test-grid__label">
+                    {{ local_authorities[la] }}
+                  </div>
+                  {% for dataset, result in results_grid[la].items() %}
+                    <div class="app-c-test-grid__item">
+                  <span class="app-c-test-grid__result app-c-test-grid__result--{{ result | pass_fail }}">
+                    <span>{{ dataset | unhyphenate | capitalize }}</span>
+                    <span class="app-c-test-grid__result-label">{{ result | pass_fail | capitalize }}</span>
+                  </span>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% endblock content %}
   </main>
-
-    <pre>
-      {{ results_grid | pprint_json }}
-    </pre>
-
 {% endblock main %}
 
 {% block footer %}
-<div class="dl-sticky-banner__container" data-module="sticky-banner">
+  <div class="dl-sticky-banner__container" data-module="sticky-banner">
     <div class="dl-sticky-banner">
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-one-half">
-              {# need a macro for this bit, param would set the href #}
-              <a href="#btt-hook" class="govuk-link govuk-link--no-visited-state back-to-top__link">
-                <svg role="presentation" focusable="false" class="dl-back-to-top__icon" xmlns="http://www.w3.org/2000/svg" width="13" height="17" viewBox="0 0 13 17">
-                    <path fill="currentColor" d="M6.5 0L0 6.5 1.4 8l4-4v12.7h2V4l4.3 4L13 6.4z"></path>
-                </svg>Back to top
-              </a>
-            </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half">
+          {# need a macro for this bit, param would set the href #}
+          <a href="#btt-hook" class="govuk-link govuk-link--no-visited-state back-to-top__link">
+            <svg role="presentation" focusable="false" class="dl-back-to-top__icon" xmlns="http://www.w3.org/2000/svg"
+                 width="13" height="17" viewBox="0 0 13 17">
+              <path fill="currentColor" d="M6.5 0L0 6.5 1.4 8l4-4v12.7h2V4l4.3 4L13 6.4z"></path>
+            </svg>
+            Back to top
+          </a>
         </div>
+      </div>
     </div>
-</div>
-{{ super() }}
+  </div>
+  {{ super() }}
 {% endblock %}
 
 {% block pageScripts %}
-{{ super() }}
+  {{ super() }}
 {% endblock pageScripts %}

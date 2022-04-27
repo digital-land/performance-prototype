@@ -1,9 +1,9 @@
-local_authorities = [
-    "local-authority-eng:LBH",
-    "local-authority-eng:SWK",
-    "local-authority-eng:BUC",
-    "local-authority-eng:CAT",
-]
+local_authorities = {
+    "local-authority-eng:LBH": "London Borough of Lambeth",
+    "local-authority-eng:SWK": "London Borough of Southwark",
+    "local-authority-eng:BUC": "Buckinghamshire Council",
+    "local-authority-eng:CAT": "Canterbury City Council",
+}
 
 tests = {
     "local-authority-eng:LBH": {

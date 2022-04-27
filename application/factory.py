@@ -81,6 +81,10 @@ def register_filters(app):
         split_filter,
         urlencode_filter,
         remove_query_param_filter,
+        unhyphenate,
+        pass_fail,
+        date_time_format
+
     )
 
     app.add_template_filter(clean_int_filter, name="to_int")
@@ -89,6 +93,9 @@ def register_filters(app):
     app.add_template_filter(split_filter, name="split")
     app.add_template_filter(urlencode_filter, name="urlencode")
     app.add_template_filter(remove_query_param_filter, name="remove_query_param")
+    app.add_template_filter(unhyphenate, name="unhyphenate")
+    app.add_template_filter(pass_fail, name="pass_fail")
+    app.add_template_filter(date_time_format, name="date_time_format")
 
     from digital_land_frontend.filters import commanum_filter, hex_to_rgb_string_filter
 

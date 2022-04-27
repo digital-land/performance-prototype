@@ -43,3 +43,18 @@ def remove_query_param_filter(v, filter_name, current_str):
         s = query_str.replace(f"{filter_name}={v}", "")
         return "?" + s.strip("&")
     return "?" + query_str
+
+
+def unhyphenate(s):
+    return s.replace("-", " ")
+
+
+def pass_fail(v):
+    if v is None:
+        return "no test"
+    if v:
+        return "pass"
+    return "fail"
+
+def date_time_format(d):
+    return d.strftime('%A %d-%m-%Y, %H:%M:%S')
