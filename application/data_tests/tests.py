@@ -202,7 +202,7 @@ tests = {
         },
     },
     "local-authority-eng:CAT": {
-        "Southwark article 4 direction ()": {
+        "Cantebury article 4 direction (Kemberland Wood)": {
             "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
             "query": "?dataset=article-4-direction-area&longitude=1.121256&longitude=51.315129",
             "dataset": "article-4-direction-area",
