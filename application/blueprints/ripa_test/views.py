@@ -55,6 +55,6 @@ def index():
         "ripa_test/index.html",
         results_grid=results_grid,
         local_authorities=local_authorities,
-        date_of_test_run=latest_test_run.created_timestamp.strftime('%A %d-%m-%Y, %H:%M:%S')
+        date_of_test_run=latest_test_run.created_timestamp.strftime("%b %d %Y %H:%M:%S")
     )
 
