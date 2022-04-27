@@ -11,12 +11,12 @@
     // &:nth-child(even) {
     //   background: rgba(#000, 0.05);
     // }
-    flex-direction: column;
+    flex-direction: row;
   }
 
   &__label {
     margin: 0 0 1em 0;
-    width: 10%;
+    width: 20%;
     @include govuk-font($size: 19, $weight: bold);
   }
 
@@ -25,7 +25,6 @@
     grid-template-columns: repeat(5, 20%);
     @include govuk-media-query($from: tablet) {
       grid-template-columns: repeat(7, 14.25%);
-      grid-template-columns: repeat(10, 10%);
     }
     flex: 1;
   }
