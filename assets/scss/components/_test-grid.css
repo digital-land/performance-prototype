@@ -2,7 +2,10 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-
+  box-sizing: border-box;
+  * {
+    box-sizing: border-box;
+  }
   &__row {
     display: flex;
     align-items: flex-start;
@@ -13,6 +16,7 @@
 
   &__label {
     margin: 0 0 1em 0;
+    padding-right: 1em;
     width: 20%;
     @include govuk-font($size: 19, $weight: bold);
   }
