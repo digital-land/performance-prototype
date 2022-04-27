@@ -65,6 +65,6 @@ def index():
     return jsonify(
         {
             "results-grid": results_grid,
-            "test_date_time": (latest_test_run.created_timestamp),
+            "test_date_time": (latest_test_run.created_timestamp.isoformat()),
         }
     )
