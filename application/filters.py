@@ -56,5 +56,6 @@ def pass_fail(v):
         return "pass"
     return "fail"
 
+
 def date_time_format(d):
-    return d.strftime('%A %d-%m-%Y, %H:%M:%S')
+    return d.strftime("%A %d-%m-%Y, %H:%M:%S")

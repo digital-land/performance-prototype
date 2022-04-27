@@ -83,8 +83,7 @@ def register_filters(app):
         remove_query_param_filter,
         unhyphenate,
         pass_fail,
-        date_time_format
-
+        date_time_format,
     )
 
     app.add_template_filter(clean_int_filter, name="to_int")
