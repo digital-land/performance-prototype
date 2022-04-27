@@ -12,11 +12,11 @@
         <div class="govuk-grid-column-full">
           <div class="app-c-test-grid">
             {% for la in local_authorities.keys() %}
+              <div class="app-c-test-grid__label">
+                {{ local_authorities[la] }}
+              </div>
               <div class="app-c-test-grid__row">
                 <div class="app-c-test-grid__items">
-                  <div class="app-c-test-grid__label">
-                    {{ local_authorities[la] }}
-                  </div>
                   {% for dataset, result in results_grid[la].items() %}
                     <div class="app-c-test-grid__item">
                   <span class="app-c-test-grid__result app-c-test-grid__result--{{ result | pass_fail }}">
