@@ -64,6 +64,39 @@ tests = {
                 "$.entities[0].notes": "KIBA",
             },
         },
+        "Lambeth conservation area Park Hall Road": {
+            "ticket": "https://trello.com/c/CXgfYGUR/19-lambeth-conservation-areas",
+            "query": "?geometry=POINT(-0.09303242 51.43599392)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 3,
+                "$.entities[0].reference": "CA19",
+                "$.entities[0].name": "Park Hall Road",
+                "$.entities[0].organisation-entity": "192",
+            },
+        },
+        "Lambeth conservation area Rosendale Road": {
+            "ticket": "https://trello.com/c/CXgfYGUR/19-lambeth-conservation-areas",
+            "query": "?geometry=POINT(-0.10978987 51.50460093)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 3,
+                "$.entities[0].reference": "CA47",
+                "$.entities[0].name": "Rosendale Road",
+                "$.entities[0].organisation-entity": "192",
+            },
+        },
+        "Lambeth conservation area Streatham Lodge": {
+            "ticket": "https://trello.com/c/CXgfYGUR/19-lambeth-conservation-areas",
+            "query": "?geometry=POINT(-0.12175931+51.41598617)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 3,
+                "$.entities[0].reference": "CA62",
+                "$.entities[0].name": "Streatham Lodge",
+                "$.entities[0].organisation-entity": "192",
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
