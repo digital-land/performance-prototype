@@ -75,14 +75,14 @@ tests = {
                 "$.entities[0].organisation-entity": "192",
             },
         },
-        "Lambeth conservation area Rosendale Road": {
+        "Lambeth conservation area Roupell Street": {
             "ticket": "https://trello.com/c/CXgfYGUR/19-lambeth-conservation-areas",
             "query": "?geometry=POINT(-0.10978987 51.50460093)&geometry_relation=intersects&dataset=conservation-area",
             "dataset": "conservation-area",
             "assertions": {
                 "$.count": 3,
-                "$.entities[0].reference": "CA47",
-                "$.entities[0].name": "Rosendale Road",
+                "$.entities[0].reference": "CA21",
+                "$.entities[0].name": "Roupell Street",
                 "$.entities[0].organisation-entity": "192",
             },
         },
