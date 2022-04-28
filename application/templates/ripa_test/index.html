@@ -5,7 +5,7 @@
   <main class="app-main-wrapper govuk-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %}
         lang="{{ mainLang }}"{% endif %}>
     <div>
-      <h1 class="govuk-heading-m">Data test results -  last run on {{ date_of_test_run }}</h1>
+      <h1 class="govuk-heading-m">Data test results - {{ date_of_test_run }}</h1>
     </div>
     {% block content %}
       <div class="govuk-grid-row">
