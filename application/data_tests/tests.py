@@ -109,6 +109,13 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Lambeth has no areas of outstanding natural beauty": {
+            "query": "?dataset=area-of-outstanding-natural-beauty&geometry_reference=E09000022",
+            "dataset": "area-of-outstanding-natural-beauty",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
@@ -255,6 +262,13 @@ tests = {
                 "$.entities[0].name": "Pumping engine house for Brunel's Thames tunnel",
             },
         },
+        "Southwark has no areas of outstanding natural beauty": {
+            "query": "?dataset=area-of-outstanding-natural-beauty&geometry_reference=E09000028",
+            "dataset": "area-of-outstanding-natural-beauty",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:CAT": {
         "Cantebury article 4 direction (Kemberland Wood)": {
@@ -281,6 +295,14 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "1003125",
                 "$.entities[0].name": "Vacant land within Roman walls in Adelaide Place",
+            },
+            "Kent Downs area of outstanding natural beauty": {
+                "query": "?dataset=area-of-outstanding-natural-beauty&latitude=51.3869143&longitude=0.4540133",
+                "dataset": "area-of-outstanding-natural-beauty",
+                "assertions": {
+                    "$.count": 1,
+                    "$.entities[0].name": "Kent Downs",
+                },
             },
         },
     },
