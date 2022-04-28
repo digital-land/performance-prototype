@@ -95,6 +95,13 @@ tests = {
                 "$.entities[0].organisation-entity": "192",
             },
         },
+        "Lambeth has no scheduled monuments": {
+            "query": "?dataset=scheduled-monument&geometry_reference=E09000022",
+            "dataset": "scheduled-monument",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
@@ -116,6 +123,15 @@ tests = {
                 "$.entities[0].description": "Certain structures used for production of poultry or eggs - refer to Order & GDO 1950",
                 "$.entities[1].name": "Bledlow-cum-Saunderton - Buildings for use as piggery",
                 "$.entities[0].description": "	Buildings for use as piggery on agricultural land - refer to Order and GDO 1963",
+            },
+        },
+        "Buckinghamshire scheduled monument": {
+            "query": "?geometry=POINT (-0.835789 51.724111)&geometry_relation=intersects&dataset=scheduled-monument",
+            "dataset": "scheduled-monument",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1006951",
+                "$.entities[0].name": "The Mount",
             },
         },
     },
@@ -223,6 +239,15 @@ tests = {
                 "$.entities[8].description": "Demolition of commercial buildings and construction of new dwellinghouses is restricted",
             },
         },
+        "Southwark scheduled monument": {
+            "query": "?geometry=POINT(-0.052963 51.501611)&geometry_relation=intersects&dataset=scheduled-monument",
+            "dataset": "scheduled-monument",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1005556",
+                "$.entities[0].name": "Pumping engine house for Brunel's Thames tunnel",
+            },
+        },
     },
     "local-authority-eng:CAT": {
         "Cantebury article 4 direction (Kemberland Wood)": {
@@ -240,6 +265,15 @@ tests = {
                 "$.entities[1].organisation-entity": "75",
                 "$.entities[1].notes": "Dated 25th February 2016",
                 "$.entities[1].start-date": "2016-02-25",
+            },
+        },
+        "Canterbury scheduled monument": {
+            "query": "?geometry=POINT(1.07739 51.277722)&geometry_relation=intersects&dataset=scheduled-monument",
+            "dataset": "scheduled-monument",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "13901526",
+                "$.entities[0].name": "Vacant land within Roman walls in Adelaide Place",
             },
         },
     },
