@@ -85,10 +85,13 @@ def _run_tests():
 def delete_old_tests():
     from application.extensions import db
     from datetime import datetime, timedelta
+
     now = datetime.now()
     yesterday = now - timedelta(days=1)
 
-    tests_runs_to_delete = db.session.query(TestRun).filter(TestRun.created_timestamp < yesterday).all()
+    tests_runs_to_delete = (
+        db.session.query(TestRun).filter(TestRun.created_timestamp < yesterday).all()
+    )
 
     for t in tests_runs_to_delete:
         print(f"Deleting test from {t.created_timestamp}")

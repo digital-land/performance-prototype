@@ -47,7 +47,7 @@
           <div class="govuk-grid-column-full">
               <h3  class="govuk-heading-m" id="{{ result.organisation}}-{{ result.dataset }}">{{ local_authorities[result.organisation] }}</h3>
               <p class="govuk-body-s">Test: {% if result.ticket %}<a href="{{ result.ticket }}">{% endif %}{{result.test_name}}{% if result.ticket %}</a>{% endif %}</p>
-              <p class="govuk-body-s">Dataset: {{ result.dataset }}</p>
+              <p class="govuk-body-s">Dataset: <a href="https://www.digital-land.info/dataset/{{ result.dataset }}">{{ result.dataset }}</a></p>
               <p class="govuk-body-s">Query: <a href="https://www.digital-land.info/entity.json{{result.query}}">{{result.query}}</a></p>
               <table class="govuk-table" id="{{ result.organisation}}-{{ result.dataset }}">
                 <thead class="govuk-table__head">
@@ -55,7 +55,7 @@
                     <th scope="col" class="govuk-table__header">Path</th>
                     <th scope="col" class="govuk-table__header">Expected</th>
                     <th scope="col" class="govuk-table__header">Actual</th>
-                    <th scope="col" class="govuk-table__header">Passed</th>
+                    <th scope="col" class="govuk-table__header">Status</th>
                   </tr>
                 </thead>
                 <tbody class="govuk-table__body">
@@ -64,7 +64,11 @@
                       <td class="govuk-table__cell">{{assertion.path}}</td>
                       <td class="govuk-table__cell">{{assertion.expected}}</td>
                       <td class="govuk-table__cell">{{assertion.actual}}</td>
-                      <td class="govuk-table__cell">{{assertion.match}}</td>
+                      {% if not assertion.match %}
+                        <td class="govuk-table__cell app-c-test-grid-table__td app-c-test-grid-table__td--fail">fail</td>
+                      {% else %}
+                        <td class="govuk-table__cell app-c-test-grid-table__td app-c-test-grid-table__td--pass">pass</td>
+                      {% endif %}
                     </tr>
                   {% endfor %}
                 </tbody>

@@ -24,7 +24,9 @@ class Result(db.Model):
     response_data_id = db.Column(
         UUID(as_uuid=True), db.ForeignKey("response_data.id"), nullable=False
     )
-    assertions = db.relationship("Assertion", backref="test_result", cascade="all,delete")
+    assertions = db.relationship(
+        "Assertion", backref="test_result", cascade="all,delete"
+    )
 
 
 class Assertion(db.Model):
