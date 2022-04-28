@@ -380,6 +380,16 @@ tests = {
                 "$.count": 0,
             },
         },
+        "St Josephs School tree preservation zone": {
+            "ticket": "https://trello.com/c/1tSMgQDH/25-southwark-tree-preservation-orders",
+            "query": "?geometry=POINT(-0.069719 51.499471)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "St Josephs Primary School, George Row",
+                "$.entities[0].tree-preservation-order": "252",
+            },
+        },
     },
     "local-authority-eng:CAT": {
         "Canterbury article 4 direction (Kemberland Wood)": {
