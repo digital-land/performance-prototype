@@ -449,5 +449,16 @@ tests = {
                 "$.entities[0].organisation-entity": "75",
             },
         },
+        "tree preservation zone": {
+            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
+            "query": "?geometry=POINT(1.149543 51.277888)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Land Next To Littlebourne Solar Farm Swanton Lane Littlbourne",
+                "$.entities[0].reference": "1123",
+                "$.entities[0].tree-preservation-order": "5/1991/LIT",
+            },
+        },
     },
 }
