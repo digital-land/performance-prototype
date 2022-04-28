@@ -18,6 +18,7 @@ tests = {
             },
         },
         "Lambeth central activities zone": {
+            "ticket": "https://trello.com/c/golBkjM7/39-central-activities-zone",
             "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=central-activities-zone",
             "dataset": "central-activities-zone",
             "assertions": {
@@ -73,7 +74,7 @@ tests = {
             "query": "?geometry=POINT(-0.09303242 51.43599392)&geometry_relation=intersects&dataset=conservation-area",
             "dataset": "conservation-area",
             "assertions": {
-                "$.count": 3,
+                "$.count": 1,
                 "$.entities[0].reference": "CA19",
                 "$.entities[0].name": "Park Hall Road",
                 "$.entities[0].organisation-entity": "192",
@@ -102,6 +103,7 @@ tests = {
             },
         },
         "Lambeth has no scheduled monuments": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
             "query": "?dataset=scheduled-monument&geometry_reference=E09000022",
             "dataset": "scheduled-monument",
             "assertions": {
@@ -109,6 +111,7 @@ tests = {
             },
         },
         "Lambeth has no areas of outstanding natural beauty": {
+            "ticket": "https://trello.com/c/fwcRbQFr/40-area-of-outstanding-natural-beauty",
             "query": "?dataset=area-of-outstanding-natural-beauty&geometry_reference=E09000022",
             "dataset": "area-of-outstanding-natural-beauty",
             "assertions": {
@@ -118,6 +121,7 @@ tests = {
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
+            "ticket": "https://trello.com/c/fwcRbQFr/40-area-of-outstanding-natural-beauty",
             "query": "?geometry=POINT(-0.8463452 51.6682134)&geometry_relation=intersects&dataset=area-of-outstanding-natural-beauty",
             "dataset": "area-of-outstanding-natural-beauty",
             "assertions": {
@@ -128,6 +132,7 @@ tests = {
             },
         },
         "Chilterns article 4 direction": {
+            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
             "query": "?geometry=POINT(-0.845119 51.667878)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
@@ -139,6 +144,7 @@ tests = {
             },
         },
         "Buckinghamshire scheduled monument": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
             "query": "?geometry=POINT (-0.835789 51.724111)&geometry_relation=intersects&dataset=scheduled-monument",
             "dataset": "scheduled-monument",
             "assertions": {
@@ -148,6 +154,7 @@ tests = {
             },
         },
         "Buckinghamshire has no central activities zone": {
+            "ticket": "https://trello.com/c/golBkjM7/39-central-activities-zone",
             "query": "?dataset=central-activities-zone&geometry_reference=E06000060",
             "dataset": "central-activities-zone",
             "assertions": {
@@ -155,13 +162,15 @@ tests = {
             },
         },
         "Whiteleaf tree preservation zone": {
+            "ticket": "https://trello.com/c/VEYLoXrJ/13-buckinghamshire-tree-preservation-orders",
             "query": "?geometry=POINT(-0.813461 51.732499)&geometry_relation=intersects&dataset=tree-preservation-zone",
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
             },
         },
-        "tree preservation zones": {
+        "High Wycombe tree preservation zone": {
+            "ticket": "https://trello.com/c/VEYLoXrJ/13-buckinghamshire-tree-preservation-orders",
             "query": "?geometry=POINT(-0.895052 51.558892)&geometry_relation=intersects&dataset=tree-preservation-zone",
             "dataset": "tree-preservation-zone",
             "assertions": {
@@ -173,6 +182,7 @@ tests = {
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
+            "ticket": "https://trello.com/c/golBkjM7/39-central-activities-zone",
             "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=central-activities-zone",
             "dataset": "central-activities-zone",
             "assertions": {
@@ -184,17 +194,19 @@ tests = {
                 "$.entities[0].notes": "P2 New family homes; P29 Office and business development; P30 Affordable workspace",
             },
         },
-        "Southwark conservation area": {
+        "Southwark conservation area (Borough High Street)": {
+            "ticket": "https://trello.com/c/mdJYWSdO/42-southwark-conservation-areas",
             "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=conservation-area",
             "dataset": "conservation-area",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "COA00000759",
-                "$.entities[0].name": "",
+                "$.entities[0].reference": "3",
+                "$.entities[0].name": "Borough High Street",
                 "$.entities[0].organisation-entity": "329",
             },
         },
         "Southwark scheduled monument (Clink Street)": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
             "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=scheduled-monument",
             "dataset": "scheduled-monument",
             "assertions": {
@@ -286,6 +298,7 @@ tests = {
             },
         },
         "Southwark scheduled monument": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
             "query": "?geometry=POINT(-0.052963 51.501611)&geometry_relation=intersects&dataset=scheduled-monument",
             "dataset": "scheduled-monument",
             "assertions": {
@@ -295,6 +308,7 @@ tests = {
             },
         },
         "Southwark has no areas of outstanding natural beauty": {
+            "ticket": "https://trello.com/c/fwcRbQFr/40-area-of-outstanding-natural-beauty",
             "query": "?dataset=area-of-outstanding-natural-beauty&geometry_reference=E09000028",
             "dataset": "area-of-outstanding-natural-beauty",
             "assertions": {
@@ -351,6 +365,7 @@ tests = {
             },
         },
         "Canterbury scheduled monument": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
             "query": "?geometry=POINT(1.07739 51.277722)&geometry_relation=intersects&dataset=scheduled-monument",
             "dataset": "scheduled-monument",
             "assertions": {
@@ -360,6 +375,7 @@ tests = {
             },
         },
         "Kent Downs area of outstanding natural beauty": {
+            "ticket": "https://trello.com/c/fwcRbQFr/40-area-of-outstanding-natural-beauty",
             "query": "?dataset=area-of-outstanding-natural-beauty&latitude=51.3869143&longitude=0.4540133",
             "dataset": "area-of-outstanding-natural-beauty",
             "assertions": {
@@ -368,6 +384,7 @@ tests = {
             },
         },
         "Canterbury has no central activities zone": {
+            "ticket": "https://trello.com/c/golBkjM7/39-central-activities-zone",
             "query": "?dataset=central-activities-zone&geometry_reference=E06000106",
             "dataset": "central-activities-zone",
             "assertions": {
