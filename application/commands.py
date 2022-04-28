@@ -79,3 +79,18 @@ def _run_tests():
     db.session.commit()
 
     print(f"Finished running tests at {datetime.datetime.utcnow()}")
+
+
+@data_test_cli.command("delete-old-tests")
+def delete_old_tests():
+    from application.extensions import db
+    from datetime import datetime, timedelta
+    now = datetime.now()
+    yesterday = now - timedelta(days=1)
+
+    tests_runs_to_delete = db.session.query(TestRun).filter(TestRun.created_timestamp < yesterday).all()
+
+    for t in tests_runs_to_delete:
+        print(f"Deleting test from {t.created_timestamp}")
+        db.session.delete(t)
+    db.session.commit()

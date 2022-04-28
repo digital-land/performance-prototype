@@ -8,7 +8,7 @@ from application.extensions import db
 class TestRun(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     created_timestamp = db.Column(db.TIMESTAMP, server_default=func.now())
-    results = db.relationship("Result", backref="test_run")
+    results = db.relationship("Result", backref="test_run", cascade="all,delete")
 
 
 class Result(db.Model):
@@ -24,7 +24,7 @@ class Result(db.Model):
     response_data_id = db.Column(
         UUID(as_uuid=True), db.ForeignKey("response_data.id"), nullable=False
     )
-    assertions = db.relationship("Assertion", backref="test_result")
+    assertions = db.relationship("Assertion", backref="test_result", cascade="all,delete")
 
 
 class Assertion(db.Model):
@@ -44,4 +44,4 @@ class ResponseData(db.Model):
     query = db.Column(db.Text, nullable=False)
     data = db.Column(JSONB, nullable=True)
     created_timestamp = db.Column(db.TIMESTAMP, server_default=func.now())
-    results = db.relationship("Result", backref="response_data")
+    results = db.relationship("Result", backref="response_data", cascade="all,delete")
