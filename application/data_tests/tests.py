@@ -148,6 +148,13 @@ tests = {
                 "$.entities[0].name": "The Mount",
             },
         },
+        "Buckinghamshire has no central activities zone": {
+            "query": "?dataset=central-activities-zone&geometry_reference=E06000060",
+            "dataset": "central-activities-zone",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
@@ -303,6 +310,13 @@ tests = {
                     "$.count": 1,
                     "$.entities[0].name": "Kent Downs",
                 },
+            },
+        },
+        "Canterbury has no central activities zone": {
+            "query": "?dataset=central-activities-zone&geometry_reference=E06000106",
+            "dataset": "central-activities-zone",
+            "assertions": {
+                "$.count": 0,
             },
         },
     },
