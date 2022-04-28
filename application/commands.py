@@ -5,7 +5,7 @@ import requests
 from flask.cli import AppGroup
 from jsonpath import JSONPath
 
-from application.models import TestRun, Result, ResponseData
+from application.models import TestRun, Result, ResponseData, Assertion
 
 data_test_cli = AppGroup("data-test")
 
@@ -22,7 +22,6 @@ def _run_tests():
     from application.data_tests.tests import tests, local_authorities
 
     print(f"Running tests at {datetime.datetime.utcnow()}")
-
     results = []
     for la in local_authorities:
 
@@ -44,43 +43,38 @@ def _run_tests():
                 data["entities"].sort(key=lambda e: e["entity"])
 
             response_data = ResponseData(query=query, test_name=test, data=data)
-
+            result = Result(
+                query=query,
+                organisation=la,
+                dataset=dataset,
+                test_name=test,
+                ticket=ticket,
+            )
+            response_data.results.append(result)
+            results.append(result)
             for path, expected in assertions.items():
                 print(f"assertion: path = {path} expect = {expected}")
                 parsed = JSONPath(path).parse(data)
                 if parsed:
                     actual = parsed[0]
                     match = True if re.match(str(expected), str(actual)) else False
-                    result = Result(
-                        query=query,
+                    assertion = Assertion(
                         path=path,
                         expected=expected,
                         actual=actual,
                         match=match,
-                        organisation=la,
-                        dataset=dataset,
-                        test_name=test,
-                        ticket=ticket,
                     )
                 else:
-                    result = Result(
-                        query=query,
+                    assertion = Assertion(
                         path=path,
                         expected=expected,
+                        actual=None,
                         match=None,
-                        organisation=la,
-                        dataset=dataset,
-                        test_name=test,
-                        ticket=ticket,
                     )
-
-                results.append(result)
-                response_data.results.append(result)
-
+                result.assertions.append(assertion)
             db.session.add(response_data)
 
     test_run = TestRun(results=results)
-
     db.session.add(test_run)
     db.session.commit()
 

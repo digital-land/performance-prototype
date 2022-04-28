@@ -36,20 +36,21 @@
           <p><a href="{{ url_for("ripa.run_tests") }}" class="govuk-button">Run the tests again now</a></p>
         </div>
       </div>
-      <div class="govuk-grid-row" style="margin-top: 2.5em">
+      <div class="govuk-grid-row govuk-!-margin-top-4">
         <div class="govuk-grid-column-full">
-          <h2 class="govuk-heading-m">Detailed results</h2>
+          <h2 class="govuk-heading-l">Detailed results</h2>
         </div>
       </div>
-      {% for key, results in grouped_result.items() %}
-        <div class="govuk-grid-row">
+      {% for result in results %}
+        <div class="govuk-grid-row govuk-!-margin-bottom-5">
           <div class="govuk-grid-column-full">
-              <table class="govuk-table" id="{{ key[0] }}-{{ key[1] }}">
-                <caption class="govuk-table__caption govuk-table__caption--m">{{  local_authorities[key[0]]  }} - {{ key[1] }}</caption>
+              <h3  class="govuk-heading-m" id="{{ result.organisation}}-{{ result.dataset }}">{{ local_authorities[result.organisation] }}</h3>
+              <p class="govuk-body-s">Test: {% if result.ticket %}<a href="{{ result.ticket }}">{% endif %}{{result.test_name}}{% if result.ticket %}</a>{% endif %}</p>
+              <p class="govuk-body-s">Dataset: {{ result.dataset }}</p>
+              <p class="govuk-body-s">Query: <a href="https://www.digital-land.info/entity.json{{result.query}}">{{result.query}}</a></p>
+              <table class="govuk-table" id="{{ result.organisation}}-{{ result.dataset }}">
                 <thead class="govuk-table__head">
                   <tr class="govuk-table__row govuk-body-s">
-                    <th scope="col" class="govuk-table__header">Test name</th>
-                    <th scope="col" class="govuk-table__header">Query</th>
                     <th scope="col" class="govuk-table__header">Path</th>
                     <th scope="col" class="govuk-table__header">Expected</th>
                     <th scope="col" class="govuk-table__header">Actual</th>
@@ -57,14 +58,12 @@
                   </tr>
                 </thead>
                 <tbody class="govuk-table__body">
-                  {% for result in results %}
+                  {% for assertion in result.assertions %}
                     <tr class="govuk-table__row govuk-body-s">
-                      <td class="govuk-table__cell">{% if result.ticket %}<a href="{{ result.ticket }}">{% endif %}{{result.test_name}}{% if result.ticket %}</a>{% endif %}</td>
-                      <td class="govuk-table__cell"><a href="https://www.digital-land.info/entity.json{{result.query}}">{{result.query}}</a></td>
-                      <td class="govuk-table__cell">{{result.path}}</td>
-                      <td class="govuk-table__cell">{{result.expected}}</td>
-                      <td class="govuk-table__cell">{{result.actual}}</td>
-                      <td class="govuk-table__cell">{{result.match}}</td>
+                      <td class="govuk-table__cell">{{assertion.path}}</td>
+                      <td class="govuk-table__cell">{{assertion.expected}}</td>
+                      <td class="govuk-table__cell">{{assertion.actual}}</td>
+                      <td class="govuk-table__cell">{{assertion.match}}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -81,14 +80,6 @@
     <div class="dl-sticky-banner">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half">
-          {# need a macro for this bit, param would set the href #}
-          <a href="#btt-hook" class="govuk-link govuk-link--no-visited-state back-to-top__link">
-            <svg role="presentation" focusable="false" class="dl-back-to-top__icon" xmlns="http://www.w3.org/2000/svg"
-                 width="13" height="17" viewBox="0 0 13 17">
-              <path fill="currentColor" d="M6.5 0L0 6.5 1.4 8l4-4v12.7h2V4l4.3 4L13 6.4z"></path>
-            </svg>
-            Back to top
-          </a>
         </div>
       </div>
     </div>

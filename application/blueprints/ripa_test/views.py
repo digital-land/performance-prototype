@@ -41,10 +41,11 @@ def index():
         results = result_by_local_authority.get(la, [])
         dataset_results = {}
         for result in results:
-            if result.dataset not in dataset_results:
-                dataset_results[result.dataset] = [result.match]
-            else:
-                dataset_results[result.dataset].append(result.match)
+            for assertion in result.assertions:
+                if result.dataset not in dataset_results:
+                    dataset_results[result.dataset] = [assertion.match]
+                else:
+                    dataset_results[result.dataset].append(assertion.match)
 
         for key, val in dataset_results.items():
             dataset_results[key] = all(val)
@@ -63,6 +64,7 @@ def index():
             tzlocal()
         ).strftime("%b %d %Y %H:%M:%S"),
         grouped_result=grouped_result,
+        results=latest_test_run.results,
     )
 
 

@@ -16,17 +16,25 @@ class Result(db.Model):
     test_name = db.Column(db.Text, nullable=False)
     dataset = db.Column(db.Text, nullable=False)
     organisation = db.Column(db.Text, nullable=False)
-    ticket = db.Column(db.Text, nullable=True)
     query = db.Column(db.Text, nullable=False)
-    path = db.Column(db.Text, nullable=False)
-    expected = db.Column(db.Text, nullable=False)
-    actual = db.Column(db.Text)
-    match = db.Column(db.BOOLEAN, default=False)
+    ticket = db.Column(db.Text, nullable=True)
     test_run_id = db.Column(
         UUID(as_uuid=True), db.ForeignKey("test_run.id"), nullable=False
     )
     response_data_id = db.Column(
         UUID(as_uuid=True), db.ForeignKey("response_data.id"), nullable=False
+    )
+    assertions = db.relationship("Assertion", backref="test_result")
+
+
+class Assertion(db.Model):
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    path = db.Column(db.Text, nullable=False)
+    expected = db.Column(db.Text, nullable=False)
+    actual = db.Column(db.Text)
+    match = db.Column(db.BOOLEAN, default=False)
+    test_result_id = db.Column(
+        UUID(as_uuid=True), db.ForeignKey("result.id"), nullable=False
     )
 
 
