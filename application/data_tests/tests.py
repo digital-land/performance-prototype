@@ -215,7 +215,17 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "6553",
             },
-        },        
+        },
+        "Great Missenden conservation area": {
+            "ticket": "https://trello.com/c/Z5qZj1w7/11-buckinghamshire-conservation-areas",
+            "query": "?geometry=POINT(-0.700567 51.699685)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Great Missenden",
+                "$.entities[0].organisation-entity": "67",
+            },
+        },
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
@@ -426,6 +436,17 @@ tests = {
             "dataset": "central-activities-zone",
             "assertions": {
                 "$.count": 0,
+            },
+        },
+        "Whitstable town conservation area": {
+            "ticket": "https://trello.com/c/9TaHoPOe/15-canterbury-conservation-areas",
+            "query": "?geometry=POINT(1.023993 51.35794)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "175",
+                "$.entities[0].name": "WHITSTABLE TOWN",
+                "$.entities[0].organisation-entity": "75",
             },
         },
     },
