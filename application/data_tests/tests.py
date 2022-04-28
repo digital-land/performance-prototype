@@ -12,10 +12,8 @@ tests = {
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "13",
-                "$.entities[0].name": "South Bank House and Newport Street",
+                "$.entities[0].name": "Southbank House, Black Prince Road",
                 "$.entities[0].organisation-entity": "192",
-                "$.entities[0].notes": "KIBA",
                 "$.entities[0].listed-building-grade": "II",
             },
         },
