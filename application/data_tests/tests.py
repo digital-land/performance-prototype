@@ -135,7 +135,7 @@ tests = {
                 "$.entities[0].name": "Former Wycombe Rural District - Poultry Production",
                 "$.entities[0].description": "Certain structures used for production of poultry or eggs - refer to Order & GDO 1950",
                 "$.entities[1].name": "Bledlow-cum-Saunderton - Buildings for use as piggery",
-                "$.entities[0].description": "	Buildings for use as piggery on agricultural land - refer to Order and GDO 1963",
+                "$.entities[1].description": "Buildings for use as piggery on agricultural land - refer to Order and GDO 1963",
             },
         },
         "Buckinghamshire scheduled monument": {
@@ -152,6 +152,22 @@ tests = {
             "dataset": "central-activities-zone",
             "assertions": {
                 "$.count": 0,
+            },
+        },
+        "Whiteleaf tree preservation zone": {
+            "query": "?geometry=POINT(-0.813461 51.732499)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+            },
+        },
+        "tree preservation zones": {
+            "query": "?geometry=POINT(-0.895052 51.558892)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 2,
+                "$.entities[0].tree-preservation-type": "Area",
+                "$.entities[1].tree-preservation-type": "Revoked",
             },
         },
     },
@@ -178,7 +194,7 @@ tests = {
                 "$.entities[0].organisation-entity": "329",
             },
         },
-        "Southwark scheduled monument": {
+        "Southwark scheduled monument (Clink Street)": {
             "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=scheduled-monument",
             "dataset": "scheduled-monument",
             "assertions": {
@@ -284,7 +300,7 @@ tests = {
             "assertions": {
                 "$.count": 2,
                 "$.entities[0].name": "Land at Kemberland Wood, Sturry",
-                "$.entities[1].description": "Article 4 Direction No 1 1979",
+                "$.entities[0].description": "Article 4 Direction No 1 1979",
                 "$.entities[0].organisation-entity": "75",
                 "$.entities[0].start-date": "1979-03-16",
                 "$.entities[1].name": "Canterbury and surrounding area",
