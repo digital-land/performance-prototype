@@ -279,7 +279,7 @@ tests = {
             "dataset": "scheduled-monument",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "13901526",
+                "$.entities[0].reference": "1003125",
                 "$.entities[0].name": "Vacant land within Roman walls in Adelaide Place",
             },
         },
