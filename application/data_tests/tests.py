@@ -227,18 +227,19 @@ tests = {
     "local-authority-eng:CAT": {
         "Cantebury article 4 direction (Kemberland Wood)": {
             "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
-            "query": "?dataset=article-4-direction-area&longitude=1.121256&longitude=51.315129",
+            "query": "?dataset=article-4-direction-area&longitude=1.121256&latitude=51.315129",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 2,
                 "$.entities[0].name": "Land at Kemberland Wood, Sturry",
+                "$.entities[1].description": "Article 4 Direction No 1 1979",
                 "$.entities[0].organisation-entity": "75",
                 "$.entities[0].start-date": "1979-03-16",
-                "$.entities[0].notes": "Article 4 Direction No 1 1979",
-                "$.entities[1].name": "The Canterbury HMO Article 4 D",
+                "$.entities[1].name": "Canterbury and surrounding area",
+                "$.entities[1].description": "The Canterbury HMO Article 4 D",
                 "$.entities[1].organisation-entity": "75",
-                "$.entities[1].start-date": "2016-02-25",
                 "$.entities[1].notes": "Dated 25th February 2016",
+                "$.entities[1].start-date": "2016-02-25",
             },
         },
     },
