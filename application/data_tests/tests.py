@@ -151,7 +151,6 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "1002054",
                 "$.entities[0].name": "Remains of Winchester Palace, Clink Street and waterfront",
-                "$.entities[0].organisation-entity": "329",
             },
         },
         "Southwark article 4 direction (The Lord Nelson, Union Street)": {
