@@ -42,11 +42,10 @@ tests = {
         },
         "Lambeth article 4 direction Brixton": {
             "ticket": "https://trello.com/c/JQuyFI3t/18-lambeth-article-4-directions",
-            "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-0.114154 51.462486)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "7",
                 "$.entities[0].name": "Brixton Town Centre",
                 "$.entities[0].organisation-entity": "192",
                 "$.entities[0].notes": "Brixton",
@@ -58,7 +57,6 @@ tests = {
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "13",
                 "$.entities[0].name": "South Bank House and Newport Street",
                 "$.entities[0].organisation-entity": "192",
                 "$.entities[0].notes": "KIBA",
@@ -80,7 +78,7 @@ tests = {
             "query": "?geometry=POINT(-0.10978987 51.50460093)&geometry_relation=intersects&dataset=conservation-area",
             "dataset": "conservation-area",
             "assertions": {
-                "$.count": 3,
+                "$.count": 1,
                 "$.entities[0].reference": "CA21",
                 "$.entities[0].name": "Roupell Street",
                 "$.entities[0].organisation-entity": "192",
@@ -91,7 +89,7 @@ tests = {
             "query": "?geometry=POINT(-0.12175931+51.41598617)&geometry_relation=intersects&dataset=conservation-area",
             "dataset": "conservation-area",
             "assertions": {
-                "$.count": 3,
+                "$.count": 1,
                 "$.entities[0].reference": "CA62",
                 "$.entities[0].name": "Streatham Lodge",
                 "$.entities[0].organisation-entity": "192",
@@ -110,8 +108,8 @@ tests = {
             },
         },
         "Chilterns article 4 direction": {
-            "query": "?geometry=POINT(-0.8463452 2051.6682134)&geometry_relation=intersects&dataset=article-4-direction",
-            "dataset": "article-4-direction",
+            "query": "?geometry=POINT(-0.8463452 2051.6682134)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 2,
                 "$.entities[0].reference": "159",
@@ -153,13 +151,7 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "1002054",
                 "$.entities[0].name": "Remains of Winchester Palace, Clink Street and waterfront",
-                "$.entities[0].organisation-entity": "329",
             },
-        },
-        "Southwark article 4 direction": {
-            "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=article-4-direction",
-            "dataset": "article-4-direction",
-            "assertions": {"$.count": 3},
         },
         "Southwark article 4 direction (The Lord Nelson, Union Street)": {
             "ticket": "https://trello.com/c/6G0Vv44y/22-southwark-article-4-directions",
