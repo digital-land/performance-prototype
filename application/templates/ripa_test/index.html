@@ -5,9 +5,12 @@
   <main class="app-main-wrapper govuk-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %}
         lang="{{ mainLang }}"{% endif %}>
     <div>
-      <h1 class="govuk-heading-m">Data test results &mdash; {% if date_of_test_run %}{{ date_of_test_run }}{% else %}no tests{% endif %}</h1>
+      <h1 class="govuk-heading-m">Test results</h1>
     </div>
     {% block content %}
+      <div class="govuk-inset-text">
+      {% if date_of_test_run %}{{ date_of_test_run }}{% else %}no tests{% endif %}
+      </div>
       {%  if results_grid %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
