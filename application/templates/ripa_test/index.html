@@ -59,7 +59,7 @@
                 <tbody class="govuk-table__body">
                   {% for result in results %}
                     <tr class="govuk-table__row govuk-body-s">
-                      <td class="govuk-table__cell">{{result.test_name}}</td>
+                      <td class="govuk-table__cell">{% if result.ticket %}<a href="{{ result.ticket }}">{% endif %}{{result.test_name}}{% if result.ticket %}</a>{% endif %}</td>
                       <td class="govuk-table__cell"><a href="https://www.digital-land.info/entity.json{{result.query}}">{{result.query}}</a></td>
                       <td class="govuk-table__cell">{{result.path}}</td>
                       <td class="govuk-table__cell">{{result.expected}}</td>
