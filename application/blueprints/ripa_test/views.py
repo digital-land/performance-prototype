@@ -16,21 +16,21 @@ def index():
         db.session.query(TestRun.id).order_by(TestRun.created_timestamp.desc()).limit(1)
     )
     query = db.session.query(TestRun).filter(TestRun.id.in_(subquery))
-    latest_test_run = query.one()
+    try:
+        latest_test_run = query.one()
+    except Exception as e:
+        return render_template(
+            "ripa_test/index.html",
+            results_grid=[],
+            local_authorities=local_authorities,
+            results=[],
+        )
 
     datasets_tested = set([])
     result_by_local_authority = {}
-    grouped_result = {}
 
     for result in latest_test_run.results:
         datasets_tested.add(result.dataset)
-
-        local_authority_dataset = result.organisation, result.dataset
-        if local_authority_dataset not in grouped_result:
-            grouped_result[local_authority_dataset] = [result]
-        else:
-            grouped_result[local_authority_dataset].append(result)
-
         if result.organisation not in result_by_local_authority:
             result_by_local_authority[result.organisation] = [result]
         else:
@@ -63,7 +63,6 @@ def index():
         date_of_test_run=latest_test_run.created_timestamp.astimezone(
             dateutil.tz.gettz("Europe/London")
         ).strftime("%b %d %Y %H:%M:%S"),
-        grouped_result=grouped_result,
         results=latest_test_run.results,
     )
 
