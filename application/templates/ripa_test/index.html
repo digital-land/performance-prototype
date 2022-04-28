@@ -55,7 +55,7 @@
               <table class="govuk-table" id="{{ result.organisation}}-{{ result.dataset }}">
                 <thead class="govuk-table__head">
                   <tr class="govuk-table__row govuk-body-s">
-                    <th scope="col" class="govuk-table__header">Status</th>
+                    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Status</th>
                     <th scope="col" class="govuk-table__header">Path</th>
                     <th scope="col" class="govuk-table__header">Expected</th>
                     <th scope="col" class="govuk-table__header">Actual</th>
@@ -63,17 +63,18 @@
                 </thead>
                 <tbody class="govuk-table__body">
                   {% for assertion in result.assertions %}
-                    <tr class="govuk-table__row govuk-body-s govuk-!-width-5">
-                      {% if not assertion.match %}
-                          <strong class="govuk-tag govuk-tag--red">fail</strong>
-                      {% else %}
-                          <strong class="govuk-tag govuk-tag--green">pass</strong>
-                      {% endif %}
-                      </td>
-                      <td class="govuk-table__cell govuk-!-width-one-quarter">{{assertion.path}}</td>
-                      <td class="govuk-table__cell">{{assertion.expected}}</td>
-                      <td class="govuk-table__cell">{{assertion.actual}}</td>
-                    </tr>
+                      <tr class="govuk-table__row govuk-body-s">
+                        <td class="govuk-table__cell govuk-body-s govuk-!-width-5">
+                          {% if not assertion.match %}
+                              <strong class="govuk-tag govuk-tag--red">fail</strong>
+                          {% else %}
+                              <strong class="govuk-tag govuk-tag--green">pass</strong>
+                          {% endif %}
+                          </td>
+                        <td class="govuk-table__cell govuk-!-width-one-quarter">{{assertion.path}}</td>
+                        <td class="govuk-table__cell">{{assertion.expected}}</td>
+                        <td class="govuk-table__cell">{{assertion.actual}}</td>
+                      </tr>
                   {% endfor %}
                 </tbody>
               </table>
