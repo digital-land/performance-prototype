@@ -324,14 +324,14 @@ tests = {
                 "$.entities[0].reference": "73408",
             },
         },
-        "Canterbury article 4 direction (Simplification)": {
-            "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
-            "query": "?dataset=article-4-direction-area&longitude=1.12258755&latitude=51.36586015",
-            "dataset": "article-4-direction-area",
-            "assertions": {
-                "$.count": 0,
-            },
-        },
+        # "Canterbury article 4 direction (Simplification)": {
+        #     "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
+        #     "query": "?dataset=article-4-direction-area&longitude=1.12258755&latitude=51.36586015",
+        #     "dataset": "article-4-direction-area",
+        #     "assertions": {
+        #         "$.count": 0,
+        #     },
+        # },
         "Canterbury article 4 direction count": {
             "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
             "query": "?dataset=article-4-direction-area&organisation_entity=75&field=reference",
