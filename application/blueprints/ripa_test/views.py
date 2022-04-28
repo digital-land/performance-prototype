@@ -59,7 +59,7 @@ def index():
         "ripa_test/index.html",
         results_grid=results_grid,
         local_authorities=local_authorities,
-        date_of_test_run=latest_test_run.created_timestamp.astimezone(tzlocal()).strftime(
+        date_of_test_run=latest_test_run.created_timestamp.strftime(
             "%b %d %Y %H:%M:%S"
         ),
         grouped_result=grouped_result,
@@ -69,5 +69,6 @@ def index():
 @ripa_test.route("/run-tests")
 def run_tests():
     from application.commands import _run_tests
+
     _run_tests()
     return redirect(url_for("ripa.index"))
