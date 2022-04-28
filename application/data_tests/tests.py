@@ -24,8 +24,6 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "CAZ00000001",
-                "$.entities[0].name": "",
-                "$.entities[0].organisation-entity": "",
             },
         },
         "Albert Embankment conservation area": {
@@ -116,6 +114,30 @@ tests = {
             "dataset": "area-of-outstanding-natural-beauty",
             "assertions": {
                 "$.count": 0,
+            },
+        },
+        "Dulwich college tree preservation zones": {
+            "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
+            "query": "?geometry=POINT(-0.084859 51.441301)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 2,
+                "$.entities[0].reference": "481",
+                "$.entities[0].name": "Dulwich College",
+                "$.entities[1].reference": "279",
+                "$.entities[1].name": "Dulwich College, College Road",
+            },
+        },
+        "Dulwich college tree points": {
+            "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
+            "query": "?geometry=POINT(-0.084859 51.441301)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 2,
+                "$.entities[0].reference": "481",
+                "$.entities[0].name": "Dulwich College",
+                "$.entities[1].reference": "279",
+                "$.entities[1].name": "Dulwich College, College Road",
             },
         },
     },
@@ -235,10 +257,6 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "CAZ00000002",
-                "$.entities[0].name": "",
-                "$.entities[0].organisation-entity": "329",
-                "$.entities[0].prefix": "central-activities-zone",
-                "$.entities[0].notes": "P2 New family homes; P29 Office and business development; P30 Affordable workspace",
             },
         },
         "Southwark conservation area (Borough High Street)": {
