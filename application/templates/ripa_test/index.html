@@ -4,7 +4,7 @@
 {% block main %}
   <main class="app-main-wrapper govuk-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %}
         lang="{{ mainLang }}"{% endif %}>
-    <div>
+    <div id="#top">
       <h1 class="govuk-heading-m">Data test results - {{ date_of_test_run }}</h1>
     </div>
     {% block content %}
@@ -40,7 +40,7 @@
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
               <table class="govuk-table" id="{{ key[0] }}-{{ key[1] }}">
-                <caption class="govuk-table__caption govuk-table__caption--s">{{  local_authorities[key[0]] }} - {{ key[1] |  unhyphenate | capitalize }}</caption>
+                <caption class="govuk-table__caption govuk-table__caption--m">{{  local_authorities[key[0]]  }} - {{ key[1] }}</caption>
                 <thead class="govuk-table__head">
                   <tr class="govuk-table__row govuk-body-s">
                     <th scope="col" class="govuk-table__header">Test name</th>
