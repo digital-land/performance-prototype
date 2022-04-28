@@ -181,7 +181,7 @@ tests = {
         },
         "Tree Preservation Zone South Bucks": {
             "ticket": "https://trello.com/c/VEYLoXrJ/13-buckinghamshire-tree-preservation-orders",
-            "query": "?geometry=POINT(-0.65957350, 51.55059663)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "query": "?geometry=POINT(-0.65957350 51.55059663)&geometry_relation=intersects&dataset=tree-preservation-zone",
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
