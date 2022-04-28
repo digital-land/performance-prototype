@@ -56,13 +56,12 @@ def _run_tests():
                 print(f"assertion: path = {path} expect = {expected}")
                 parsed = JSONPath(path).parse(data)
                 if parsed:
-                    actual = parsed[0]
-                    if str(str(expected).startswith("~")):
-                        match = (
-                            True if re.match(str(expected[1:]), str(actual)) else False
-                        )
+                    actual = str(parsed[0])
+                    expected = str(expected)
+                    if expected.startswith("~"):
+                        match = True if re.match(expected[1:], actual) else False
                     else:
-                        match = str(expected) == str(actual)
+                        match = expected == actual
                     assertion = Assertion(
                         path=path,
                         expected=expected,
