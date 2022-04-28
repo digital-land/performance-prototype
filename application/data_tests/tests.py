@@ -293,6 +293,13 @@ tests = {
                 "$.entities[1].start-date": "2016-02-25",
             },
         },
+        "Canterbury article 4 direction count": {
+            "query": "?dataset=article-4-direction-area&organisation_entity=75&field=reference",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 463,
+            },
+        },        
         "Canterbury scheduled monument": {
             "query": "?geometry=POINT(1.07739 51.277722)&geometry_relation=intersects&dataset=scheduled-monument",
             "dataset": "scheduled-monument",
