@@ -229,6 +229,16 @@ tests = {
                 "$.entities[5].organisation-entity": "329",
             },
         },
+        "Southwark listed building (Church of St Peter)": {
+            "query": "?geometry=POINT(-0.092645 51.486573)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Church of St Peter",
+                # "$.entities[0].reference": "101385662",
+                "$.entities[0].listed-building-grade": "I",
+            },
+        },
         "Southwark article 4 direction (The Lord Nelson, Old Kent Road)": {
             "ticket": "https://trello.com/c/6G0Vv44y/22-southwark-article-4-directions",
             "query": "?dataset=article-4-direction-area&longitude=-0.074274&latitude=51.486724",
