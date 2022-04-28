@@ -336,7 +336,7 @@ tests = {
                 "$.entities[3].organisation-entity": "329",
             },
         },
-        "Southwark article 4 direction ()": {
+        "Southwark article 4 direction (Railway arches)": {
             "ticket": "https://trello.com/c/UMN89vva/8-unexpected-results-for-southwark-addresses",
             "query": "?dataset=article-4-direction-area&longitude=-0.1049237&latitude=51.5038861",
             "dataset": "article-4-direction-area",
