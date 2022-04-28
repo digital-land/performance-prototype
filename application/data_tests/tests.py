@@ -62,6 +62,13 @@ tests = {
                 "$.entities[0].notes": "KIBA",
             },
         },
+        "Lambeth article 4 direction count": {
+            "query": "?dataset=article-4-direction-area&organisation_entity=192&field=reference",
+            "dataset": "central-activities-zone",
+            "assertions": {
+                "$.count": 28,
+            },
+        },
         "Lambeth conservation area Park Hall Road": {
             "ticket": "https://trello.com/c/CXgfYGUR/19-lambeth-conservation-areas",
             "query": "?geometry=POINT(-0.09303242 51.43599392)&geometry_relation=intersects&dataset=conservation-area",
