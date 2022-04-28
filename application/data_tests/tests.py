@@ -61,6 +61,7 @@ tests = {
             },
         },
         "Lambeth article 4 direction count": {
+            "ticket": "https://trello.com/c/JQuyFI3t/18-lambeth-article-4-directions",            
             "query": "?dataset=article-4-direction-area&organisation_entity=192&field=reference",
             "dataset": "article-4-direction-area",
             "assertions": {
@@ -294,6 +295,7 @@ tests = {
             },
         },
         "Canterbury article 4 direction count": {
+            "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",            
             "query": "?dataset=article-4-direction-area&organisation_entity=75&field=reference",
             "dataset": "article-4-direction-area",
             "assertions": {
