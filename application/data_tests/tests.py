@@ -108,7 +108,7 @@ tests = {
             },
         },
         "Chilterns article 4 direction": {
-            "query": "?geometry=POINT(-0.8463452 51.6682134)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-0.845119 51.667878)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 2,
