@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, render_template, redirect, url_for
 from application.data_tests.tests import local_authorities
 from application.models import TestRun
+from dateutil.tz import tzlocal
 
 ripa_test = Blueprint("ripa", __name__, url_prefix="/ripa")
 
@@ -58,7 +59,7 @@ def index():
         "ripa_test/index.html",
         results_grid=results_grid,
         local_authorities=local_authorities,
-        date_of_test_run=latest_test_run.created_timestamp.strftime(
+        date_of_test_run=latest_test_run.created_timestamp.astimezone(tzlocal()).strftime(
             "%b %d %Y %H:%M:%S"
         ),
         grouped_result=grouped_result,
