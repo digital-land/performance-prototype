@@ -326,7 +326,7 @@ tests = {
         },
         "Canterbury article 4 direction (Simplification)": {
             "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
-            "query": "?dataset=article-4-direction-area&longitude=1.121256&latitude=51.315129",
+            "query": "?dataset=article-4-direction-area&longitude=1.12258755&latitude=51.36586015",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 0,
