@@ -19,8 +19,8 @@
                 <div class="app-c-test-grid__items">
                   {% for dataset, result in results_grid[la].items() %}
                     <div class="app-c-test-grid__item">
-                  <span class="app-c-test-grid__result app-c-test-grid__result--{{ result | pass_fail }}">
-                    <span>{{ dataset | unhyphenate | capitalize }}</span>
+                      <span class="app-c-test-grid__result app-c-test-grid__result--{{ result | pass_fail }}">
+                        <span>{% if result in [True, False] %}<a href="#{{ la }}-{{ dataset }}" style="color: inherit">{% endif %}{{ dataset | unhyphenate | capitalize }}{% if result  in [True, False] %}</a>{% endif %}</span>
                     <span class="app-c-test-grid__result-label">{{ result | pass_fail | capitalize }}</span>
                   </span>
                     </div>
@@ -31,6 +31,42 @@
           </div>
         </div>
       </div>
+      <div class="govuk-grid-row" style="margin-top: 2.5em">
+        <div class="govuk-grid-column-full">
+          <h2 class="govuk-heading-m">Detailed results</h2>
+        </div>
+      </div>
+      {% for key, results in grouped_result.items() %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+              <table class="govuk-table" id="{{ key[0] }}-{{ key[1] }}">
+                <caption class="govuk-table__caption govuk-table__caption--s">{{  local_authorities[key[0]] }} - {{ key[1] |  unhyphenate | capitalize }}</caption>
+                <thead class="govuk-table__head">
+                  <tr class="govuk-table__row govuk-body-s">
+                    <th scope="col" class="govuk-table__header">Test name</th>
+                    <th scope="col" class="govuk-table__header">Query</th>
+                    <th scope="col" class="govuk-table__header">Path</th>
+                    <th scope="col" class="govuk-table__header">Expected</th>
+                    <th scope="col" class="govuk-table__header">Actual</th>
+                    <th scope="col" class="govuk-table__header">Passed</th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  {% for result in results %}
+                    <tr class="govuk-table__row govuk-body-s">
+                      <td class="govuk-table__cell">{{result.test_name}}</td>
+                      <td class="govuk-table__cell">{{result.query}}</td>
+                      <td class="govuk-table__cell">{{result.path}}</td>
+                      <td class="govuk-table__cell">{{result.expected}}</td>
+                      <td class="govuk-table__cell">{{result.actual}}</td>
+                      <td class="govuk-table__cell">{{result.match}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+        </div>
+      {% endfor %}
     {% endblock content %}
   </main>
 {% endblock main %}

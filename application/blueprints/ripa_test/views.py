@@ -18,23 +18,32 @@ def index():
     latest_test_run = query.one()
 
     datasets_tested = set([])
-    result_by_dataset = {}
-    results_by_local_authority = {}
+    # result_by_dataset = {}
+    result_by_local_authority = {}
+    grouped_result = {}
 
     for result in latest_test_run.results:
         datasets_tested.add(result.dataset)
-        if result.dataset not in result_by_dataset:
-            result_by_dataset[result.dataset] = [result]
+
+        local_authority_dataset = result.organisation, result.dataset
+        if local_authority_dataset not in grouped_result:
+            grouped_result[local_authority_dataset] = [result]
         else:
-            result_by_dataset[result.dataset].append(result)
-        if result.organisation not in results_by_local_authority:
-            results_by_local_authority[result.organisation] = [result]
+            grouped_result[local_authority_dataset].append(result)
+
+        # if result.dataset not in result_by_dataset:
+        #     result_by_dataset[result.dataset] = [result]
+        # else:
+        #     result_by_dataset[result.dataset].append(result)
+
+        if result.organisation not in result_by_local_authority:
+            result_by_local_authority[result.organisation] = [result]
         else:
-            results_by_local_authority[result.organisation].append(result)
+            result_by_local_authority[result.organisation].append(result)
 
     results_grid = {}
     for la in local_authorities.keys():
-        results = results_by_local_authority.get(la, [])
+        results = result_by_local_authority.get(la, [])
         dataset_results = {}
         for result in results:
             if result.dataset not in dataset_results:
@@ -58,4 +67,5 @@ def index():
         date_of_test_run=latest_test_run.created_timestamp.strftime(
             "%b %d %Y %H:%M:%S"
         ),
+        grouped_result=grouped_result,
     )
