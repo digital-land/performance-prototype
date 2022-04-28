@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, render_template
+from flask import Blueprint, jsonify, render_template, redirect, url_for
 from application.data_tests.tests import local_authorities
 from application.models import TestRun
 
@@ -18,7 +18,6 @@ def index():
     latest_test_run = query.one()
 
     datasets_tested = set([])
-    # result_by_dataset = {}
     result_by_local_authority = {}
     grouped_result = {}
 
@@ -30,11 +29,6 @@ def index():
             grouped_result[local_authority_dataset] = [result]
         else:
             grouped_result[local_authority_dataset].append(result)
-
-        # if result.dataset not in result_by_dataset:
-        #     result_by_dataset[result.dataset] = [result]
-        # else:
-        #     result_by_dataset[result.dataset].append(result)
 
         if result.organisation not in result_by_local_authority:
             result_by_local_authority[result.organisation] = [result]
@@ -69,3 +63,10 @@ def index():
         ),
         grouped_result=grouped_result,
     )
+
+
+@ripa_test.route("/run-tests")
+def run_tests():
+    from application.commands import _run_tests
+    _run_tests()
+    return redirect(url_for("ripa.index"))

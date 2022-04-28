@@ -14,6 +14,9 @@ BASE_API_URL = "https://www.digital-land.info/entity.json"
 
 @data_test_cli.command("run")
 def run():
+   _run_tests()
+
+def _run_tests():
     from application.extensions import db
     from application.data_tests.tests import tests, local_authorities
 

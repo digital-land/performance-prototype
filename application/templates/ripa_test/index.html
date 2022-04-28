@@ -4,8 +4,8 @@
 {% block main %}
   <main class="app-main-wrapper govuk-main-wrapper {{ mainClasses }}" id="main-content" role="main"{% if mainLang %}
         lang="{{ mainLang }}"{% endif %}>
-    <div id="#top">
-      <h1 class="govuk-heading-m">Data test results - {{ date_of_test_run }}</h1>
+    <div>
+      <h1 class="govuk-heading-m">Data test results -  last run on {{ date_of_test_run }}</h1>
     </div>
     {% block content %}
       <div class="govuk-grid-row">
@@ -29,6 +29,11 @@
               </div>
             {% endfor %}
           </div>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <p><a href="{{ url_for("ripa.run_tests") }}" class="govuk-button">Run the tests again now</a></p>
         </div>
       </div>
       <div class="govuk-grid-row" style="margin-top: 2.5em">
