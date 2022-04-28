@@ -98,26 +98,24 @@ tests = {
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
-            "query": "?geometry=POINT(-0.8463452 2051.6682134)&geometry_relation=intersects&dataset=area-of-outstanding-natural-beauty",
+            "query": "?geometry=POINT(-0.8463452 51.6682134)&geometry_relation=intersects&dataset=area-of-outstanding-natural-beauty",
             "dataset": "area-of-outstanding-natural-beauty",
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "5",
                 "$.entities[0].name": "Chilterns",
-                "$.entities[0].organisation-entity": "local-authority-eng:BUC",
+                "$.entities[0].organisation-entity": "501910",
             },
         },
         "Chilterns article 4 direction": {
-            "query": "?geometry=POINT(-0.8463452 2051.6682134)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-0.8463452 51.6682134)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 2,
-                "$.entities[0].reference": "159",
                 "$.entities[0].name": "Former Wycombe Rural District - Poultry Production",
-                "$.entities[0].organisation-entity": "",
-                "$.entities[1].reference": "163",
+                "$.entities[0].description": "Certain structures used for production of poultry or eggs - refer to Order & GDO 1950",
                 "$.entities[1].name": "Bledlow-cum-Saunderton - Buildings for use as piggery",
-                "$.entities[1].organisation-entity": "",
+                "$.entities[0].description": "	Buildings for use as piggery on agricultural land - refer to Order and GDO 1963",
             },
         },
     },
