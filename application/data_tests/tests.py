@@ -62,7 +62,7 @@ tests = {
         },
         "Lambeth article 4 direction count": {
             "query": "?dataset=article-4-direction-area&organisation_entity=192&field=reference",
-            "dataset": "central-activities-zone",
+            "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 28,
             },
