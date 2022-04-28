@@ -293,7 +293,7 @@ tests = {
         },
     },
     "local-authority-eng:CAT": {
-        "Cantebury article 4 direction (Kemberland Wood)": {
+        "Canterbury article 4 direction (Kemberland Wood)": {
             "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
             "query": "?dataset=article-4-direction-area&longitude=1.121256&latitude=51.315129",
             "dataset": "article-4-direction-area",
@@ -308,6 +308,28 @@ tests = {
                 "$.entities[1].organisation-entity": "75",
                 "$.entities[1].notes": "Dated 25th February 2016",
                 "$.entities[1].start-date": "2016-02-25",
+            },
+        },
+        "Canterbury article 4 direction (Herne Bay)": {
+            "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
+            "query": "?dataset=article-4-direction-area&longitude=1.12258974&latitude=51.36587529",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Dwelling houses in Herne Bay Conservation Area",
+                "$.entities[0].organisation-entity": "75",
+                "$.entities[0].start-date": "1997-06-29",
+                "$.entities[0].organisation-entity": "75",
+                "$.entities[0].notes": "Check to see if A4D applies",
+                "$.entities[0].reference": "73408",
+            },
+        },
+        "Canterbury article 4 direction (Simplification)": {
+            "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
+            "query": "?dataset=article-4-direction-area&longitude=1.121256&latitude=51.315129",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 0,
             },
         },
         "Canterbury article 4 direction count": {
