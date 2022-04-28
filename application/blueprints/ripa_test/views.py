@@ -62,7 +62,7 @@ def index():
         local_authorities=local_authorities,
         date_of_test_run=latest_test_run.created_timestamp.astimezone(
             dateutil.tz.gettz("Europe/London")
-        ).strftime("%b %d %Y %H:%M:%S"),
+        ).strftime("%d %B %Y %H:%M:%S"),
         results=latest_test_run.results,
     )
 
