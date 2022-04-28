@@ -179,6 +179,43 @@ tests = {
                 "$.entities[1].tree-preservation-type": "Revoked",
             },
         },
+        "Tree Preservation Zone South Bucks": {
+            "ticket": "https://trello.com/c/VEYLoXrJ/13-buckinghamshire-tree-preservation-orders",
+            "query": "?geometry=POINT(-0.65957350, 51.55059663)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "14529",
+            },
+        },
+        "Tree Preservation Zone Wycombe": {
+            "ticket": "https://trello.com/c/VEYLoXrJ/13-buckinghamshire-tree-preservation-orders",
+            "query": "?geometry=POINT(-0.70629442 51.60474864)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "50",
+                "$.entities[0].tree-preservation-type": "Woodland",
+            },
+        },
+        "Tree Preservation Zone Chiltern": {
+            "ticket": "https://trello.com/c/VEYLoXrJ/13-buckinghamshire-tree-preservation-orders",
+            "query": "?geometry=POINT(-0.57478739 51.67255292)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "14529",
+            },
+        },
+        "Tree Preservation Zone Aylebury Vale": {
+            "ticket": "https://trello.com/c/VEYLoXrJ/13-buckinghamshire-tree-preservation-orders",
+            "query": "?geometry=POINT(-0.91122750 51.94784157)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "6553",
+            },
+        },        
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
