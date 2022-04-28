@@ -65,9 +65,13 @@
                       <td class="govuk-table__cell">{{assertion.expected}}</td>
                       <td class="govuk-table__cell">{{assertion.actual}}</td>
                       {% if not assertion.match %}
-                        <td class="govuk-table__cell app-c-test-grid-table__td app-c-test-grid-table__td--fail">fail</td>
+                        <td class="govuk-table__cell">
+                          <strong class="govuk-tag govuk-tag--red">fail</strong>
+                        </td>
                       {% else %}
-                        <td class="govuk-table__cell app-c-test-grid-table__td app-c-test-grid-table__td--pass">pass</td>
+                        <td class="govuk-table__cell">
+                          <strong class="govuk-tag govuk-tag--green">pass</strong>
+                        </td>
                       {% endif %}
                     </tr>
                   {% endfor %}

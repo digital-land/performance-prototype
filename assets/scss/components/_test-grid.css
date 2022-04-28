@@ -77,19 +77,3 @@
     }
   }
 }
-
-.app-c-test-grid-table {
-  &__td {
-     text-transform: uppercase;
-     padding-left: 0.5em;
-     font-size: 0.75em;
-     &--pass {
-       background: govuk-colour("green");
-       color: white;
-     }
-    &--fail {
-       background: govuk-colour("red");
-       color: white;
-     }
-   }
-}
