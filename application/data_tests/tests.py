@@ -248,7 +248,7 @@ tests = {
                 "$.entities[0].organisation-entity": "67",
             },
         },
-        "Conservation Area Wiggerton projection error (should be present)": {
+        "Article 4 Wiggerton projection error (should be present)": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
             "query": "?geometry=POINT(-0.64704972 51.75946783)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
@@ -256,9 +256,9 @@ tests = {
                 "$.count": 1,
             },
         },
-        "Conservation Area Wiggerton projection error (should not be present)": {
+        "Article 4 Wiggerton projection error (should not be present)": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?geometry=POINT(-0.63020774 51.76295983)&geometry_relation=intersects&dataset=article-4-direction-area
+            "query": "?geometry=POINT(-0.63020774 51.76295983)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 0,
