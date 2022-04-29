@@ -248,6 +248,22 @@ tests = {
                 "$.entities[0].organisation-entity": "67",
             },
         },
+        "Conservation Area Wiggerton projection error (should be present)": {
+            "ticket": "https://trello.com/c/Z5qZj1w7/11-buckinghamshire-conservation-areas",
+            "query": "?geometry=POINT(-0.64704972 51.75946783)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+            },
+        },
+        "Conservation Area Wiggerton projection error (should not be present)": {
+            "ticket": "https://trello.com/c/Z5qZj1w7/11-buckinghamshire-conservation-areas",
+            "query": "?geometry=POINT(-0.63020774 51.76295983)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
