@@ -564,5 +564,13 @@ tests = {
                 "$.entities[0].reference": "265803",
             },
         },
+        "Canterbury Listed Building Overall Count": {
+            "ticket": "https://trello.com/c/TghyQSq1/16-canterbury-listed-buildings",
+            "query": "?dataset=listed-building-outline&organisation_entity=75&field=reference",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1778,
+            },
+        },
     },
 }
