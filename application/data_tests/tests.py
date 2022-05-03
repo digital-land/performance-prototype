@@ -504,6 +504,53 @@ tests = {
                 "$.entities[0].tree-preservation-order": "5/1991/LIT",
             },
         },
+        "Canterbury Tree Preservation Zone (Forstal Road)": {
+            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
+            "query": "?dataset=tree-preservation-zone&longitude=1.19443759&latitude=51.20739400",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Land Surrounding Old Post Office Forstal Road Womenswold CT4 6SU",
+                "$.entities[0].organisation-entity": "75",
+                "$.entities[0].tree-preservation-order": "6/1970/WOM",
+                "$.entities[0].reference": "1150",
+            },
+        },
+        "Canterbury Tree Preservation Zone (Various Locations 2 records)": {
+            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
+            "query": "?dataset=tree-preservation-zone&longitude=1.01569482&latitude=51.33891848",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 2,
+                "$.entities[0].name": "Various Locations Along Willow Road Whitstable CT5 3DW",
+                "$.entities[0].organisation-entity": "75",
+                "$.entities[0].tree-preservation-order": "2/1989/WHI",
+                "$.entities[0].reference": "354",
+                "$.entities[1].name": "Various Locations Near To Broadview Wraik Hill Whitstable CT5 3BY",
+                "$.entities[1].organisation-entity": "75",
+                "$.entities[1].tree-preservation-order": "1/1965/WHI",
+                "$.entities[1].reference": "599",
+            },
+        },
+        "Canterbury Tree Preservation Zone (16 Albion Lane)": {
+            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
+            "query": "?dataset=tree-preservation-zone&longitude=1.13448673&latitude=51.34722172",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "16 Albion Lane Herne Herne Bay Kent CT6 7LP",
+                "$.entities[0].organisation-entity": "75",
+                "$.entities[0].tree-preservation-order": "TPO/04/2021/HER",
+            },
+        },
+        "Canterbury Tree Preservation Zone Overall Count": {
+            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
+            "query": "?dataset=tree-preservation-zone&organisation_entity=75&field=reference",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1573,
+            },
+        },
         "Canterbury Listed Building (Herne Bay)": {
             "ticket": "https://trello.com/c/TghyQSq1/16-canterbury-listed-buildings",
             "query": "?dataset=listed-building-outline&longitude=1.13294186&latitude=51.34991609",
