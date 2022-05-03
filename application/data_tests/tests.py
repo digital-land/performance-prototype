@@ -32,7 +32,7 @@ tests = {
             "dataset": "conservation-area",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "61",
+                "$.entities[0].reference": "CA57",
                 "$.entities[0].name": "Albert Embankment",
                 "$.entities[0].organisation-entity": "192",
             },
