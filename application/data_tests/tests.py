@@ -611,6 +611,14 @@ tests = {
                 "$.entities[0].reference": "265803",
             },
         },
+        "Canterbury Tree Preservation Zone (Lasso polygon around Cherry Avenue)": {
+            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
+            "query": "?geometry=POLYGON%20((1.05943637247152%2051.2888303021592,1.05970135818629%2051.289536050302,1.06080859267814%2051.2897450342821,1.06165081394246%2051.2892482651408,1.06138579958004%2051.2885425218673,1.06027859260043%2051.2883335428658,1.05943637247152%2051.2888303021592))&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 44,
+            },
+        },
         "Canterbury Listed Building Overall Count": {
             "ticket": "https://trello.com/c/TghyQSq1/16-canterbury-listed-buildings",
             "query": "?dataset=listed-building-outline&organisation_entity=75&field=reference",
