@@ -75,5 +75,8 @@
       font-family: monospace;
       font-size: 0.85em;
     }
+    &-p--wrap {
+       word-break: break-all;
+     }
   }
 }
