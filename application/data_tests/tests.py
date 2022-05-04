@@ -264,6 +264,40 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Listed Building Lasso query": {
+            "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
+            "query": "&geometry=POLYGON%28%28-0.7748794555664062%2051.679793621379986%2C-0.7728195190429689%2051.62526373476129%2C-0.7137680053710938%2051.6220665895049%2C-0.6804656982421875%2051.63613234359897%2C-0.7048416137695312%2051.655092894606554%2C-0.6832122802734374%2051.66254711886705%2C-0.6928253173828126%2051.67723899831586%2C-0.7250976562500001%2051.666806125075425%2C-0.7429504394531249%2051.647850474028985%2C-0.751190185546875%2051.65296289102838%2C-0.7436370849609375%2051.67638742526901%2C-0.7748794555664062%2051.679793621379986%29%29&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 180,
+            },
+        },
+        "Listed Building Lasso query Aylesbury": {
+            "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
+            "query": "&geometry=POLYGON%28%28-0.824146270751953%2051.82967793410063%2C-0.8313560485839843%2051.82904140792331%2C-0.840625762939453%2051.832064827148116%2C-0.8463764190673827%2051.830155322830194%2C-0.8505821228027342%2051.82734396080437%2C-0.8610534667968749%2051.82681349546081%2C-0.8547019958496093%2051.81949243574658%2C-0.8365917205810547%2051.80930463429536%2C-0.8321285247802732%2051.8073410953632%2C-0.8297252655029294%2051.80351990955802%2C-0.8269786834716796%2051.80219303316994%2C-0.8266353607177733%2051.79932684689146%2C-0.8237171173095702%2051.79661972587732%2C-0.821399688720703%2051.7960888987767%2C-0.8215713500976561%2051.79322232445378%2C-0.8084392547607422%2051.79279763127906%2C-0.7793426513671874%2051.80123765798905%2C-0.7634639739990234%2051.806014331445056%2C-0.7657814025878906%2051.814558007036936%2C-0.7718753814697265%2051.82198597374219%2C-0.7626056671142577%2051.824691571614494%2C-0.7644081115722655%2051.83291346974673%2C-0.7765102386474608%2051.83885352017006%2C-0.7965946197509763%2051.834186403659885%2C-0.7946205139160155%2051.82973097754268%2C-0.7991695404052733%2051.83020836571001%2C-0.804920196533203%2051.83991416100463%2C-0.8338451385498044%2051.83768678639302%2C-0.824146270751953%2051.82967793410063%29%29&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 202,
+            },
+        },
+        "Listed Building The White Hart": {
+            "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
+            "query": "&geometry=POINT(-0.83952570 51.80430260)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "The White Hart",
+                "$.entities[0].grade": "II",
+            },
+        },
+        "Listed Building Projection Error (should not be present)": {
+            "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
+            "query": "&geometry=POINT(-0.83952570 51.80430260)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
