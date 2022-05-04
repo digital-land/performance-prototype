@@ -292,7 +292,7 @@ tests = {
         },
         "Listed Building Projection Error (should not be present)": {
             "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
-            "query": "&geometry=POINT(-0.78024744 51.75966723)&geometry_relation=intersects&dataset=listed-building-outline",
+            "query": "?geometry=POINT(-0.78024744 51.75966723)&geometry_relation=intersects&dataset=listed-building-outline",
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 0,
