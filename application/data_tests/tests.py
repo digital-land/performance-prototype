@@ -286,8 +286,8 @@ tests = {
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].name": "The White Hart",
-                "$.entities[0].grade": "II",
+                #"$.entities[0].name": "The White Hart",
+                "$.entities[0].listed-building-grade": "II",
             },
         },
         "Listed Building Projection Error (should not be present)": {
