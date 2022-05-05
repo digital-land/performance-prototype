@@ -17,6 +17,25 @@ tests = {
                 "$.entities[0].listed-building-grade": "II",
             },
         },
+        "Lambeth Stockwell Bus Garage": {
+            "query": "?geometry=POINT(-0.12412339 51.47398582)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Stockwell Bus Garage, Binfield Road",
+                "$.entities[0].organisation-entity": "192",
+                "$.entities[0].listed-building-grade": "II*",
+            },
+        },
+        "Lambeth Former Annie McCall Hospital": {
+            "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].organisation-entity": "192",
+                "$.entities[0].listed-building-grade": "II",
+            },
+        },
         "Lambeth central activities zone": {
             "ticket": "https://trello.com/c/golBkjM7/39-central-activities-zone",
             "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=central-activities-zone",
