@@ -142,7 +142,7 @@ tests = {
         },
         "Lambeth Tree Clarence Avenue": {
             "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
-            "query": "?geometry=POINT(-0.133976 51.451146)&geometry_relation=intersects&dataset=tree",
+            "query": "?geometry=POINT(-0.133976 51.451147)&geometry_relation=intersects&dataset=tree",
             "dataset": "tree",
             "assertions": {
                 "$.count": 1,
