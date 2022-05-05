@@ -28,7 +28,7 @@ tests = {
             },
         },
         "Lambeth Former Annie McCall Hospital": {
-            "query": "?geometry=POINT(-0.1198903 51.4922191)&geometry_relation=intersects&dataset=listed-building-outline",
+            "query": "?geometry=POINT(-0.12798257 51.47063541)&geometry_relation=intersects&dataset=listed-building-outline",
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 1,
