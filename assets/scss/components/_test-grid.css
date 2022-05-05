@@ -48,7 +48,7 @@
         left: 50%;
         width: 100px;
         height: 100px;
-        display: block;
+        display: flex;
         transform: translate(-50%, -50%);
         z-index: 1000;
       }
@@ -87,16 +87,23 @@
     @include govuk-font($size: 16, $weight: bold);
     border: 1px solid $govuk-border-colour;
     background: govuk-colour("light-grey");
-    line-height: 1.1 !important;
+    // line-height: 1.1 !important;
     padding: 0.5em;
     box-sizing: border-box;
     &--pass {
       background: govuk-colour("green");
-      color: white;
     }
     &--fail {
       background: govuk-colour("red");
+    }
+
+    &--pass,
+    &--fail {
       color: white;
+      a {
+        color: white;
+        display: block;
+      }
     }
 
     span:first-of-type {
