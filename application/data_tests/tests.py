@@ -140,6 +140,17 @@ tests = {
                 "$.entities[1].name": "Dulwich College, College Road",
             },
         },
+        "Lambeth Tree Clarence Avenue": {
+            "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
+            "query": "?geometry=POINT(-0.133976 51.451146)&geometry_relation=intersects&dataset=tree",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].address-text": "77A Clarence Avenue London SW4 8LQ",
+                "$.entities[0].tree-preservation-order": "105",
+                "$.entities[0].tree-preservation-order-tree": "4",
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
