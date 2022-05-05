@@ -92,16 +92,18 @@
     box-sizing: border-box;
     &--pass {
       background: govuk-colour("green");
+    }
+    &--fail {
+      background: govuk-colour("red");
+    }
+
+    &--pass,
+    &--fail {
       color: white;
-      line-height: 1.3;
       a {
         color: white;
         display: block;
       }
-    }
-    &--fail {
-      background: govuk-colour("red");
-      color: white;
     }
 
     span:first-of-type {
