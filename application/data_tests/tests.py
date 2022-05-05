@@ -557,6 +557,42 @@ tests = {
                 "$.entities[0].organisation-entity": "75",
             },
         },
+        "Canterbury Conservation Area - Overall Count": {
+            "ticket": "https://trello.com/c/9TaHoPOe/15-canterbury-conservation-areas",
+            "query": "?dataset=conservation-area&organisation_entity=75&field=reference",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 97,
+            },
+        },
+        "Canterbury Conservation Area - Martyrs Field": {
+            "ticket": "https://trello.com/c/9TaHoPOe/15-canterbury-conservation-areas",
+            "query": "?geometry=POINT(1.07541065 51.27274810)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "180",
+                "$.entities[0].name": "MARTYRS FIELD",
+                "$.entities[0].organisation-entity": "75",
+            },
+        },
+        "Canterbury Conservation Area - Scotland Hills Lasso Query": {
+            "ticket": "https://trello.com/c/9TaHoPOe/15-canterbury-conservation-areas",
+            "query": "?geometry=POLYGON((1.101851463317871 51.2796355780913,1.1080741882324219 51.27195743631006,1.1237382888793945 51.2739979068692,1.1287164688110352 51.28733927660818,1.101851463317871 51.2796355780913))&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 3,
+                "$.entities[0].reference": "107",
+                "$.entities[0].name": "ST MARTINS HOSPITAL ( CANTERBURY )",
+                "$.entities[0].organisation-entity": "75",
+                "$.entities[1].reference": "108",
+                "$.entities[1].name": "MOUNT HOSPITAL",
+                "$.entities[1].organisation-entity": "75",
+                "$.entities[2].reference": "155",
+                "$.entities[2].name": "LITTLE BARTON FARM ( CANTERBURY )",
+                "$.entities[2].organisation-entity": "75",
+            },
+        },
         "tree preservation zone": {
             "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
             "query": "?geometry=POINT(1.149543 51.277888)&geometry_relation=intersects&dataset=tree-preservation-zone",
