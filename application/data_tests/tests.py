@@ -733,9 +733,9 @@ tests = {
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 1,
-                "$.entities[1].name": "CHURCH LANE, CHURCH OF ST MARY THE VIRGIN",
-                "$.entities[1].organisation-entity": "75",
-                "$.entities[1].listed-building-grade": "I",
+                "$.entities[0].name": "CHURCH LANE, CHURCH OF ST MARY THE VIRGIN",
+                "$.entities[0].organisation-entity": "75",
+                "$.entities[0].listed-building-grade": "I",
             },
         },
         "Canterbury Listed Building (Swalecliffe Court Drive)": {
