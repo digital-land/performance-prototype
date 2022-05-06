@@ -719,7 +719,6 @@ tests = {
                 "$.entities[0].name": "HERNE STREET (WEST SIDE) HERNE, THE PARISH CHURCH OF ST MARTIN HERNE",
                 "$.entities[0].organisation-entity": "75",
                 "$.entities[0].listed-building-grade": "I",
-                "$.entities[0].reference": "265435",
             },
         },
         "Canterbury Listed Building (Church Lane)": {
@@ -728,10 +727,9 @@ tests = {
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].name": "CHURCH LANE, CHURCH OF ST MARY THE VIRGIN",
-                "$.entities[0].organisation-entity": "75",
-                "$.entities[0].listed-building-grade": "I",
-                "$.entities[0].reference": "264797",
+                "$.entities[1].name": "CHURCH LANE, CHURCH OF ST MARY THE VIRGIN",
+                "$.entities[1].organisation-entity": "75",
+                "$.entities[1].listed-building-grade": "I",
             },
         },
         "Canterbury Listed Building (Swalecliffe Court Drive)": {
@@ -743,7 +741,6 @@ tests = {
                 "$.entities[0].name": "Church of St John the Baptist, Swalecliffe Court Drive, Swalecliffe, Whitstable, Kent, CT5 2LZ",
                 "$.entities[0].organisation-entity": "75",
                 "$.entities[0].listed-building-grade": "II",
-                "$.entities[0].reference": "264130",
             },
         },
         "Canterbury Listed Building (St Bartholomew)": {
@@ -755,7 +752,6 @@ tests = {
                 "$.entities[0].name": "CHURCH LANE, CHURCH OF ST BARTHOLOMEW",
                 "$.entities[0].organisation-entity": "75",
                 "$.entities[0].listed-building-grade": "I",
-                "$.entities[0].reference": "264240",
             },
         },
         "Canterbury Listed Building (Barham Court)": {
@@ -767,7 +763,6 @@ tests = {
                 "$.entities[0].name": "THE STREET (EAST SIDE), BARHAM COURT AND ANNE COURT",
                 "$.entities[0].organisation-entity": "75",
                 "$.entities[0].listed-building-grade": "II*",
-                "$.entities[0].reference": "265803",
             },
         },
         "Canterbury Tree Preservation Zone (Lasso polygon around Cherry Avenue)": {
