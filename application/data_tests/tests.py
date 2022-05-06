@@ -686,6 +686,22 @@ tests = {
                 "$.entities[0].tree-preservation-order": "TPO/04/2021/HER",
             },
         },
+        "Canterbury Tree Zone Lasso Query Rochester Avenue": {
+            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
+            "query": "?geometry=POLYGON((1.0909509658813474 51.27260180522353,1.0920882225036619 51.27319246878923,1.0932898521423338 51.27371600514732,1.095006465911865 51.2730716518594,1.0947489738464353 51.272736047609754,1.0962724685668943 51.27148757828044,1.0944914817810056 51.26979604959158,1.0926675796508787 51.27116538714043,1.0909509658813474 51.27260180522353))&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 4,
+            },
+        },
+        "Canterbury Tree Zone Lasso Query Chaucer Court": {
+            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
+            "query": "?geometry=POLYGON((1.0897278785705564 51.27324616510049,1.0877537727355955 51.272776320249136,1.087667942047119 51.272977682916604,1.0883545875549314 51.27323274102855,1.0887193679809568 51.2733401334942,1.0896205902099607 51.27350122172206,1.0897278785705564 51.27324616510049))&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 6,
+            },
+        },
         "Canterbury Tree Preservation Zone Overall Count": {
             "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
             "query": "?dataset=tree-preservation-zone&organisation_entity=75&field=reference",
