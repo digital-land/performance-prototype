@@ -206,11 +206,9 @@ tests = {
             "query": "?geometry=POINT(-0.845119 51.667878)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
-                "$.count": 2,
+                "$.count": 1,
                 "$.entities[0].name": "Former Wycombe Rural District - Poultry Production",
                 "$.entities[0].description": "Certain structures used for production of poultry or eggs - refer to Order & GDO 1950",
-                "$.entities[1].name": "Bledlow-cum-Saunderton - Buildings for use as piggery",
-                "$.entities[1].description": "Buildings for use as piggery on agricultural land - refer to Order and GDO 1963",
             },
         },
         "Buckinghamshire scheduled monument": {
