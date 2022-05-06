@@ -166,6 +166,14 @@ tests = {
                 "$.count": 5,
             },
         },
+        "Lambeth Tree Zone Lasso Query": {
+            "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
+            "query": "?geometry=POLYGON((-0.12076377868652344 51.44405766006079,-0.12149333953857419 51.44090126223807,-0.11007785797119139 51.438547196427265,-0.10737419128417967 51.442051500267695,-0.11994838714599608 51.44515432349104,-0.12076377868652344 51.44405766006079))&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 5,
+            },
+        },
         "Lambeth Tree Point count": {
             "query": "?dataset=tree&organisation_entity=192&field=reference",
             "dataset": "tree",
