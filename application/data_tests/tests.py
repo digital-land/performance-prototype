@@ -158,6 +158,28 @@ tests = {
                 "$.entities[0].tree-preservation-order-tree": "4",
             },
         },
+        "Lambeth Tree Lasso Query": {
+            "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
+            "query": "?geometry=POLYGON((-0.11108636856079102 51.50523659640538,-0.10985255241394042 51.50249181873096,-0.1077711582183838 51.50236492720043,-0.10615110397338867 51.502885848073674,-0.10615110397338867 51.50368725317429,-0.10556101799011232 51.50508300007536,-0.11079668998718263 51.50538351414963,-0.11108636856079102 51.50523659640538))&geometry_relation=intersects&dataset=tree",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 5,
+            },
+        },
+        "Lambeth Tree Point count": {
+            "query": "?dataset=tree&organisation_entity=192&field=reference",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 2551,
+            },
+        },
+        "Lambeth Tree Zone count": {
+            "query": "?dataset=tree-preservation-zone&organisation_entity=192&field=reference",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 226,
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
