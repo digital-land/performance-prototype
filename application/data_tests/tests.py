@@ -141,23 +141,10 @@ tests = {
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 2,
-                # data is missing a reliable reference
-                # "$.entities[0].reference": "481",
                 "$.entities[0].name": "Dulwich College",
-                # "$.entities[1].reference": "279",
+                "$.entities[0].tree-preservation-order": "481",
                 "$.entities[1].name": "Dulwich College, College Road",
-            },
-        },
-        "Dulwich college tree points": {
-            "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
-            "query": "?geometry=POINT(-0.084859 51.441301)&geometry_relation=intersects&dataset=tree-preservation-zone",
-            "dataset": "tree-preservation-zone",
-            "assertions": {
-                "$.count": 2,
-                "$.entities[0].reference": "481",
-                "$.entities[0].name": "Dulwich College",
-                "$.entities[1].reference": "279",
-                "$.entities[1].name": "Dulwich College, College Road",
+                "$.entities[1].tree-preservation-order": "279",
             },
         },
         "Lambeth Tree Clarence Avenue": {
