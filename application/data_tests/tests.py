@@ -141,9 +141,10 @@ tests = {
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 2,
-                "$.entities[0].reference": "481",
+                # data is missing a reliable reference
+                # "$.entities[0].reference": "481",
                 "$.entities[0].name": "Dulwich College",
-                "$.entities[1].reference": "279",
+                # "$.entities[1].reference": "279",
                 "$.entities[1].name": "Dulwich College, College Road",
             },
         },
@@ -227,8 +228,8 @@ tests = {
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 2,
-                "$.entities[0].tree-preservation-type": "Area",
-                "$.entities[1].tree-preservation-type": "Revoked",
+                "$.entities[0].tree-preservation-order": "04/1952",
+                "$.entities[1].tree-preservation-order": "01/1955",
             },
         },
         "Tree Preservation Zone South Bucks": {
@@ -237,7 +238,7 @@ tests = {
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "14529",
+                "$.entities[0].tree-preservation-order": "TPO/SBDC/2012/06",
             },
         },
         "Tree Preservation Zone Wycombe": {
@@ -246,8 +247,7 @@ tests = {
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "50",
-                "$.entities[0].tree-preservation-type": "Woodland",
+                "$.entities[0].tree-preservation-order": "07/1951",
             },
         },
         "Tree Preservation Zone Chiltern": {
@@ -256,7 +256,7 @@ tests = {
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "14529",
+                "$.entities[0].tree-preservation-order": "TPO/1949/010",
             },
         },
         "Tree Preservation Zone Aylebury Vale": {
@@ -265,7 +265,7 @@ tests = {
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "6553",
+                "$.entities[0].tree-preservation-order": "(Amendment Order) No. 1 1961",
             },
         },
         "Great Missenden conservation area": {
@@ -296,7 +296,7 @@ tests = {
         },
         "Listed Building Lasso query": {
             "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
-            "query": "?geometry=POLYGON%28%28-0.7748794555664062%2051.679793621379986%2C-0.7728195190429689%2051.62526373476129%2C-0.7137680053710938%2051.6220665895049%2C-0.6804656982421875%2051.63613234359897%2C-0.7048416137695312%2051.655092894606554%2C-0.6832122802734374%2051.66254711886705%2C-0.6928253173828126%2051.67723899831586%2C-0.7250976562500001%2051.666806125075425%2C-0.7429504394531249%2051.647850474028985%2C-0.751190185546875%2051.65296289102838%2C-0.7436370849609375%2051.67638742526901%2C-0.7748794555664062%2051.679793621379986%29%29&geometry_relation=intersects&dataset=listed-building-outline",
+            "query": "?geometry=POLYGON%28%28-0.7748794555664062%2051.679793621379986%2C-0.7728195190429689%2051.62526373476129%2C-0.7137680053710938%2051.6220665895049%2C-0.6804656982421875%2051.63613234359897%2C-0.7048416137695312%2051.655092894606554%2C-0.6832122802734374%2051.66254711886705%2C-0.6928253173828126%2051.67723899831586%2C-0.7250976562500001%2051.666806125075425%2C-0.7429504394531249%2051.647850474028985%2C-0.751190185546875%2051.65296289102838%2C-0.7436370849609375%2051.67638742526901%2C-0.7748794555664062%2051.679793621379986%29%29&geometry_relation=intersects&dataset=listed-building-outline",  # noqa: E501
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 180,
@@ -304,7 +304,7 @@ tests = {
         },
         "Listed Building Lasso query Aylesbury": {
             "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
-            "query": "?geometry=POLYGON%28%28-0.824146270751953%2051.82967793410063%2C-0.8313560485839843%2051.82904140792331%2C-0.840625762939453%2051.832064827148116%2C-0.8463764190673827%2051.830155322830194%2C-0.8505821228027342%2051.82734396080437%2C-0.8610534667968749%2051.82681349546081%2C-0.8547019958496093%2051.81949243574658%2C-0.8365917205810547%2051.80930463429536%2C-0.8321285247802732%2051.8073410953632%2C-0.8297252655029294%2051.80351990955802%2C-0.8269786834716796%2051.80219303316994%2C-0.8266353607177733%2051.79932684689146%2C-0.8237171173095702%2051.79661972587732%2C-0.821399688720703%2051.7960888987767%2C-0.8215713500976561%2051.79322232445378%2C-0.8084392547607422%2051.79279763127906%2C-0.7793426513671874%2051.80123765798905%2C-0.7634639739990234%2051.806014331445056%2C-0.7657814025878906%2051.814558007036936%2C-0.7718753814697265%2051.82198597374219%2C-0.7626056671142577%2051.824691571614494%2C-0.7644081115722655%2051.83291346974673%2C-0.7765102386474608%2051.83885352017006%2C-0.7965946197509763%2051.834186403659885%2C-0.7946205139160155%2051.82973097754268%2C-0.7991695404052733%2051.83020836571001%2C-0.804920196533203%2051.83991416100463%2C-0.8338451385498044%2051.83768678639302%2C-0.824146270751953%2051.82967793410063%29%29&geometry_relation=intersects&dataset=listed-building-outline",
+            "query": "?geometry=POLYGON%28%28-0.824146270751953%2051.82967793410063%2C-0.8313560485839843%2051.82904140792331%2C-0.840625762939453%2051.832064827148116%2C-0.8463764190673827%2051.830155322830194%2C-0.8505821228027342%2051.82734396080437%2C-0.8610534667968749%2051.82681349546081%2C-0.8547019958496093%2051.81949243574658%2C-0.8365917205810547%2051.80930463429536%2C-0.8321285247802732%2051.8073410953632%2C-0.8297252655029294%2051.80351990955802%2C-0.8269786834716796%2051.80219303316994%2C-0.8266353607177733%2051.79932684689146%2C-0.8237171173095702%2051.79661972587732%2C-0.821399688720703%2051.7960888987767%2C-0.8215713500976561%2051.79322232445378%2C-0.8084392547607422%2051.79279763127906%2C-0.7793426513671874%2051.80123765798905%2C-0.7634639739990234%2051.806014331445056%2C-0.7657814025878906%2051.814558007036936%2C-0.7718753814697265%2051.82198597374219%2C-0.7626056671142577%2051.824691571614494%2C-0.7644081115722655%2051.83291346974673%2C-0.7765102386474608%2051.83885352017006%2C-0.7965946197509763%2051.834186403659885%2C-0.7946205139160155%2051.82973097754268%2C-0.7991695404052733%2051.83020836571001%2C-0.804920196533203%2051.83991416100463%2C-0.8338451385498044%2051.83768678639302%2C-0.824146270751953%2051.82967793410063%29%29&geometry_relation=intersects&dataset=listed-building-outline",  # noqa: E501
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 202,
@@ -316,7 +316,7 @@ tests = {
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 1,
-                #"$.entities[0].name": "The White Hart",
+                # "$.entities[0].name": "The White Hart",
                 "$.entities[0].listed-building-grade": "II",
             },
         },
@@ -600,7 +600,6 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].name": "Land Next To Littlebourne Solar Farm Swanton Lane Littlbourne",
-                "$.entities[0].reference": "1123",
                 "$.entities[0].tree-preservation-order": "5/1991/LIT",
             },
         },
@@ -613,7 +612,7 @@ tests = {
                 "$.entities[0].name": "Land Surrounding Old Post Office Forstal Road Womenswold CT4 6SU",
                 "$.entities[0].organisation-entity": "75",
                 "$.entities[0].tree-preservation-order": "6/1970/WOM",
-                "$.entities[0].reference": "1150",
+                "$.entities[0].reference": "6/1970/WOM/A1",
             },
         },
         "Canterbury Tree Preservation Zone (Various Locations 2 records)": {
@@ -622,14 +621,12 @@ tests = {
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 2,
-                "$.entities[0].name": "Various Locations Along Willow Road Whitstable CT5 3DW",
+                "$.entities[0].name": "Various Locations Near To Broadview Wraik Hill Whitstable CT5 3BY",
                 "$.entities[0].organisation-entity": "75",
-                "$.entities[0].tree-preservation-order": "2/1989/WHI",
-                "$.entities[0].reference": "354",
-                "$.entities[1].name": "Various Locations Near To Broadview Wraik Hill Whitstable CT5 3BY",
+                "$.entities[0].tree-preservation-order": "1/1965/WHI",
+                "$.entities[1].name": "Various Locations Along Willow Road Whitstable CT5 3DW",
                 "$.entities[1].organisation-entity": "75",
-                "$.entities[1].tree-preservation-order": "1/1965/WHI",
-                "$.entities[1].reference": "599",
+                "$.entities[1].tree-preservation-order": "2/1989/WHI",
             },
         },
         "Canterbury Tree Preservation Zone (16 Albion Lane)": {
@@ -713,7 +710,7 @@ tests = {
         },
         "Canterbury Tree Preservation Zone (Lasso polygon around Cherry Avenue)": {
             "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
-            "query": "?geometry=POLYGON%20((1.05943637247152%2051.2888303021592,1.05970135818629%2051.289536050302,1.06080859267814%2051.2897450342821,1.06165081394246%2051.2892482651408,1.06138579958004%2051.2885425218673,1.06027859260043%2051.2883335428658,1.05943637247152%2051.2888303021592))&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "query": "?geometry=POLYGON%20((1.05943637247152%2051.2888303021592,1.05970135818629%2051.289536050302,1.06080859267814%2051.2897450342821,1.06165081394246%2051.2892482651408,1.06138579958004%2051.2885425218673,1.06027859260043%2051.2883335428658,1.05943637247152%2051.2888303021592))&geometry_relation=intersects&dataset=tree-preservation-zone",  # noqa: E501
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 44,
