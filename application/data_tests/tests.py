@@ -309,6 +309,14 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Buckinghamshire Article 4 Direction NE of Wycombe Heath Farm (should be present)": {
+            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
+            "query": "?geometry=POINT(-0.70412678 51.67024811)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 3,
+            },
+        },
         "Listed Building Lasso query": {
             "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
             "query": "?geometry=POLYGON%28%28-0.7748794555664062%2051.679793621379986%2C-0.7728195190429689%2051.62526373476129%2C-0.7137680053710938%2051.6220665895049%2C-0.6804656982421875%2051.63613234359897%2C-0.7048416137695312%2051.655092894606554%2C-0.6832122802734374%2051.66254711886705%2C-0.6928253173828126%2051.67723899831586%2C-0.7250976562500001%2051.666806125075425%2C-0.7429504394531249%2051.647850474028985%2C-0.751190185546875%2051.65296289102838%2C-0.7436370849609375%2051.67638742526901%2C-0.7748794555664062%2051.679793621379986%29%29&geometry_relation=intersects&dataset=listed-building-outline",  # noqa: E501
