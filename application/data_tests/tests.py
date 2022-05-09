@@ -398,9 +398,7 @@ tests = {
             "query": "?geometry=POINT(-0.08187930 51.49727324)&geometry_relation=intersects&dataset=scheduled-monument",
             "dataset": "scheduled-monument",
             "assertions": {
-                "$.count": 1,
-                "$.entities[0].reference": "1001984",
-                "$.entities[0].name": "Abbey buildings, Bermondsey",
+                "$.count": 0,
             },
         },
         "Southwark article 4 direction (The Lord Nelson, Union Street)": {
