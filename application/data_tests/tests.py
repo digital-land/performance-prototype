@@ -293,6 +293,14 @@ tests = {
                 "$.entities[0].organisation-entity": "67",
             },
         },
+        "Buckinghamshire Tree lasso query Beaconsfield Gregories Road": {
+            "ticket": "https://trello.com/c/VEYLoXrJ/13-buckinghamshire-tree-preservation-orders",
+            "query": "?geometry=POLYGON((-0.6642436981201171 51.61042174813102,-0.6646513938903809 51.609369035138144,-0.6634712219238282 51.60950895409454,-0.6625807285308838 51.60978879071354,-0.6615400314331055 51.61006196289202,-0.6606495380401611 51.610161903522226,-0.6599736213684081 51.61026850661858,-0.6598341464996339 51.61023519317786,-0.6593406200408936 51.61082150616335,-0.6593728065490723 51.61096808322645,-0.6642436981201171 51.61042174813102))&geometry_relation=intersects&dataset=tree",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 48,
+            },
+        },
         # "Article 4 Wiggerton projection error (should be present)": {
         #    "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
         #    "query": "?geometry=POINT(-0.64704972 51.75946783)&geometry_relation=intersects&dataset=article-4-direction-area",
