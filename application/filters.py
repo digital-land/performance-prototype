@@ -1,6 +1,7 @@
 from datetime import datetime
 import urllib.parse
 
+from markupsafe import Markup
 from shapely import wkt
 
 
@@ -63,8 +64,23 @@ def date_time_format(d):
     return d.strftime("%A %d-%m-%Y, %H:%M:%S")
 
 
-def map_link(entity):
-    if entity.get("point") is not None:
-        coords = wkt.loads(entity["point"])
-        return f"dataset={entity['dataset']}#{coords.y},{coords.x},16z"
-    return ""
+def map_link_if_possible(path, data):
+    import re
+
+    pattern = re.compile(
+        "\$.entities\[(\d+)\]\.(name|reference|address-text|tree-preservation-order|tree-preservation-order-tree)"
+    )
+    match = pattern.match(path)
+    if match:
+        entity_index = int(match.group(1))
+        if entity_index < len(data):
+            entity = data[entity_index]
+            if entity and entity.get("point"):
+                coords = wkt.loads(entity["point"])
+                query_str = f"dataset={entity['dataset']}#{coords.y},{coords.x},16z"
+                return Markup(
+                    f"<a href='https://www.digital-land.info/map?{query_str}'>{path}</a>"
+                )
+        else:
+            return path
+    return path

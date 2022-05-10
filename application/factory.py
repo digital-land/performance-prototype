@@ -84,7 +84,7 @@ def register_filters(app):
         unhyphenate,
         pass_fail,
         date_time_format,
-        map_link,
+        map_link_if_possible,
     )
 
     app.add_template_filter(clean_int_filter, name="to_int")
@@ -96,7 +96,7 @@ def register_filters(app):
     app.add_template_filter(unhyphenate, name="unhyphenate")
     app.add_template_filter(pass_fail, name="pass_fail")
     app.add_template_filter(date_time_format, name="date_time_format")
-    app.add_template_filter(map_link, name="map_link")
+    app.add_template_filter(map_link_if_possible, name="map_link_if_possible")
 
     from digital_land_frontend.filters import commanum_filter, hex_to_rgb_string_filter
 
