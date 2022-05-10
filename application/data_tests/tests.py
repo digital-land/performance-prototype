@@ -383,24 +383,24 @@ tests = {
                 "$.entities[0].name": "Remains of Winchester Palace, Clink Street and waterfront",
             },
         },
-        # "Southwark scheduled monument (Abbey Buildings Bermondsey Projection check - should be present)": {
-        #    "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
-        #    "query": "?geometry=POINT(-0.08158144 51.49728412)&geometry_relation=intersects&dataset=scheduled-monument",
-        #    "dataset": "scheduled-monument",
-        #    "assertions": {
-        #        "$.count": 1,
-        #        "$.entities[0].reference": "1001984",
-        #        "$.entities[0].name": "Abbey buildings, Bermondsey",
-        #    },
-        # },
-        # "Southwark scheduled monument (Abbey Buildings Bermondsey Projection check - should not be present)": {
-        #    "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
-        #    "query": "?geometry=POINT(-0.08187930 51.49727324)&geometry_relation=intersects&dataset=scheduled-monument",
-        #    "dataset": "scheduled-monument",
-        #    "assertions": {
-        #        "$.count": 0,
-        #    },
-        # },
+        "Southwark scheduled monument (Abbey Buildings Bermondsey Projection check - should be present)": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
+            "query": "?geometry=POINT(-0.08158144 51.49728412)&geometry_relation=intersects&dataset=scheduled-monument",
+            "dataset": "scheduled-monument",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1001984",
+                "$.entities[0].name": "Abbey buildings, Bermondsey",
+            },
+        },
+        "Southwark scheduled monument (Abbey Buildings Bermondsey Projection check - should not be present)": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
+            "query": "?geometry=POINT(-0.08187930 51.49727324)&geometry_relation=intersects&dataset=scheduled-monument",
+            "dataset": "scheduled-monument",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
         "Southwark article 4 direction (The Lord Nelson, Union Street)": {
             "ticket": "https://trello.com/c/6G0Vv44y/22-southwark-article-4-directions",
             "query": "?dataset=article-4-direction-area&longitude=-0.102682&latitude=51.503432",
