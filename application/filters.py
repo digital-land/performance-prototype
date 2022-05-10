@@ -1,6 +1,8 @@
 from datetime import datetime
 import urllib.parse
 
+from shapely import wkt
+
 
 def clean_int_filter(s):
     # s might be passed in as undefined so need to test for that
@@ -59,3 +61,10 @@ def pass_fail(v):
 
 def date_time_format(d):
     return d.strftime("%A %d-%m-%Y, %H:%M:%S")
+
+
+def map_link(entity):
+    if entity.get("point") is not None:
+        coords = wkt.loads(entity["point"])
+        return f"dataset={entity['dataset']}#{coords.y},{coords.x},16z"
+    return ""

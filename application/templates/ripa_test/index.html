@@ -52,6 +52,19 @@
               <p id="{{result.test_name}}" class="govuk-body-s">Test: {% if result.ticket %}<a href="{{ result.ticket }}">{% endif %}{{result.test_name}}{% if result.ticket %}</a>{% endif %}</p>
               <p class="govuk-body-s">Dataset: <a href="https://www.digital-land.info/dataset/{{ result.dataset }}">{{ result.dataset }}</a></p>
               <p class="govuk-body-s app-c-test-grid__result-p--wrap">Query: <a href="https://www.digital-land.info/entity.json{{result.query}}">{{result.query}}</a></p>
+
+              {% if result.response_data.data["entities"] %}
+                <p class="govuk-body-s">Results:</p>
+              {% endif %}
+              <ul class="govuk-list">
+              {% for e in result.response_data.data["entities"] %}
+                {% if e.point and (e.name or e.reference) %}
+                  {%  set link_text = e.name if e.name else "Reference: " + e.reference %}
+                  <li><a class="govuk-link govuk-body-s"  href="https://www.digital-land.info/map?{{ e | map_link }}">{{ link_text }}</a></li>
+                {% endif %}
+              {% endfor  %}
+              </ul>
+
               <table class="govuk-table" id="{{ result.organisation}}-{{ result.dataset }}">
                 <thead class="govuk-table__head">
                   <tr class="govuk-table__row govuk-body-s">

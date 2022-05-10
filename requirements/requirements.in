@@ -11,3 +11,4 @@ Flask-SQLAlchemy
 Flask-Migrate
 psycopg2-binary
 jsonpath-python
+shapely

@@ -133,6 +133,8 @@ retryrequests==0.2.0
     # via
     #   pytablereader
     #   sqlitebiter
+shapely==1.8.2
+    # via -r requirements/requirements.in
 simplesqlite==1.3.0
     # via
     #   pytablereader
