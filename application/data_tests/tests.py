@@ -548,6 +548,14 @@ tests = {
                 "$.entities[0].tree-preservation-order": "252",
             },
         },
+        "Southwark Tree Overall Count": {
+            "ticket": "https://trello.com/c/wfDMDuPV/46-southwark-tree-preservation-orders",
+            "query": "?dataset=tree&organisation_entity=329&field=reference",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:CAT": {
         "Canterbury article 4 direction (Kemberland Wood)": {
@@ -740,6 +748,14 @@ tests = {
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1573,
+            },
+        },
+        "Canterbury Tree Overall Count": {
+            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
+            "query": "?dataset=tree&organisation_entity=75&field=reference",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 0,
             },
         },
         "Canterbury Listed Building (Herne Bay)": {
