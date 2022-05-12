@@ -43,6 +43,8 @@ def index():
 
     datasets = set()
     lpas = set()
+    items = set()
+
     results_grid = {}
     for la in local_authorities.keys():
         lpas.add(la)
@@ -50,6 +52,7 @@ def index():
         dataset_results = {}
         for result in results:
             datasets.add(result.dataset)
+            items.add(f"{la}:{result.dataset}")
             assertion_count += len(result.assertions)
             for assertion in result.assertions:
                 if assertion.match:
@@ -91,8 +94,9 @@ def index():
         date_of_test_run=latest_test_run.created_timestamp.astimezone(
             dateutil.tz.gettz("Europe/London")
         ).strftime("%d %B %Y %H:%M:%S"),
-        dataset_count=len(datasets),
         lpa_count=len(lpas),
+        dataset_count=len(datasets),
+        item_count=len(items),
         results=latest_test_run.results,
         test_count=test_count,
         assertion_count=assertion_count,

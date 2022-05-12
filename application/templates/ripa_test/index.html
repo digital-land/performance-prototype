@@ -34,24 +34,25 @@
             </div>
           </div>
         </div>
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-full">
-            <p><a href="{{ url_for("ripa.run_tests") }}" class="govuk-button">Run the tests again now</a></p>
-          </div>
-        </div>
         <div class="app-summary">
           <h3 class="govuk-heading-l app-heading--divider">Summary</h3>
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-quarter">
               <div class="app-data-item">
                 <p class="govuk-body app-data-item__label">Datasets</p>
-                <span class="app-data-item__number app-!-font-size-60">{{ test_datasets }}</span>
+                <span class="app-data-item__number app-!-font-size-60">{{ dataset_count }}</span>
               </div>
             </div>
             <div class="govuk-grid-column-one-quarter">
               <div class="app-data-item">
-                <p class="govuk-body app-data-item__label">Local planning authorities</p>
-                <span class="app-data-item__number app-!-font-size-60">{{ test_lpas }}</span>
+                <p class="govuk-body app-data-item__label">Organisations</p>
+                <span class="app-data-item__number app-!-font-size-60">{{ lpa_count }}</span>
+              </div>
+            </div>
+            <div class="govuk-grid-column-one-quarter">
+              <div class="app-data-item">
+                <p class="govuk-body app-data-item__label">Items</p>
+                <span class="app-data-item__number app-!-font-size-60">{{ item_count }}</span>
               </div>
             </div>
             <div class="govuk-grid-column-one-quarter">
@@ -89,7 +90,11 @@
             </div>
           </div>
         </div>
-        
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            <p><a href="{{ url_for("ripa.run_tests") }}" class="govuk-button">Run the tests again now</a></p>
+          </div>
+        </div>
         <div class="govuk-grid-row govuk-!-margin-top-8">
           <div class="govuk-grid-column-full">
             <h2 class="govuk-heading-l app-heading--divider">Detailed results</h2>
@@ -99,9 +104,7 @@
         {% for organisation, resultsItems in results | groupby('organisation') %}
           <div class="govuk-grid-row govuk-!-margin-bottom-6">
             <div class="govuk-grid-column-full">
-              
               <h3 class="govuk-heading-m">{{ local_authorities[organisation] }}</h3>
-              
               {% for result in resultsItems %}
                 <article class="app-summary-card govuk-!-margin-bottom-6" id="{{ result.organisation }}-{{ result.dataset }}">
                   <header class="app-summary-card__header" id="{{ result.test_name | replace(' ', '-') | lower }}">
