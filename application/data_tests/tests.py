@@ -167,7 +167,7 @@ tests = {
         },
         "Lambeth Tree Lasso Query": {
             "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
-            "query": "?geometry=POLYGON((-0.11108636856079102 51.50523659640538,-0.10985255241394042 51.50249181873096,-0.1077711582183838 51.50236492720043,-0.10615110397338867 51.502885848073674,-0.10615110397338867 51.50368725317429,-0.10556101799011232 51.50508300007536,-0.11079668998718263 51.50538351414963,-0.11108636856079102 51.50523659640538))&geometry_relation=intersects&dataset=tree",
+            "query": "?geometry=POLYGON((-0.11108636856079102 51.50523659640538,-0.10985255241394042 51.50249181873096,-0.1077711582183838 51.50236492720043,-0.10615110397338867 51.502885848073674,-0.10615110397338867 51.50368725317429,-0.10556101799011232 51.50508300007536,-0.11079668998718263 51.50538351414963,-0.11108636856079102 51.50523659640538))&geometry_relation=intersects&dataset=tree",  # noqa: E501
             "dataset": "tree",
             "assertions": {
                 "$.count": 5,
@@ -175,7 +175,7 @@ tests = {
         },
         "Lambeth Tree Zone Lasso Query": {
             "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
-            "query": "?geometry=POLYGON((-0.12076377868652344 51.44405766006079,-0.12149333953857419 51.44090126223807,-0.11007785797119139 51.438547196427265,-0.10737419128417967 51.442051500267695,-0.11994838714599608 51.44515432349104,-0.12076377868652344 51.44405766006079))&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "query": "?geometry=POLYGON((-0.12076377868652344 51.44405766006079,-0.12149333953857419 51.44090126223807,-0.11007785797119139 51.438547196427265,-0.10737419128417967 51.442051500267695,-0.11994838714599608 51.44515432349104,-0.12076377868652344 51.44405766006079))&geometry_relation=intersects&dataset=tree-preservation-zone",  # noqa: E501
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 5,
@@ -311,20 +311,20 @@ tests = {
         },
         "Buckinghamshire Tree lasso query Beaconsfield Gregories Road": {
             "ticket": "https://trello.com/c/VEYLoXrJ/13-buckinghamshire-tree-preservation-orders",
-            "query": "?geometry=POLYGON((-0.6642436981201171 51.61042174813102,-0.6646513938903809 51.609369035138144,-0.6634712219238282 51.60950895409454,-0.6625807285308838 51.60978879071354,-0.6615400314331055 51.61006196289202,-0.6606495380401611 51.610161903522226,-0.6599736213684081 51.61026850661858,-0.6598341464996339 51.61023519317786,-0.6593406200408936 51.61082150616335,-0.6593728065490723 51.61096808322645,-0.6642436981201171 51.61042174813102))&geometry_relation=intersects&dataset=tree",
+            "query": "?geometry=POLYGON((-0.6642436981201171 51.61042174813102,-0.6646513938903809 51.609369035138144,-0.6634712219238282 51.60950895409454,-0.6625807285308838 51.60978879071354,-0.6615400314331055 51.61006196289202,-0.6606495380401611 51.610161903522226,-0.6599736213684081 51.61026850661858,-0.6598341464996339 51.61023519317786,-0.6593406200408936 51.61082150616335,-0.6593728065490723 51.61096808322645,-0.6642436981201171 51.61042174813102))&geometry_relation=intersects&dataset=tree",  # noqa: E501
             "dataset": "tree",
             "assertions": {
                 "$.count": 48,
             },
         },
-        # "Article 4 Wiggerton projection error (should be present)": {
-        #    "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-        #    "query": "?geometry=POINT(-0.64704972 51.75946783)&geometry_relation=intersects&dataset=article-4-direction-area",
-        #    "dataset": "article-4-direction-area",
-        #    "assertions": {
-        #        "$.count": 1,
-        #    },
-        # },
+        "Article 4 Wiggerton projection error (should be present)": {
+            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
+            "query": "?geometry=POINT(-0.64704972 51.75946783)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "warnings": {
+                "$.count": 1,
+            },
+        },
         "Article 4 Wiggerton projection error (should not be present)": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
             "query": "?geometry=POINT(-0.63020774 51.76295983)&geometry_relation=intersects&dataset=article-4-direction-area",
@@ -339,6 +339,24 @@ tests = {
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 3,
+            },
+        },
+        "South Buckinghamshire Development Article 4 Direction hacked into the name": {
+            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
+            "query": "dataset=article-4-direction-area&organisation=local-authority-eng:BUC&reference=DO.34",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Land West of Mansion Lane, Immediately South of Iverdale Close, Iver - Development",
+            },
+        },
+        "South Buckinghamshire Argricultural Article 4 Direction hacked into the name": {
+            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
+            "query": "dataset=article-4-direction-area&organisation=local-authority-eng:BUC&reference=DO.7",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Land on the North Side of Seven Hills Road, Iver - Agricultural",
             },
         },
         "Listed Building Lasso query": {
@@ -363,9 +381,11 @@ tests = {
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 1,
-                # "$.entities[0].name": "The White Hart",
                 "$.entities[0].listed-building-grade": "II",
             },
+            "warnings": {
+                "$.entities[0].name": "The White Hart",
+            }
         },
         "Listed Building Projection Error (should not be present)": {
             "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
@@ -473,13 +493,12 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].name": "Church of St Peter",
-                # "$.entities[0].reference": "101385662",
                 "$.entities[0].listed-building-grade": "I",
             },
         },
         "Southwark grade II listed building (Cobourg Road) - point search": {
             "ticket": "https://trello.com/c/KYZUfnWw/5-add-tests-for-ripa-sample-addresses-expected-constraints",
-            "query": "?entries=current&geometry=POINT(-0.0760466 51.4859056)&geometry_relation=intersects&limit=100&dataset=article-4-direction-area&dataset=central-activities-zone&dataset=listed-building&dataset=listed-building-outline&dataset=locally-listed-building&dataset=conservation-area&dataset=area-of-outstanding-natural-beauty&dataset=national-park&dataset=world-heritage-site&dataset=scheduled-monument&dataset=tree-preservation-zone&dataset=site-of-special-scientific-interest",
+            "query": "?entries=current&geometry=POINT(-0.0760466 51.4859056)&geometry_relation=intersects&limit=100&dataset=article-4-direction-area&dataset=central-activities-zone&dataset=listed-building&dataset=listed-building-outline&dataset=locally-listed-building&dataset=conservation-area&dataset=area-of-outstanding-natural-beauty&dataset=national-park&dataset=world-heritage-site&dataset=scheduled-monument&dataset=tree-preservation-zone&dataset=site-of-special-scientific-interest",  # noqa: E501
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 2,
@@ -491,7 +510,7 @@ tests = {
         },
         "Southwark grade II listed building (Cobourg Road) - lasso search": {
             "ticket": "https://trello.com/c/KYZUfnWw/5-add-tests-for-ripa-sample-addresses-expected-constraints",
-            "query": "?entries=current&geometry=POLYGON ((-0.07629960316337962 51.48596216740805, -0.07631450428819368 51.485912060522, -0.07554858463920969 51.48584896289475, -0.07553666367387485 51.48590092561696, -0.07629960316337962 51.48596216740805))&geometry_relation=intersects&limit=100&dataset=article-4-direction-area&dataset=central-activities-zone&dataset=listed-building&dataset=listed-building-outline&dataset=locally-listed-building&dataset=conservation-area&dataset=area-of-outstanding-natural-beauty&dataset=national-park&dataset=world-heritage-site&dataset=scheduled-monument&dataset=tree-preservation-zone&dataset=site-of-special-scientific-interest",
+            "query": "?entries=current&geometry=POLYGON ((-0.07629960316337962 51.48596216740805, -0.07631450428819368 51.485912060522, -0.07554858463920969 51.48584896289475, -0.07553666367387485 51.48590092561696, -0.07629960316337962 51.48596216740805))&geometry_relation=intersects&limit=100&dataset=article-4-direction-area&dataset=central-activities-zone&dataset=listed-building&dataset=listed-building-outline&dataset=locally-listed-building&dataset=conservation-area&dataset=area-of-outstanding-natural-beauty&dataset=national-park&dataset=world-heritage-site&dataset=scheduled-monument&dataset=tree-preservation-zone&dataset=site-of-special-scientific-interest",  # noqa: E501
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 4,
@@ -634,14 +653,14 @@ tests = {
                 "$.entities[0].reference": "73408",
             },
         },
-        # "Canterbury article 4 direction (Simplification)": {
-        #     "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
-        #     "query": "?dataset=article-4-direction-area&longitude=1.12258755&latitude=51.36586015",
-        #     "dataset": "article-4-direction-area",
-        #     "assertions": {
-        #         "$.count": 0,
-        #     },
-        # },
+        "Canterbury article 4 direction (Simplification)": {
+            "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
+            "query": "?dataset=article-4-direction-area&longitude=1.12258755&latitude=51.36586015",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
         "Canterbury article 4 direction count": {
             "ticket": "https://trello.com/c/prY4jzj6/14-canterbury-article-4-directions",
             "query": "?dataset=article-4-direction-area&organisation_entity=75&field=reference",
@@ -709,7 +728,7 @@ tests = {
         },
         "Canterbury Conservation Area - Scotland Hills Lasso Query": {
             "ticket": "https://trello.com/c/9TaHoPOe/15-canterbury-conservation-areas",
-            "query": "?geometry=POLYGON((1.101851463317871 51.2796355780913,1.1080741882324219 51.27195743631006,1.1237382888793945 51.2739979068692,1.1287164688110352 51.28733927660818,1.101851463317871 51.2796355780913))&geometry_relation=intersects&dataset=conservation-area",
+            "query": "?geometry=POLYGON((1.101851463317871 51.2796355780913,1.1080741882324219 51.27195743631006,1.1237382888793945 51.2739979068692,1.1287164688110352 51.28733927660818,1.101851463317871 51.2796355780913))&geometry_relation=intersects&dataset=conservation-area",  # noqa: E501
             "dataset": "conservation-area",
             "assertions": {
                 "$.count": 3,
@@ -773,7 +792,7 @@ tests = {
         },
         "Canterbury Tree Zone Lasso Query Rochester Avenue": {
             "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
-            "query": "?geometry=POLYGON((1.0909509658813474 51.27260180522353,1.0920882225036619 51.27319246878923,1.0932898521423338 51.27371600514732,1.095006465911865 51.2730716518594,1.0947489738464353 51.272736047609754,1.0962724685668943 51.27148757828044,1.0944914817810056 51.26979604959158,1.0926675796508787 51.27116538714043,1.0909509658813474 51.27260180522353))&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "query": "?geometry=POLYGON((1.0909509658813474 51.27260180522353,1.0920882225036619 51.27319246878923,1.0932898521423338 51.27371600514732,1.095006465911865 51.2730716518594,1.0947489738464353 51.272736047609754,1.0962724685668943 51.27148757828044,1.0944914817810056 51.26979604959158,1.0926675796508787 51.27116538714043,1.0909509658813474 51.27260180522353))&geometry_relation=intersects&dataset=tree-preservation-zone",  # noqa: E501
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 4,
@@ -781,7 +800,7 @@ tests = {
         },
         "Canterbury Tree Zone Lasso Query Chaucer Court": {
             "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
-            "query": "?geometry=POLYGON((1.0897278785705564 51.27324616510049,1.0877537727355955 51.272776320249136,1.087667942047119 51.272977682916604,1.0883545875549314 51.27323274102855,1.0887193679809568 51.2733401334942,1.0896205902099607 51.27350122172206,1.0897278785705564 51.27324616510049))&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "query": "?geometry=POLYGON((1.0897278785705564 51.27324616510049,1.0877537727355955 51.272776320249136,1.087667942047119 51.272977682916604,1.0883545875549314 51.27323274102855,1.0887193679809568 51.2733401334942,1.0896205902099607 51.27350122172206,1.0897278785705564 51.27324616510049))&geometry_relation=intersects&dataset=tree-preservation-zone",  # noqa: E501
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 6,
