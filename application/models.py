@@ -1,8 +1,14 @@
+import enum
 import uuid
 
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy import func
 from application.extensions import db
+
+
+class AssertionType(enum.Enum):
+    strict = "strict"
+    warning = "warning"
 
 
 class TestRun(db.Model):
@@ -38,6 +44,7 @@ class Assertion(db.Model):
     test_result_id = db.Column(
         UUID(as_uuid=True), db.ForeignKey("result.id"), nullable=False
     )
+    assertion_type = db.Column(db.Enum(AssertionType), nullable=False)
 
 
 class ResponseData(db.Model):

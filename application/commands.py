@@ -5,7 +5,7 @@ import requests
 from flask.cli import AppGroup
 from jsonpath import JSONPath
 
-from application.models import TestRun, Result, ResponseData, Assertion
+from application.models import TestRun, Result, ResponseData, Assertion, AssertionType
 
 data_test_cli = AppGroup("data-test")
 
@@ -30,8 +30,11 @@ def _run_tests():
 
             dataset = details.get("dataset")
             query = details.get("query")
-            assertions = details.get("assertions", [])
+            assertions = details.get("assertions", {})
+            warnings = details.get("warnings", {})
             ticket = details.get("ticket")
+
+            checks = {"strict": assertions, "warning": warnings}
 
             test_url = f"{BASE_API_URL}{query}"
             resp = requests.get(test_url)
@@ -52,30 +55,36 @@ def _run_tests():
             )
             response_data.results.append(result)
             results.append(result)
-            for path, expected in assertions.items():
-                print(f"assertion: path = {path} expect = {expected}")
-                parsed = JSONPath(path).parse(data)
-                if parsed:
-                    actual = str(parsed[0])
-                    expected = str(expected)
-                    if expected.startswith("~"):
-                        match = True if re.match(expected[1:], actual) else False
+
+            for level, checks in checks.items():
+                for path, expected in checks.items():
+                    print(f"path = {path} expect = {expected} : check {level}")
+                    parsed = JSONPath(path).parse(data)
+                    assertion_type = AssertionType(level)
+                    if parsed:
+                        actual = str(parsed[0])
+                        expected = str(expected)
+                        if expected.startswith("~"):
+                            match = True if re.match(expected[1:], actual) else False
+                        else:
+                            match = expected == actual
+                        assertion = Assertion(
+                            path=path,
+                            expected=expected,
+                            actual=actual,
+                            match=match,
+                            assertion_type=assertion_type,
+                        )
                     else:
-                        match = expected == actual
-                    assertion = Assertion(
-                        path=path,
-                        expected=expected,
-                        actual=actual,
-                        match=match,
-                    )
-                else:
-                    assertion = Assertion(
-                        path=path,
-                        expected=expected,
-                        actual=None,
-                        match=None,
-                    )
-                result.assertions.append(assertion)
+                        assertion = Assertion(
+                            path=path,
+                            expected=expected,
+                            actual=None,
+                            match=None,
+                            assertion_type=assertion_type,
+                        )
+                    result.assertions.append(assertion)
+
             db.session.add(response_data)
 
     test_run = TestRun(results=results)

@@ -1,7 +1,7 @@
 import dateutil
 from flask import Blueprint, render_template, redirect, url_for
 from application.data_tests.tests import local_authorities
-from application.models import TestRun
+from application.models import TestRun, AssertionType
 
 ripa_test = Blueprint("ripa", __name__, url_prefix="/ripa")
 
@@ -42,13 +42,28 @@ def index():
         dataset_results = {}
         for result in results:
             for assertion in result.assertions:
-                if result.dataset not in dataset_results:
-                    dataset_results[result.dataset] = [assertion.match]
+                if assertion.match:
+                    outcome = "pass"
+                elif (
+                    not assertion.match
+                    and assertion.assertion_type == AssertionType.strict
+                ):
+                    outcome = "fail"
                 else:
-                    dataset_results[result.dataset].append(assertion.match)
+                    outcome = "warn"
+
+                if result.dataset not in dataset_results:
+                    dataset_results[result.dataset] = [outcome]
+                else:
+                    dataset_results[result.dataset].append(outcome)
 
         for key, val in dataset_results.items():
-            dataset_results[key] = all(val)
+            if "fail" in val:
+                dataset_results[key] = "fail"
+            elif "warn" in val:
+                dataset_results[key] = "warn"
+            else:
+                dataset_results[key] = "pass"
 
         for dataset in datasets_tested:
             if dataset not in dataset_results:

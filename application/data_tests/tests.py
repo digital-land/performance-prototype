@@ -810,6 +810,8 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].name": "THE STREET (EAST SIDE), BARHAM COURT AND ANNE COURT",
                 "$.entities[0].organisation-entity": "75",
+            },
+            "warnings": {
                 "$.entities[0].listed-building-grade": "II*",
             },
         },
@@ -821,8 +823,10 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].name": "ST DUNSTANS STREET (SOUTH WEST SIDE), THE CHURCH OF ST DUNSTANS WITHOUT THE WEST GATE",
                 "$.entities[0].organisation-entity": "75",
-                "$.entities[0].listed-building-grade": "I",
                 "$.entities[0].reference": "{A4C9CA0E-DB41-4D3B-8115-68D996A6FFE7}",
+            },
+            "warnings": {
+                "$.entities[0].listed-building-grade": "I",
             },
         },
         "Canterbury Tree Preservation Zone (Lasso polygon around Cherry Avenue)": {

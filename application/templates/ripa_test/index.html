@@ -23,9 +23,9 @@
                 <div class="app-c-test-grid__items">
                   {% for dataset, result in results_grid[la].items() %}
                     <div class="app-c-test-grid__item">
-                      <span class="app-c-test-grid__result app-c-test-grid__result--{{ result | pass_fail }}">
-                        <span>{% if result in [True, False] %}<a href="#{{ la }}-{{ dataset }}" style="color: inherit">{% endif %}{{ dataset | unhyphenate | capitalize }}{% if result  in [True, False] %}</a>{% endif %}</span>
-                    <span class="app-c-test-grid__result-label">{{ result | pass_fail | capitalize }}</span>
+                      <span class="app-c-test-grid__result app-c-test-grid__result--{{ result | outcome }}">
+                        <span>{% if result in ["pass", "fail", "warn"] %}<a href="#{{ la }}-{{ dataset }}" style="color: inherit">{% endif %}{{ dataset | unhyphenate | capitalize }}{% if result  in ["pass", "fail", "warn"] %}</a>{% endif %}</span>
+                    <span class="app-c-test-grid__result-label">{{ result | outcome | capitalize }}</span>
                   </span>
                     </div>
                   {% endfor %}
@@ -70,8 +70,10 @@
                         <td class="govuk-table__cell">{{assertion.expected}}</td>
                         <td class="govuk-table__cell">{{assertion.actual}}</td>
                         <td class="govuk-table__cell govuk-body-s">
-                          {% if not assertion.match %}
+                          {% if not assertion.match and assertion.assertion_type.name == "strict"%}
                               <strong class="govuk-tag govuk-tag--red">fail</strong>
+                          {% elif not assertion.match and assertion.assertion_type.name == "warning"%}
+                            <strong class="govuk-tag govuk-tag--orange">warning</strong>
                           {% else %}
                               <strong class="govuk-tag govuk-tag--green">pass</strong>
                           {% endif %}

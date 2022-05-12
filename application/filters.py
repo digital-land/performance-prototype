@@ -52,12 +52,10 @@ def unhyphenate(s):
     return s.replace("-", " ")
 
 
-def pass_fail(v):
-    if v is None:
+def outcome(result):
+    if result is None:
         return "no test"
-    if v:
-        return "pass"
-    return "fail"
+    return result
 
 
 def date_time_format(d):

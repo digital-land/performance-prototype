@@ -82,7 +82,7 @@ def register_filters(app):
         urlencode_filter,
         remove_query_param_filter,
         unhyphenate,
-        pass_fail,
+        outcome,
         date_time_format,
         map_link_if_possible,
     )
@@ -94,7 +94,7 @@ def register_filters(app):
     app.add_template_filter(urlencode_filter, name="urlencode")
     app.add_template_filter(remove_query_param_filter, name="remove_query_param")
     app.add_template_filter(unhyphenate, name="unhyphenate")
-    app.add_template_filter(pass_fail, name="pass_fail")
+    app.add_template_filter(outcome, name="outcome")
     app.add_template_filter(date_time_format, name="date_time_format")
     app.add_template_filter(map_link_if_possible, name="map_link_if_possible")
 
