@@ -290,6 +290,8 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].name": "Great Missenden",
+            },
+            "warnings": {
                 "$.entities[0].organisation-entity": "67",
             },
         },
