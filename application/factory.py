@@ -85,6 +85,7 @@ def register_filters(app):
         outcome,
         date_time_format,
         map_link_if_possible,
+        debug
     )
 
     app.add_template_filter(clean_int_filter, name="to_int")
@@ -97,6 +98,7 @@ def register_filters(app):
     app.add_template_filter(outcome, name="outcome")
     app.add_template_filter(date_time_format, name="date_time_format")
     app.add_template_filter(map_link_if_possible, name="map_link_if_possible")
+    app.add_template_filter(debug, name="debug")
 
     from digital_land_frontend.filters import commanum_filter, hex_to_rgb_string_filter
 

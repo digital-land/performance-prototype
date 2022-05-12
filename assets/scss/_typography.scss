@@ -39,3 +39,8 @@ $govuk-typography-scale: map-merge($govuk-typography-scale, $app-typography-scal
   color: govuk-shade(govuk-colour("red"), 30);
   background: govuk-tint(govuk-colour("red"), 80);
 }
+
+.app-heading--divider {
+  padding-bottom: govuk-spacing(2);
+  border-bottom: 4px solid govuk-colour(blue);
+}

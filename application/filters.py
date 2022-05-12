@@ -1,5 +1,6 @@
 from datetime import datetime
 import urllib.parse
+import json
 
 from markupsafe import Markup
 from shapely import wkt
@@ -82,3 +83,8 @@ def map_link_if_possible(path, data):
         else:
             return path
     return path
+
+
+def debug(thing):
+  return f"<script>console.log({json.dumps(thing)});</script>"
+
