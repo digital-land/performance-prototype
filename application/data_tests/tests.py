@@ -837,6 +837,18 @@ tests = {
                 "$.count": 44,
             },
         },
+        "Canterbury Listed Building Pear Tree Cottage (with geometry)": {
+            "ticket": "https://trello.com/c/TghyQSq1/16-canterbury-listed-buildings",
+            "query": "?dataset=listed-building-outline&longitude=1.16071104&latitude=51.34140336",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Maypole Road, Hoath, Pear Tree Cottage",
+                "$.entities[0].organisation-entity": "75",
+                "$.entities[0].listed-building-grade": "II",
+                "$.entities[0].reference": "{1A820F8B-007B-476A-BF64-9CAB627A100C}",
+            },
+        },
         "Canterbury Listed Building Overall Count": {
             "ticket": "https://trello.com/c/TghyQSq1/16-canterbury-listed-buildings",
             "query": "?dataset=listed-building-outline&organisation_entity=75&field=reference",
