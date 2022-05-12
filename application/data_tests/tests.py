@@ -195,6 +195,13 @@ tests = {
                 "$.count": 226,
             },
         },
+        "Lambeth has no world heritage sites": {
+            "query": "?dataset=world-heritage-site&geometry_reference=E09000022",
+            "dataset": "world-heritage-site",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
@@ -375,6 +382,13 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "SP852067",
                 "$.entities[0].name": "Bacombe and Coombe Hills",
+            },
+        },
+        "Buckinghamshire has no world heritage sites": {
+            "query": "?dataset=world-heritage-site&geometry_reference=E06000060",
+            "dataset": "world-heritage-site",
+            "assertions": {
+                "$.count": 0,
             },
         },
     },
@@ -558,6 +572,13 @@ tests = {
         "Southwark has no SSSI": {
             "query": "?dataset=site-of-special-scientific-interest&geometry_reference=E09000028",
             "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Southwark has no world heritage sites": {
+            "query": "?dataset=world-heritage-site&geometry_reference=E09000028",
+            "dataset": "world-heritage-site",
             "assertions": {
                 "$.count": 0,
             },
@@ -888,6 +909,13 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "TR101624",
                 "$.entities[0].name": "Ellenden Wood",
+            },
+        },
+        "Canterbury Cathedral world heritage site": {
+            "query": "?latitude=51.2797844&longitude=1.0824708&dataset=world-heritage-site",
+            "dataset": "world-heritage-site",
+            "assertions": {
+                "$.count": 0,
             },
         },
     },
