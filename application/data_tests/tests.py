@@ -319,7 +319,7 @@ tests = {
         },
         "Chorleywood Article 4 direction, outside of Buckinghamshire": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?geometry=POINT(-0.53418646, 51.65627576)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-0.53418646 51.65627576)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "warnings": {
                 "$.count": 1,
