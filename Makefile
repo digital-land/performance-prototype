@@ -1,6 +1,5 @@
 
 init::
-	python -m pip install --upgrade pip
 	python -m pip install pip-tools
 	npm install
 	python -m piptools sync requirements/requirements.txt
