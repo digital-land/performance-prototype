@@ -34,6 +34,11 @@
             </div>
           </div>
         </div>
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            <p><a href="{{ url_for("ripa.run_tests") }}" class="govuk-button">Run the tests again now</a></p>
+          </div>
+        </div>
         <div class="app-summary">
           <h3 class="govuk-heading-l app-heading--divider">Summary</h3>
           <div class="govuk-grid-row">
@@ -90,11 +95,6 @@
           </div>
           <div class="govuk-grid-row">
               <p class="govuk-body">{% if date_of_test_run %}{{ date_of_test_run }}{% else %}no tests{% endif %}</p>
-          </div>
-        </div>
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-full">
-            <p><a href="{{ url_for("ripa.run_tests") }}" class="govuk-button">Run the tests again now</a></p>
           </div>
         </div>
         <div class="govuk-grid-row govuk-!-margin-top-8">
