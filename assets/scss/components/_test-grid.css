@@ -100,9 +100,8 @@
     }
 
     &--warn {
-      background: lighten(govuk-colour("orange"),10);
-      border: 3px solid govuk-colour("orange");
-      background: lighten(govuk-colour("orange"),8);
+      // border: 3px solid govuk-colour("orange");
+      background: #ffa537;
       box-sizing: border-box;
     }
     
@@ -117,13 +116,17 @@
       a {
         color: inherit;
         display: block;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
     &--warn {
-      color: #000;
+      color: darken(govuk-colour(orange),50);
       a {
-        color: black;
+        color: darken(govuk-colour(orange),50);
       }
     }
 
@@ -146,6 +149,7 @@
       text-transform: uppercase;
       font-family: monospace;
       font-size: 0.85em;
+      border-radius: 3px;
     }
     &-p--wrap {
       word-break: break-all;
