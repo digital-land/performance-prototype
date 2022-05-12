@@ -113,7 +113,7 @@
                       {% if not assertion.match and assertion.assertion_type.name == "strict" %}
                         <strong class="govuk-tag govuk-tag--red">fail</strong>
                       {% elif not assertion.match and assertion.assertion_type.name == "warning" %}
-                        <strong class="govuk-tag govuk-tag--orange">warning</strong>
+                        <strong class="govuk-tag govuk-tag--warn">warning</strong>
                       {% else %}
                         <strong class="govuk-tag govuk-tag--green">pass</strong>
                       {% endif %}
