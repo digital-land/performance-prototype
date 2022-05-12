@@ -135,6 +135,13 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Lambeth has no SSSI": {
+            "query": "?dataset=site-of-special-scientific-interest&geometry_reference=E09000022",
+            "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
         "Dulwich college tree preservation zones": {
             "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
             "query": "?geometry=POINT(-0.084859 51.441301)&geometry_relation=intersects&dataset=tree-preservation-zone",
@@ -361,6 +368,15 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Bacombe and Coombe Hills SSSI": {
+            "query": "?longitude=-0.765907&latitude=51.75339&dataset=site-of-special-scientific-interest",
+            "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "SP852067",
+                "$.entities[0].name": "Bacombe and Coombe Hills",
+            },
+        },
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
@@ -535,6 +551,13 @@ tests = {
             "ticket": "https://trello.com/c/fwcRbQFr/40-area-of-outstanding-natural-beauty",
             "query": "?dataset=area-of-outstanding-natural-beauty&geometry_reference=E09000028",
             "dataset": "area-of-outstanding-natural-beauty",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Southwark has no SSSI": {
+            "query": "?dataset=site-of-special-scientific-interest&geometry_reference=E09000028",
+            "dataset": "site-of-special-scientific-interest",
             "assertions": {
                 "$.count": 0,
             },
@@ -856,6 +879,15 @@ tests = {
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 1778,
+            },
+        },
+        "Ellenden Wood SSSI": {
+            "query": "?longitude=1.014626&latitude=51.321928&dataset=site-of-special-scientific-interest",
+            "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "TR101624",
+                "$.entities[0].name": "Ellenden Wood",
             },
         },
     },
