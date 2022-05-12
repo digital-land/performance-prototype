@@ -18,7 +18,7 @@ def index():
     query = db.session.query(TestRun).filter(TestRun.id.in_(subquery))
     try:
         latest_test_run = query.one()
-    except Exception as e:
+    except Exception:
         return render_template(
             "ripa_test/index.html",
             results_grid=[],
@@ -41,11 +41,15 @@ def index():
         else:
             result_by_local_authority[result.organisation].append(result)
 
+    datasets = set()
+    lpas = set()
     results_grid = {}
     for la in local_authorities.keys():
+        lpas.add(la)
         results = result_by_local_authority.get(la, [])
         dataset_results = {}
         for result in results:
+            datasets.add(result.dataset)
             assertion_count += len(result.assertions)
             for assertion in result.assertions:
                 if assertion.match:
@@ -87,6 +91,8 @@ def index():
         date_of_test_run=latest_test_run.created_timestamp.astimezone(
             dateutil.tz.gettz("Europe/London")
         ).strftime("%d %B %Y %H:%M:%S"),
+        dataset_count=len(datasets),
+        lpa_count=len(lpas),
         results=latest_test_run.results,
         test_count=test_count,
         assertion_count=assertion_count,
