@@ -20,12 +20,12 @@
                   <div class="app-c-test-grid__items">
                     {% for dataset, result in results_grid[la].items() %}
                       <div class="app-c-test-grid__item">
-                      <span class="app-c-test-grid__result app-c-test-grid__result--{{ result | outcome }}">
-                        <span>{% if result in ["pass", "fail", "warn"] %}<a href="#{{ la }}-{{ dataset }}"
-                                                                            style="color: inherit">{% endif %}{{ dataset | unhyphenate | capitalize }}
-                          {% if result  in ["pass", "fail", "warn"] %}</a>{% endif %}</span>
-                    <span class="app-c-test-grid__result-label">{{ result | outcome | capitalize }}</span>
-                  </span>
+                        <span class="app-c-test-grid__result app-c-test-grid__result--{{ result | outcome }}">
+                          <span>{% if result in ["pass", "fail", "warn"] %}<a href="#{{ la }}-{{ dataset }}"
+                                                                              style="color: inherit">{% endif %}{{ dataset | unhyphenate | capitalize }}
+                            {% if result  in ["pass", "fail", "warn"] %}</a>{% endif %}</span>
+                          <span class="app-c-test-grid__result-label">{{ result | outcome | capitalize }}</span>
+                        </span>
                       </div>
                     {% endfor %}
                   </div>
