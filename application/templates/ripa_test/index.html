@@ -43,13 +43,6 @@
           <h3 class="govuk-heading-l app-heading--divider">Summary</h3>
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-quarter">
-              <p class="govuk-body">{% if date_of_test_run %}{{ date_of_test_run }}{% else %}no tests{% endif %}</p>
-              <div class="app-data-item">
-                <p class="govuk-body app-data-item__label">Tests</p>
-                <span class="app-data-item__number app-!-font-size-60">{{ test_count }}</span>
-              </div>
-            </div>
-            <div class="govuk-grid-column-one-quarter">
               <div class="app-data-item">
                 <p class="govuk-body app-data-item__label">Datasets</p>
                 <span class="app-data-item__number app-!-font-size-60">{{ test_datasets }}</span>
