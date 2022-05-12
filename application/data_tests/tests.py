@@ -343,7 +343,7 @@ tests = {
         },
         "South Buckinghamshire Development Article 4 Direction hacked into the name": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "dataset=article-4-direction-area&organisation=local-authority-eng:BUC&reference=DO.34",
+            "query": "?dataset=article-4-direction-area&organisation=local-authority-eng:BUC&reference=DO.34",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 1,
@@ -352,7 +352,7 @@ tests = {
         },
         "South Buckinghamshire Argricultural Article 4 Direction hacked into the name": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "dataset=article-4-direction-area&organisation=local-authority-eng:BUC&reference=DO.7",
+            "query": "?dataset=article-4-direction-area&organisation=local-authority-eng:BUC&reference=DO.7",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 1,
