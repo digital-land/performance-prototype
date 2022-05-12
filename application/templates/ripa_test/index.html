@@ -39,14 +39,14 @@
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-quarter">
               <div class="app-data-item">
-                <p class="govuk-body app-data-item__label">Datasets</p>
-                <span class="app-data-item__number app-!-font-size-60">{{ dataset_count }}</span>
+                <p class="govuk-body app-data-item__label">Organisations</p>
+                <span class="app-data-item__number app-!-font-size-60">{{ lpa_count }}</span>
               </div>
             </div>
             <div class="govuk-grid-column-one-quarter">
               <div class="app-data-item">
-                <p class="govuk-body app-data-item__label">Organisations</p>
-                <span class="app-data-item__number app-!-font-size-60">{{ lpa_count }}</span>
+                <p class="govuk-body app-data-item__label">Datasets</p>
+                <span class="app-data-item__number app-!-font-size-60">{{ dataset_count }}</span>
               </div>
             </div>
             <div class="govuk-grid-column-one-quarter">
@@ -56,7 +56,6 @@
               </div>
             </div>
             <div class="govuk-grid-column-one-quarter">
-              <p class="govuk-body">{% if date_of_test_run %}{{ date_of_test_run }}{% else %}no tests{% endif %}</p>
               <div class="app-data-item">
                 <p class="govuk-body app-data-item__label">Tests</p>
                 <span class="app-data-item__number app-!-font-size-60">{{ test_count }}</span>
@@ -88,6 +87,9 @@
                 <span class="app-data-item__number app-!-font-size-60">{{ warn_count }}</span>
               </div>
             </div>
+          </div>
+          <div class="govuk-grid-row">
+              <p class="govuk-body">{% if date_of_test_run %}{{ date_of_test_run }}{% else %}no tests{% endif %}</p>
           </div>
         </div>
         <div class="govuk-grid-row">
