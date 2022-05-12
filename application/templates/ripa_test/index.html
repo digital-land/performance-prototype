@@ -9,83 +9,127 @@
     </div>
     {% block content %}
       <div class="govuk-inset-text">
-      {% if date_of_test_run %}{{ date_of_test_run }}{% else %}no tests{% endif %}
+        {% if date_of_test_run %}{{ date_of_test_run }}{% else %}no tests{% endif %}
       </div>
-      {%  if results_grid %}
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          <div class="app-c-test-grid">
-            {% for la in local_authorities.keys() %}
-              <div class="app-c-test-grid__row">
-                <div class="app-c-test-grid__label">
-                  {{ local_authorities[la] }}
-                </div>
-                <div class="app-c-test-grid__items">
-                  {% for dataset, result in results_grid[la].items() %}
-                    <div class="app-c-test-grid__item">
+      {% if results_grid %}
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            <div class="app-c-test-grid">
+              {% for la in local_authorities.keys() %}
+                <div class="app-c-test-grid__row">
+                  <div class="app-c-test-grid__label">
+                    {{ local_authorities[la] }}
+                  </div>
+                  <div class="app-c-test-grid__items">
+                    {% for dataset, result in results_grid[la].items() %}
+                      <div class="app-c-test-grid__item">
                       <span class="app-c-test-grid__result app-c-test-grid__result--{{ result | outcome }}">
-                        <span>{% if result in ["pass", "fail", "warn"] %}<a href="#{{ la }}-{{ dataset }}" style="color: inherit">{% endif %}{{ dataset | unhyphenate | capitalize }}{% if result  in ["pass", "fail", "warn"] %}</a>{% endif %}</span>
+                        <span>{% if result in ["pass", "fail", "warn"] %}<a href="#{{ la }}-{{ dataset }}"
+                                                                            style="color: inherit">{% endif %}{{ dataset | unhyphenate | capitalize }}
+                          {% if result  in ["pass", "fail", "warn"] %}</a>{% endif %}</span>
                     <span class="app-c-test-grid__result-label">{{ result | outcome | capitalize }}</span>
                   </span>
-                    </div>
-                  {% endfor %}
+                      </div>
+                    {% endfor %}
+                  </div>
                 </div>
-              </div>
-            {% endfor %}
+              {% endfor %}
+            </div>
           </div>
         </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          <p><a href="{{ url_for("ripa.run_tests") }}" class="govuk-button">Run the tests again now</a></p>
-        </div>
-      </div>
-      <div class="govuk-grid-row govuk-!-margin-top-4">
-        <div class="govuk-grid-column-full">
-          <h2 class="govuk-heading-l">Detailed results</h2>
-        </div>
-      </div>
-      {% for result in results %}
-        <div class="govuk-grid-row govuk-!-margin-bottom-5">
+        <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
-              <h3 class="govuk-heading-m" id="{{ result.organisation}}-{{ result.dataset }}">{{ local_authorities[result.organisation] }}</h3>
-              <p id="{{result.test_name}}" class="govuk-body-s">Test: {% if result.ticket %}<a href="{{ result.ticket }}">{% endif %}{{result.test_name}}{% if result.ticket %}</a>{% endif %}</p>
-              <p class="govuk-body-s">Dataset: <a href="https://www.digital-land.info/dataset/{{ result.dataset }}">{{ result.dataset }}</a></p>
-              <p class="govuk-body-s app-c-test-grid__result-p--wrap">Query: <a href="https://www.digital-land.info/entity.json{{result.query}}">{{result.query}}</a></p>
-
-              <table class="govuk-table" id="{{ result.organisation}}-{{ result.dataset }}">
+            <p><a href="{{ url_for("ripa.run_tests") }}" class="govuk-button">Run the tests again now</a></p>
+          </div>
+        </div>
+        <div class="app-summary">
+          <div class="app-summary-banner__header">
+            <h3 class="govuk-heading-l">Summary</h3>
+          </div>
+          <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+              <div class="app-data-item">
+                <p class="govuk-body app-data-item__label">Tests</p>
+                <span class="app-data-item__number app-!-font-size-60">{{ test_count }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-quarter">
+              <div class="app-data-item">
+                <p class="govuk-body app-data-item__label">Assertions</p>
+                <span class="app-data-item__number app-!-font-size-60">{{ assertion_count }}</span>
+              </div>
+            </div>
+            <div class="govuk-grid-column-one-quarter">
+              <div class="app-data-item">
+                <p class="govuk-body app-data-item__label">Passing</p>
+                <span class="app-data-item__number app-!-font-size-60">{{ pass_count }}</span>
+              </div>
+            </div>
+            <div class="govuk-grid-column-one-quarter">
+              <div class="app-data-item">
+                <p class="govuk-body app-data-item__label">Failing</p>
+                <span class="app-data-item__number app-!-font-size-60">{{ fail_count }}</span>
+              </div>
+            </div>
+            <div class="govuk-grid-column-one-quarter">
+              <div class="app-data-item">
+                <p class="govuk-body app-data-item__label">Warnings</p>
+                <span class="app-data-item__number app-!-font-size-60">{{ warn_count }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="govuk-grid-row govuk-!-margin-top-8">
+          <div class="govuk-grid-column-full">
+            <h2 class="govuk-heading-l">Detailed results</h2>
+          </div>
+        </div>
+        {% for result in results %}
+          <div class="govuk-grid-row govuk-!-margin-bottom-5">
+            <div class="govuk-grid-column-full">
+              <h3 class="govuk-heading-m"
+                  id="{{ result.organisation }}-{{ result.dataset }}">{{ local_authorities[result.organisation] }}</h3>
+              <p id="{{ result.test_name }}" class="govuk-body-s">Test: {% if result.ticket %}
+                <a href="{{ result.ticket }}">{% endif %}{{ result.test_name }}{% if result.ticket %}</a>{% endif %}</p>
+              <p class="govuk-body-s">Dataset: <a
+                href="https://www.digital-land.info/dataset/{{ result.dataset }}">{{ result.dataset }}</a></p>
+              <p class="govuk-body-s app-c-test-grid__result-p--wrap">Query: <a
+                href="https://www.digital-land.info/entity.json{{ result.query }}">{{ result.query }}</a></p>
+              <table class="govuk-table" id="{{ result.organisation }}-{{ result.dataset }}">
                 <thead class="govuk-table__head">
-                  <tr class="govuk-table__row govuk-body-s">
-                    <th scope="col" class="govuk-table__header govuk-!-width-one-third">Path</th>
-                    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Expected</th>
-                    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Actual</th>
-                    <th scope="col" class="govuk-table__header">Status</th>
-                  </tr>
+                <tr class="govuk-table__row govuk-body-s">
+                  <th scope="col" class="govuk-table__header govuk-!-width-one-third">Path</th>
+                  <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Expected</th>
+                  <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Actual</th>
+                  <th scope="col" class="govuk-table__header">Status</th>
+                </tr>
                 </thead>
                 <tbody class="govuk-table__body">
-                  {%  set entity_data = result.response_data.data["entities"] %}
-                  {% for assertion in result.assertions %}
-                      <tr class="govuk-table__row govuk-body-s">
-                        <td class="govuk-table__cell">{{assertion.path | map_link_if_possible(entity_data) }}</td>
-                        <td class="govuk-table__cell">{{assertion.expected}}</td>
-                        <td class="govuk-table__cell">{{assertion.actual}}</td>
-                        <td class="govuk-table__cell govuk-body-s">
-                          {% if not assertion.match and assertion.assertion_type.name == "strict"%}
-                              <strong class="govuk-tag govuk-tag--red">fail</strong>
-                          {% elif not assertion.match and assertion.assertion_type.name == "warning"%}
-                            <strong class="govuk-tag govuk-tag--orange">warning</strong>
-                          {% else %}
-                              <strong class="govuk-tag govuk-tag--green">pass</strong>
-                          {% endif %}
-                        </td>
-                      </tr>
-                  {% endfor %}
+                {% set entity_data = result.response_data.data["entities"] %}
+                {% for assertion in result.assertions %}
+                  <tr class="govuk-table__row govuk-body-s">
+                    <td class="govuk-table__cell">{{ assertion.path | map_link_if_possible(entity_data) }}</td>
+                    <td class="govuk-table__cell">{{ assertion.expected }}</td>
+                    <td class="govuk-table__cell">{{ assertion.actual }}</td>
+                    <td class="govuk-table__cell govuk-body-s">
+                      {% if not assertion.match and assertion.assertion_type.name == "strict" %}
+                        <strong class="govuk-tag govuk-tag--red">fail</strong>
+                      {% elif not assertion.match and assertion.assertion_type.name == "warning" %}
+                        <strong class="govuk-tag govuk-tag--orange">warning</strong>
+                      {% else %}
+                        <strong class="govuk-tag govuk-tag--green">pass</strong>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
                 </tbody>
               </table>
+            </div>
           </div>
-        </div>
-      {% endfor %}
-      {%  endif %}
+        {% endfor %}
+      {% endif %}
     {% endblock content %}
   </main>
 {% endblock main %}

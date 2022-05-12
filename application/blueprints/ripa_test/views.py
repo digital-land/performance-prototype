@@ -28,6 +28,11 @@ def index():
 
     datasets_tested = set([])
     result_by_local_authority = {}
+    test_count = len(latest_test_run.results)
+    assertion_count = 0
+    pass_count = 0
+    fail_count = 0
+    warn_count = 0
 
     for result in latest_test_run.results:
         datasets_tested.add(result.dataset)
@@ -41,16 +46,20 @@ def index():
         results = result_by_local_authority.get(la, [])
         dataset_results = {}
         for result in results:
+            assertion_count += len(result.assertions)
             for assertion in result.assertions:
                 if assertion.match:
+                    pass_count += 1
                     outcome = "pass"
                 elif (
                     not assertion.match
                     and assertion.assertion_type == AssertionType.strict
                 ):
                     outcome = "fail"
+                    fail_count += 1
                 else:
                     outcome = "warn"
+                    warn_count += 1
 
                 if result.dataset not in dataset_results:
                     dataset_results[result.dataset] = [outcome]
@@ -79,6 +88,11 @@ def index():
             dateutil.tz.gettz("Europe/London")
         ).strftime("%d %B %Y %H:%M:%S"),
         results=latest_test_run.results,
+        test_count=test_count,
+        assertion_count=assertion_count,
+        pass_count=pass_count,
+        fail_count=fail_count,
+        warn_count=warn_count,
     )
 
 
