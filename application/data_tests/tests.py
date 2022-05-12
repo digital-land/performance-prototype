@@ -317,28 +317,23 @@ tests = {
                 "$.count": 48,
             },
         },
-        "Article 4 Wiggerton projection error (should be present)": {
+        "Chorleywood Article 4 direction, outside of Buckinghamshire": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?geometry=POINT(-0.64704972 51.75946783)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-0.53418646, 51.65627576)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "warnings": {
                 "$.count": 1,
             },
         },
-        "Article 4 Wiggerton projection error (should not be present)": {
-            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?geometry=POINT(-0.63020774 51.76295983)&geometry_relation=intersects&dataset=article-4-direction-area",
-            "dataset": "article-4-direction-area",
-            "assertions": {
-                "$.count": 0,
-            },
-        },
-        "Buckinghamshire Article 4 Direction NE of Wycombe Heath Farm (should be present)": {
+        "Buckinghamshire Article 4 Direction NE of Wycombe Heath Farm": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
             "query": "?geometry=POINT(-0.70412678 51.67024811)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 3,
+                "$.entities[0].name": "Whole District excluding the Town of Chesham - Poultry production.",
+                "$.entities[1].name": "Land at Spurlands End, Beech Tree Road cross-roads - means of enclosure.",
+                "$.entities[2].name": "Land at Spurlands End, Beech Tree Road cross-roads - caravan sites.",
             },
         },
         "South Buckinghamshire Development Article 4 Direction hacked into the name": {
