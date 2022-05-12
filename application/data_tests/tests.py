@@ -915,7 +915,9 @@ tests = {
             "query": "?latitude=51.2797844&longitude=1.0824708&dataset=world-heritage-site",
             "dataset": "world-heritage-site",
             "assertions": {
-                "$.count": 0,
+                "$.count": 1,
+                "$.entities[0].reference": "1000093",
+                "$.entities[0].name": "Canterbury Cathedral, St. Augustine's Abbey and St. Martin's Church",
             },
         },
     },
