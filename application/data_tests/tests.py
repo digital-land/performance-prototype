@@ -155,6 +155,21 @@ tests = {
                 "$.entities[1].tree-preservation-order": "279",
             },
         },
+        "Lambeth Tree Zone count": {
+            "query": "?dataset=tree-preservation-zone&organisation_entity=192&field=reference",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 226,
+            },
+        },
+        "Lambeth Tree Zone Lasso Query": {
+            "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
+            "query": "?geometry=POLYGON((-0.12076377868652344 51.44405766006079,-0.12149333953857419 51.44090126223807,-0.11007785797119139 51.438547196427265,-0.10737419128417967 51.442051500267695,-0.11994838714599608 51.44515432349104,-0.12076377868652344 51.44405766006079))&geometry_relation=intersects&dataset=tree-preservation-zone",  # noqa: E501
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 5,
+            },
+        },
         "Lambeth Tree Clarence Avenue": {
             "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
             "query": "?geometry=POINT(-0.133976 51.451147)&geometry_relation=intersects&dataset=tree",
@@ -174,14 +189,6 @@ tests = {
                 "$.count": 5,
             },
         },
-        "Lambeth Tree Zone Lasso Query": {
-            "ticket": "https://trello.com/c/elSRI6Hs/21-lambeth-tree-preservation-orders",
-            "query": "?geometry=POLYGON((-0.12076377868652344 51.44405766006079,-0.12149333953857419 51.44090126223807,-0.11007785797119139 51.438547196427265,-0.10737419128417967 51.442051500267695,-0.11994838714599608 51.44515432349104,-0.12076377868652344 51.44405766006079))&geometry_relation=intersects&dataset=tree-preservation-zone",  # noqa: E501
-            "dataset": "tree-preservation-zone",
-            "assertions": {
-                "$.count": 5,
-            },
-        },
         "Lambeth organisation tree point count": {
             "query": "?dataset=tree&organisation_entity=192",
             "dataset": "tree",
@@ -194,13 +201,6 @@ tests = {
             "dataset": "tree",
             "warnings": {
                 "$.count": 2551,
-            },
-        },
-        "Lambeth Tree Zone count": {
-            "query": "?dataset=tree-preservation-zone&organisation_entity=192&field=reference",
-            "dataset": "tree-preservation-zone",
-            "assertions": {
-                "$.count": 226,
             },
         },
         "Lambeth has no world heritage sites": {
@@ -232,6 +232,43 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].name": "Former Wycombe Rural District - Poultry Production",
                 "$.entities[0].description": "Certain structures used for production of poultry or eggs - refer to Order & GDO 1950",
+            },
+        },
+        "Chorleywood Article 4 direction, outside of Buckinghamshire": {
+            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
+            "query": "?geometry=POINT(-0.53418646 51.65627576)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "warnings": {
+                "$.count": 1,
+            },
+        },
+        "Buckinghamshire Article 4 Direction NE of Wycombe Heath Farm": {
+            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
+            "query": "?geometry=POINT(-0.70412678 51.67024811)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 3,
+                "$.entities[0].name": "Whole District excluding the Town of Chesham - Poultry production.",
+                "$.entities[1].name": "Land at Spurlands End, Beech Tree Road cross-roads - means of enclosure.",
+                "$.entities[2].name": "Land at Spurlands End, Beech Tree Road cross-roads - caravan sites.",
+            },
+        },
+        "South Buckinghamshire Development Article 4 Direction hacked into the name": {
+            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
+            "query": "?dataset=article-4-direction-area&organisation=local-authority-eng:BUC&reference=DO.34",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Land West of Mansion Lane, Immediately South of Iverdale Close, Iver - Development",
+            },
+        },
+        "South Buckinghamshire Argricultural Article 4 Direction hacked into the name": {
+            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
+            "query": "?dataset=article-4-direction-area&organisation=local-authority-eng:BUC&reference=DO.7",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Land on the North Side of Seven Hills Road, Iver - Agricultural",
             },
         },
         "Buckinghamshire scheduled monument": {
@@ -326,43 +363,6 @@ tests = {
                 "$.count": 48,
             },
         },
-        "Chorleywood Article 4 direction, outside of Buckinghamshire": {
-            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?geometry=POINT(-0.53418646 51.65627576)&geometry_relation=intersects&dataset=article-4-direction-area",
-            "dataset": "article-4-direction-area",
-            "warnings": {
-                "$.count": 1,
-            },
-        },
-        "Buckinghamshire Article 4 Direction NE of Wycombe Heath Farm": {
-            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?geometry=POINT(-0.70412678 51.67024811)&geometry_relation=intersects&dataset=article-4-direction-area",
-            "dataset": "article-4-direction-area",
-            "assertions": {
-                "$.count": 3,
-                "$.entities[0].name": "Whole District excluding the Town of Chesham - Poultry production.",
-                "$.entities[1].name": "Land at Spurlands End, Beech Tree Road cross-roads - means of enclosure.",
-                "$.entities[2].name": "Land at Spurlands End, Beech Tree Road cross-roads - caravan sites.",
-            },
-        },
-        "South Buckinghamshire Development Article 4 Direction hacked into the name": {
-            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?dataset=article-4-direction-area&organisation=local-authority-eng:BUC&reference=DO.34",
-            "dataset": "article-4-direction-area",
-            "assertions": {
-                "$.count": 1,
-                "$.entities[0].name": "Land West of Mansion Lane, Immediately South of Iverdale Close, Iver - Development",
-            },
-        },
-        "South Buckinghamshire Argricultural Article 4 Direction hacked into the name": {
-            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?dataset=article-4-direction-area&organisation=local-authority-eng:BUC&reference=DO.7",
-            "dataset": "article-4-direction-area",
-            "assertions": {
-                "$.count": 1,
-                "$.entities[0].name": "Land on the North Side of Seven Hills Road, Iver - Agricultural",
-            },
-        },
         "Listed Building Lasso query": {
             "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
             "query": "?geometry=POLYGON%28%28-0.7748794555664062%2051.679793621379986%2C-0.7728195190429689%2051.62526373476129%2C-0.7137680053710938%2051.6220665895049%2C-0.6804656982421875%2051.63613234359897%2C-0.7048416137695312%2051.655092894606554%2C-0.6832122802734374%2051.66254711886705%2C-0.6928253173828126%2051.67723899831586%2C-0.7250976562500001%2051.666806125075425%2C-0.7429504394531249%2051.647850474028985%2C-0.751190185546875%2051.65296289102838%2C-0.7436370849609375%2051.67638742526901%2C-0.7748794555664062%2051.679793621379986%29%29&geometry_relation=intersects&dataset=listed-building-outline",  # noqa: E501
@@ -389,7 +389,7 @@ tests = {
             },
             "warnings": {
                 "$.entities[0].name": "The White Hart",
-            }
+            },
         },
         "Listed Building Projection Error (should not be present)": {
             "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
@@ -467,30 +467,14 @@ tests = {
                 "$.count": 0,
             },
         },
-        "Southwark article 4 direction (The Lord Nelson, Union Street)": {
-            "ticket": "https://trello.com/c/6G0Vv44y/22-southwark-article-4-directions",
-            "query": "?dataset=article-4-direction-area&longitude=-0.102682&latitude=51.503432",
-            "dataset": "article-4-direction-area",
+        "Southwark scheduled monument": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
+            "query": "?geometry=POINT(-0.052963 51.501611)&geometry_relation=intersects&dataset=scheduled-monument",
+            "dataset": "scheduled-monument",
             "assertions": {
-                "$.count": 6,
-                "$.entities[0].name": "The Lord Nelson",
-                "$.entities[0].description": "Change of use, demolition or alteration of pubs is restricted",
-                "$.entities[0].organisation-entity": "329",
-                "$.entities[1].name": "Central Activities Zone",
-                "$.entities[1].description": "Change of use from offices to dwelling houses is restricted",
-                "$.entities[1].organisation-entity": "329",
-                "$.entities[2].name": "Central Activities Zone",
-                "$.entities[2].description": "Demolition of commercial buildings and construction of new dwellinghouses is restricted",
-                "$.entities[2].organisation-entity": "329",
-                "$.entities[3].name": "Bankside and Borough District Town Centre",
-                "$.entities[3].description": "Demolition of commercial buildings and construction of new dwellinghouses is restricted",
-                "$.entities[3].organisation-entity": "329",
-                "$.entities[4].name": "Central Activities Zone",
-                "$.entities[4].description": "Change of use from Class E to residential is restricted",
-                "$.entities[4].organisation-entity": "329",
-                "$.entities[5].name": "Bankside and Borough District Town Centre",
-                "$.entities[5].description": "Change of use from Class E to residential is restricted",
-                "$.entities[5].organisation-entity": "329",
+                "$.count": 1,
+                "$.entities[0].reference": "1005556",
+                "$.entities[0].name": "Pumping engine house for Brunel's Thames tunnel",
             },
         },
         "Southwark listed building (Church of St Peter)": {
@@ -529,6 +513,32 @@ tests = {
                 "$.entities[2].dataset": "listed-building",
                 "$.entities[3].dataset": "listed-building-outline",
                 "$.entities[3].listed-building-grade": "II",
+            },
+        },
+        "Southwark article 4 direction (The Lord Nelson, Union Street)": {
+            "ticket": "https://trello.com/c/6G0Vv44y/22-southwark-article-4-directions",
+            "query": "?dataset=article-4-direction-area&longitude=-0.102682&latitude=51.503432",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 6,
+                "$.entities[0].name": "The Lord Nelson",
+                "$.entities[0].description": "Change of use, demolition or alteration of pubs is restricted",
+                "$.entities[0].organisation-entity": "329",
+                "$.entities[1].name": "Central Activities Zone",
+                "$.entities[1].description": "Change of use from offices to dwelling houses is restricted",
+                "$.entities[1].organisation-entity": "329",
+                "$.entities[2].name": "Central Activities Zone",
+                "$.entities[2].description": "Demolition of commercial buildings and construction of new dwellinghouses is restricted",
+                "$.entities[2].organisation-entity": "329",
+                "$.entities[3].name": "Bankside and Borough District Town Centre",
+                "$.entities[3].description": "Demolition of commercial buildings and construction of new dwellinghouses is restricted",
+                "$.entities[3].organisation-entity": "329",
+                "$.entities[4].name": "Central Activities Zone",
+                "$.entities[4].description": "Change of use from Class E to residential is restricted",
+                "$.entities[4].organisation-entity": "329",
+                "$.entities[5].name": "Bankside and Borough District Town Centre",
+                "$.entities[5].description": "Change of use from Class E to residential is restricted",
+                "$.entities[5].organisation-entity": "329",
             },
         },
         "Southwark article 4 direction (The Lord Nelson, Old Kent Road)": {
@@ -574,16 +584,6 @@ tests = {
                 "$.entities[7].description": "Change of use from Class E to residential is restricted",
                 "$.entities[8].name": "Railway Arches",
                 "$.entities[8].description": "Change of use from Class E to residential is restricted",
-            },
-        },
-        "Southwark scheduled monument": {
-            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
-            "query": "?geometry=POINT(-0.052963 51.501611)&geometry_relation=intersects&dataset=scheduled-monument",
-            "dataset": "scheduled-monument",
-            "assertions": {
-                "$.count": 1,
-                "$.entities[0].reference": "1005556",
-                "$.entities[0].name": "Pumping engine house for Brunel's Thames tunnel",
             },
         },
         "Southwark has no areas of outstanding natural beauty": {
@@ -832,6 +832,14 @@ tests = {
                 "$.count": 1573,
             },
         },
+        "Canterbury Tree Preservation Zone (Lasso polygon around Cherry Avenue)": {
+            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
+            "query": "?geometry=POLYGON%20((1.05943637247152%2051.2888303021592,1.05970135818629%2051.289536050302,1.06080859267814%2051.2897450342821,1.06165081394246%2051.2892482651408,1.06138579958004%2051.2885425218673,1.06027859260043%2051.2883335428658,1.05943637247152%2051.2888303021592))&geometry_relation=intersects&dataset=tree-preservation-zone",  # noqa: E501
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 44,
+            },
+        },
         "Canterbury Tree Overall Count": {
             "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
             "query": "?dataset=tree&organisation_entity=75&field=reference",
@@ -909,14 +917,6 @@ tests = {
             },
             "warnings": {
                 "$.entities[0].listed-building-grade": "I",
-            },
-        },
-        "Canterbury Tree Preservation Zone (Lasso polygon around Cherry Avenue)": {
-            "ticket": "https://trello.com/c/qVcURTVE/17-canterbury-tree-preservation-orders",
-            "query": "?geometry=POLYGON%20((1.05943637247152%2051.2888303021592,1.05970135818629%2051.289536050302,1.06080859267814%2051.2897450342821,1.06165081394246%2051.2892482651408,1.06138579958004%2051.2885425218673,1.06027859260043%2051.2883335428658,1.05943637247152%2051.2888303021592))&geometry_relation=intersects&dataset=tree-preservation-zone",  # noqa: E501
-            "dataset": "tree-preservation-zone",
-            "assertions": {
-                "$.count": 44,
             },
         },
         "Canterbury Listed Building Pear Tree Cottage (with geometry)": {
