@@ -136,6 +136,7 @@ tests = {
             },
         },
         "Lambeth has no SSSI": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
             "query": "?dataset=site-of-special-scientific-interest&geometry_reference=E09000022",
             "dataset": "site-of-special-scientific-interest",
             "assertions": {
@@ -196,6 +197,7 @@ tests = {
             },
         },
         "Lambeth has no world heritage sites": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?dataset=world-heritage-site&geometry_reference=E09000022",
             "dataset": "world-heritage-site",
             "assertions": {
@@ -391,6 +393,7 @@ tests = {
             },
         },
         "Bacombe and Coombe Hills SSSI": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
             "query": "?longitude=-0.765907&latitude=51.75339&dataset=site-of-special-scientific-interest",
             "dataset": "site-of-special-scientific-interest",
             "assertions": {
@@ -400,6 +403,7 @@ tests = {
             },
         },
         "Buckinghamshire has no world heritage sites": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?dataset=world-heritage-site&geometry_reference=E06000060",
             "dataset": "world-heritage-site",
             "assertions": {
@@ -584,6 +588,7 @@ tests = {
             },
         },
         "Southwark has no SSSI": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
             "query": "?dataset=site-of-special-scientific-interest&geometry_reference=E09000028",
             "dataset": "site-of-special-scientific-interest",
             "assertions": {
@@ -591,6 +596,7 @@ tests = {
             },
         },
         "Southwark has no world heritage sites": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?dataset=world-heritage-site&geometry_reference=E09000028",
             "dataset": "world-heritage-site",
             "assertions": {
@@ -917,6 +923,7 @@ tests = {
             },
         },
         "Ellenden Wood SSSI": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
             "query": "?longitude=1.014626&latitude=51.321928&dataset=site-of-special-scientific-interest",
             "dataset": "site-of-special-scientific-interest",
             "assertions": {
@@ -926,6 +933,7 @@ tests = {
             },
         },
         "Canterbury Cathedral world heritage site": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?latitude=51.2797844&longitude=1.0824708&dataset=world-heritage-site",
             "dataset": "world-heritage-site",
             "assertions": {
