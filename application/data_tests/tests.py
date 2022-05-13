@@ -450,6 +450,36 @@ tests = {
                 "$.entities[0].name": "Bacombe and Coombe Hills",
             },
         },
+        "Buckinghamshire SSSI Ellenden Wood": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
+            "query": "?geometry=POINT(-0.52649001 51.51644676)&geometry_relation=intersects&dataset=site-of-special-scientific-interest",
+            "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Ellenden Wood",
+                "$.entities[0].reference": "TR101624",
+            },
+        },
+        "Buckinghamshire SSSI West Blean and Thornden Woods": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
+            "query": "?geometry=POINT(1.08231671 51.32957921)&geometry_relation=intersects&dataset=site-of-special-scientific-interest",
+            "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "West Blean and Thornden Woods",
+                "$.entities[0].reference": "TR152633",
+            },
+        },
+        "Buckinghamshire SSSI East Blean Woods": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
+            "query": "?geometry=POINT(1.14128119 51.33971800)&geometry_relation=intersects&dataset=site-of-special-scientific-interest",
+            "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "East Blean Woods",
+                "$.entities[0].reference": "TR188642",
+            },
+        },
         "Buckinghamshire has no world heritage sites": {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?dataset=world-heritage-site&geometry_reference=E06000060",
