@@ -309,7 +309,7 @@ tests = {
             "dataset": "article-4-direction-area",
             "warnings": {
                 "$.count": 1,
-                "$.entities[0].description": "Land West of Mansion Lane, Immediately South of Iverdale Close, Iver - Development",
+                "$.entities[0].name": "Land West of Mansion Lane, Immediately South of Iverdale Close, Iver - Development",
             },
         },
         "Buckinghamshire scheduled monument": {
