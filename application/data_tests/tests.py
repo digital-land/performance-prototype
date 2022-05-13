@@ -1046,5 +1046,23 @@ tests = {
                 "$.entities[0].name": "Canterbury Cathedral, St. Augustine's Abbey and St. Martin's Church",
             },
         },
+        "Canterbury Cathedral Buffer WHS": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?geometry=POINT(1.08549530 51.32957921)&geometry_relation=intersects&dataset=world-heritage-site",
+            "dataset": "world-heritage-site",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Canterbury Cathedral, St. Augustine's Abbey and St. Martin's Church",
+            },
+        },
+        "WHS Overall Count": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?dataset=world-heritage-site",
+            "dataset": "world-heritage-site",
+            "assertions": {
+                "$.count": 27,
+            },
+        },
+
     },
 }
