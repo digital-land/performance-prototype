@@ -1,3 +1,5 @@
+import collections
+
 import dateutil
 from flask import Blueprint, render_template, redirect, url_for
 from application.data_tests.tests import local_authorities
@@ -90,7 +92,7 @@ def index():
     return render_template(
         "ripa_test/index.html",
         results_grid=results_grid,
-        local_authorities=local_authorities,
+        local_authorities=collections.OrderedDict(sorted(local_authorities.items())),
         date_of_test_run=latest_test_run.created_timestamp.astimezone(
             dateutil.tz.gettz("Europe/London")
         ).strftime("%d %B %Y %H:%M:%S"),

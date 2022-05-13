@@ -85,7 +85,7 @@ def register_filters(app):
         outcome,
         date_time_format,
         map_link_if_possible,
-        debug
+        debug,
     )
 
     app.add_template_filter(clean_int_filter, name="to_int")

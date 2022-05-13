@@ -41,10 +41,12 @@ def _run_tests_for_local_authority(local_authority, tests):
     for test_name, details in tests[local_authority].items():
         test_names.append(test_name)
         test_details.append(details)
-    local_authority_names = [local_authority]*len(test_names)
+    local_authority_names = [local_authority] * len(test_names)
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        for result in executor.map(_run_single_test, local_authority_names, test_names, test_details):
+        for result in executor.map(
+            _run_single_test, local_authority_names, test_names, test_details
+        ):
             results.extend(result)
         executor.shutdown()
 

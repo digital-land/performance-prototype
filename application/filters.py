@@ -86,5 +86,4 @@ def map_link_if_possible(path, data):
 
 
 def debug(thing):
-  return f"<script>console.log({json.dumps(thing)});</script>"
-
+    return f"<script>console.log({json.dumps(thing)});</script>"
