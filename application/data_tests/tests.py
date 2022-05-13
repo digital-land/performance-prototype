@@ -737,6 +737,8 @@ tests = {
             "dataset": "conservation-area",
             "assertions": {
                 "$.count": 1,
+            },
+            "warnings": {
                 "$.entities[0].reference": "180",
                 "$.entities[0].name": "MARTYRS FIELD",
                 "$.entities[0].organisation-entity": "75",
