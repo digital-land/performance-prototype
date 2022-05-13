@@ -242,6 +242,14 @@ tests = {
                 "$.count": 1,
             },
         },
+        "Land north of Burton's Lane Article 4 direction, outside of Buckinghamshire": {
+            "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
+            "query": "?geometry=POINT(-0.51872219 51.66143563)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "warnings": {
+                "$.count": 1,
+            },
+        },
         "Buckinghamshire Article 4 Direction NE of Wycombe Heath Farm": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
             "query": "?geometry=POINT(-0.70412678 51.67024811)&geometry_relation=intersects&dataset=article-4-direction-area",
