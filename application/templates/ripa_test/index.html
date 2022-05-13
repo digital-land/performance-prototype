@@ -107,58 +107,75 @@
           </div>
         </div>
 
+        {% macro sentence_case(text) %}
+            {{ text[0]|upper}}{{text[1:] }}
+        {% endmacro %}        
+
         {% for organisation, resultsItems in results | groupby('organisation') %}
           <div class="govuk-grid-row govuk-!-margin-bottom-6">
             <div class="govuk-grid-column-full">
               <h3 class="govuk-heading-m">{{ local_authorities[organisation] }}</h3>
-              {% for result in resultsItems %}
-                <article class="app-summary-card govuk-!-margin-bottom-6" id="{{ result.organisation }}-{{ result.dataset }}">
-                  <header class="app-summary-card__header" id="{{ result.test_name | replace(' ', '-') | lower }}">
-                    <h4 class="app-summary-card__title">Test: {% if result.ticket %}<a href="{{ result.ticket }}">{% endif %}{{ result.test_name }}{% if result.ticket %}</a>{% endif %}</h4>
-                  </header>
+              {% for dataset, resultsList in resultsItems | groupby('dataset') %}
 
-                  <div class="app-summary-card__body">
+                <section id="{{ organisation }}-{{ dataset }}" class="app-test-group">
+                  
+                  <h4 class="govuk-heading-s">
+                    {{ sentence_case(dataset | replace('-', ' ')) }}
+                  </h4>
 
-                  <p class="govuk-body-s govuk-!-margin-bottom-1">Dataset: <a
-                    href="https://www.digital-land.info/dataset/{{ result.dataset }}">{{ result.dataset }}</a></p>
-                  <p class="govuk-body-s app-c-test-grid__result-p--wrap">Query: <a
-                    href="https://www.digital-land.info/entity.json{{ result.query }}">{{ result.query }}</a></p>
-                  <table class="govuk-table">
-                    <thead class="govuk-table__head">
-                    <tr class="govuk-table__row govuk-body-s">
-                      <th scope="col" class="govuk-table__header govuk-!-width-one-third">Path</th>
-                      <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Expected</th>
-                      <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Actual</th>
-                      <th scope="col" class="govuk-table__header govuk-!-text-align-right">Status</th>
-                    </tr>
-                    </thead>
-                    <tbody class="govuk-table__body">
-                    {% set entity_data = result.response_data.data["entities"] %}
-                    {% for assertion in result.assertions %}
-                      <tr class="govuk-table__row govuk-body-s">
-                        <td class="govuk-table__cell">{{ assertion.path | map_link_if_possible(entity_data) }}</td>
-                        <td class="govuk-table__cell">{{ assertion.expected }}</td>
-                        <td class="govuk-table__cell">{{ assertion.actual }}</td>
-                        <td class="govuk-table__cell govuk-!-text-align-right govuk-body-s">
-                          {% if not assertion.match and assertion.assertion_type.name == "strict" %}
-                            <strong class="govuk-tag govuk-tag--red">fail</strong>
-                          {% elif not assertion.match and assertion.assertion_type.name == "warning" %}
-                            <strong class="govuk-tag govuk-tag--warn">warning</strong>
-                          {% else %}
-                            <strong class="govuk-tag govuk-tag--green">pass</strong>
-                          {% endif %}
-                        </td>
-                      </tr>
-                    {% endfor %}
-                    </tbody>
-                  </table>
+                  {% for result in resultsList %}
 
-                  </div>
-                  <!-- /.app-summary-card__body -->
+                    <article class="app-summary-card govuk-!-margin-bottom-6">
+                      <header class="app-summary-card__header" id="{{ result.test_name | replace(' ', '-') | lower }}">
+                        <h4 class="app-summary-card__title">Test: {% if result.ticket %}<a href="{{ result.ticket }}">{% endif %}{{ result.test_name }}{% if result.ticket %}</a>{% endif %}</h4>
+                      </header>
 
+                      <div class="app-summary-card__body">
 
-                </article>
-                <!-- /.app-summary-card -->
+                        <p class="govuk-body-s govuk-!-margin-bottom-1">Dataset: <a
+                          href="https://www.digital-land.info/dataset/{{ result.dataset }}">{{ result.dataset }}</a></p>
+                        <p class="govuk-body-s app-c-test-grid__result-p--wrap">Query: <a
+                          href="https://www.digital-land.info/entity.json{{ result.query }}">{{ result.query }}</a></p>
+                        <table class="govuk-table">
+                          <thead class="govuk-table__head">
+                          <tr class="govuk-table__row govuk-body-s">
+                            <th scope="col" class="govuk-table__header govuk-!-width-one-third">Path</th>
+                            <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Expected</th>
+                            <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Actual</th>
+                            <th scope="col" class="govuk-table__header govuk-!-text-align-right">Status</th>
+                          </tr>
+                          </thead>
+                          <tbody class="govuk-table__body">
+                          {% set entity_data = result.response_data.data["entities"] %}
+                          {% for assertion in result.assertions %}
+                            <tr class="govuk-table__row govuk-body-s">
+                              <td class="govuk-table__cell">{{ assertion.path | map_link_if_possible(entity_data) }}</td>
+                              <td class="govuk-table__cell">{{ assertion.expected }}</td>
+                              <td class="govuk-table__cell">{{ assertion.actual }}</td>
+                              <td class="govuk-table__cell govuk-!-text-align-right govuk-body-s">
+                                {% if not assertion.match and assertion.assertion_type.name == "strict" %}
+                                  <strong class="govuk-tag govuk-tag--red">fail</strong>
+                                {% elif not assertion.match and assertion.assertion_type.name == "warning" %}
+                                  <strong class="govuk-tag govuk-tag--warn">warning</strong>
+                                {% else %}
+                                  <strong class="govuk-tag govuk-tag--green">pass</strong>
+                                {% endif %}
+                              </td>
+                            </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+
+                      </div>
+                      <!-- /.app-summary-card__body -->
+
+                    </article>
+                    <!-- /.app-summary-card -->
+
+                {% endfor %}
+
+                </section>
+
               {% endfor %}
 
 
