@@ -10,14 +10,14 @@
     display: flex;
     align-items: flex-start;
     padding: 1em 0;
-    border-bottom: 1px solid $govuk-border-colour;
+    // border-bottom: 1px solid $govuk-border-colour;
     flex-direction: column;
   }
 
   &__label {
-    margin: 0 0 1em 0;
+    margin: 0 0 govuk-spacing(3) 0;
     padding-right: 1em;
-    @include govuk-font($size: 19, $weight: bold);
+    @include govuk-font($size: 24, $weight: bold);
   }
 
   &__items {
@@ -29,6 +29,7 @@
     grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
     grid-auto-rows: auto;
     gap: 1px;
+    margin-bottom: govuk-spacing(2);
   }
 
   &__item {
