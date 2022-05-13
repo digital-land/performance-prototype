@@ -452,7 +452,7 @@ tests = {
         },
         "Buckinghamshire SSSI Ellenden Wood": {
             "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
-            "query": "?geometry=POINT(-0.52649001 51.51644676)&geometry_relation=intersects&dataset=site-of-special-scientific-interest",
+            "query": "?geometry=POINT(1.01802348 51.32115222)&geometry_relation=intersects&dataset=site-of-special-scientific-interest",
             "dataset": "site-of-special-scientific-interest",
             "assertions": {
                 "$.count": 1,
