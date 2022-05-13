@@ -80,7 +80,7 @@ tests = {
         },
         "Lambeth article 4 direction count": {
             "ticket": "https://trello.com/c/JQuyFI3t/18-lambeth-article-4-directions",
-            "query": "?dataset=article-4-direction-area&organisation_entity=192&field=reference",
+            "query": "?dataset=article-4-direction-area&organisation_entity=192",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 28,
@@ -182,10 +182,10 @@ tests = {
                 "$.count": 5,
             },
         },
-        "Lambeth organiation tree point count": {
+        "Lambeth organisation tree point count": {
             "query": "?dataset=tree&organisation_entity=192",
             "dataset": "tree",
-            "warnings": {
+            "assertions": {
                 "$.count": 2551,
             },
         },
