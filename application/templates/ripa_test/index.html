@@ -7,7 +7,7 @@
       <header class="app-tests-header">
       <div class="app-tests-header__item">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Test results</h1>
-        <p class="govuk-body govuk-hint govuk-!-font-size-16"><span class="govuk-!-font-weight-bold">Last test:</span> {% if date_of_test_run %}{{ date_of_test_run }}{% else %}no tests{% endif %}</p>
+        <p class="govuk-body govuk-hint govuk-!-font-size-16"><span class="govuk-!-font-weight-bold">Last ran:</span> {% if date_of_test_run %}{{ date_of_test_run }}{% else %}no tests{% endif %}</p>
       </div>
       <!-- /.app-tests-header__item -->
       <div class="app-tests-header__item">
@@ -119,7 +119,7 @@
 
                   <div class="app-summary-card__body">
 
-                  <p class="govuk-body-s">Dataset: <a
+                  <p class="govuk-body-s govuk-!-margin-bottom-1">Dataset: <a
                     href="https://www.digital-land.info/dataset/{{ result.dataset }}">{{ result.dataset }}</a></p>
                   <p class="govuk-body-s app-c-test-grid__result-p--wrap">Query: <a
                     href="https://www.digital-land.info/entity.json{{ result.query }}">{{ result.query }}</a></p>
