@@ -101,6 +101,7 @@
             </div>
           </div>
         </div>
+        
         <div class="govuk-grid-row govuk-!-margin-top-8">
           <div class="govuk-grid-column-full">
             <h2 class="govuk-heading-l app-heading--divider">Detailed results</h2>
@@ -109,7 +110,7 @@
 
         {% macro sentence_case(text) %}
             {{ text[0]|upper}}{{text[1:] }}
-        {% endmacro %}        
+        {% endmacro %}    
 
         {% for organisation, resultsItems in results | groupby('organisation') %}
           <div class="govuk-grid-row govuk-!-margin-bottom-6">
@@ -183,7 +184,13 @@
           </div>
         {% endfor %}
       {% endif %}
+
     {% endblock content %}
+
+    <div class="app-sticky-bottom app-sticky-bottom--full">
+      <a href="#top">↑ Back to top</a>
+    </div>
+
   </main>
 {% endblock main %}
 

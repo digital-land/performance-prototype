@@ -3,6 +3,7 @@
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
   * {
     box-sizing: border-box;
   }
@@ -161,4 +162,27 @@
 .app-test-group:target {
   padding-left: govuk-spacing(5);
   border-left: 4px solid govuk-colour(blue);
+}
+
+.app-sticky-bottom {
+  &--left {
+    position: sticky;
+    bottom: 50%;
+    width: 100%;
+    a {
+      // background: rgba(govuk-colour(blue),0.95);
+      // background: govuk-colour(light-grey);
+      padding: govuk-spacing(2) govuk-spacing(2);
+      display: inline-block;
+      transform: translateX(calc(-100% - 2em));
+    }
+  }
+  &--full {
+    position: sticky;
+    bottom: 0%;
+    background: rgba(govuk-colour(blue),0.95);
+    background: rgba(white,0.9);
+    padding: govuk-spacing(2) 0;
+    border-top: 1px solid $govuk-border-colour;
+  }
 }
