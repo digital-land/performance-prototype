@@ -182,10 +182,17 @@ tests = {
                 "$.count": 5,
             },
         },
-        "Lambeth Tree Point count": {
-            "query": "?dataset=tree&organisation_entity=192&field=reference",
+        "Lambeth organiation tree point count": {
+            "query": "?dataset=tree&organisation_entity=192",
             "dataset": "tree",
-            "assertions": {
+            "warnings": {
+                "$.count": 2551,
+            },
+        },
+        "Lambeth district tree point count": {
+            "query": "https://www.digital-land.info/entity.json?dataset=tree&geometry_reference=E09000022",
+            "dataset": "tree",
+            "warnings": {
                 "$.count": 2551,
             },
         },
