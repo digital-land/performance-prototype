@@ -281,7 +281,7 @@ tests = {
         },
         "Article 4 Land off Copperkins Lane (should have areas for rules Means of enclosure and Caravan Sites)": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?geometry=POINT(-0.62319097, 51.68831210)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-0.62319097 51.68831210)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "warnings": {
                 "$.count": 3,
@@ -289,7 +289,7 @@ tests = {
         },
         "Article 4 Alderbourne Farm (shape disagreement)": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?geometry=POINT(-0.62319097, 51.68831210)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-0.62319097 51.68831210)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "warnings": {
                 "$.count": 1,
@@ -297,7 +297,7 @@ tests = {
         },
         "Article 4 Land West of Mansion Lane - immediately to the west and south row of cottages No's 110-148": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?geometry=POINT(-0.52649740, 51.51431737)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-0.52649740 51.51431737)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "warnings": {
                 "$.count": 1,
@@ -305,7 +305,7 @@ tests = {
         },
         "Article 4 Land West of Mansion Lane - 'dev type' patch values check": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
-            "query": "?geometry=POINT(-0.52649001, 51.51644676)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-0.52649001 51.51644676)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "warnings": {
                 "$.count": 1,
