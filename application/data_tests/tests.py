@@ -715,11 +715,19 @@ tests = {
                 "$.entities[0].organisation-entity": "75",
             },
         },
-        "Canterbury Conservation Area - Overall Count": {
+        "Canterbury conservation area publisher count": {
             "ticket": "https://trello.com/c/9TaHoPOe/15-canterbury-conservation-areas",
-            "query": "?dataset=conservation-area&organisation_entity=75&field=reference",
+            "query": "?dataset=conservation-area&organisation_entity=75",
             "dataset": "conservation-area",
-            "assertions": {
+            "warnings": {
+                "$.count": 97,
+            },
+        },
+        "Canterbury conservation area count": {
+            "ticket": "https://trello.com/c/9TaHoPOe/15-canterbury-conservation-areas",
+            "query": "?dataset=conservation-area&geometry_reference=E07000106",
+            "dataset": "conservation-area",
+            "warnings": {
                 "$.count": 97,
             },
         },
