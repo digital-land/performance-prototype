@@ -450,6 +450,24 @@ tests = {
                 "$.entities[0].name": "Bacombe and Coombe Hills",
             },
         },
+        "Ashridge Commons and Woods SSSI": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
+            "query": "?geometry=POINT(-0.58446024 51.81259055)&geometry_relation=intersects&dataset=site-of-special-scientific-interest",
+            "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Ashridge Commons and Woods",
+            },
+        },
+        "Grangelands & Pulpit Hill SSSI": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
+            "query": "?geometry=POINT(-0.80011162 51.73627579)&geometry_relation=intersects&dataset=site-of-special-scientific-interest",
+            "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Grangelands & Pulpit Hill",
+            },
+        },
         "Buckinghamshire has no world heritage sites": {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?dataset=world-heritage-site&geometry_reference=E06000060",
