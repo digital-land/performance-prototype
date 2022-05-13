@@ -190,7 +190,7 @@ tests = {
             },
         },
         "Lambeth district tree point count": {
-            "query": "https://www.digital-land.info/entity.json?dataset=tree&geometry_reference=E09000022",
+            "query": "?dataset=tree&geometry_reference=E09000022",
             "dataset": "tree",
             "warnings": {
                 "$.count": 2551,
