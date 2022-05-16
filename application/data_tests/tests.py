@@ -224,6 +224,17 @@ tests = {
                 "$.entities[0].organisation-entity": "501910",
             },
         },
+        "Chilterns area of outstanding natural beauty - RIPA intersection with Tudor Equestrian Center": {
+            "ticket": "https://trello.com/c/fwcRbQFr/40-area-of-outstanding-natural-beauty",
+            "query": "?geometry=POINT(-0.6303688+51.7342939)&geometry_relation=intersects&dataset=area-of-outstanding-natural-beauty",
+            "dataset": "area-of-outstanding-natural-beauty",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "5",
+                "$.entities[0].name": "Chilterns",
+                "$.entities[0].organisation-entity": "501910",
+            },
+        },
         "Chilterns article 4 direction": {
             "ticket": "https://trello.com/c/ZGBAQhVP/10-buckinghamshire-article-4-directions",
             "query": "?geometry=POINT(-0.845119 51.667878)&geometry_relation=intersects&dataset=article-4-direction-area",
