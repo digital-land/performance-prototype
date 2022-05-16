@@ -582,6 +582,28 @@ tests = {
                 "$.entities[3].listed-building-grade": "II",
             },
         },
+        "Southwark grade II listed building (Clandon House, Boyfield Street estate) - RIPA lasso search": {
+            "ticket": "https://trello.com/c/KYZUfnWw/5-add-tests-for-ripa-sample-addresses-expected-constraints",
+            "query": "?entries=current&geometry=POLYGON+((-0.10233910674591064+51.500670381103276,+-0.10251613254089353+51.500593575307306,+-0.10211380118865966+51.50023292027359,+-0.10193677539367675+51.500316405488945,+-0.10233910674591064+51.500670381103276))&geometry_relation=intersects&limit=100&dataset=listed-building-outline
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Clandon House, Boyfield Street estate",
+                "$.entities[0].dataset": "listed-building-outline",
+                "$.entities[0].listed-building-grade": "II",
+            },
+        },
+        "Southwark grade I listed building (Southwark Cathedral) - RIPA lasso search": {
+            "ticket": "https://trello.com/c/KYZUfnWw/5-add-tests-for-ripa-sample-addresses-expected-constraints",
+            "query": "?entries=current&geometry=POLYGON+((-0.08992591415557859+51.506488463344624,+-0.09011903320465087+51.50615790576995,+-0.08914807354125977+51.50592083774984,+-0.08899250541839598+51.50608778718822,+-0.08936265026245116+51.50617793963059,+-0.08928218399200438+51.50638495567512,+-0.08992591415557859+51.506488463344624))&geometry_relation=intersects&limit=100&dataset=listed-building-outline
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Cathedral church of St Saviour and St Mary Overie (Southwark Cathedral)",
+                "$.entities[0].dataset": "listed-building-outline",
+                "$.entities[0].listed-building-grade": "I",
+            },
+        },
         "Southwark article 4 direction (The Lord Nelson, Union Street)": {
             "ticket": "https://trello.com/c/6G0Vv44y/22-southwark-article-4-directions",
             "query": "?dataset=article-4-direction-area&longitude=-0.102682&latitude=51.503432",
