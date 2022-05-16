@@ -523,6 +523,14 @@ tests = {
                 "$.entities[2].park-and-garden-grade": "II",
             },
         },
+        "Park and Garden Overall Count": {
+            "ticket": "https://trello.com/c/JSTZgrsQ/53-historic-parks-and-gardens",
+            "query": "?dataset=park-and-garden",
+            "dataset": "park-and-garden",
+            "assertions": {
+                "$.count": 1699,
+            },
+        },
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
