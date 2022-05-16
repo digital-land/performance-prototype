@@ -517,6 +517,15 @@ tests = {
                 "$.entities[0].organisation-entity": "329",
             },
         },
+        "Southwark conservation area (Sunray Estate)": {
+            "ticket": "https://trello.com/c/mdJYWSdO/42-southwark-conservation-areas",
+            "query": "?geometry=POINT(-0.0915479+51.4582278)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Sunray Estate",
+            },
+        },
         "Southwark scheduled monument (Clink Street)": {
             "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
             "query": "?geometry=POINT(-0.0909083 51.5070023)&geometry_relation=intersects&dataset=scheduled-monument",
