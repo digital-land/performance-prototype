@@ -211,6 +211,17 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Historic Parks and Gardens Norwood Grove": {
+            "ticket": "https://trello.com/c/JSTZgrsQ/53-historic-parks-and-gardens",
+            "query": "?POINT(-0.11646267 51.42093317)&geometry_relation=intersects&dataset=park-and-garden",
+            "dataset": "park-and-garden",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "11100716",
+                "$.entities[0].name": "NORWOOD GROVE",
+                "$.entities[0].park-and-garden-grade": "II",
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
@@ -737,6 +748,17 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Historic Parks and Gardens SOUTHWARK PARK": {
+            "ticket": "https://trello.com/c/JSTZgrsQ/53-historic-parks-and-gardens",
+            "query": "?POINT(-0.05105192 51.49368638)&geometry_relation=intersects&dataset=park-and-garden",
+            "dataset": "park-and-garden",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1000838",
+                "$.entities[0].name": "SOUTHWARK PARK",
+                "$.entities[0].park-and-garden-grade": "II",
+            },
+        },
     },
     "local-authority-eng:CAT": {
         "Canterbury article 4 direction (Kemberland Wood)": {
@@ -1105,6 +1127,16 @@ tests = {
                 "$.count": 27,
             },
         },
-
+        "Historic Parks and Gardens DANE JOHN GARDENS": {
+            "ticket": "https://trello.com/c/JSTZgrsQ/53-historic-parks-and-gardens",
+            "query": "?POINT(1.07820562 51.27491139)&geometry_relation=intersects&dataset=park-and-garden",
+            "dataset": "park-and-garden",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "11101253",
+                "$.entities[0].name": "DANE JOHN GARDENS",
+                "$.entities[0].park-and-garden-grade": "II",
+            },
+        },
     },
 }
