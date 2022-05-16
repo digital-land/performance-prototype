@@ -213,7 +213,7 @@ tests = {
         },
         "Historic Parks and Gardens Norwood Grove": {
             "ticket": "https://trello.com/c/JSTZgrsQ/53-historic-parks-and-gardens",
-            "query": "?POINT(-0.11646267 51.42093317)&geometry_relation=intersects&dataset=park-and-garden",
+            "query": "?geometry=POINT(-0.11646267 51.42093317)&geometry_relation=intersects&dataset=park-and-garden",
             "dataset": "park-and-garden",
             "assertions": {
                 "$.count": 1,
@@ -750,7 +750,7 @@ tests = {
         },
         "Historic Parks and Gardens SOUTHWARK PARK": {
             "ticket": "https://trello.com/c/JSTZgrsQ/53-historic-parks-and-gardens",
-            "query": "?POINT(-0.05105192 51.49368638)&geometry_relation=intersects&dataset=park-and-garden",
+            "query": "?geometry=POINT(-0.05105192 51.49368638)&geometry_relation=intersects&dataset=park-and-garden",
             "dataset": "park-and-garden",
             "assertions": {
                 "$.count": 1,
@@ -1129,7 +1129,7 @@ tests = {
         },
         "Historic Parks and Gardens DANE JOHN GARDENS": {
             "ticket": "https://trello.com/c/JSTZgrsQ/53-historic-parks-and-gardens",
-            "query": "?POINT(1.07820562 51.27491139)&geometry_relation=intersects&dataset=park-and-garden",
+            "query": "?geometry=POINT(1.07820562 51.27491139)&geometry_relation=intersects&dataset=park-and-garden",
             "dataset": "park-and-garden",
             "assertions": {
                 "$.count": 1,
