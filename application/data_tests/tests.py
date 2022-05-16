@@ -217,7 +217,7 @@ tests = {
             "dataset": "park-and-garden",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "11100716",
+                "$.entities[0].reference": "1000823",
                 "$.entities[0].name": "NORWOOD GROVE",
                 "$.entities[0].park-and-garden-grade": "II",
             },
@@ -504,6 +504,23 @@ tests = {
             "dataset": "world-heritage-site",
             "assertions": {
                 "$.count": 0,
+            },
+        },
+        "Historic Parks and Gardens Cliveden, Dropmore and Hedsor Lasso query": {
+            "ticket": "https://trello.com/c/JSTZgrsQ/53-historic-parks-and-gardens",
+            "query": "?geometry=POLYGON((-0.6853151321411134 51.56351904151961,-0.6875038146972657 51.56098454382348,-0.6801223754882814 51.55847658600979,-0.6766033172607422 51.560557667154285,-0.6821393966674806 51.56373246645586,-0.6853151321411134 51.56351904151961))&geometry_relation=intersects&dataset=park-and-garden",
+            "dataset": "park-and-garden",
+            "assertions": {
+                "$.count": 3,
+                "$.entities[0].reference": "1000323",
+                "$.entities[0].name": "CLIVEDEN",
+                "$.entities[0].park-and-garden-grade": "I",
+                "$.entities[1].reference": "1000599",
+                "$.entities[1].name": "DROPMORE",
+                "$.entities[1].park-and-garden-grade": "II",
+                "$.entities[2].reference": "1001373",
+                "$.entities[2].name": "HEDSOR HOUSE",
+                "$.entities[2].park-and-garden-grade": "II",
             },
         },
     },
@@ -1133,7 +1150,7 @@ tests = {
             "dataset": "park-and-garden",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "11101253",
+                "$.entities[0].reference": "1001360",
                 "$.entities[0].name": "DANE JOHN GARDENS",
                 "$.entities[0].park-and-garden-grade": "II",
             },
