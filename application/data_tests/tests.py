@@ -454,6 +454,25 @@ tests = {
                 "$.entities[0].name": "The White Hart",
             },
         },
+        "Listed Building Lasso query 108 high Street Amersham": {
+            "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
+            "query": "?geometry=POLYGON+((-0.621533542871487+51.6675929991994,+-0.6214410066604732+51.667565550332085,+-0.6216515600681422+51.66731351904605,+-0.6217360496521112+51.66733847270126,+-0.6217011809349176+51.667383389246,+-0.6217132508754845+51.66741000643671,+-0.6216582655906793+51.667472390416094,+-0.621533542871487+51.6675929991994))&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 2,
+                "$.entities[0].listed-building-grade": "II",
+                "$.entities[1].listed-building-grade": "II",
+            },
+        },
+        "Listed Building Johnsons Farm Chesham": {
+            "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
+            "query": "?geometry=POINT(-0.6303688+51.7342939)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].listed-building-grade": "II",
+            },
+        },
         "Listed Building Projection Error (should not be present)": {
             "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
             "query": "?geometry=POINT(-0.78024744 51.75966723)&geometry_relation=intersects&dataset=listed-building-outline",
