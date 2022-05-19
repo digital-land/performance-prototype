@@ -1168,6 +1168,15 @@ tests = {
                 "$.entities[0].reference": "TR188642",
             },
         },
+        # this kind of test belongs against the dataset, not Canterbury
+        "World heritage site count": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?dataset=world-heritage-site",
+            "dataset": "world-heritage-site",
+            "assertions": {
+                "$.count": 20,
+            },
+        },
         "Canterbury Cathedral world heritage site": {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?latitude=51.2797844&longitude=1.0824708&dataset=world-heritage-site",
@@ -1176,6 +1185,7 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "1000093",
                 "$.entities[0].name": "Canterbury Cathedral, St. Augustine's Abbey and St. Martin's Church",
+                "$.entities[0].notes": "Core Area",
             },
         },
         "Canterbury Cathedral buffer zone": {
@@ -1185,14 +1195,8 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].name": "Canterbury Cathedral, St. Augustine's Abbey and St. Martin's Church",
-            },
-        },
-        "WHS Overall Count": {
-            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
-            "query": "?dataset=world-heritage-site",
-            "dataset": "world-heritage-site",
-            "assertions": {
-                "$.count": 27,
+                "$.entities[0].notes": "Buffer Zone",
+                "$.entities[0].world-heritage-size": "1000093",
             },
         },
         "Historic Parks and Gardens DANE JOHN GARDENS": {
