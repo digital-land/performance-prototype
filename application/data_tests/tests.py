@@ -222,6 +222,14 @@ tests = {
                 "$.entities[0].park-and-garden-grade": "II",
             },
         },
+        "Lambeth has no national parks": {
+            "ticket": "https://trello.com/c/qUHnNjO2/54-national-park",
+            "query": "?dataset=national-park&geometry_reference=E09000022",
+            "dataset": "national-park",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
@@ -550,6 +558,14 @@ tests = {
                 "$.count": 1699,
             },
         },
+        "Buckinghamshire has no national parks": {
+            "ticket": "https://trello.com/c/qUHnNjO2/54-national-park",
+            "query": "?dataset=national-park&geometry_reference=E06000060",
+            "dataset": "national-park",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
@@ -801,6 +817,14 @@ tests = {
                 "$.entities[0].reference": "1000838",
                 "$.entities[0].name": "SOUTHWARK PARK",
                 "$.entities[0].park-and-garden-grade": "II",
+            },
+        },
+        "Southwark has no national parks": {
+            "ticket": "https://trello.com/c/qUHnNjO2/54-national-park",
+            "query": "?dataset=national-park&geometry_reference=E09000028",
+            "dataset": "national-park",
+            "assertions": {
+                "$.count": 0,
             },
         },
     },
@@ -1180,6 +1204,22 @@ tests = {
                 "$.entities[0].reference": "1001360",
                 "$.entities[0].name": "DANE JOHN GARDENS",
                 "$.entities[0].park-and-garden-grade": "II",
+            },
+        },
+        "Canterbury has no national parks": {
+            "ticket": "https://trello.com/c/qUHnNjO2/54-national-park",
+            "query": "?dataset=national-park&geometry_reference=E06000106",
+            "dataset": "national-park",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "National Park Overall Count": {
+            "ticket": "https://trello.com/c/qUHnNjO2/54-national-park",
+            "query": "?dataset=national-park",
+            "dataset": "national-park",
+            "assertions": {
+                "$.count": 10,
             },
         },
     },
