@@ -1178,10 +1178,10 @@ tests = {
                 "$.entities[0].name": "Canterbury Cathedral, St. Augustine's Abbey and St. Martin's Church",
             },
         },
-        "Canterbury Cathedral Buffer WHS": {
+        "Canterbury Cathedral buffer zone": {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
-            "query": "?geometry=POINT(1.08549530 51.32957921)&geometry_relation=intersects&dataset=world-heritage-site",
-            "dataset": "world-heritage-site",
+            "query": "?geometry=POINT(1.08549530 51.32957921)&geometry_relation=intersects&dataset=world-heritage-site-buffer-zone",
+            "dataset": "world-heritage-site-buffer-zone",
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].name": "Canterbury Cathedral, St. Augustine's Abbey and St. Martin's Church",
