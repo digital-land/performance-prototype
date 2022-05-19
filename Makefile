@@ -1,3 +1,5 @@
+run::
+	flask run
 
 init::
 	python -m pip install pip-tools
@@ -26,10 +28,6 @@ flake8:
 	flake8 --exclude .venv,node_modules
 
 lint: black-check flake8
-
-run::
-	flask run
-
 frontend-assets: javascripts stylesheets 
 
 javascripts:
