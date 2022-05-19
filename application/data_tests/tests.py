@@ -211,6 +211,14 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Lambeth has no world heritage site buffer zones": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?dataset=world-heritage-site-buffer-zone&geometry_reference=E09000022",
+            "dataset": "world-heritage-site-buffer-zone",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
         "Historic Parks and Gardens Norwood Grove": {
             "ticket": "https://trello.com/c/JSTZgrsQ/53-historic-parks-and-gardens",
             "query": "?geometry=POINT(-0.11646267 51.42093317)&geometry_relation=intersects&dataset=park-and-garden",
@@ -533,6 +541,14 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Buckinghamshire has no world heritage site buffer zones": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?dataset=world-heritage-site-buffer-zone&geometry_reference=E06000060",
+            "dataset": "world-heritage-site-buffer-zone",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
         "Historic Parks and Gardens Cliveden, Dropmore and Hedsor Lasso query": {
             "ticket": "https://trello.com/c/JSTZgrsQ/53-historic-parks-and-gardens",
             "query": "?geometry=POLYGON((-0.6853151321411134 51.56351904151961,-0.6875038146972657 51.56098454382348,-0.6801223754882814 51.55847658600979,-0.6766033172607422 51.560557667154285,-0.6821393966674806 51.56373246645586,-0.6853151321411134 51.56351904151961))&geometry_relation=intersects&dataset=park-and-garden",
@@ -786,6 +802,14 @@ tests = {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?dataset=world-heritage-site&geometry_reference=E09000028",
             "dataset": "world-heritage-site",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Southwark has no world heritage site buffer zones": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?dataset=world-heritage-site-buffer-zone&geometry_reference=E09000028",
+            "dataset": "world-heritage-site-buffer-zone",
             "assertions": {
                 "$.count": 0,
             },
