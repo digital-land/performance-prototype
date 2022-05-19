@@ -897,7 +897,7 @@ tests = {
         },
         "Canterbury has no central activities zone": {
             "ticket": "https://trello.com/c/golBkjM7/39-central-activities-zone",
-            "query": "?dataset=central-activities-zone&geometry_reference=E06000106",
+            "query": "?dataset=central-activities-zone&geometry_reference=E07000106",
             "dataset": "central-activities-zone",
             "assertions": {
                 "$.count": 0,
@@ -1208,7 +1208,7 @@ tests = {
         },
         "Canterbury has no national parks": {
             "ticket": "https://trello.com/c/qUHnNjO2/54-national-park",
-            "query": "?dataset=national-park&geometry_reference=E06000106",
+            "query": "?dataset=national-park&geometry_reference=E07000106",
             "dataset": "national-park",
             "assertions": {
                 "$.count": 0,
