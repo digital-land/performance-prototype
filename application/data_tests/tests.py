@@ -246,6 +246,14 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Lambeth has no Ancient Woodland": {
+            "ticket": "https://trello.com/c/CAKnm85l/56-ancient-woodland",
+            "query": "?dataset=ancient-woodland&geometry_reference=E09000022",
+            "dataset": "ancient-woodland",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
@@ -590,13 +598,22 @@ tests = {
                 "$.count": 0,
             },
         },
-        "Buckinghamshire Chiltern Beeches": {
+        "Buckinghamshire Chiltern Beeches Special Area of Conservation": {
             "ticket": "https://trello.com/c/G58fAIDD/55-special-areas-of-conservation-sac",
             "query": "?geometry=POINT(-0.58700707 51.81577149)&geometry_relation=intersects&dataset=special-area-of-conservation",
             "dataset": "special-area-of-conservation",
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].name": "Chilterns Beechwoods",
+            },
+        },
+        "Buckinghamshire Great Burnt Coppice Ancient Woodland": {
+            "ticket": "https://trello.com/c/CAKnm85l/56-ancient-woodland",
+            "query": "?geometry=POINT(-0.58700707 51.81577149)&geometry_relation=intersects&dataset=ancient-woodland",
+            "dataset": "ancient-woodland",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].ancient_woodland_status": "PAWS",
             },
         },
     },
@@ -876,6 +893,16 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Southwark Dulwich Wood Ancient Woodland": {
+            "ticket": "https://trello.com/c/CAKnm85l/56-ancient-woodland",
+            "query": "?geometry=POINT(-0.07451144 51.43444057)&geometry_relation=intersects&dataset=ancient-woodland",
+            "dataset": "ancient-woodland",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].ancient_woodland_status": "ASNW",
+            },
+        },
+
     },
     "local-authority-eng:CAT": {
         "Canterbury article 4 direction (Kemberland Wood)": {
@@ -1290,6 +1317,24 @@ tests = {
             "dataset": "special-area-of-conservation",
             "assertions": {
                 "$.count": 1907,
+            },
+        },
+        "Canterbury Gorsley Wood Ancient Woodland": {
+            "ticket": "https://trello.com/c/CAKnm85l/56-ancient-woodland",
+            "query": "?geometry=POINT(1.11407676 51.22094025)&geometry_relation=intersects&dataset=ancient-woodland",
+            "dataset": "ancient-woodland",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "GORSLEY WOOD",
+                "$.entities[0].ancient_woodland_status": "PAWS",
+            },
+        },
+        "Ancient Woodland Overall Count": {
+            "ticket": "https://trello.com/c/CAKnm85l/56-ancient-woodland",
+            "query": "?dataset=ancient-woodland",
+            "dataset": "ancient-woodland",
+            "assertions": {
+                "$.count": 53623,
             },
         },
     },
