@@ -609,7 +609,7 @@ tests = {
         },
         "Buckinghamshire Great Burnt Coppice Ancient Woodland": {
             "ticket": "https://trello.com/c/CAKnm85l/56-ancient-woodland",
-            "query": "?geometry=POINT(-0-0.62666666 51.56428243)&geometry_relation=intersects&dataset=ancient-woodland",
+            "query": "?geometry=POINT(-0.62666666 51.56428243)&geometry_relation=intersects&dataset=ancient-woodland",
             "dataset": "ancient-woodland",
             "assertions": {
                 "$.count": 1,
