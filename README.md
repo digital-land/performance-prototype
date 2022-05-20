@@ -13,26 +13,22 @@ We recommend working in [virtual environment](http://docs.python-guide.org/en/la
 
 Install dependencies
 
-  make init
+    make init
 
 Get local copy of all the data (can take a while but then you'll have local sqlite dbs for this app)
 
-  make databases
+    make databases
 
 Run flask application
 
-  make run
+    make run
 
 ### Before pushing changes
 
 The first time you run the tests you will need to install the chromium browser for play-wright
 
-```
-python -m playwright install chromium
-```
+    python -m playwright install chromium
 
 Run the following to eyeball the pages are all still working
 
-```
-pytest tests/acceptance -p no:warnings --headed --slowmo 1000
-```
+    pytest tests/acceptance -p no:warnings --headed --slowmo 1000
