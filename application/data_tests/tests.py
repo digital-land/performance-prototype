@@ -1220,7 +1220,7 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].name": "Canterbury Cathedral, St. Augustine's Abbey and St. Martin's Church",
                 "$.entities[0].notes": "Buffer Zone",
-                "$.entities[0].world-heritage-size": "1000093",
+                "$.entities[0].world-heritage-site": "1000093",
             },
         },
         "Historic Parks and Gardens DANE JOHN GARDENS": {
