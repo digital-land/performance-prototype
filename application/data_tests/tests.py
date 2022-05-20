@@ -1214,7 +1214,7 @@ tests = {
         },
         "Canterbury Cathedral buffer zone": {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
-            "query": "?geometry=POINT(1.0869648,19 51.2806414)&geometry_relation=intersects&dataset=world-heritage-site-buffer-zone",
+            "query": "?geometry=POINT(1.0869648 51.2806414)&geometry_relation=intersects&dataset=world-heritage-site-buffer-zone",
             "dataset": "world-heritage-site-buffer-zone",
             "assertions": {
                 "$.count": 1,
