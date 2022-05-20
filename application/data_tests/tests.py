@@ -238,6 +238,14 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Lambeth has no SAC": {
+            "ticket": "https://trello.com/c/G58fAIDD/55-special-areas-of-conservation-sac",
+            "query": "?dataset=special-area-of-conservation&geometry_reference=E09000022",
+            "dataset": "special-area-of-conservation",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
@@ -582,6 +590,15 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Buckinghamshire Chiltern Beeches": {
+            "ticket": "https://trello.com/c/G58fAIDD/55-special-areas-of-conservation-sac",
+            "query": "?geometry=POINT(-0.58700707 51.81577149)&geometry_relation=intersects&dataset=special-area-of-conservation",
+            "dataset": "special-area-of-conservation",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Chilterns Beechwoods",
+            },
+        },
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
@@ -847,6 +864,14 @@ tests = {
             "ticket": "https://trello.com/c/qUHnNjO2/54-national-park",
             "query": "?dataset=national-park&geometry_reference=E09000028",
             "dataset": "national-park",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Southwark has no SAC": {
+            "ticket": "https://trello.com/c/G58fAIDD/55-special-areas-of-conservation-sac",
+            "query": "?dataset=special-area-of-conservation&geometry_reference=E09000028",
+            "dataset": "special-area-of-conservation",
             "assertions": {
                 "$.count": 0,
             },
@@ -1248,6 +1273,23 @@ tests = {
             "dataset": "national-park",
             "assertions": {
                 "$.count": 10,
+            },
+        },
+        "Canterbury Stodmarsh SAC": {
+            "ticket": "https://trello.com/c/G58fAIDD/55-special-areas-of-conservation-sac",
+            "query": "?geometry=POINT(1.20080422 51.31307014)&geometry_relation=intersects&dataset=special-area-of-conservation",
+            "dataset": "special-area-of-conservation",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Stodmarsh",
+            },
+        },
+        "SAC Overall Count": {
+            "ticket": "https://trello.com/c/G58fAIDD/55-special-areas-of-conservation-sac",
+            "query": "?dataset=special-area-of-conservation",
+            "dataset": "special-area-of-conservation",
+            "assertions": {
+                "$.count": 1907,
             },
         },
     },
