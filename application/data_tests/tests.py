@@ -609,11 +609,11 @@ tests = {
         },
         "Buckinghamshire Great Burnt Coppice Ancient Woodland": {
             "ticket": "https://trello.com/c/CAKnm85l/56-ancient-woodland",
-            "query": "?geometry=POINT(-0.58700707 51.81577149)&geometry_relation=intersects&dataset=ancient-woodland",
+            "query": "?geometry=POINT(-0-0.62666666 51.56428243)&geometry_relation=intersects&dataset=ancient-woodland",
             "dataset": "ancient-woodland",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].ancient_woodland_status": "PAWS",
+                "$.entities[0].ancient-woodland-status": "PAWS",
             },
         },
     },
@@ -899,7 +899,7 @@ tests = {
             "dataset": "ancient-woodland",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].ancient_woodland_status": "ASNW",
+                "$.entities[0].ancient-woodland-status": "ASNW",
             },
         },
     },
@@ -1325,7 +1325,7 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].name": "GORSLEY WOOD",
-                "$.entities[0].ancient_woodland_status": "PAWS",
+                "$.entities[0].ancient-woodland-status": "PAWS",
             },
         },
         "Ancient Woodland Overall Count": {
