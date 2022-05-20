@@ -902,7 +902,6 @@ tests = {
                 "$.entities[0].ancient_woodland_status": "ASNW",
             },
         },
-
     },
     "local-authority-eng:CAT": {
         "Canterbury article 4 direction (Kemberland Wood)": {
