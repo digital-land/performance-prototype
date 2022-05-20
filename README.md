@@ -1,10 +1,15 @@
-# Maturity model prototype
+# Performance application
 
-Based on the govuk-flask-prototype-kit
+[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/digital-land/performance-prototype/blob/main/LICENSE)
+[![Run pipeline](https://github.com/digital-land/brownfield-land-collection/actions/workflows/run.yml/badge.svg)](https://github.com/digital-land/performance-prototype/actions/workflows/deploy.yml)
+
+Pages intended to help the team show progress in collecting planning data, identify gaps and issues in collecting the data and helping the team prioritise its work.
 
 ### Getting started
 
-We recommend using a virtual env.
+The application is based on the govuk-flask-prototype-kit and uses a Postgres database.
+
+We recommend working in [virtual environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) before installing the python [requirements](requirements.txt), [makerules](https://github.com/digital-land/makerules) and other dependencies. Requires GNU Make 4.0 or newer.
 
 Install dependencies
 
@@ -16,7 +21,7 @@ Get local copy of all the data (can take a while but then you'll have local sqli
 
 Run flask application
 
-  flask run
+  make run
 
 ### Before pushing changes
 
