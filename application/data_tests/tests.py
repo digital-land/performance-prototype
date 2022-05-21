@@ -530,6 +530,7 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].name": "Ashridge Commons and Woods",
+                "$.entities[0].reference": "1000452",
             },
         },
         "Grangelands & Pulpit Hill SSSI": {
@@ -541,14 +542,15 @@ tests = {
                 "$.entities[0].name": "Grangelands & Pulpit Hill",
             },
         },
-        "SSSI Overall Count": {
-            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
-            "query": "?dataset=site-of-special-scientific-interest&field=reference",
-            "dataset": "site-of-special-scientific-interest",
-            "assertions": {
-                "$.count": 9608,
-            },
-        },
+        # Really belongs in the pipeline as it's not testing Buckinghamshire
+        #"SSSI Overall Count": {
+        #    "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
+        #    "query": "?dataset=site-of-special-scientific-interest
+        #    "dataset": "site-of-special-scientific-interest",
+        #    "assertions": {
+        #        "$.count": 9608,
+        #    },
+        #},
         "Buckinghamshire has no world heritage sites": {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?dataset=world-heritage-site&geometry_reference=E06000060",
