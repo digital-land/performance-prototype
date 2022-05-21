@@ -519,7 +519,7 @@ tests = {
             "dataset": "site-of-special-scientific-interest",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "SP852067",
+                "$.entities[0].reference": "2000410",
                 "$.entities[0].name": "Bacombe and Coombe Hills",
             },
         },
@@ -1204,7 +1204,7 @@ tests = {
             "dataset": "site-of-special-scientific-interest",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "TR101624",
+                "$.entities[0].reference": "1003597",
                 "$.entities[0].name": "Ellenden Wood",
             },
         },
@@ -1215,7 +1215,7 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].name": "West Blean and Thornden Woods",
-                "$.entities[0].reference": "TR152633",
+                "$.entities[0].reference": "1003346",
             },
         },
         "East Blean Woods SSSI": {
@@ -1225,7 +1225,7 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].name": "East Blean Woods",
-                "$.entities[0].reference": "TR188642",
+                "$.entities[0].reference": "1003585",
             },
         },
         # this kind of test belongs against the dataset, not Canterbury
