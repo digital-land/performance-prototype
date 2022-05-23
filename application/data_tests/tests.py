@@ -254,6 +254,14 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Lambeth has no Special Protection Area": {
+            "ticket": "https://trello.com/c/NZzFiRBW/58-special-protection-area",
+            "query": "?dataset=special-protection-area&geometry_reference=E09000022",
+            "dataset": "special-protection-area",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
@@ -601,6 +609,14 @@ tests = {
                 "$.entities[0].ancient-woodland-status": "PAWS",
             },
         },
+        "Buckinghamshire has no Special Protection Area": {
+            "ticket": "https://trello.com/c/NZzFiRBW/58-special-protection-area",
+            "query": "?dataset=special-protection-area&geometry_reference=E06000060",
+            "dataset": "special-protection-area",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
@@ -885,6 +901,14 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].ancient-woodland-status": "ASNW",
+            },
+        },
+        "Southwark has no Special Protection Area": {
+            "ticket": "https://trello.com/c/NZzFiRBW/58-special-protection-area",
+            "query": "?dataset=special-protection-area&geometry_reference=E09000028",
+            "dataset": "special-protection-area",
+            "assertions": {
+                "$.count": 0,
             },
         },
     },
@@ -1295,6 +1319,23 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].name": "GORSLEY WOOD",
                 "$.entities[0].ancient-woodland-status": "PAWS",
+            },
+        },
+        "Canterbury Stodmarsh Special Protection Area": {
+            "ticket": "https://trello.com/c/NZzFiRBW/58-special-protection-area",
+            "query": "?geometry=POINT(1.19874287 51.31554694)&geometry_relation=intersects&dataset=special-protection-area",
+            "dataset": "special-protection-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Stodmarsh",
+            },
+        },
+        "Canterbury The Swale Special Protection Area": {
+            "query": "?geometry=POINT(0.98267495 51.33964568)&geometry_relation=intersects&dataset=special-protection-area",
+            "dataset": "special-protection-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "The Swale",
             },
         },
     },
