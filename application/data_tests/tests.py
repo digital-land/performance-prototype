@@ -1272,9 +1272,20 @@ tests = {
                 "$.entities[0].notes": "Core Area",
             },
         },
-        "Canterbury Cathedral buffer zone": {
+        "Canterbury Cathedral WHS buffer zone": {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?geometry=POINT(1.0869648 51.2806414)&geometry_relation=intersects&dataset=world-heritage-site-buffer-zone",
+            "dataset": "world-heritage-site-buffer-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Canterbury Cathedral, St. Augustine's Abbey and St. Martin's Church",
+                "$.entities[0].notes": "Buffer Zone",
+                "$.entities[0].world-heritage-site": "1000093",
+            },
+        },
+        "Canterbury Cathedral buffer zone WHS RIPA": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?geometry=POINT(1.081281 51.2810072)&geometry_relation=intersects&dataset=world-heritage-site-buffer-zone",
             "dataset": "world-heritage-site-buffer-zone",
             "assertions": {
                 "$.count": 1,
