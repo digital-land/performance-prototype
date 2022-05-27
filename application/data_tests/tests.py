@@ -262,6 +262,14 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Lambeth has no RAMSAR sites": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?dataset=ramsar&geometry_reference=E09000022",
+            "dataset": "ramsar",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:BUC": {
         "Chilterns area of outstanding natural beauty": {
@@ -617,6 +625,14 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Buckinghamshire has no RAMSAR sites": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?dataset=ramsar&geometry_reference=E06000060",
+            "dataset": "ramsar",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:SWK": {
         "Southwark central activities zone": {
@@ -907,6 +923,14 @@ tests = {
             "ticket": "https://trello.com/c/NZzFiRBW/58-special-protection-area",
             "query": "?dataset=special-protection-area&geometry_reference=E09000028",
             "dataset": "special-protection-area",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Southwark has no RAMSAR sites": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?dataset=ramsar&geometry_reference=E09000028",
+            "dataset": "ramsar",
             "assertions": {
                 "$.count": 0,
             },
@@ -1349,11 +1373,30 @@ tests = {
                 "$.entities[0].name": "The Swale",
             },
         },
+        "Canterbury Thanet Coast & Sandwich Bay RAMSAR": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?geometry=POINT(1.06936730 51.36634620)&geometry_relation=intersects&dataset=ramsar",
+            "dataset": "ramsar",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Thanet Coast & Sandwich Bay",
+            },
+        },
+        "Canterbury Stodmarsh RAMSAR": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?geometry=POINT(1.15304446 51.30364640)&geometry_relation=intersects&dataset=ramsar",
+            "dataset": "ramsar",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Stodmarsh",
+                "$.entities[0].reference": "UK11066",
+            },
+        },
     },
 }
 
 
-# we can have specific counts for each LPA, but these national counts belong in the pipeline, 
+# we can have specific counts for each LPA, but these national counts belong in the pipeline,
 dataset_tests = {
     "Ancient Woodland Overall Count": {
         "ticket": "https://trello.com/c/CAKnm85l/56-ancient-woodland",
