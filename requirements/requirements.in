@@ -4,6 +4,7 @@ python-dotenv
 gunicorn
 requests
 CacheControl
+importlib-metadata
 lockfile
 python-dateutil
 sqlitebiter
