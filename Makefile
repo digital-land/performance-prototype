@@ -1,3 +1,6 @@
+
+abbrev_hash := $(shell git rev-parse --short HEAD)
+
 run::
 	flask run
 
@@ -45,6 +48,15 @@ upgrade-db:
 
 downgrade-db:
 	flask db downgrade
+
+docker-push-candidate: docker-login-public
+	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)
+	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-testing
+	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-development
+	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-live
+
+docker-login-public:
+	aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
 
 .PHONY: test-build
 test-build:

@@ -20,8 +20,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DL_WEB }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DL_WEB }}
           aws-region: ${{ env.AWS_REGION }}
-      - uses: aws-actions/amazon-ecr-login@v1
-        id: ecr-login
       - name: build base image
         run: |
           docker build \
@@ -43,11 +41,7 @@ jobs:
           --target live \
           --tag $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-live .
       - name: push images
-        run: |
-          docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)
-          docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-testing
-          docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-development
-          docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-live
+        run: make docker-push-candidate
 
   test:
     runs-on: ubuntu-latest
