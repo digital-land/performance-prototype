@@ -1,10 +1,41 @@
 version: "3.8"
 
 services:
-  web:
+  application:
     build:
       context: .
-    volumes:
-      - .:/app
+      target: live
     ports:
-      - 5000:5000
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://postgis:postgis@database/postgis
+    depends_on:
+      - database
+
+  database:
+    image: postgis/postgis
+    environment:
+      POSTGRES_USER: postgis
+      POSTGRES_PASSWORD: postgis
+    healthcheck:
+      test: pg_isready -U postgis
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+
+#  kali:
+#    image: acodeninja/kali
+#    ports:
+#      - '6080:6080'
+#    environment:
+#      RESOLUTION: 1600x900x24
+#      TZ: Europe/London
+#    volumes:
+#      - type: bind
+#        source: ./
+#        target: /root/host
+#    links:
+#      - web
