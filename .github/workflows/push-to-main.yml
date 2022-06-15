@@ -1,0 +1,50 @@
+name: push-to-main
+
+on:
+  push:
+    branches:
+      - spike/ci-pipeline
+
+env:
+  APPLICATION: digital-land-performance
+  AWS_REGION: eu-west-2
+  DOCKER_REPO: public.ecr.aws/l6z6v3j6
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DL_WEB }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ID_DL_WEB }}
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: aws-actions/amazon-ecr-login@v1
+        id: ecr-login
+      - name: build base image
+        run: |
+          docker build \
+          --target base \
+          --tag $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD) .
+      - name: build testing image
+        run: |
+          docker build \
+          --target testing \
+          --tag $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-testing .
+      - name: build development image
+        run: |
+          docker build \
+          --target development \
+          --tag $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-development .
+      - name: build live image
+        run: |
+          docker build \
+          --target live \
+          --tag $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-live .
+      - name: push images
+        run: |
+          docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)
+          docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-testing
+          docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-development
+          docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-live
