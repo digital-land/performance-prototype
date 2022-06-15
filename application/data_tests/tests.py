@@ -3,6 +3,7 @@ local_authorities = {
     "local-authority-eng:SWK": "London Borough of Southwark",
     "local-authority-eng:BUC": "Buckinghamshire Council",
     "local-authority-eng:CAT": "Canterbury City Council",
+    "local-authority-eng:DNC": "Doncaster Metropolitan Borough Council",
 }
 
 tests = {
@@ -1390,6 +1391,35 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].name": "Stodmarsh",
                 "$.entities[0].reference": "UK11066",
+            },
+        },
+    },
+    "local-authority-eng:DNC": {
+        "Doncaster conservation area (Silverthorne Lane - should not be present)": {
+            "ticket": "https://trello.com/c/ad2lElJj/77-doncaster-conservation-areas",
+            "query": "?geometry=POINT(-2.57510213+51.45003871)&geometry_relation=intersects&dataset=conservation-area&organisation-entity=109",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Doncaster conservation area (Burghwallis - should be present, from DNC)": {
+            "ticket": "https://trello.com/c/ad2lElJj/77-doncaster-conservation-areas",
+            "query": "?geometry=POINT(-1.19075823+53.60252048)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].organisation-entity": "109",
+            },
+        },
+        "Doncaster conservation area (Fishlake - should be present, from DNC)": {
+            "ticket": "https://trello.com/c/ad2lElJj/77-doncaster-conservation-areas",
+            "query": "?geometry=POINT(-1.01009404+53.61143996)&geometry_relation=intersects&dataset=conservation-area&organisation_entity=109",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Fishlake",
+                "$.entities[0].organisation-entity": "109",
             },
         },
     },
