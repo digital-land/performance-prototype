@@ -45,3 +45,26 @@ upgrade-db:
 
 downgrade-db:
 	flask db downgrade
+
+.PHONY: test-build
+test-build:
+	@echo "Building test image"
+	@docker compose \
+		-f docker-compose.yml \
+		-f docker-compose.test.yml \
+		build application
+
+.PHONY: test
+test:
+	@echo "Running tests"
+	@docker compose \
+		-f docker-compose.yml \
+		-f docker-compose.test.yml \
+		run --rm application bash -c "wait-for-it database:5432 && flask db upgrade && pytest tests/"
+
+.PHONY: test-debug
+test-debug:
+	@docker compose \
+		-f docker-compose.yml \
+		-f docker-compose.test.yml \
+		run --rm application bash
