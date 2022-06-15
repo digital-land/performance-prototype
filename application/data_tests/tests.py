@@ -1397,7 +1397,7 @@ tests = {
     "local-authority-eng:DNC": {
         "Doncaster conservation area (Silverthorne Lane - should not be present)": {
             "ticket": "https://trello.com/c/ad2lElJj/77-doncaster-conservation-areas",
-            "query": "?geometry=POINT(-2.57510213+51.45003871)&geometry_relation=intersects&dataset=conservation-area&organisation-entity=109",
+            "query": "?geometry=POINT(-2.57510213+51.45003871)&geometry_relation=intersects&dataset=conservation-area&organisation_entity=109",
             "dataset": "conservation-area",
             "assertions": {
                 "$.count": 0,
