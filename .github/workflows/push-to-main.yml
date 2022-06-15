@@ -48,3 +48,13 @@ jobs:
           docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-testing
           docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-development
           docker push $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-live
+
+  test:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: pull test image
+        run: |
+          docker pull $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-testing
+      - run: make test
