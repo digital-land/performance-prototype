@@ -69,14 +69,14 @@ test-build:
 .PHONY: test
 test:
 	@echo "Running tests"
-	@docker compose \
+	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker compose \
 		-f docker-compose.yml \
 		-f docker-compose.test.yml \
 		run --rm application bash -c "wait-for-it database:5432 && flask db upgrade && pytest tests/"
 
 .PHONY: test-debug
 test-debug:
-	@docker compose \
+	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker compose \
 		-f docker-compose.yml \
 		-f docker-compose.test.yml \
 		run --rm application bash
