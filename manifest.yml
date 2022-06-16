@@ -1,0 +1,6 @@
+---
+applications:
+- name: staging-digital-land-performance
+  docker:
+    image: public.ecr.aws/l6z6v3j6/digital-land-performance:staging
+    username: null
