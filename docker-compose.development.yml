@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  application:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app

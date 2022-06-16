@@ -1,3 +1,6 @@
+
+abbrev_hash := $(shell git rev-parse --short HEAD)
+
 run::
 	flask run
 
@@ -45,3 +48,35 @@ upgrade-db:
 
 downgrade-db:
 	flask db downgrade
+
+docker-push-candidate: docker-login-public
+	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)
+	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-testing
+	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-development
+	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-live
+
+docker-login-public:
+	aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+
+.PHONY: test-build
+test-build:
+	@echo "Building test image"
+	@docker compose \
+		-f docker-compose.yml \
+		-f docker-compose.test.yml \
+		build application
+
+.PHONY: test
+test:
+	@echo "Running tests"
+	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker compose \
+		-f docker-compose.yml \
+		-f docker-compose.test.yml \
+		run --rm application bash -c "wait-for-it database:5432 && flask db upgrade && pytest tests/"
+
+.PHONY: test-debug
+test-debug:
+	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker compose \
+		-f docker-compose.yml \
+		-f docker-compose.test.yml \
+		run --rm application bash
