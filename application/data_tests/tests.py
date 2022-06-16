@@ -1430,6 +1430,23 @@ tests = {
                 "$.entities[0].organisation-entity": "109",
             },
         },
+        "Doncaster has no world heritage sites": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?dataset=world-heritage-site&geometry_reference=E08000017",
+            "dataset": "world-heritage-site",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Doncaster has no world heritage site buffer zones": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?dataset=world-heritage-site-buffer-zone&geometry_reference=E08000017",
+            "dataset": "world-heritage-site-buffer-zone",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+
     },
     "local-authority-eng:DAC": {
     },
