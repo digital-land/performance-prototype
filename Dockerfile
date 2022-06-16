@@ -22,12 +22,10 @@ RUN python3 -m piptools sync \
     requirements/requirements.txt
 
 COPY . /app
-#RUN curl -s https://deb.nodesource.com/setup_16.x | bash \
-#    && apt-get install --assume-yes nodejs \
-#    && npm install \
-#    && apt-get remove --assume-yes nodejs \
-#    && apt-get clean \
-#    && apt-get autoclean --assume-yes
+RUN set -ex; \
+  curl -s https://deb.nodesource.com/setup_16.x | bash;\
+  apt-get install --assume-yes nodejs; \
+  npm install;
 
 ENV FLASK_ENV=production
 ENV FLASK_CONFIG=config.Config
@@ -71,7 +69,10 @@ CMD flask db upgrade && flask run -p $PORT -h 0.0.0.0
 
 FROM base AS live
 RUN rm -rf tests
-RUN apt-get remove --assume-yes build-essential \
-    && apt-get clean \
-    && apt-get autoclean --assume-yes
+RUN set -ex; \
+  apt-get remove --assume-yes \
+    nodejs \
+    build-essential; \
+  apt-get clean; \
+  apt-get autoclean --assume-yes
 CMD gunicorn -b 0.0.0.0:$PORT application.wsgi:app --timeout 120 --workers=2 --threads=4 --worker-class=gthread

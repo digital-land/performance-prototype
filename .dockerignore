@@ -1,6 +1,5 @@
 *.in
 *.md
-*.sqlite3
 .DS_Store
 .env
 .flake8
