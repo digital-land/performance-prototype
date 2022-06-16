@@ -1431,6 +1431,22 @@ tests = {
             },
         },
     },
+    "local-authority-eng:DAC": {
+    }
+    "local-authority-eng:GLO": {
+    },
+    "local-authority-eng:MDW": {
+    },
+    "local-authority-eng:BOS": {
+    },
+    "local-authority-eng:NED": {
+    },
+    "local-authority-eng:NET": {
+    },
+    "local-authority-eng:CMD": {
+    },
+    "local-authority-eng:NBL": {
+    },
 }
 
 
