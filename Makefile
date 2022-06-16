@@ -6,12 +6,6 @@ init::
 	npm install
 	python -m piptools sync requirements/requirements.txt
 
-reqs::
-	python -m piptools compile requirements/requirements.in
-
-sync:
-	python -m piptools sync requirements/requirements.txt
-
 deploy: databases push release
 
 databases::
@@ -45,3 +39,13 @@ upgrade-db:
 
 downgrade-db:
 	flask db downgrade
+
+test:
+	python -m pytest
+
+reqs:
+	python -m piptools compile requirements/requirements.in
+
+sync:
+	 python -m piptools sync requirements/requirements.txt
+
