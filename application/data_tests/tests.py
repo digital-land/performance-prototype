@@ -4,6 +4,14 @@ local_authorities = {
     "local-authority-eng:BUC": "Buckinghamshire Council",
     "local-authority-eng:CAT": "Canterbury City Council",
     "local-authority-eng:DNC": "Doncaster Metropolitan Borough Council",
+    "local-authority-eng:DAC": "Dacorum Borough Council",
+    "local-authority-eng:GLO": "Gloucester City Council",
+    "local-authority-eng:MDW": "Medway Council",
+    "local-authority-eng:BOS": "Bolsover District Council",
+    "local-authority-eng:NED": "North East Derbyshire District Council",
+    "local-authority-eng:NET": "Newcastle City Council",
+    "local-authority-eng:CMD": "London Borough of Camden",
+    "local-authority-eng:NBL": "Northumberland County Council",
 }
 
 tests = {
