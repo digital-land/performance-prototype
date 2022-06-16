@@ -3,7 +3,8 @@ name: push-to-main
 on:
   push:
     branches:
-      - spike/ci-pipeline
+      # - spike/ci-pipeline
+      - add-health-endpoint-w-ci
 
 env:
   APPLICATION: digital-land-performance
