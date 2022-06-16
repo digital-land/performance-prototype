@@ -14,8 +14,12 @@ for F in *.csv; do
   rm "$F"
 done
 
-echo "downloading from $URL"
-curl -O $URL
+if [ ! -f "$(basename "$URL")" ]; then
+  echo "downloading from $URL"
+  curl -O $URL
+else
+  echo "using $(basename "$URL") from local filesystem"
+fi
 
 echo "exporting"
 
