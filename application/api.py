@@ -1,7 +1,7 @@
 from application.wsgi import app
 
 
-@app.route("/heath")
+@app.route("/health")
 def heathcheck():
     return {
         "status": "OK",
