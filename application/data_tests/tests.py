@@ -1432,7 +1432,7 @@ tests = {
         },
     },
     "local-authority-eng:DAC": {
-    }
+    },
     "local-authority-eng:GLO": {
     },
     "local-authority-eng:MDW": {
