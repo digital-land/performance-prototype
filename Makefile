@@ -33,7 +33,7 @@ flake8:
 	flake8 --exclude .venv,node_modules
 
 lint: black-check flake8
-frontend-assets: javascripts stylesheets 
+frontend-assets: javascripts stylesheets
 
 javascripts:
 	npm run copyjs
@@ -60,10 +60,23 @@ docker-push-candidate: docker-login-public
 docker-login-public:
 	aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
 
+dev-build:
+	docker-compose \
+		-f docker-compose.yml \
+		-f docker-compose.development.yml \
+		build application
+
+dev-up:
+	docker-compose \
+		-f docker-compose.yml \
+		-f docker-compose.development.yml \
+		up
+
+
 .PHONY: test-build
 test-build:
 	@echo "Building test image"
-	@docker compose \
+	@docker-compose \
 		-f docker-compose.yml \
 		-f docker-compose.test.yml \
 		build application

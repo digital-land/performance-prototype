@@ -65,7 +65,9 @@ RUN apt-get install --assume-yes \
     && python3 -m playwright install chromium
 
 FROM testing AS development
-CMD flask db upgrade && flask run
+ENV FLASK_ENV=development
+ENV FLASK_CONFIG=config.DevelopmentConfig
+CMD flask db upgrade && flask run -p $PORT -h 0.0.0.0
 
 FROM base AS live
 RUN rm -rf tests
