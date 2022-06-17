@@ -56,6 +56,7 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     needs: [ test ]
+    concurrency: deploy-staging
     env:
       ENVIRONMENT: staging
     steps:
