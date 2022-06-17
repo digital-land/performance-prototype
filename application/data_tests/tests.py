@@ -1439,6 +1439,26 @@ tests = {
                 "$.entities[0].organisation-entity": "109",
             },
         },
+        "Doncaster special area of conservation": {
+            "ticket": "https://trello.com/c/G58fAIDD/55-special-areas-of-conservation-sac",
+            "query": "?geometry=POINT(-0.92223776+53.54706143)&geometry_relation=intersects&dataset=special-area-of-conservation",
+            "dataset": "special-area-of-conservation",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Hatfield Moor",
+                "$.entities[0].reference": "UK0030166",
+            },
+        },
+        "Doncaster special protection area": {
+            "ticket": "https://trello.com/c/NZzFiRBW/58-special-protection-area",
+            "query": "?geometry=POINT(-0.92223776+53.54706143)&geometry_relation=intersects&dataset=special-protection-area",
+            "dataset": "special-protection-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Thorne & Hatfield Moors",
+                "$.entities[0].reference": "UK9005171",
+            },
+        },
         "Doncaster has no world heritage sites": {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?dataset=world-heritage-site&geometry_reference=E08000017",
