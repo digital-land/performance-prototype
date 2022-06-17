@@ -72,7 +72,8 @@ docker-login-public:
 	aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
 
 cf-login:
-	cf target -o dluhc-digital-land || cf login -a api.london.cloud.service.gov.uk
+	cf api https://api.london.cloud.service.gov.uk
+	cf auth
 
 cf-deploy: cf-login
 ifeq (, $(ENVIRONMENT))

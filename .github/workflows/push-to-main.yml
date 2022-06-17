@@ -59,6 +59,8 @@ jobs:
     concurrency: deploy-staging
     env:
       ENVIRONMENT: staging
+      CF_USERNAME: ${{ secrets.GOV_PAAS_SERVICE_ACCOUNT_USERNAME }}
+      CF_PASSWORD: ${{ secrets.GOV_PAAS_SERVICE_ACCOUNT_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       - uses: aws-actions/configure-aws-credentials@v1
