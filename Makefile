@@ -9,9 +9,6 @@ init::
 	npm install
 	python -m piptools sync requirements/requirements.txt
 
-reqs::
-	python -m piptools compile requirements/requirements.in
-
 sync:
 	python -m piptools sync requirements/requirements.txt
 
