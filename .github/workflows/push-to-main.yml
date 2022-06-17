@@ -56,7 +56,7 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     needs: [ test ]
-    environment:
+    env:
       ENVIRONMENT: staging
     steps:
       - uses: actions/checkout@v2
