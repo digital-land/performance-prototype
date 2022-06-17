@@ -51,7 +51,7 @@ jobs:
       - name: pull test image
         run: |
           docker pull $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-testing
-      - run: make test
+      - run: make docker-test
 
   deploy-staging:
     runs-on: ubuntu-latest
