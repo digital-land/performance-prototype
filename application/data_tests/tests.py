@@ -1403,6 +1403,15 @@ tests = {
         },
     },
     "local-authority-eng:DNC": {
+        "Doncaster article 4 direction area": {
+            "ticket": "https://trello.com/c/DwMKmLtW/78-doncaster-article-4-directions",
+            "query": "?geometry=POINT(-1.13040872+53.51816498)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].organisation-entity": "109",
+            },
+        },
         "Doncaster conservation area (Silverthorne Lane - should not be present)": {
             "ticket": "https://trello.com/c/ad2lElJj/77-doncaster-conservation-areas",
             "query": "?geometry=POINT(-2.57510213+51.45003871)&geometry_relation=intersects&dataset=conservation-area&organisation_entity=109",
