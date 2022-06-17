@@ -63,8 +63,26 @@ docker-push-candidate: docker-login-public
 	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-development
 	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-live
 
+docker-promote-candidate: docker-login-public
+ifeq (, $(ENVIRONMENT))
+	$(error "No environment specified via $$ENVIRONMENT, please pass as make argument")
+endif
+	docker pull $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-live
+	docker tag $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-live $(DOCKER_REPO)/$(APPLICATION):$(ENVIRONMENT)
+	docker push $(DOCKER_REPO)/$(APPLICATION):$(ENVIRONMENT)
+
 docker-login-public:
 	aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+
+cf-login:
+	cf target -o dluhc-digital-land || cf login -a api.london.cloud.service.gov.uk
+
+cf-deploy: cf-login
+ifeq (, $(ENVIRONMENT))
+	$(error "No environment specified via $$ENVIRONMENT, please pass as make argument")
+endif
+	cf target -o dluhc-digital-land -s $(ENVIRONMENT)
+	cf push $(ENVIRONMENT)-$(APPLICATION) --docker-image $(DOCKER_REPO)/$(APPLICATION):$(ENVIRONMENT)
 
 dev-build:
 	docker-compose \
