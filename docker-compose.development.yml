@@ -5,5 +5,3 @@ services:
     build:
       context: .
       target: development
-    volumes:
-      - .:/app

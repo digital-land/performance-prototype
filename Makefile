@@ -9,9 +9,6 @@ init::
 	npm install
 	python -m piptools sync requirements/requirements.txt
 
-sync:
-	python -m piptools sync requirements/requirements.txt
-
 deploy: databases push release
 
 databases::
@@ -84,38 +81,35 @@ endif
 	cf target -o dluhc-digital-land -s $(ENVIRONMENT)
 	cf push $(ENVIRONMENT)-$(APPLICATION) --docker-image $(DOCKER_REPO)/$(APPLICATION):$(ENVIRONMENT)
 
-dev-build:
+docker-dev-build:
 	docker-compose \
 		-f docker-compose.yml \
 		-f docker-compose.development.yml \
 		build application
 
-dev-up:
+docker-dev-up:
 	docker-compose \
 		-f docker-compose.yml \
 		-f docker-compose.development.yml \
 		up
 
-
-.PHONY: test-build
-test-build:
-	@echo "Building test image"
-	@docker-compose \
+.PHONY: docker-test-build
+docker-test-build:
+	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker-compose \
 		-f docker-compose.yml \
 		-f docker-compose.test.yml \
 		build application
 
-.PHONY: test
-test:
-	@echo "Running tests"
-	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker compose \
+.PHONY: docker-test
+docker-test:
+	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker-compose \
 		-f docker-compose.yml \
 		-f docker-compose.test.yml \
 		run --rm application bash -c "wait-for-it database:5432 && flask db upgrade && pytest tests/"
 
-.PHONY: test-debug
-test-debug:
-	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker compose \
+.PHONY: docker-test-debug
+docker-test-debug:
+	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker-compose \
 		-f docker-compose.yml \
 		-f docker-compose.test.yml \
 		run --rm application bash
