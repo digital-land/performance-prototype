@@ -2,8 +2,6 @@ name: on-push
 
 on:
   push:
-    branches:
-      - spike/ci-pipeline
 
 env:
   APPLICATION: digital-land-performance
@@ -57,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ test ]
     concurrency: deploy-staging
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     env:
       ENVIRONMENT: staging
       CF_USERNAME: ${{ secrets.GOV_PAAS_SERVICE_ACCOUNT_USERNAME }}
