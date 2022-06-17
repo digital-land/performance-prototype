@@ -51,6 +51,15 @@ upgrade-db:
 downgrade-db:
 	flask db downgrade
 
+test:
+	python -m pytest
+
+reqs:
+	python -m piptools compile requirements/requirements.in
+
+sync:
+	 python -m piptools sync requirements/requirements.txt
+
 docker-push-candidate: docker-login-public
 	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)
 	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-testing

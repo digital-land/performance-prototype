@@ -3,6 +3,15 @@ local_authorities = {
     "local-authority-eng:SWK": "London Borough of Southwark",
     "local-authority-eng:BUC": "Buckinghamshire Council",
     "local-authority-eng:CAT": "Canterbury City Council",
+    "local-authority-eng:DNC": "Doncaster Metropolitan Borough Council",
+    "local-authority-eng:DAC": "Dacorum Borough Council",
+    "local-authority-eng:GLO": "Gloucester City Council",
+    "local-authority-eng:MDW": "Medway Council",
+    "local-authority-eng:BOS": "Bolsover District Council",
+    "local-authority-eng:NED": "North East Derbyshire District Council",
+    "local-authority-eng:NET": "Newcastle City Council",
+    "local-authority-eng:CMD": "London Borough of Camden",
+    "local-authority-eng:NBL": "Northumberland County Council",
 }
 
 tests = {
@@ -1392,6 +1401,68 @@ tests = {
                 "$.entities[0].reference": "UK11066",
             },
         },
+    },
+    "local-authority-eng:DNC": {
+        "Doncaster conservation area (Silverthorne Lane - should not be present)": {
+            "ticket": "https://trello.com/c/ad2lElJj/77-doncaster-conservation-areas",
+            "query": "?geometry=POINT(-2.57510213+51.45003871)&geometry_relation=intersects&dataset=conservation-area&organisation_entity=109",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Doncaster conservation area (Burghwallis - should be present, from DNC)": {
+            "ticket": "https://trello.com/c/ad2lElJj/77-doncaster-conservation-areas",
+            "query": "?geometry=POINT(-1.19075823+53.60252048)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].organisation-entity": "109",
+            },
+        },
+        "Doncaster conservation area (Fishlake - should be present, from DNC)": {
+            "ticket": "https://trello.com/c/ad2lElJj/77-doncaster-conservation-areas",
+            "query": "?geometry=POINT(-1.01009404+53.61143996)&geometry_relation=intersects&dataset=conservation-area&organisation_entity=109",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Fishlake",
+                "$.entities[0].organisation-entity": "109",
+            },
+        },
+        "Doncaster has no world heritage sites": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?dataset=world-heritage-site&geometry_reference=E08000017",
+            "dataset": "world-heritage-site",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Doncaster has no world heritage site buffer zones": {
+            "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
+            "query": "?dataset=world-heritage-site-buffer-zone&geometry_reference=E08000017",
+            "dataset": "world-heritage-site-buffer-zone",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+
+    },
+    "local-authority-eng:DAC": {
+    },
+    "local-authority-eng:GLO": {
+    },
+    "local-authority-eng:MDW": {
+    },
+    "local-authority-eng:BOS": {
+    },
+    "local-authority-eng:NED": {
+    },
+    "local-authority-eng:NET": {
+    },
+    "local-authority-eng:CMD": {
+    },
+    "local-authority-eng:NBL": {
     },
 }
 
