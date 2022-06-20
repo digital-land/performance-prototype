@@ -1412,6 +1412,14 @@ tests = {
                 "$.entities[0].organisation-entity": "109",
             },
         },
+        "Doncaster has no central activities zone": {
+            "ticket": "https://trello.com/c/golBkjM7/39-central-activities-zone",
+            "query": "?dataset=central-activities-zone&geometry_reference=E08000017",
+            "dataset": "central-activities-zone",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
         "Doncaster conservation area (Silverthorne Lane - should not be present)": {
             "ticket": "https://trello.com/c/ad2lElJj/77-doncaster-conservation-areas",
             "query": "?geometry=POINT(-2.57510213+51.45003871)&geometry_relation=intersects&dataset=conservation-area&organisation_entity=109",
@@ -1437,6 +1445,24 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].name": "Fishlake",
                 "$.entities[0].organisation-entity": "109",
+            },
+        },
+        "Doncaster scheduled monuments Cusworth Hall": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
+            "query": "?geometry=POINT(-1.17620736 53.53055521)&geometry_relation=intersects&dataset=scheduled-monument",
+            "dataset": "scheduled-monument",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Medieval settlement 170m north east of Cusworth Hall",
+                "$.entities[0].reference": "1019080",
+            },
+        },
+        "Doncaster SSSI Lasso query": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
+            "query": "?geometry=POLYGON%28%28-1.2744140625%2053.505609442867666%2C-1.2493515014648435%2053.51357207274438%2C-1.2040328979492185%2053.503363302415266%2C-1.1666107177734373%2053.4719048377211%2C-1.237335205078125%2053.448397908053295%2C-1.2795639038085935%2053.48171257630568%2C-1.2744140625%2053.505609442867666%29%29&geometry_relation=intersects&limit=100&dataset=site-of-special-scientific-interest",
+            "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 6,
             },
         },
         "Doncaster special area of conservation": {
