@@ -1403,6 +1403,14 @@ tests = {
         },
     },
     "local-authority-eng:DNC": {
+        "Doncaster has no AONB": {
+            "ticket": "https://trello.com/c/fwcRbQFr/40-area-of-outstanding-natural-beauty",
+            "query": "?dataset=area-of-outstanding-natural-beauty&geometry_reference=E08000017",
+            "dataset": "area-of-outstanding-natural-beauty",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
         "Doncaster article 4 direction area": {
             "ticket": "https://trello.com/c/DwMKmLtW/78-doncaster-article-4-directions",
             "query": "?geometry=POINT(-1.13040872+53.51816498)&geometry_relation=intersects&dataset=article-4-direction-area",
@@ -1447,6 +1455,33 @@ tests = {
                 "$.entities[0].organisation-entity": "109",
             },
         },
+        "Doncaster park and gardens Brodsworth Hall": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
+            "query": "?geometry=POINT(-1.22808339+53.55497504)&geometry_relation=intersects&dataset=park-and-garden",
+            "dataset": "park-and-garden",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "BRODSWORTH HALL",
+                "$.entities[0].reference": "1001250",
+                "$.entities[0].park-and-garden-grade": "II",
+            },
+        },
+        "Doncaster has no national park": {
+            "ticket": "https://trello.com/c/qUHnNjO2/54-national-park",
+            "query": "?dataset=national-park&geometry_reference=E08000017",
+            "dataset": "national-park",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Doncaster has no RAMSAR sites": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?dataset=ramsar-sites&geometry_reference=E08000017",
+            "dataset": "ramsar-sites",
+            "assertions": {
+                "$.count": 0,
+            },
+        },        
         "Doncaster scheduled monuments Cusworth Hall": {
             "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
             "query": "?geometry=POINT(-1.17620736 53.53055521)&geometry_relation=intersects&dataset=scheduled-monument",
