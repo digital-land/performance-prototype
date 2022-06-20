@@ -1403,6 +1403,14 @@ tests = {
         },
     },
     "local-authority-eng:DNC": {
+        "Doncaster Ancient Woodland Lasso query": {
+            "ticket": "https://trello.com/c/CAKnm85l/56-ancient-woodland",
+            "query": "?geometry=POLYGON%28%28-1.1022377014160154%2053.471189601439136%2C-1.0768318176269531%2053.4844705943473%2C-1.0419845581054688%2053.48916902693924%2C-1.0160636901855469%2053.479567327196065%2C-1.06292724609375%2053.464343158625695%2C-1.1022377014160154%2053.471189601439136%29%29&geometry_relation=intersects&limit=100&dataset=ancient-woodland",
+            "dataset": "ancient-woodland",
+            "assertions": {
+                "$.count": 6,
+            },
+        },
         "Doncaster has no AONB": {
             "ticket": "https://trello.com/c/fwcRbQFr/40-area-of-outstanding-natural-beauty",
             "query": "?dataset=area-of-outstanding-natural-beauty&geometry_reference=E08000017",
@@ -1463,7 +1471,7 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].name": "BRODSWORTH HALL",
                 "$.entities[0].reference": "1001250",
-                "$.entities[0].park-and-garden-grade": "II",
+                "$.entities[0].park-and-garden-grade": "II*",
             },
         },
         "Doncaster has no national park": {
@@ -1476,8 +1484,8 @@ tests = {
         },
         "Doncaster has no RAMSAR sites": {
             "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
-            "query": "?dataset=ramsar-sites&geometry_reference=E08000017",
-            "dataset": "ramsar-sites",
+            "query": "?dataset=ramsar&geometry_reference=E08000017",
+            "dataset": "ramsar",
             "assertions": {
                 "$.count": 0,
             },
