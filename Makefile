@@ -56,7 +56,6 @@ sync:
 
 docker-push-candidate: docker-login-public
 	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)
-	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-testing
 	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-development
 	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-live
 
@@ -93,13 +92,6 @@ docker-dev-up:
 		-f docker-compose.yml \
 		-f docker-compose.development.yml \
 		up
-
-.PHONY: docker-test-build
-docker-test-build:
-	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.test.yml \
-		build application
 
 .PHONY: docker-test
 docker-test:

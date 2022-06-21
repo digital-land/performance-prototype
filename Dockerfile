@@ -34,37 +34,10 @@ EXPOSE $PORT
 
 RUN make databases
 
-FROM base AS testing
-RUN pip install --no-cache-dir \
-    pytest==7.1.2 \
-    playwright==1.22.0 \
-    pytest-playwright==0.3.0 \
-    pytest-mock==3.7.0
-
-RUN apt-get install --assume-yes \
-      libglib2.0-0 \
-      libnss3 \
-      libnspr4 \
-      libatk1.0-0 \
-      libatk-bridge2.0-0 \
-      libcups2 \
-      libdrm2 \
-      libdbus-1-3 \
-      libxkbcommon0 \
-      libxcomposite1 \
-      libxdamage1 \
-      libxfixes3 \
-      libxrandr2 \
-      libgbm1 \
-      libpango-1.0-0 \
-      libcairo2 \
-      libasound2 \
-      libatspi2.0-0 \
-    && python3 -m playwright install chromium
-
-FROM testing AS development
+FROM base AS development
 ENV FLASK_ENV=development
 ENV FLASK_CONFIG=config.DevelopmentConfig
+RUN pip install --no-cache-dir pytest==7.1.2
 CMD flask db upgrade && flask run -p $PORT -h 0.0.0.0
 
 FROM base AS live

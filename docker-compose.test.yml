@@ -4,5 +4,5 @@ services:
   application:
     build:
       context: .
-      target: testing
-    image: public.ecr.aws/l6z6v3j6/digital-land-performance:${GIT_ABBREV_COMMIT_HASH}-testing
+      target: development
+    image: public.ecr.aws/l6z6v3j6/digital-land-performance:${GIT_ABBREV_COMMIT_HASH}-development

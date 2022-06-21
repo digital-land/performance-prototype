@@ -23,11 +23,6 @@ jobs:
           docker build \
           --target base \
           --tag $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD) .
-      - name: build testing image
-        run: |
-          docker build \
-          --target testing \
-          --tag $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-testing .
       - name: build development image
         run: |
           docker build \
@@ -48,7 +43,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: pull test image
         run: |
-          docker pull $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-testing
+          docker pull $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-development
       - run: make docker-test
 
   deploy-staging:
