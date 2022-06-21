@@ -67,6 +67,6 @@ jobs:
           curl https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
           echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
           sudo apt update
-          sudo apt install -y cf8-cli
+          sudo apt install -y cf7-cli
       - run: make docker-promote-candidate
       - run: make cf-deploy
