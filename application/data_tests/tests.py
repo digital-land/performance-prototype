@@ -1403,6 +1403,22 @@ tests = {
         },
     },
     "local-authority-eng:DNC": {
+        "Doncaster Ancient Woodland Lasso query": {
+            "ticket": "https://trello.com/c/CAKnm85l/56-ancient-woodland",
+            "query": "?geometry=POLYGON%28%28-1.1022377014160154%2053.471189601439136%2C-1.0768318176269531%2053.4844705943473%2C-1.0419845581054688%2053.48916902693924%2C-1.0160636901855469%2053.479567327196065%2C-1.06292724609375%2053.464343158625695%2C-1.1022377014160154%2053.471189601439136%29%29&geometry_relation=intersects&limit=100&dataset=ancient-woodland",
+            "dataset": "ancient-woodland",
+            "assertions": {
+                "$.count": 6,
+            },
+        },
+        "Doncaster has no AONB": {
+            "ticket": "https://trello.com/c/fwcRbQFr/40-area-of-outstanding-natural-beauty",
+            "query": "?dataset=area-of-outstanding-natural-beauty&geometry_reference=E08000017",
+            "dataset": "area-of-outstanding-natural-beauty",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
         "Doncaster article 4 direction area": {
             "ticket": "https://trello.com/c/DwMKmLtW/78-doncaster-article-4-directions",
             "query": "?geometry=POINT(-1.13040872+53.51816498)&geometry_relation=intersects&dataset=article-4-direction-area",
@@ -1410,6 +1426,14 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].organisation-entity": "109",
+            },
+        },
+        "Doncaster has no central activities zone": {
+            "ticket": "https://trello.com/c/golBkjM7/39-central-activities-zone",
+            "query": "?dataset=central-activities-zone&geometry_reference=E08000017",
+            "dataset": "central-activities-zone",
+            "assertions": {
+                "$.count": 0,
             },
         },
         "Doncaster conservation area (Silverthorne Lane - should not be present)": {
@@ -1437,6 +1461,71 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].name": "Fishlake",
                 "$.entities[0].organisation-entity": "109",
+            },
+        },
+        "Doncaster park and gardens Brodsworth Hall": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
+            "query": "?geometry=POINT(-1.22808339+53.55497504)&geometry_relation=intersects&dataset=park-and-garden",
+            "dataset": "park-and-garden",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "BRODSWORTH HALL",
+                "$.entities[0].reference": "1001250",
+                "$.entities[0].park-and-garden-grade": "II*",
+            },
+        },
+        "Doncaster has no national park": {
+            "ticket": "https://trello.com/c/qUHnNjO2/54-national-park",
+            "query": "?dataset=national-park&geometry_reference=E08000017",
+            "dataset": "national-park",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
+        "Doncaster has no RAMSAR sites": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?dataset=ramsar&geometry_reference=E08000017",
+            "dataset": "ramsar",
+            "assertions": {
+                "$.count": 0,
+            },
+        },        
+        "Doncaster scheduled monuments Cusworth Hall": {
+            "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
+            "query": "?geometry=POINT(-1.17620736 53.53055521)&geometry_relation=intersects&dataset=scheduled-monument",
+            "dataset": "scheduled-monument",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Medieval settlement 170m north east of Cusworth Hall",
+                "$.entities[0].reference": "1019080",
+            },
+        },
+        "Doncaster SSSI Lasso query": {
+            "ticket": "https://trello.com/c/r3wV6tXO/50-sites-of-special-and-or-scientific-interest",
+            "query": "?geometry=POLYGON%28%28-1.2744140625%2053.505609442867666%2C-1.2493515014648435%2053.51357207274438%2C-1.2040328979492185%2053.503363302415266%2C-1.1666107177734373%2053.4719048377211%2C-1.237335205078125%2053.448397908053295%2C-1.2795639038085935%2053.48171257630568%2C-1.2744140625%2053.505609442867666%29%29&geometry_relation=intersects&limit=100&dataset=site-of-special-scientific-interest",
+            "dataset": "site-of-special-scientific-interest",
+            "assertions": {
+                "$.count": 6,
+            },
+        },
+        "Doncaster special area of conservation": {
+            "ticket": "https://trello.com/c/G58fAIDD/55-special-areas-of-conservation-sac",
+            "query": "?geometry=POINT(-0.92223776+53.54706143)&geometry_relation=intersects&dataset=special-area-of-conservation",
+            "dataset": "special-area-of-conservation",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Hatfield Moor",
+                "$.entities[0].reference": "UK0030166",
+            },
+        },
+        "Doncaster special protection area": {
+            "ticket": "https://trello.com/c/NZzFiRBW/58-special-protection-area",
+            "query": "?geometry=POINT(-0.92223776+53.54706143)&geometry_relation=intersects&dataset=special-protection-area",
+            "dataset": "special-protection-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Thorne & Hatfield Moors",
+                "$.entities[0].reference": "UK9005171",
             },
         },
         "Doncaster has no world heritage sites": {
