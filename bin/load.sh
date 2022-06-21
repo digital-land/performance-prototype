@@ -9,12 +9,17 @@ BUCKET=digital-land-production-collection-dataset
 URL="https://$BUCKET.s3.eu-west-2.amazonaws.com/entity-builder/dataset/entity.sqlite3"
 
 cd data-loader
-if [ -f *.csv ]; then
-  rm *.csv
-fi
+for F in *.csv; do
+  if [ ! -f "$F" ]; then break; fi
+  rm "$F"
+done
 
-echo "downloading from $URL"
-curl -O $URL
+if [ ! -f "$(basename "$URL")" ]; then
+  echo "downloading from $URL"
+  curl -O $URL
+else
+  echo "using $(basename "$URL") from local filesystem"
+fi
 
 echo "exporting"
 

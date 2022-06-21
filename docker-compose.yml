@@ -1,10 +1,27 @@
 version: "3.8"
 
 services:
-  web:
+  application:
     build:
       context: .
-    volumes:
-      - .:/app
+      target: live
     ports:
-      - 5000:5000
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://postgis:postgis@database/postgis
+    depends_on:
+      - database
+
+  database:
+    image: postgis/postgis
+    environment:
+      POSTGRES_USER: postgis
+      POSTGRES_PASSWORD: postgis
+    healthcheck:
+      test: pg_isready -U postgis
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - ${DB_HOST_PORT-5432:}5432

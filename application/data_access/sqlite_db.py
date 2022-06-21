@@ -1,8 +1,12 @@
+import os
+from urllib.parse import urlparse
+
 import sqlite3
 
 
 class SqliteDatabase:
     def __init__(self, db_path):
+        assert os.path.exists(urlparse(db_path).path), f"{db_path} not found"
         self.db_path = db_path
         self.connection = None
 

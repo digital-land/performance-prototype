@@ -1,0 +1,72 @@
+name: on-push
+
+on:
+  push:
+
+env:
+  APPLICATION: digital-land-performance
+  AWS_REGION: eu-west-2
+  DOCKER_REPO: public.ecr.aws/l6z6v3j6
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DL_WEB }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DL_WEB }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: build base image
+        run: |
+          docker build \
+          --target base \
+          --tag $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD) .
+      - name: build development image
+        run: |
+          docker build \
+          --target development \
+          --tag $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-development .
+      - name: build live image
+        run: |
+          docker build \
+          --target live \
+          --tag $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-live .
+      - name: push images
+        run: make docker-push-candidate
+
+  test:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: pull test image
+        run: |
+          docker pull $DOCKER_REPO/$APPLICATION:$(git rev-parse --short HEAD)-development
+      - run: make docker-test
+
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: [ test ]
+    concurrency: deploy-staging
+    if: github.ref == 'refs/heads/main'
+    env:
+      ENVIRONMENT: staging
+      CF_USERNAME: ${{ secrets.GOV_PAAS_SERVICE_ACCOUNT_USERNAME }}
+      CF_PASSWORD: ${{ secrets.GOV_PAAS_SERVICE_ACCOUNT_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DL_WEB }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DL_WEB }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: install cloudfoundry cli
+        run: |
+          curl https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+          echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+          sudo apt update
+          sudo apt install -y cf8-cli
+      - run: make docker-promote-candidate
+      - run: make cf-deploy

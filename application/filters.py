@@ -1,6 +1,7 @@
 from datetime import datetime
 import urllib.parse
 import json
+import re
 
 from markupsafe import Markup
 from shapely import wkt
@@ -64,10 +65,8 @@ def date_time_format(d):
 
 
 def map_link_if_possible(path, data):
-    import re
-
     pattern = re.compile(
-        "\$.entities\[(\d+)\]\.(name|reference|address-text|tree-preservation-order|tree-preservation-order-tree)"
+        r"\$.entities[(\d+)]\.(name|reference|address-text|tree-preservation-order|tree-preservation-order-tree)"
     )
     match = pattern.match(path)
     if match:
