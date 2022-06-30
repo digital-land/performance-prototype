@@ -94,6 +94,14 @@ docker-dev-up:
 		-f docker-compose.development.yml \
 		up
 
+.PHONY: docker-staging-security-scan
+docker-staging-security-scan:
+	env DOCKER_APPLICATION_TAG=staging \
+		docker-compose \
+		-f docker-compose.yml \
+		-f docker-compose.security.yml \
+		run --rm zap
+
 .PHONY: docker-test
 docker-test:
 	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker-compose \
