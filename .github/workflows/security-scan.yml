@@ -58,7 +58,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
-          channel-id: 'general'
+          channel-id: 'dl-developers'
           payload: |
             {
               "text": "Security Scan: Performance Prototype",
