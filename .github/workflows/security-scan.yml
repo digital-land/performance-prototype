@@ -30,6 +30,13 @@ jobs:
       - name: attack
         run: make docker-staging-security-scan
 
+      - name: upload log
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: zap.log
+          path: zap.log
+
       - name: parse report
         id: report
         run: |
@@ -38,13 +45,6 @@ jobs:
           echo "::set-output name=alerts_medium::$(jq -rc '[ .site[0].alerts[] | select(.riskcode == "2") | .riskcode ] | length' zap-report.json)"
           echo "::set-output name=alerts_high::$(jq -rc '[ .site[0].alerts[] | select(.riskcode == "3") | .riskcode ] | length' zap-report.json)"
           echo "::set-output name=alerts_total::$(jq -rc '[ .site[0].alerts[] ] | length' zap-report.json)"
-
-      - name: upload log
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: zap.log
-          path: zap.log
 
       - name: upload report
         uses: actions/upload-artifact@v3
