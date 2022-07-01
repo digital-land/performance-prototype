@@ -1,12 +1,9 @@
 name: security-scan
 
 on:
-  #  schedule:
-  #    - cron: "45 8 * * *"
+  schedule:
+    - cron: "45 8 * * MON"
   workflow_dispatch:
-  push:
-    branches:
-      - feat/security-scans
 
 env:
   APPLICATION: digital-land-performance
