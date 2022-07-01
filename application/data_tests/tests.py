@@ -1489,7 +1489,7 @@ tests = {
             "assertions": {
                 "$.count": 0,
             },
-        },        
+        },
         "Doncaster scheduled monuments Cusworth Hall": {
             "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
             "query": "?geometry=POINT(-1.17620736 53.53055521)&geometry_relation=intersects&dataset=scheduled-monument",
@@ -1557,6 +1557,40 @@ tests = {
     "local-authority-eng:NED": {
     },
     "local-authority-eng:NET": {
+        "Newcastle Tree Bullocksteads Farm, Ponteland Road": {
+            "ticket": "https://trello.com/c/tpyiO5JZ/88-newcastle-tree-preservation-orders",
+            "query": "?geometry=POINT(-1.682068 55.017047)&geometry_relation=intersects&dataset=tree",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1989/017.T1",
+                "$.entities[0].tree-preservation-order": "1989/017",
+            },
+        },
+        "Newcastle Tree Lasso Query Dinnington": {
+            "ticket": "https://trello.com/c/tpyiO5JZ/88-newcastle-tree-preservation-orders",
+            "query": "?geometry=POLYGON((-1.6825389862060545 55.055906577512076,-1.6849422454833982 55.05000672285041,-1.6646862030029295 55.048924988528654,-1.6652441024780271 55.055119980451735,-1.6759300231933594 55.057233925007694,-1.6825389862060545 55.055906577512076))&geometry_relation=intersects&dataset=tree",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 68,
+            },
+        },
+        "Newcastle Tree Point count": {
+            "ticket": "https://trello.com/c/tpyiO5JZ/88-newcastle-tree-preservation-orders",
+            "query": "?dataset=tree&organisation_entity=228&field=reference",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 7336,
+            },
+        },
+        "Newcastle Tree Zone count": {
+            "ticket": "https://trello.com/c/tpyiO5JZ/88-newcastle-tree-preservation-orders",
+            "query": "?dataset=tree-preservation-zone&organisation_entity=228&field=reference",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 762,
+            },
+        },
     },
     "local-authority-eng:CMD": {
     },
