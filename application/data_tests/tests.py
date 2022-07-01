@@ -1602,6 +1602,28 @@ tests = {
                 "$.entities[0].tree-preservation-order": "1991/024",
             },
         },
+        "Newcastle Tree Zone, Richardson Road Area 1 - Duplicate": {
+            "ticket": "https://trello.com/c/tpyiO5JZ/88-newcastle-tree-preservation-orders",
+            "query": "?geometry=POINT(-1.62211538 54.98000338)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1996/005.G19",
+                "$.entities[0].name": "RVI",
+                "$.entities[0].tree-preservation-order": "1996/005",
+            },
+        },
+        "Newcastle Tree Zone, Richardson Road Area Area 2 - Duplicate": {
+            "ticket": "https://trello.com/c/tpyiO5JZ/88-newcastle-tree-preservation-orders",
+            "query": "?geometry=POINT(-1.62168439 54.97937012)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1996/005.G19",
+                "$.entities[0].name": "RVI",
+                "$.entities[0].tree-preservation-order": "1996/005",
+            },
+        },
     },
     "local-authority-eng:CMD": {
     },
