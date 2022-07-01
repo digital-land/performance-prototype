@@ -1594,7 +1594,7 @@ tests = {
         "Newcastle Tree Zone, Woolsington Metro Bund Area - Duplicate Multi Polygon Check": {
             "ticket": "https://trello.com/c/tpyiO5JZ/88-newcastle-tree-preservation-orders",
             "query": "?geometry=POINT(-1.69532882 55.02127060)&geometry_relation=intersects&dataset=tree-preservation-zone",
-            "dataset": "tree",
+            "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "1991/024.Area",
@@ -1605,7 +1605,7 @@ tests = {
         "Newcastle Tree Zone, Richardson Road Area 1 - Duplicate": {
             "ticket": "https://trello.com/c/tpyiO5JZ/88-newcastle-tree-preservation-orders",
             "query": "?geometry=POINT(-1.62211538 54.98000338)&geometry_relation=intersects&dataset=tree-preservation-zone",
-            "dataset": "tree",
+            "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "1996/005.G19",
@@ -1616,7 +1616,7 @@ tests = {
         "Newcastle Tree Zone, Richardson Road Area Area 2 - Duplicate": {
             "ticket": "https://trello.com/c/tpyiO5JZ/88-newcastle-tree-preservation-orders",
             "query": "?geometry=POINT(-1.62168439 54.97937012)&geometry_relation=intersects&dataset=tree-preservation-zone",
-            "dataset": "tree",
+            "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "1996/005.G19",
