@@ -1588,7 +1588,18 @@ tests = {
             "query": "?dataset=tree-preservation-zone&organisation_entity=228&field=reference",
             "dataset": "tree-preservation-zone",
             "assertions": {
-                "$.count": 762,
+                "$.count": 757,
+            },
+        },
+        "Newcastle Tree Zone, Woolsington Metro Bund Area - Duplicate Multi Polygon Check": {
+            "ticket": "https://trello.com/c/tpyiO5JZ/88-newcastle-tree-preservation-orders",
+            "query": "?geometry=POINT(-1.69532882 55.02127060)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1991/024.Area",
+                "$.entities[0].name": "Woolsington Metro Bund Area",
+                "$.entities[0].tree-preservation-order": "1991/024",
             },
         },
     },
