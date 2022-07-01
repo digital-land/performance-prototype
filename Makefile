@@ -96,6 +96,7 @@ docker-dev-up:
 
 .PHONY: docker-staging-security-scan
 docker-staging-security-scan:
+	touch zap.log
 	env DOCKER_APPLICATION_TAG=staging \
 		docker-compose \
 		-f docker-compose.yml \
