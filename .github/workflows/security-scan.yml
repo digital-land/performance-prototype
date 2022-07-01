@@ -2,7 +2,7 @@ name: security-scan
 
 on:
   schedule:
-    - cron: "45 8 * * MON"
+    - cron: "45 8 * * 1"
   workflow_dispatch:
 
 env:
