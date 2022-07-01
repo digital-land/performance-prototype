@@ -17,7 +17,7 @@ services:
     command: bash -c "zap.sh -cmd -addonupdate; zap.sh -cmd -autorun /zap/wrk/zap.yaml"
     volumes:
       - .:/zap/wrk
-      - ./zap.log:/home/zap/.ZAP/zap.log
+      - ./zap-working-dir/zap.log:/home/zap/.ZAP/zap.log
     depends_on:
       application:
         condition: service_healthy

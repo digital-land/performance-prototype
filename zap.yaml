@@ -46,7 +46,7 @@ jobs:
   - type: report
     parameters:
       template: traditional-md
-      reportDir: /zap/wrk/
+      reportDir: /zap/wrk/zap-working-dir/
       reportFile: zap-report.md
     risks:
       - high
@@ -62,7 +62,7 @@ jobs:
   - type: report
     parameters:
       template: traditional-json
-      reportDir: /zap/wrk/
+      reportDir: /zap/wrk/zap-working-dir/
       reportFile: zap-report.json
     risks:
       - high
