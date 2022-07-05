@@ -1619,7 +1619,7 @@ tests = {
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
-                "$.entities[0].reference": "1996/005.G19",
+                "$.entities[0].reference": "1996/005.G20",
                 "$.entities[0].name": "RVI",
                 "$.entities[0].tree-preservation-order": "1996/005",
             },
