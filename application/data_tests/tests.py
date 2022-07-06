@@ -1632,18 +1632,18 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "1380579",
                 "$.entities[0].listed-building-grade": "II",
-                "$.entities[0].address": "King George VI building; Department for Agriculture and the Centre for Lifelong Learning, Queen Victoria Road (east side)",
+                "$.entities[0].address-text": "King George VI building; Department for Agriculture and the Centre for Lifelong Learning, Queen Victoria Road (east side)",
             },
         },
         "Newcastle Listed Buildings, Victoria Tunnel": {
             "ticket": "https://trello.com/c/A2vHakFR/87-newcastle-listed-buildings",
-            "query": "?geometry=POINT(-1.61750197 54.97823753)&geometry_relation=intersects&dataset=listed-building-outline",
+            "query": "?geometry=POINT(-1.61304137 54.97977550)&geometry_relation=intersects&dataset=listed-building-outline",
             "dataset": "listed-building-outline",
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "1390828",
                 "$.entities[0].listed-building-grade": "II",
-                "$.entities[0].address": "Victoria Tunnel - Underground Tramway Tunnel. Note Line Based On Smr Data With a 4 Metre Diameter Tunnel.",
+                "$.entities[0].address-text": "Victoria Tunnel - Underground Tramway Tunnel. Note Line Based On Smr Data With a 4 Metre Diameter Tunnel.",
             },
         },
         "Newcastle Listed Buildings, Byker Wall Estate": {
@@ -1654,7 +1654,7 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "1392123",
                 "$.entities[0].listed-building-grade": "II*",
-                "$.entities[0].address": "Byker Wall Estate - 1, 2 And 3 And Attached Ramps",
+                "$.entities[0].address-text": "Byker Wall Estate - 1, 2 And 3 And Attached Ramps",
             },
         },
         "Newcastle Listed Building Lasso Query Byker Area": {
