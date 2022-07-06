@@ -11,10 +11,16 @@ env:
   ZAP_VERSION: 2.11.1
 
 jobs:
-  staging-dynamic-audit:
+  dynamic-audit:
     runs-on: ubuntu-latest
     env:
       DOCKER_APPLICATION_TAG: staging
+    outputs:
+      alerts_info: ${{ steps.report.outputs.alerts_info }}
+      alerts_low: ${{ steps.report.outputs.alerts_low }}
+      alerts_medium: ${{ steps.report.outputs.alerts_medium }}
+      alerts_high: ${{ steps.report.outputs.alerts_high }}
+      alerts_total: ${{ steps.report.outputs.alerts_total }}
     steps:
       - uses: actions/checkout@v2
 
@@ -45,6 +51,49 @@ jobs:
           echo "::set-output name=alerts_high::$(jq -rc '[ .site[0].alerts[] | select(.riskcode == "3") | .riskcode ] | length' zap-working-dir/zap-report.json)"
           echo "::set-output name=alerts_total::$(jq -rc '[ .site[0].alerts[] ] | length' zap-working-dir/zap-report.json)"
 
+  static-audit:
+    runs-on: ubuntu-latest
+    outputs:
+      alerts_undefined: ${{ steps.report.outputs.alerts_undefined }}
+      alerts_low: ${{ steps.report.outputs.alerts_low }}
+      alerts_medium: ${{ steps.report.outputs.alerts_medium }}
+      alerts_high: ${{ steps.report.outputs.alerts_high }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: setup
+        run: |
+          sudo apt-get update && sudo apt-get install -y rsync
+          pip install git+https://github.com/acodeninja/bandit_markdown_formatter@main
+          npm install
+
+      - name: audit
+        run: |
+          bandit -x ./tests/,./node_modules/ -r -f markdown -o bandit-report.md .
+          bandit -x ./tests/,./node_modules/ -r -f json -o bandit-report.json .
+          cat bandit-report.md >> $GITHUB_STEP_SUMMARY
+        continue-on-error: true
+
+      - name: parse report
+        id: report
+        run: |
+          echo ::set-output name=alerts_undefined::$(jq -rc '.metrics._totals."SEVERITY.UNDEFINED"' bandit-report.json)
+          echo ::set-output name=alerts_low::$(jq -rc '.metrics._totals."SEVERITY.LOW"' bandit-report.json)
+          echo ::set-output name=alerts_medium::$(jq -rc '.metrics._totals."SEVERITY.MEDIUM"' bandit-report.json)
+          echo ::set-output name=alerts_high::$(jq -rc '.metrics._totals."SEVERITY.HIGH"' bandit-report.json)
+
+  send-report:
+    runs-on: ubuntu-latest
+    needs:
+      - dynamic-audit
+      - static-audit
+    env:
+      DOCKER_APPLICATION_TAG: staging
+    steps:
       - name: send report notification
         uses: slackapi/slack-github-action@v1
         env:
@@ -54,7 +103,7 @@ jobs:
           payload: |
             {
               "text": "Security Scan: Performance Prototype",
-              "icon_emoji": ":zap:",
+              "icon_emoji": ":lock_with_ink_pen:",
               "username": "SecurityScanner",
               "blocks": [
                 {
@@ -69,23 +118,52 @@ jobs:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "*TOTAL* ${{ steps.report.outputs.alerts_total }}"
+                      "text": "*Dynamic Audit*"
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*HIGH* ${{ steps.report.outputs.alerts_high }}"
+                      "text": "*TOTAL* ${{ needs.dynamic-audit.outputs.alerts_total }}"
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*MEDIUM* ${{ steps.report.outputs.alerts_medium }}"
+                      "text": "*HIGH* ${{ needs.dynamic-audit.outputs.alerts_high }}"
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*LOW* ${{ steps.report.outputs.alerts_low }}"
+                      "text": "*MEDIUM* ${{ needs.dynamic-audit.outputs.alerts_medium }}"
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*INFO* ${{ steps.report.outputs.alerts_info }}"
+                      "text": "*LOW* ${{ needs.dynamic-audit.outputs.alerts_low }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*INFO* ${{ needs.dynamic-audit.outputs.alerts_info }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Static Audit*"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*HIGH* ${{ needs.static-audit.outputs.alerts_high }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*MEDIUM* ${{ needs.static-audit.outputs.alerts_medium }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*LOW* ${{ needs.static-audit.outputs.alerts_low }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*UNDEFINED* ${{ needs.static-audit.outputs.alerts_undefined }}"
                     }
                   ]
                 },
