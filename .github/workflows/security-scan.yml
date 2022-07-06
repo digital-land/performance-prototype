@@ -76,10 +76,9 @@ jobs:
 
       - name: audit
         run: |
-          bandit -x ./tests/,./node_modules/ -r -f markdown -o bandit-report.md .
-          bandit -x ./tests/,./node_modules/ -r -f json -o bandit-report.json .
+          bandit -x ./tests/,./node_modules/ -r -f markdown -o bandit-report.md . || true
+          bandit -x ./tests/,./node_modules/ -r -f json -o bandit-report.json . || true
           cat bandit-report.md >> $GITHUB_STEP_SUMMARY
-        continue-on-error: true
 
       - name: parse report
         id: report
@@ -106,7 +105,7 @@ jobs:
           payload: |
             {
               "text": "Security Scan: Performance Prototype",
-              "icon_emoji": ":lock_with_ink_pen:",
+              "icon_emoji": ":lock:",
               "username": "SecurityScanner",
               "blocks": [
                 {
