@@ -90,8 +90,6 @@ jobs:
     needs:
       - dynamic-audit
       - static-audit
-    env:
-      DOCKER_APPLICATION_TAG: staging
     steps:
       - name: send report notification
         uses: slackapi/slack-github-action@v1
