@@ -1624,6 +1624,55 @@ tests = {
                 "$.entities[0].tree-preservation-order": "1996/005",
             },
         },
+        "Newcastle Listed Buildings, King George VI": {
+            "ticket": "https://trello.com/c/A2vHakFR/87-newcastle-listed-buildings",
+            "query": "?geometry=POINT(-1.61750197 54.97823753)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1380579",
+                "$.entities[0].listed-building-grade": "II",
+                "$.entities[0].address": "King George VI building; Department for Agriculture and the Centre for Lifelong Learning, Queen Victoria Road (east side)",
+            },
+        },
+        "Newcastle Listed Buildings, Victoria Tunnel": {
+            "ticket": "https://trello.com/c/A2vHakFR/87-newcastle-listed-buildings",
+            "query": "?geometry=POINT(-1.61750197 54.97823753)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1390828",
+                "$.entities[0].listed-building-grade": "II",
+                "$.entities[0].address": "Victoria Tunnel - Underground Tramway Tunnel. Note Line Based On Smr Data With a 4 Metre Diameter Tunnel.",
+            },
+        },
+        "Newcastle Listed Buildings, Byker Wall Estate": {
+            "ticket": "https://trello.com/c/A2vHakFR/87-newcastle-listed-buildings",
+            "query": "?geometry=POINT(-1.58134701 54.97429075)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1392123",
+                "$.entities[0].listed-building-grade": "II*",
+                "$.entities[0].address": "Byker Wall Estate - 1, 2 And 3 And Attached Ramps",
+            },
+        },
+        "Newcastle Listed Building Lasso Query Byker Area": {
+            "ticket": "https://trello.com/c/A2vHakFR/87-newcastle-listed-buildings",
+            "query": "?geometry=POLYGON((-1.583597660064697 54.975224590154,-1.5831041336059566 54.97220724924324,-1.5771818161010738 54.96890638811564,-1.5694785118103023 54.96859845813188,-1.5698432922363277 54.97197324190401,-1.5711736679077144 54.976025071118556,-1.5740060806274414 54.97752746923109,-1.5755081176757812 54.97651766685763,-1.581580638885498 54.975544784454684,-1.583597660064697 54.975224590154))&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 81,
+            },
+        },
+        "Newcastle Listed Building count": {
+            "ticket": "https://trello.com/c/A2vHakFR/87-newcastle-listed-buildings",
+            "query": "?dataset=listed-building-outline&organisation_entity=228&field=reference",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 773,
+            },
+        },
     },
     "local-authority-eng:CMD": {
     },
