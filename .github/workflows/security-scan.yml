@@ -32,7 +32,7 @@ jobs:
 
       - name: attack
         run: |
-          make docker-staging-security-scan
+          make docker-security-scan
           cat zap-working-dir/zap-report.md >> $GITHUB_STEP_SUMMARY
 
       - name: upload log

@@ -94,13 +94,12 @@ docker-dev-up:
 		-f docker-compose.development.yml \
 		up
 
-.PHONY: docker-staging-security-scan
-docker-staging-security-scan:
+.PHONY: docker-security-scan
+docker-security-scan:
 	mkdir -p zap-working-dir
 	touch zap-working-dir/zap.log
 	chmod -R a+rw zap-working-dir/
-	env DOCKER_APPLICATION_TAG=staging \
-		docker-compose \
+	docker-compose \
 		-f docker-compose.yml \
 		-f docker-compose.security.yml \
 		run --rm zap
