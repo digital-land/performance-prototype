@@ -51,10 +51,6 @@ jobs:
     needs: [ test ]
     concurrency: deploy-staging
     if: github.ref == 'refs/heads/main'
-    env:
-      ENVIRONMENT: staging
-      CF_USERNAME: ${{ secrets.GOV_PAAS_SERVICE_ACCOUNT_USERNAME }}
-      CF_PASSWORD: ${{ secrets.GOV_PAAS_SERVICE_ACCOUNT_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
       - uses: aws-actions/configure-aws-credentials@v1
@@ -62,11 +58,4 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DL_WEB }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DL_WEB }}
           aws-region: ${{ env.AWS_REGION }}
-      - name: install cloudfoundry cli
-        run: |
-          curl https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
-          echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
-          sudo apt update
-          sudo apt install -y cf7-cli
       - run: make docker-promote-candidate
-      - run: make cf-deploy

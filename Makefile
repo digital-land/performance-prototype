@@ -70,18 +70,6 @@ endif
 docker-login-public:
 	aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
 
-cf-login:
-	cf api https://api.london.cloud.service.gov.uk
-	cf auth
-
-cf-deploy: cf-login
-ifeq (, $(ENVIRONMENT))
-	$(error "No environment specified via $$ENVIRONMENT, please pass as make argument")
-endif
-	cf target -o dluhc-digital-land -s $(ENVIRONMENT)
-	cf push $(ENVIRONMENT)-$(APPLICATION) --docker-image $(DOCKER_REPO)/$(APPLICATION):$(ENVIRONMENT)
-	cf run-task $(ENVIRONMENT)-$(APPLICATION) --command "cd /app && flask db upgrade" --name migrate --wait -k 2G -m 1G
-
 docker-dev-build:
 	docker-compose \
 		-f docker-compose.yml \
