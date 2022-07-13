@@ -1463,6 +1463,25 @@ tests = {
                 "$.entities[0].organisation-entity": "109",
             },
         },
+        "Doncaster listed buildings": {
+            "ticket": "https://trello.com/c/7aRSRznm/80-doncaster-listed-buildings",
+            "query": "?geometry=POINT(-1.12684568+53.52332269)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Christ Church,Thorne Road,Doncaster,South Yorkshire,,",
+                "$.entities[0].reference": "1286309",
+                "$.entities[0].listed-building-grade": "II*",
+            },
+        },
+        "Doncaster Listed Building Lasso South Parade query": {
+            "ticket": "https://trello.com/c/7aRSRznm/80-doncaster-listed-buildings",
+            "query": "?geometry=POLYGON%28%28-1.1281907558441162%2053.521877645056634%2C-1.1285984516143799%2053.521635262785765%2C-1.1253207921981812%2053.52052220007758%2C-1.1249828338623047%2053.52097827228812%2C-1.1272680759429932%2053.521663966021805%2C-1.1281907558441162%2053.521877645056634%29%29&geometry_relation=intersects&limit=100&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 27,
+            },
+        },
         "Doncaster park and gardens Brodsworth Hall": {
             "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
             "query": "?geometry=POINT(-1.22808339+53.55497504)&geometry_relation=intersects&dataset=park-and-garden",
