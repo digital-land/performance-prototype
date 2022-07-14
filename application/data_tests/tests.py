@@ -1580,7 +1580,7 @@ tests = {
     "local-authority-eng:MDW": {
         "Medway Article 4 Directions Brompton Lines": {
             "ticket": "https://trello.com/c/gLqBnxG4/73-medway-article-4-directions",
-            "query": "?geometry=POINT(-1.22808339+53.55497504)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(0.54434025+51.39156389)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 1,
