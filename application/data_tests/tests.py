@@ -1578,6 +1578,32 @@ tests = {
     "local-authority-eng:GLO": {
     },
     "local-authority-eng:MDW": {
+        "Medway Article 4 Directions Brompton Lines": {
+            "ticket": "https://trello.com/c/gLqBnxG4/73-medway-article-4-directions",
+            "query": "?geometry=POINT(-1.22808339+53.55497504)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "Brompton Lines",
+            },
+        },
+        "Medway Article 4 Directions Upper Bush": {
+            "ticket": "https://trello.com/c/gLqBnxG4/73-medway-article-4-directions",
+            "query": "?geometry=POINT(0.43547436 51.37577851)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "Upper Bush (1)",
+            },
+        },
+        "Medway Article 4 Lasso Rochester": {
+            "ticket": "https://trello.com/c/gLqBnxG4/73-medway-article-4-directions",
+            "query": "?POLYGON%28%280.5021095275878905%2051.39031566485798%2C0.49283981323242176%2051.3792811079534%2C0.5235671997070311%2051.36770803527875%2C0.5365276336669921%2051.378370370333016%2C0.5238246917724608%2051.38672704752679%2C0.5200481414794922%2051.3833524192608%2C0.5138683319091796%2051.383673823150446%2C0.5021095275878905%2051.39031566485798%29%29geometry_relation=intersects&limit=100&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 20,
+            },
+        },
     },
     "local-authority-eng:BOS": {
     },
