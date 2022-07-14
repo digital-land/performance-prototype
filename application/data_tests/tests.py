@@ -1482,6 +1482,14 @@ tests = {
                 "$.count": 27,
             },
         },
+        "Doncaster listed buildings projection check - 2m discrepancy on ArcGIS endpoint": {
+            "ticket": "https://trello.com/c/7aRSRznm/80-doncaster-listed-buildings",
+            "query": "?geometry=POINT(-1.12676332+53.52326925)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "warnings": {
+                "$.count": 0,
+            },
+        },
         "Doncaster park and gardens Brodsworth Hall": {
             "ticket": "https://trello.com/c/xhCLfQ7r/38-scheduled-monuments",
             "query": "?geometry=POINT(-1.22808339+53.55497504)&geometry_relation=intersects&dataset=park-and-garden",
