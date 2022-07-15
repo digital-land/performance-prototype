@@ -1578,7 +1578,7 @@ tests = {
     "local-authority-eng:GLO": {
         "Gloucester Article 4 Directions 35 Stroud Road": {
             "ticket": "https://trello.com/c/FX8tqCCc/81-gloucester-article-4-directions",
-            "query": "?geometry=POINT(-2.24972315, 51.85746141)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-2.24972315+51.85746141)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 1,
@@ -1587,7 +1587,7 @@ tests = {
         },
         "Gloucester Article 4 Directions 12 Albion Street": {
             "ticket": "https://trello.com/c/FX8tqCCc/81-gloucester-article-4-directions",
-            "query": "?geometry=POINT(-2.24929843, 51.86129062)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "query": "?geometry=POINT(-2.24929843+51.86129062)&geometry_relation=intersects&dataset=article-4-direction-area",
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 1,
