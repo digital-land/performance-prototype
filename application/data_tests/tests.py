@@ -1757,6 +1757,16 @@ tests = {
     "local-authority-eng:CMD": {
     },
     "local-authority-eng:NBL": {
+        "Northumberland Article 4 Directions Old Vicarage": {
+            "ticket": "https://trello.com/c/8YIUL1LL/61-northumberland-article-4-directions",
+            "query": "?geometry=POINT(-1.64749000+55.19570970)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "{79F7D1EF-E9D7-493A-A986-7C108378D56D}",
+                "address-text": "The Old Vicarage, Longhirst, NE61 3LU",
+            },
+        },
     },
 }
 
