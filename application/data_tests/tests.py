@@ -1764,7 +1764,7 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "{79F7D1EF-E9D7-493A-A986-7C108378D56D}",
-                "address-text": "The Old Vicarage, Longhirst, NE61 3LU",
+                "$.entities[0].address-text": "The Old Vicarage, Longhirst, NE61 3LU",
             },
         },
     },
