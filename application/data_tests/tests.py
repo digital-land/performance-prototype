@@ -1576,6 +1576,33 @@ tests = {
     "local-authority-eng:DAC": {
     },
     "local-authority-eng:GLO": {
+        "Gloucester Article 4 Directions 35 Stroud Road": {
+            "ticket": "https://trello.com/c/FX8tqCCc/81-gloucester-article-4-directions",
+            "query": "?geometry=POINT(-2.24972315, 51.85746141)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "35 Stroud Road",
+            },
+        },
+        "Gloucester Article 4 Directions 12 Albion Street": {
+            "ticket": "https://trello.com/c/FX8tqCCc/81-gloucester-article-4-directions",
+            "query": "?geometry=POINT(-2.24929843, 51.86129062)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "12 Albion Street",
+            },
+        },
+        "Gloucester Article 4 Directions 6 Somerset Place": {
+            "ticket": "https://trello.com/c/FX8tqCCc/81-gloucester-article-4-directions",
+            "query": "?geometry=POINT(-2.25018346+51.85939957)&geometry_relation=intersects&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "6 Somerset Place",
+            },
+        },
     },
     "local-authority-eng:MDW": {
         "Medway Article 4 Directions Brompton Lines": {
