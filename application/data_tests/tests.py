@@ -1631,6 +1631,36 @@ tests = {
                 "$.count": 20,
             },
         },
+        "Medway Tree Preservation Orders Matts Hill Road": {
+            "ticket": "https://trello.com/c/24D6j2dL/75-medway-tree-preservation-orders",
+            "query": "?geometry=POINT(0.60552387 51.33896278)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 2,
+                "$.entities[0].address-text": "Matts Hill Road (south)",
+                "$.entities[0].reference": "TPO G152/1994",
+                "$.entities[1].address-text": "Matts Hill Road",
+                "$.entities[1].reference": "TPO M228/2015",
+            },
+        },
+        "Medway Tree Preservation Orders Matts Hill Road": {
+            "ticket": "https://trello.com/c/24D6j2dL/75-medway-tree-preservation-orders",
+            "query": "?geometry=POINT(0.64687299 51.47186977)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].address-text": "Avery Way",
+                "$.entities[0].reference": "TPO R5/1970",
+            },
+        },
+        "Medway Article 4 Lasso Rochester": {
+            "ticket": "https://trello.com/c/24D6j2dL/75-medway-tree-preservation-orders",
+            "query": "?geometry=POLYGON((0.49577951431274403 51.46387378240806,0.49822568893432606 51.46190859990418,0.5000710487365722 51.46245672054104,0.49676656723022455 51.46387378240806,0.49577951431274403 51.46387378240806))&geometry_relation=intersects&limit=100&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+            },
+        },        
     },
     "local-authority-eng:BOS": {
     },
