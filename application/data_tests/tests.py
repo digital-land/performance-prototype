@@ -1767,6 +1767,14 @@ tests = {
                 "$.entities[0].address-text": "The Old Vicarage, Longhirst, NE61 3LU",
             },
         },
+        "Northumberland Article 4 Lasso Whalton": {
+            "ticket": "https://trello.com/c/8YIUL1LL/61-northumberland-article-4-directions",
+            "query": "?geometry=POLYGON((-1.8046975135803218 55.1283300961627,-1.8049764633178706 55.12564326659586,-1.7957067489624021 55.124845770972,-1.7898702621459956 55.126538896539586,-1.7930674552917476 55.12774121748134,-1.794612407684326 55.128661336604296,-1.7976593971252437 55.128734945218156,-1.801199913024902 55.12900484230789,-1.8046975135803218 55.1283300961627))&geometry_relation=intersects&limit=100&dataset=article-4-direction-area",
+            "dataset": "article-4-direction-area",
+            "assertions": {
+                "$.count": 52,
+            },
+        },
     },
 }
 
