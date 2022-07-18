@@ -1643,7 +1643,7 @@ tests = {
                 "$.entities[1].reference": "TPO M228/2015",
             },
         },
-        "Medway Tree Preservation Orders Matts Hill Road": {
+        "Medway Tree Preservation Orders Avery Way": {
             "ticket": "https://trello.com/c/24D6j2dL/75-medway-tree-preservation-orders",
             "query": "?geometry=POINT(0.64687299 51.47186977)&geometry_relation=intersects&dataset=tree-preservation-zone",
             "dataset": "tree-preservation-zone",
@@ -1653,14 +1653,22 @@ tests = {
                 "$.entities[0].reference": "TPO R5/1970",
             },
         },
-        "Medway Article 4 Lasso Rochester": {
+        "Medway Tree Preservation Orders Lasso Cliffe": {
             "ticket": "https://trello.com/c/24D6j2dL/75-medway-tree-preservation-orders",
             "query": "?geometry=POLYGON((0.49577951431274403 51.46387378240806,0.49822568893432606 51.46190859990418,0.5000710487365722 51.46245672054104,0.49676656723022455 51.46387378240806,0.49577951431274403 51.46387378240806))&geometry_relation=intersects&limit=100&dataset=tree-preservation-zone",
             "dataset": "tree-preservation-zone",
             "assertions": {
                 "$.count": 1,
             },
-        },        
+        },
+        "Medway has no tree points": {
+            "ticket": "https://trello.com/c/24D6j2dL/75-medway-tree-preservation-orders",
+            "query": "?dataset=tree&geometry_reference=E06000035",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 0,
+            },
+        },
     },
     "local-authority-eng:BOS": {
     },
