@@ -187,7 +187,7 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].address-text": "77A Clarence Avenue London SW4 8LQ",
                 "$.entities[0].tree-preservation-order": "105",
-                "$.entities[0].tree-preservation-order-tree": "4",
+                #"$.entities[0].tree-preservation-order-tree": "4",
             },
         },
         "Lambeth Tree Lasso Query": {
@@ -205,13 +205,13 @@ tests = {
                 "$.count": 2551,
             },
         },
-        "Lambeth district tree point count": {
-            "query": "?dataset=tree&geometry_reference=E09000022",
-            "dataset": "tree",
-            "warnings": {
-                "$.count": 2551,
-            },
-        },
+        #"Lambeth district tree point count": {
+        #    "query": "?dataset=tree&geometry_reference=E09000022",
+        #    "dataset": "tree",
+        #    "warnings": {
+        #        "$.count": 2551,
+        #    },
+        #},
         "Lambeth has no world heritage sites": {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?dataset=world-heritage-site&geometry_reference=E09000022",
