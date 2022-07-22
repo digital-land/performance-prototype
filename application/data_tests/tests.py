@@ -507,9 +507,6 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].listed-building-grade": "II",
             },
-            "warnings": {
-                "$.entities[0].name": "The White Hart",
-            },
         },
         "Listed Building Lasso query 108 high Street Amersham": {
             "ticket": "https://trello.com/c/HrxISbnM/44-buckinghamshire-listed-building-outlines",
