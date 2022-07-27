@@ -1666,6 +1666,41 @@ tests = {
                 "$.count": 0,
             },
         },
+        "Medway Listed Buildings Holly Tree Cottage": {
+            "ticket": "https://trello.com/c/LxUi8iq8/76-medway-listed-buildings",
+            "query": "?geometry=POINT(0.61126816 51.34758144)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1259664",
+            },
+        },
+        "Medway Listed Buildings Chapel Houses": {
+            "ticket": "https://trello.com/c/LxUi8iq8/76-medway-listed-buildings",
+            "query": "?geometry=POINT(0.42543481 51.34874930)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1085748",
+            },
+        },
+        "Medway Listed Buildings West Court Farmhouse": {
+            "ticket": "https://trello.com/c/LxUi8iq8/76-medway-listed-buildings",
+            "query": "?geometry=POINT(0.47849200 51.45152779)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1085760",
+            },
+        },
+        "Medway Listed Buildings Lasso Dock Road Gillingham": {
+            "ticket": "https://trello.com/c/LxUi8iq8/76-medway-listed-buildings",
+            "query": "?geometry=POLYGON((0.5232761778103637 51.387272177861405,0.5252994786428833 51.38466789361996,0.5380294130474852 51.39150711149554,0.543593490336914 51.39587315440349,0.5338985071810912 51.39771413193694,0.5273227794754027 51.39726704420488,0.5240349156225586 51.39326935968535,0.5229811131056212 51.387640448520074,0.5232761778103637 51.387272177861405))&geometry_relation=intersects&limit=100&organisation_entity=212&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 112,
+            },
+        },
     },
     "local-authority-eng:BOS": {
     },
