@@ -1673,6 +1673,7 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "1259664",
+                "$.entities[0].name": "Holly Tree Cottage",
             },
         },
         "Medway Listed Buildings Chapel Houses": {
@@ -1682,6 +1683,7 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "1085748",
+                "$.entities[0].name": "CHAPEL HOUSES",
             },
         },
         "Medway Listed Buildings West Court Farmhouse": {
@@ -1691,6 +1693,7 @@ tests = {
             "assertions": {
                 "$.count": 1,
                 "$.entities[0].reference": "1085760",
+                "$.entities[0].name": "West Court Farmhouse",
             },
         },
         "Medway Listed Buildings Lasso Dock Road Gillingham": {
