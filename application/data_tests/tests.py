@@ -1600,6 +1600,58 @@ tests = {
                 "$.entities[0].reference": "6 Somerset Place",
             },
         },
+        "Gloucester Listed Buildings Monastic Infirmary Ruins - Combine test absent": {
+            "ticket": "https://trello.com/c/YonHvopC/84-gloucester-listed-buildings",
+            "query": "?geometry=POINT(-2.24612342+51.86818528)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1271583",
+                "$.entities[0].name": "REMAINS OF MONASTIC INFIRMARY",
+                "$.entities[0].listed-building-grade": "I",
+            },
+        },
+        "Gloucester Listed Buildings Monastic Infirmary Ruins - Combine test present": {
+            "ticket": "https://trello.com/c/YonHvopC/84-gloucester-listed-buildings",
+            "query": "?geometry=POINT(-2.24633823+51.86813962)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1271583",
+                "$.entities[0].name": "REMAINS OF MONASTIC INFIRMARY",
+                "$.entities[0].listed-building-grade": "I",
+            },
+        },
+        "Gloucester Listed Buildings 19thC Merchants Offices - Combine test absent": {
+            "ticket": "https://trello.com/c/YonHvopC/84-gloucester-listed-buildings",
+            "query": "?geometry=POINT(-2.24970725+51.86380393)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1271652",
+                "$.entities[0].name": "NUMBERS 27 AND 29 AND ATTACHED FRONT AREA RAILINGS AND GATES",
+                "$.entities[0].listed-building-grade": "II",
+            },
+        },
+        "Gloucester Listed Buildings 19thC Merchants Offices - Combine test present": {
+            "ticket": "https://trello.com/c/YonHvopC/84-gloucester-listed-buildings",
+            "query": "?geometry=POINT(-2.24976897+51.86375054)&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "1271652",
+                "$.entities[0].name": "NUMBERS 27 AND 29 AND ATTACHED FRONT AREA RAILINGS AND GATES",
+                "$.entities[0].listed-building-grade": "II",
+            },
+        },
+        "Gloucester Listed Buildings Lasso Test": {
+            "ticket": "https://trello.com/c/YonHvopC/84-gloucester-listed-buildings",
+            "query": "?geometry=POLYGON((-2.249010801315307 51.866938810913496,-2.248291969299316 51.868137910412884,-2.247219085693359 51.86894612518935,-2.2441077232360835 51.867289931756346,-2.2447836399078365 51.866680437222016,-2.2464358806610103 51.865845681306126,-2.2486245632171626 51.86677981189439,-2.249010801315307 51.866938810913496))&geometry_relation=intersects&dataset=listed-building-outline",
+            "dataset": "listed-building-outline",
+            "assertions": {
+                "$.count": 73,
+            },
+        },
     },
     "local-authority-eng:MDW": {
         "Medway Article 4 Directions Brompton Lines": {
