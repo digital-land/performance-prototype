@@ -1756,6 +1756,26 @@ tests = {
                 "$.count": 112,
             },
         },
+        "Medway Thames Estuary and Marshes": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?geometry=POINT(0.52364621 51.46382577)&geometry_relation=intersects&dataset=ramsar",
+            "dataset": "ramsar",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Thames Estuary & Marshes",
+                "$.entities[0].reference": "UK11069",
+            },
+        },
+        "Medway Medway Estuary and Marshes": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?geometry=POINT(0.57759214 51.41843271)&geometry_relation=intersects&dataset=ramsar",
+            "dataset": "ramsar",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Medway Estuary & Marshes",
+                "$.entities[0].reference": "UK11040",
+            },
+        },
     },
     "local-authority-eng:BOS": {
     },
@@ -1898,6 +1918,26 @@ tests = {
             "dataset": "article-4-direction-area",
             "assertions": {
                 "$.count": 52,
+            },
+        },
+        "Northumberland Lindisfarne RAMSAR": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?geometry=POINT(-1.80586032 55.68389746)&geometry_relation=intersects&dataset=ramsar",
+            "dataset": "ramsar",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Lindisfarne",
+                "$.entities[0].reference": "UK11036",
+            },
+        },
+        "Northumberland Holburn Lake RAMSAR": {
+            "ticket": "https://trello.com/c/6cGJ8knC/60-ramsar-sites",
+            "query": "?geometry=POINT(-1.92451277 55.62262273)&geometry_relation=intersects&dataset=ramsar",
+            "dataset": "ramsar",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Holburn Lake & Moss",
+                "$.entities[0].reference": "UK11030",
             },
         },
     },
