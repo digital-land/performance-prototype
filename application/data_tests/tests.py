@@ -289,7 +289,7 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "5",
                 "$.entities[0].name": "Chilterns",
-                "$.entities[0].organisation-entity": "501910",
+                "$.entities[0].organisation-entity": "600001",
             },
         },
         "Chilterns area of outstanding natural beauty - RIPA intersection with Tudor Equestrian Center": {
@@ -300,7 +300,7 @@ tests = {
                 "$.count": 1,
                 "$.entities[0].reference": "5",
                 "$.entities[0].name": "Chilterns",
-                "$.entities[0].organisation-entity": "501910",
+                "$.entities[0].organisation-entity": "600001",
             },
         },
         "Chilterns article 4 direction": {
