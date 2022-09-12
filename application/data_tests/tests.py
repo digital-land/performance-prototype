@@ -468,10 +468,46 @@ tests = {
             "query": "?geometry=POINT(-0.700567 51.699685)&geometry_relation=intersects&dataset=conservation-area",
             "dataset": "conservation-area",
             "assertions": {
-                "$.count": 1,
                 "$.entities[0].name": "Great Missenden",
             },
             "warnings": {
+                "$.count": 1,
+                "$.entities[0].organisation-entity": "67",
+            },
+        },
+        "Marlow conservation area (not present in Historic England Feed)": {
+            "ticket": "https://trello.com/c/Z5qZj1w7/11-buckinghamshire-conservation-areas",
+            "query": "?geometry=POINT(-0.77545416 51.56995114)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.entities[0].name": "Marlow Conservation Area",
+            },
+            "warnings": {
+                "$.count": 1,
+                "$.entities[0].organisation-entity": "67",
+            },
+        },
+        "Wendover conservation area (smaller extent in Historic England Feed)": {
+            "ticket": "https://trello.com/c/Z5qZj1w7/11-buckinghamshire-conservation-areas",
+            "query": "?geometry=POINT(-0.73907841 51.75712111)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.entities[0].name": "Wendover Conservation Area",
+            },
+            "warnings": {
+                "$.count": 1,
+                "$.entities[0].organisation-entity": "67",
+            },
+        },
+        "Hillesden Hamlet and Church End Conservation Areas (SE extent duplicate missing)": {
+            "ticket": "https://trello.com/c/Z5qZj1w7/11-buckinghamshire-conservation-areas",
+            "query": "?geometry=POINT(-1.00264655 51.95294220)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.entities[0].name": "Hillesden Hamlet and Church End Conservation Areas",
+            },
+            "warnings": {
+                "$.count": 1,
                 "$.entities[0].organisation-entity": "67",
             },
         },
