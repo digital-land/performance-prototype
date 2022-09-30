@@ -1936,6 +1936,30 @@ tests = {
         },
     },
     "local-authority-eng:CMD": {
+        "Camden Conservation Area - Bloomsbury": {
+            "ticket": "https://trello.com/c/FhmxVz4Q/94-camden-conservation-areas",
+            "query": "?geometry=POINT(-0.12592694 51.52486131)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.entities[0].name": "Bloomsbury",
+            "warnings": {
+                "$.count": 1,
+                "$.entities[0].organisation-entity": "90",
+                "$.entities[0].reference": "CA4",
+            },
+        },
+        "Camden Conservation Area - Hanway Street": {
+            "ticket": "https://trello.com/c/FhmxVz4Q/94-camden-conservation-areas",
+            "query": "?geometry=POINT(-0.13160132 51.51734575)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.entities[0].name": "Hanway Street",
+            "warnings": {
+                "$.count": 1,
+                "$.entities[0].organisation-entity": "90",
+                "$.entities[0].reference": "CA16",
+            },
+        },
     },
     "local-authority-eng:NBL": {
         "Northumberland Article 4 Directions Old Vicarage": {
