@@ -1942,6 +1942,7 @@ tests = {
             "dataset": "conservation-area",
             "assertions": {
                 "$.entities[0].name": "Bloomsbury",
+            },
             "warnings": {
                 "$.count": 1,
                 "$.entities[0].organisation-entity": "90",
@@ -1954,6 +1955,7 @@ tests = {
             "dataset": "conservation-area",
             "assertions": {
                 "$.entities[0].name": "Hanway Street",
+            },
             "warnings": {
                 "$.count": 1,
                 "$.entities[0].organisation-entity": "90",
