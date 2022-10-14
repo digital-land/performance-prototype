@@ -39,7 +39,7 @@ def split_publishers(organisations):
     lpas = {
         publisher: organisations[publisher]
         for publisher in organisations.keys()
-        if "local-authority-eng" in publisher
+        if "local-authority" in publisher
     }
     dev_corps = {
         publisher: organisations[publisher]
