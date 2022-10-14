@@ -426,6 +426,8 @@ def get_latest_resource(dataset=None):
 
 
 def get_resource_count_per_dataset(organisation=None):
+    if organisation is not None:
+        organisation = organisation.replace("local-authority", "local-authority-eng")
     query_lines = [
         "SELECT",
         "COUNT(DISTINCT resource.resource) AS resources,",
