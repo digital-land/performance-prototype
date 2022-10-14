@@ -10,18 +10,18 @@
     <div class="header-proposition">
       <div class="govuk-header__content">
         <a href="https://digital-land.github.io/" class="govuk-header__link govuk-header__link--service-name govuk-header__link--service-name--bold">
-        Digital Land
+        planning.data.gov.uk
         </a>
         <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
-        <span class="dl-header__service-name"><a href="/" class="govuk-header__link govuk-header__link--service-name">Performance dashboard</a></span>
+        <span class="dl-header__service-name"><a href="/" class="govuk-header__link govuk-header__link--service-name">performance</a></span>
       </div>
     </div>
   </div>
 </header>
 
 {% set heroHTML %}
-<h1 class="govuk-heading-l">Performance of the digital land data platform</h1>
-<p class="govuk-body-l">Digital Land use this dashboard to monitor the performance of the planning data platform.</p>
+<h1 class="govuk-heading-l">Performance of the planning.data.gov.uk platform</h1>
+<p class="govuk-body-l">The team use this dashboard to monitor the performance of the data collected for the planning data platform.</p>
 {% endset %}
 
 {{ appHero({
@@ -47,19 +47,19 @@
     <div class="govuk-grid-column-one-third">
       <h3 class="govuk-heading-l">Datasets</h3>
       <p class="govuk-body">
-        A list of all the datasets the platform collects data for and how complete Digital Land believes each of the datasets are. 
+        A list of all the datasets the platform collects data for and how complete we believe each of the datasets are. 
       </p>
       <p class="govuk-body govuk-!-margin-bottom-0">
         <a href="{{ url_for('dataset.datasets') }}" class="govuk-link govuk-!-font-weight-bold">Browse datasets</a>
       </p>
     </div>
     <div class="govuk-grid-column-one-third">
-      <h3 class="govuk-heading-l">Publishers</h3>
+      <h3 class="govuk-heading-l">Organisations</h3>
       <p class="govuk-body">
-        A complete list of all the publishers we are collecting data from.
+        A complete list of all the organisations we are collecting data from.
       </p>
       <p class="govuk-body govuk-!-margin-bottom-0">
-        <a href="{{ url_for('publisher.organisation') }}" class="govuk-link govuk-!-font-weight-bold">Browse publishers</a>
+        <a href="{{ url_for('publisher.organisation') }}" class="govuk-link govuk-!-font-weight-bold">Browse organisations</a>
       </p>
     </div>
 
@@ -87,7 +87,7 @@
     <div class="govuk-grid-column-one-third">
       <h3 class="govuk-heading-l">Data tests</h3>
       <p class="govuk-body">
-        A set of tests run against the <a href="https://www.digital-land.info">Digital Land API</a> using test cases from <a href="https://www.ripa.digital/">RIPA</a> at
+        A set of tests run against the <a href="https://www.planning.data.gov.uk/docs">planning.data.gov.uk API</a> using test cases from <a href="https://www.ripa.digital/">RIPA</a> at
         Open Systems lab.
       </p>
       <p class="govuk-body govuk-!-margin-bottom-0">

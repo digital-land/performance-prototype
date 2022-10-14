@@ -1,15 +1,13 @@
 {% extends "organisation/base.html" %}
-{% block page_title %}Brownfield land | Dataset performance | Maturity Model | Digital Land{% endblock %}
-
 {%- from "tables/org-dataset-table.html" import datasetTable, simplifiedDatasetTable %}
 
-{% block pageTitle %}{{ organisation.name|default('Unknown') }} | Publisher | Operations dashboard{% endblock %}
+{% block pageTitle %}{{ organisation.name|default('Unknown') }} | Data provider{% endblock %}
 
 {% block dl_breadcrumbs %}
 {{ govukBreadcrumbs({
   "items": [
     {
-      "text": "Publishers",
+      "text": "Data providers",
       "href": url_for('publisher.organisation')
     },
     {
@@ -21,51 +19,8 @@
 
 {% block content %}
 <main id="content" role="main">
-  <span class="govuk-caption-xl">Publisher overview</span>
+  <span class="govuk-caption-xl">Organisation</span>
   <h1 id="btt-hook" class="govuk-heading-xl">{{ organisation.name|default('Unknown') }}</h1>
-
-  <div class="govuk-grid-row govuk-!-margin-bottom-9 govuk-!-margin-top-9">
-    <div class="govuk-grid-column-one-quarter">
-      <div class="app-data-item govuk-!-margin-bottom-6">
-        <span class="app-data-item__number govuk-!-font-size-80">{{ data['datasets'].keys()|length }}<span class="govuk-!-font-size-19">/{{ sources_per_dataset|length }}</span></span>
-        <p class="govuk-body govuk-!-font-size-36">Datasets</p>
-      </div>
-    </div>
-    <div class="govuk-grid-column-one-quarter">
-      <div class="app-data-item govuk-!-margin-bottom-6">
-        <span class="app-data-item__number govuk-!-font-size-80">{{ data['total_resources'] }}</span>
-        <p class="govuk-body govuk-!-font-size-36"><a class="govuk-link--text-colour" href="{{ url_for('base.resources', organisation=organisation['organisation']) }}">Resources</a></p>
-      </div>
-    </div>
-    <div class="govuk-grid-column-one-half">
-      <dl class="govuk-summary-list govuk-!-margin-bottom-9">
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">
-            Identifier
-          </dt>
-          <dd class="govuk-summary-list__value">
-            {{ organisation['prefix'] }}:{{ organisation['reference'] }}
-          </dd>
-        </div>
-
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">
-            Used end-dates
-          </dt>
-          <dd class="govuk-summary-list__value">
-            {{ "Yes" if enddates|length else "No" }}{% if enddates|length %} in
-            <ul class="govuk-list">
-              {% for d in enddates -%}
-              <li><a href="{{ url_for('dataset.dataset', dataset=d) }}">{{ d }}</a></li>
-              {%- endfor %}
-            </ul>
-            {%- endif %}
-          </dd>
-        </div>
-
-      </dl>
-    </div>
-  </div>
 
   {% if data["datasets"].keys()|length %}
     <h3 class="govuk-heading-m">Datasets with data</h3>
@@ -83,7 +38,7 @@
         {% set ns.dataset_params = ns.dataset_params + "&dataset=" + dataset %}
       {% endfor %}
       Search for the data
-      <a href="https://www.digital-land.info/entity?organisation={{ organisation.organisation }}">provided by</a> {{ organisation.name }}
+      <a href="https://www.planning.data.gov.uk/entity?organisation_entity={{ organisation.entity }}">provided by</a> {{ organisation.name }}
       or
       geospatial features <a href="https://www.digital-land.info/entity?geometry_reference={{ organisation.statistical_geography}}">within its boundary</a>
       on <a href="https://digital-land.info">digital-land.info</a>

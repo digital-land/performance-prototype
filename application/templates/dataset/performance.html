@@ -1,5 +1,4 @@
 {% extends "dataset/base.html" %}
-{% block page_title %}Brownfield land | Dataset performance | Maturity Model | Digital Land{% endblock %}
 
 {% from 'macro/resources-sources-by-month.html' import sourcesAndResourcesByMonthChart, sourcesAndResourcesByMonthJS %}
 {% from 'tables/org-table-on-dataset.html' import orgTableOnDataset %}
@@ -37,7 +36,7 @@
         <div class="govuk-grid-column-one-third">
           {% if coverage -%}
           <div class="app-data-item">
-            <p class="govuk-body app-data-item__label">Publishers</p>
+            <p class="govuk-body app-data-item__label">Organisations</p>
             <span class="app-data-item__number app-!-font-size-60">{{ coverage['active'] }}<span class="govuk-!-font-size-19">/{{ coverage['total'] }}</span></span>
           </div>
           {%- endif %}
@@ -175,7 +174,7 @@
         {% if publishers %}
         <li class="dl-subnav__list-item dl-subnav__list-item--selected">
           <a class="dl-subnav__list-item__link" href="#publishers" data-module-sub-nav="tab">
-          Publishers
+          Organisations
           </a>
         </li>
         {% endif %}
@@ -269,7 +268,7 @@
 
     <div id="publishers">
       {% if publishers %}
-      <h2 class="govuk-heading-l">Publishers</h2>
+      <h2 class="govuk-heading-l">Organisations</h2>
 
       <figure class="highcharts-figure govuk-!-margin-bottom-9 govuk-grid-row">
         <div class="govuk-grid-column-one-quarter">
@@ -294,7 +293,7 @@
           </div>
           <div id="accordion-default-content-1" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-1">
             {{ orgTableOnDataset({
-              "caption": "Publishers with an active resource",
+              "caption": "Organisations with an active resource",
               "organisations": publishers['active'],
               "today": today
             }) }}
@@ -310,7 +309,7 @@
           </div>
           <div id="accordion-default-content-1" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-1">
             {{ orgTableOnDataset({
-              "caption": "Publishers without an active resource",
+              "caption": "Organisations without an active resource",
               "organisations": publishers['noactive'],
               "today": today
             }) }}

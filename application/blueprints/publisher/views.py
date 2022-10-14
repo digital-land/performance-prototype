@@ -30,9 +30,9 @@ from application.utils import (
 publisher_pages = Blueprint("publisher", __name__, url_prefix="/organisation")
 
 
-############
-# Publishers
-############
+###############
+# Organisations
+###############
 
 
 def split_publishers(organisations):
@@ -63,7 +63,7 @@ def split_publishers(organisations):
         "Development corporation": dev_corps,
         "National parks": national_parks,
         "Other publishers": other,
-        "Local planning authority": lpas,
+        "Local authorities": lpas,
     }
 
 

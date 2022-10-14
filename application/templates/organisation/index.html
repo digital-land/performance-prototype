@@ -1,14 +1,12 @@
 {% extends "organisation/base.html" %}
-{% block page_title %}Publishers | Operations dashboard | Digital Land{% endblock %}
-
 
 {% block dl_breadcrumbs %}{% endblock %}
 
 {% block content %}
 
 <main id="content" role="main">
-  <h1 class="govuk-heading-xl">Publishers</h1>
-  <p id="btt-hook" class="govuk-body-l">A list of all the publishers we have collected data from and the expected publishers we have not yet collected from.</p>
+  <h1 class="govuk-heading-xl">Organisations</h1>
+  <p id="btt-hook" class="govuk-body-l">A list of the organisations we collect data from.</p>
 
   <div class="govuk-tabs" data-module="dl-subnav">
     <h2 class="govuk-tabs__title">
@@ -18,12 +16,12 @@
         <ul class="dl-subnav__list">
             <li class="dl-subnav__list-item dl-subnav__list-item--selected">
                 <a class="dl-subnav__list-item__link" href="#publishers-with-data" data-module-sub-nav="tab">
-                Publishers
+                Organisations
                 </a>
             </li>
             <li class="dl-subnav__list-item">
               <a class="dl-subnav__list-item__link" href="#publishers-with-no-data" data-module-sub-nav="tab">
-              Missing publishers
+                Organisations with no data
               </a>
             </li>
         </ul>
@@ -100,7 +98,7 @@
       </div>
       {% endfor %}
       <div class="js-no-filter-list-matches dl-list-filter__no-filter-match">
-        <p class="govuk-body">No publisher matches the search term you have entered.</p>
+        <p class="govuk-body">No organisation matches the search term you have entered.</p>
         <p class="govuk-body">That could be because we do not recognise the name you have entered OR we have not collected any data from the organisation.</p>
       </div>
     </div>

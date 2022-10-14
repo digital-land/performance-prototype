@@ -1,5 +1,4 @@
 {% extends "layouts/layout.html" %}
-{% block page_title %}Team performance | Maturity Model | Digital Land{% endblock %}
 
 {% block dl_breadcrumbs %}{% endblock %}
 
@@ -57,7 +56,7 @@
                 </div>
                 <div class="govuk-grid-column-one-quarter">
                   <div class="app-data-item">
-                    <p class="govuk-body app-data-item__label">Publishers</p>
+                    <p class="govuk-body app-data-item__label">Organisations</p>
                     <span class="app-data-item__number app-!-font-size-60">{{ publisher_count['active'] }}<span class="govuk-!-font-size-19">/{{ publisher_count['total'] }}</span></span>
                     <details class="govuk-details govuk-details--small app-data-item__explainer" data-module="govuk-details">
                         <summary class="govuk-details__summary">
@@ -66,7 +65,7 @@
                           </span>
                         </summary>
                         <div class="govuk-details__text">
-                          It measures the number of publishers we have collected data from against the number we expect to collect data from. Ideally these numbers would be the same.
+                          It measures the number of organisations we have collected data from against the number we expect to collect data from. Ideally these numbers would be the same.
                           <p><a href="{{ url_for('publisher.organisation', _anchor='publishers-with-no-data')}}" class="govuk-link">See missing publishers</a></p>
                         </div>
                       </details>
@@ -96,7 +95,7 @@
             </li>
             <li class="dl-subnav__list-item">
               <a class="dl-subnav__list-item__link" href="#publishers" data-module-sub-nav="tab">
-              Publishers
+                Organisations
               </a>
             </li>
         </ul>

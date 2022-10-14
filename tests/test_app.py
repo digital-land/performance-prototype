@@ -22,7 +22,7 @@ def test_app(client):
 
     resp = client.get("/organisation/")
     assert 200 == resp.status_code
-    assert "Publishers" in resp.data.decode("utf-8")
+    assert "Organisations" in resp.data.decode("utf-8")
 
     resp = client.get("/ripa/")
     assert 200 == resp.status_code
