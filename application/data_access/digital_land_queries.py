@@ -149,6 +149,11 @@ def get_publishers():
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     organisations = [create_dict(columns, row) for row in rows]
+
+    # hack to fix org names for local authorities
+    for org in organisations:
+        if "-eng" in org["organisation"]:
+            org["organisation"] = org["organisation"].replace("-eng", "")
     return index_by("organisation", organisations)
 
 

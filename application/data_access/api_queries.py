@@ -14,7 +14,7 @@ def get_entities(parameters):
 
 
 def get_organisation_entity(prefix, reference):
-    return get_entities({"prefix": prefix, "reference": reference})
+    return get_entities({"dataset": prefix, "reference": reference})
 
 
 def get_organisation_entity_number(prefix, reference):
