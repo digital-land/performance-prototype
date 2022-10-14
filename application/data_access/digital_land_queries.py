@@ -220,6 +220,9 @@ def get_organisation_stats():
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     organisations = [create_dict(columns, row) for row in rows]
+    for org in organisations:
+        if "-eng" in org["organisation"]:
+            org["organisation"] = org["organisation"].replace("-eng", "")
     return index_by("organisation", organisations)
 
 
@@ -268,6 +271,9 @@ def get_publisher_stats(dataset):
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
     organisations = [create_dict(columns, row) for row in rows]
+    for org in organisations:
+        if "-eng" in org["organisation"]:
+            org["organisation"] = org["organisation"].replace("-eng", "")
     return index_by("organisation", organisations)
 
 
@@ -454,6 +460,7 @@ def get_resource_count_per_dataset(organisation=None):
 
 
 def get_organisation_sources(organisation):
+    organisation = organisation.replace("local-authority", "local-authority-eng")
     sources, url = get_sources(
         filter={"organisation": organisation},
         include_blanks=True,
@@ -505,6 +512,8 @@ def get_overall_source_counts(groupby=None):
 
 
 def get_organisation_source_counts(organisation, by_dataset=True):
+    if organisation.startswith("local-authority"):
+        organisation = organisation.replace("local-authority", "local-authority-eng")
     query_lines = [
         "SELECT",
         "source_pipeline.pipeline AS pipeline,",
@@ -525,7 +534,11 @@ def get_organisation_source_counts(organisation, by_dataset=True):
     with SqliteDatabase(digital_land_db_path) as db:
         rows = db.execute(sql).fetchall()
     columns = rows[0].keys() if rows else []
-    return [create_dict(columns, row) for row in rows]
+    results = [create_dict(columns, row) for row in rows]
+    for result in results:
+        if "-eng" in result["organisation"]:
+            result["organisation"] = result["organisation"].replace("-eng", "")
+    return results
 
 
 def get_grouped_source_counts(organisation=None, **kwargs):
