@@ -1588,6 +1588,53 @@ tests = {
                 "$.entities[0].reference": "UK9005171",
             },
         },
+        "Doncaster TPO Zone outside boundary ": {
+            "ticket": "https://trello.com/c/nzgKT5Oa/79-doncaster-tree-preservation-orders",
+            "query": "?geometry=POINT(-1.23241360 53.61831086)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "Doncaster Rural District Council Tree Preservation Order (No.5) 1960 Hampole / Skelbrooke",
+                "$.entities[0].reference": "74/11/DRDC/05/W1",
+                "$.entities[0].address-text": "Scorcher Hills Wood Scorcher Hills Lane Burghwallis Doncaster South Yorkshire",
+                "$.entities[0].tree-preservation-type": "Woodland",
+                "$.entities[0].tree-species-list": "Mixed deciduous woodland",
+            },
+        },
+        "Doncaster TPO Zone inside boundary ": {
+            "ticket": "https://trello.com/c/nzgKT5Oa/79-doncaster-tree-preservation-orders",
+            "query": "?geometry=POINT(-0.92479190 53.56688457)&geometry_relation=intersects&dataset=tree-preservation-zone",
+            "dataset": "tree-preservation-zone",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].name": "South Yorkshire County Council Tree Preservation Order (No.2) 1982 Hatfield Levels, Hatfield",
+                "$.entities[0].reference": "DMBC/TPO/00002/G2",
+                "$.entities[0].address-text": "British Moss Peat Works The Levels Stainforth Moor Road Hatfield Woodhouse Doncaster South Yorkshire DN8 5TE",
+                "$.entities[0].notes": "Adjoining the peat works at Hatfield Moors, Hatfield Woodhouse, Doncaster",
+                "$.entities[0].tree-preservation-type": "Group",
+                "$.entities[0].tree-species-list": "Birch",
+            },
+        },
+        "Doncaster Tree Lasso Query Town Center": {
+            "ticket": "https://trello.com/c/nzgKT5Oa/79-doncaster-tree-preservation-orders",
+            "query": "?geometry=POLYGON((-1.1272144317626953 53.5225537566931,-1.1292743682861328 53.52367633331332,-1.1193180084228513 53.527962261320624,-1.1103057861328125 53.5232171010189,-1.1180305480957031 53.518420377280506,-1.1258411407470703 53.5214821785317,-1.1272144317626953 53.5225537566931))&geometry_relation=intersects&dataset=tree",
+            "dataset": "tree",
+            "assertions": {
+                "$.count": 57,
+            },
+        },
+        "Doncaster Tree Christchurch Road": {
+            "ticket": "https://trello.com/c/nzgKT5Oa/79-doncaster-tree-preservation-orders",
+            "query": "?geometry=POINT(-1.127139 53.522745)&geometry_relation=intersects&dataset=tree",
+            "dataset": "tree",
+            "assertions": {
+                "$.entities[0].name": "Doncaster Borough Council Tree Preservation Order (No.70) 1991 Christchurch",
+                "$.entities[0].reference": "DMBC/TPO/00070/T18",
+                "$.entities[0].address-text": "Tree Preservation Order Christ Church Road Doncaster South Yorkshire",
+                "$.entities[0].notes": "Situated on the southern boundary of the churchyard",
+                "$.entities[0].tree-species": "Lime",
+            },
+        },
         "Doncaster has no world heritage sites": {
             "ticket": "https://trello.com/c/pGDJsPmN/49-world-heritage-sites",
             "query": "?dataset=world-heritage-site&geometry_reference=E08000017",
