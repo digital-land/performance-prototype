@@ -1496,6 +1496,14 @@ tests = {
                 "$.entities[0].organisation-entity": "109",
             },
         },
+        "Doncaster conservation area (Conisbrough - recent change to include Wellgate)": {
+            "ticket": "https://trello.com/c/ad2lElJj/77-doncaster-conservation-areas",
+            "query": "?geometry=POINT(-1.23090357 53.48358745)&geometry_relation=intersects&dataset=conservation-area",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.entities[0].name": "Conisbrough",
+            },
+        },
         "Doncaster listed buildings": {
             "ticket": "https://trello.com/c/7aRSRznm/80-doncaster-listed-buildings",
             "query": "?geometry=POINT(-1.12684568+53.52332269)&geometry_relation=intersects&dataset=listed-building-outline",
