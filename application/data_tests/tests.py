@@ -1520,7 +1520,7 @@ tests = {
             "query": "?geometry=POLYGON%28%28-1.1281907558441162%2053.521877645056634%2C-1.1285984516143799%2053.521635262785765%2C-1.1253207921981812%2053.52052220007758%2C-1.1249828338623047%2053.52097827228812%2C-1.1272680759429932%2053.521663966021805%2C-1.1281907558441162%2053.521877645056634%29%29&geometry_relation=intersects&limit=100&dataset=listed-building-outline",
             "dataset": "listed-building-outline",
             "assertions": {
-                "$.count": 13,
+                "$.count": 14,
             },
         },
         "Doncaster listed buildings projection check - 2m discrepancy on ArcGIS endpoint": {
