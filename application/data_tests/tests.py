@@ -755,14 +755,12 @@ tests = {
         },
         "Southwark grade II listed building (Cobourg Road) - point search": {
             "ticket": "https://trello.com/c/KYZUfnWw/5-add-tests-for-ripa-sample-addresses-expected-constraints",
-            "query": "?entries=current&geometry=POINT(-0.0760466 51.4859056)&geometry_relation=intersects&limit=100&dataset=article-4-direction-area&dataset=central-activities-zone&dataset=listed-building&dataset=listed-building-outline&dataset=locally-listed-building&dataset=conservation-area&dataset=area-of-outstanding-natural-beauty&dataset=national-park&dataset=world-heritage-site&dataset=scheduled-monument&dataset=tree-preservation-zone&dataset=site-of-special-scientific-interest",  # noqa: E501
+            "query": "?entries=current&geometry=POINT(-0.0760466 51.4859056)&geometry_relation=intersects&limit=100&dataset=listed-building-outline",  # noqa: E501
             "dataset": "listed-building-outline",
             "assertions": {
-                "$.count": 2,
-                "$.entities[0].name": "Cobourg Road",
-                "$.entities[0].dataset": "conservation-area",
-                "$.entities[1].dataset": "listed-building-outline",
-                "$.entities[1].listed-building-grade": "II",
+                "$.count": 1,
+                "$.entities[0].dataset": "listed-building-outline",
+                "$.entities[0].listed-building-grade": "II",
             },
         },
         "Southwark grade II listed building (Cobourg Road) - lasso search": {
