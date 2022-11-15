@@ -765,19 +765,12 @@ tests = {
         },
         "Southwark grade II listed building (Cobourg Road) - lasso search": {
             "ticket": "https://trello.com/c/KYZUfnWw/5-add-tests-for-ripa-sample-addresses-expected-constraints",
-            "query": "?entries=current&geometry=POLYGON ((-0.07629960316337962 51.48596216740805, -0.07631450428819368 51.485912060522, -0.07554858463920969 51.48584896289475, -0.07553666367387485 51.48590092561696, -0.07629960316337962 51.48596216740805))&geometry_relation=intersects&limit=100&dataset=article-4-direction-area&dataset=central-activities-zone&dataset=listed-building&dataset=listed-building-outline&dataset=locally-listed-building&dataset=conservation-area&dataset=area-of-outstanding-natural-beauty&dataset=national-park&dataset=world-heritage-site&dataset=scheduled-monument&dataset=tree-preservation-zone&dataset=site-of-special-scientific-interest",  # noqa: E501
+            "query": "?entries=current&geometry=POLYGON ((-0.07629960316337962 51.48596216740805, -0.07631450428819368 51.485912060522, -0.07554858463920969 51.48584896289475, -0.07553666367387485 51.48590092561696, -0.07629960316337962 51.48596216740805))&geometry_relation=intersects&limit=100&dataset=listed-building-outline",  # noqa: E501
             "dataset": "listed-building-outline",
             "assertions": {
-                "$.count": 4,
-                "$.entities[0].name": "Cobourg Road",
-                "$.entities[0].dataset": "conservation-area",
-                "$.entities[1].name": "School Nature Area, Cobourg Road",
-                "$.entities[1].dataset": "tree-preservation-zone",
-                "$.entities[1].tree-preservation-order": "228",
-                "$.entities[2].name": "47, COBOURG ROAD",
-                "$.entities[2].dataset": "listed-building",
-                "$.entities[3].dataset": "listed-building-outline",
-                "$.entities[3].listed-building-grade": "II",
+                "$.count": 1,
+                "$.entities[0].dataset": "listed-building-outline",
+                "$.entities[0].listed-building-grade": "II",
             },
         },
         "Southwark grade II listed building (Clandon House, Boyfield Street estate) - RIPA lasso search": {
