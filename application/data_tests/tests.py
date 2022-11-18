@@ -1680,6 +1680,26 @@ tests = {
                 "$.entities[0].reference": "6 Somerset Place",
             },
         },
+        "Gloucester Conservation Area - Cathedral Precincts": {
+            "ticket": "https://trello.com/c/O3q6xvXv/82-gloucester-conservation-areas",
+            "query": "?geometry=POINT(-2.24672223 51.86830088)&geometry_relation=intersects&dataset=conservation-area&organisation_entity=145",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "5",
+                "$.entities[0].name": "Cathedral Precincts",
+            },
+        },
+        "Gloucester Conservation Area - Hucclecote Green": {
+            "ticket": "https://trello.com/c/O3q6xvXv/82-gloucester-conservation-areas",
+            "query": "?geometry=POINT(--2.18805748 51.84917330)&geometry_relation=intersects&dataset=conservation-area&organisation_entity=145",
+            "dataset": "conservation-area",
+            "assertions": {
+                "$.count": 1,
+                "$.entities[0].reference": "3",
+                "$.entities[0].name": "Hucclecote Green",
+            },
+        },
         "Gloucester Listed Buildings Monastic Infirmary Ruins - Combine test absent": {
             "ticket": "https://trello.com/c/YonHvopC/84-gloucester-listed-buildings",
             "query": "?geometry=POINT(-2.24612342+51.86818528)&geometry_relation=intersects&dataset=listed-building-outline",
