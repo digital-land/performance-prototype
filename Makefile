@@ -14,7 +14,7 @@ deploy: databases push release
 databases::
 # Prefer local sqlite3 if available (e.g. in development environment to reduce rebuild time)
 # When run in CI this should always pull a fresh version when building image
-	[ -f digital-land.sqlite3 ] || curl -qsfL -o digital-land.sqlite3 https://digital-land-production-collection-dataset.s3.eu-west-2.amazonaws.com/digital-land-builder/dataset/digital-land.sqlite3
+	[ -f digital-land.sqlite3 ] || curl -qsfL -o digital-land.sqlite3 https://datasette.planning.data.gov.uk/digital-land.db
 	bin/load.sh
 
 black:
