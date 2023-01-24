@@ -7,7 +7,7 @@ from application.models import TestRun, AssertionType
 
 ripa_test = Blueprint("ripa", __name__, url_prefix="/ripa")
 
-BASE_API_URL = "https://www.digital-land.info/entity.json"
+BASE_API_URL = "https://www.planning.data.gov.uk/entity.json"
 
 
 @ripa_test.route("/")
