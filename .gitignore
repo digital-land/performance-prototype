@@ -121,3 +121,4 @@ application/static/stylesheets
 application/static/javascripts
 *.sqlite3
 *.swp
+*.csv

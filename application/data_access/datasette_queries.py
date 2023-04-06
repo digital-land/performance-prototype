@@ -5,7 +5,7 @@ from application.utils import create_dict
 from flask import abort
 
 
-DATASETTE_URL = "https://datasette.digital-land.info"
+DATASETTE_URL = "https://datasette.planning.data.gov.uk"
 
 
 # TODO - this data is not in digital land db but each dataset has own
