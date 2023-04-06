@@ -1,6 +1,3 @@
-
-abbrev_hash := $(shell git rev-parse --short HEAD)
-
 run::
 	flask run
 
@@ -45,63 +42,9 @@ upgrade-db:
 downgrade-db:
 	flask db downgrade
 
-test:
-	python -m pytest
-
 reqs:
 	python -m piptools compile requirements/requirements.in
 
 sync:
 	 python -m piptools sync requirements/requirements.txt
 
-docker-push-candidate: docker-login-public
-	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)
-	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-development
-	docker push $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-live
-
-docker-promote-candidate: docker-login-public
-ifeq (, $(ENVIRONMENT))
-	$(error "No environment specified via $$ENVIRONMENT, please pass as make argument")
-endif
-	docker pull $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-live
-	docker tag $(DOCKER_REPO)/$(APPLICATION):$(abbrev_hash)-live $(DOCKER_REPO)/$(APPLICATION):$(ENVIRONMENT)
-	docker push $(DOCKER_REPO)/$(APPLICATION):$(ENVIRONMENT)
-
-docker-login-public:
-	aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-
-docker-dev-build:
-	docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.development.yml \
-		build application
-
-docker-dev-up:
-	docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.development.yml \
-		up
-
-.PHONY: docker-security-scan
-docker-security-scan:
-	mkdir -p zap-working-dir
-	touch zap-working-dir/zap.log
-	chmod -R a+rw zap-working-dir/
-	docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.security.yml \
-		run --rm zap
-
-.PHONY: docker-test
-docker-test:
-	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.test.yml \
-		run --rm application bash -c "wait-for-it database:5432 && flask db upgrade && pytest tests/"
-
-.PHONY: docker-test-debug
-docker-test-debug:
-	env GIT_ABBREV_COMMIT_HASH=$(abbrev_hash) docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.test.yml \
-		run --rm application bash
