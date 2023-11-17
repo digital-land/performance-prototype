@@ -5,7 +5,7 @@ RUN apt-get update \
     && apt-get install --assume-yes  \
       build-essential \
       git curl rsync netcat wait-for-it sqlite3 \
-      python3.10 python3-pip  nodejs \
+      python3.10 python3-pip  nodejs npm \
     && apt-get clean \
     && apt-get autoclean --assume-yes
 
