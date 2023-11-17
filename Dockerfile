@@ -1,13 +1,13 @@
 FROM ubuntu:22.04 AS base
 
 RUN apt-get update \
-    && apt-get upgrade --assume-yes \
-    && apt-get install --assume-yes  \
-      build-essential \
-      git curl rsync netcat wait-for-it sqlite3 \
-      python3.10 python3-pip  nodejs npm \
-    && apt-get clean \
-    && apt-get autoclean --assume-yes
+  && apt-get upgrade --assume-yes \
+  && apt-get install --assume-yes  \
+  build-essential \
+  git curl rsync netcat wait-for-it sqlite3 \
+  python3.10 python3-pip \
+  && apt-get clean \
+  && apt-get autoclean --assume-yes
 
 WORKDIR /app
 
@@ -22,11 +22,10 @@ RUN python3 -m piptools sync \
     requirements/requirements.txt
 
 COPY . /app
-# RUN set -ex; \
-#   curl -s https://deb.nodesource.com/setup_19.x | bash;\
-#   apt-get install --assume-yes nodejs; \
-
-RUN npm install;
+RUN set -ex; \
+  curl -s https://deb.nodesource.com/setup_16.x | bash;\
+  apt-get install --assume-yes nodejs; \
+  npm install;
 
 ENV FLASK_ENV=production
 ENV FLASK_CONFIG=config.Config
