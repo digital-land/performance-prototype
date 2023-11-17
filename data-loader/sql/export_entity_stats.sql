@@ -19,5 +19,7 @@ GROUP BY dataset, organisation_entity;
 
 SELECT dataset, organisation_entity, end_date
 FROM entity
-WHERE end_date is not null and end_date != ""
-AND organisation_entity is not null and organisation_entity != ""
+WHERE end_date is not null
+AND end_date != ''
+AND organisation_entity is not null
+AND organisation_entity != '';
