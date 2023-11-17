@@ -23,7 +23,7 @@ RUN python3 -m piptools sync \
 
 COPY . /app
 RUN set -ex; \
-  curl -s https://deb.nodesource.com/setup_16.x | bash;\
+  curl -s https://deb.nodesource.com/setup_20.x | bash;\
   apt-get install --assume-yes nodejs; \
   npm install;
 
