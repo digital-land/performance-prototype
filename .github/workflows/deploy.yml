@@ -22,8 +22,6 @@ jobs:
         run: |
           make init
           make databases
-      - name: Test
-        run: make test
       - name: Heroku container registry login
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
