@@ -25,7 +25,8 @@ COPY . /app
 # RUN set -ex; \
 #   curl -s https://deb.nodesource.com/setup_19.x | bash;\
 #   apt-get install --assume-yes nodejs; \
-#   npm install;
+
+RUN npm install;
 
 ENV FLASK_ENV=production
 ENV FLASK_CONFIG=config.Config
