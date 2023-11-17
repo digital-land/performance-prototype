@@ -18,7 +18,7 @@ digital_land_db_path = (
     f"file:{os.path.join(parent_dir, 'digital-land.sqlite3?mode=ro')}"
 )
 entity_stats_db_path = (
-    f"file:{os.path.join(parent_dir, 'entity-stats.sqlite3?mode=ro')}"
+    f"file:{os.path.join(parent_dir, 'entity-stats.db?mode=ro')}"
 )
 
 
