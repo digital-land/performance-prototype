@@ -7,7 +7,6 @@ been backed up and is available in [data/database_backup.dump](data/database_bac
 
 
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/digital-land/performance-prototype/blob/main/LICENSE)
-[![Run pipeline](https://github.com/digital-land/brownfield-land-collection/actions/workflows/run.yml/badge.svg)](https://github.com/digital-land/performance-prototype/actions/workflows/deploy.yml)
 
 Pages intended to help the team show progress in collecting planning data, identify gaps and issues in collecting the data and helping the team prioritise its work.
 
