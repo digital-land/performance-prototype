@@ -1,4 +1,10 @@
+
 # Performance application
+# ⚠️ Inactive
+
+This application is no longer deployed anywhere. The data collected during it's use has
+been backed up and is available in [data/database_backup.dump](data/database_backup.dump)
+
 
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/digital-land/performance-prototype/blob/main/LICENSE)
 [![Run pipeline](https://github.com/digital-land/brownfield-land-collection/actions/workflows/run.yml/badge.svg)](https://github.com/digital-land/performance-prototype/actions/workflows/deploy.yml)
