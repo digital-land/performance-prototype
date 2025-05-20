@@ -176,11 +176,11 @@
   }
 }
 
-// temp disable cookie banner 
+// temp disable cookie banner
 #global-cookie-message { display: none !important; }
 
 .app-tests-header {
-  border-bottom: 4px solid govuk-colour(blue);
+  border-bottom: 4px solid govuk-colour("blue");
   display: flex;
   justify-content: space-between;
   margin-bottom: govuk-spacing(4);
