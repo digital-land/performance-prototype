@@ -2,7 +2,7 @@
   border: 1px solid $govuk-border-colour;
 
   &:target {
-    border: 5px solid govuk-colour(blue);
+    border: 5px solid govuk-colour("blue");
   }
 
   /* Card header */

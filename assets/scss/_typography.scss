@@ -42,5 +42,5 @@ $govuk-typography-scale: map-merge($govuk-typography-scale, $app-typography-scal
 
 .app-heading--divider {
   padding-bottom: govuk-spacing(2);
-  border-bottom: 4px solid govuk-colour(blue);
+  border-bottom: 4px solid govuk-colour("blue");
 }
